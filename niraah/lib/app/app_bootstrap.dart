@@ -12,13 +12,13 @@ class AppBootstrap {
   const AppBootstrap._();
 
   static Future<void> run() async {
-    WidgetsFlutterBinding.ensureInitialized();
-
-    configureDependencies();
-    Bloc.observer = AppBlocObserver();
-
     await runZonedGuarded(
-      () async => runApp(const NiraahApp()),
+      () async {
+        WidgetsFlutterBinding.ensureInitialized();
+        configureDependencies();
+        Bloc.observer = AppBlocObserver();
+        runApp(const NiraahApp());
+      },
       (error, stackTrace) {
         if (kDebugMode) {
           debugPrint('Uncaught app error: $error');

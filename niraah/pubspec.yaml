@@ -43,6 +43,10 @@ dependencies:
   intl: ^0.20.2
   get_it: ^8.2.0
   go_router: ^16.2.5
+  built_collection: ^5.1.1
+  built_value: ^8.12.0
+  google_fonts: ^6.3.2
+  font_awesome_flutter: ^10.12.0
   openapi:
     path: lib/api
 
