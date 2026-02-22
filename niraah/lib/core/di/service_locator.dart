@@ -1,10 +1,12 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get_it/get_it.dart';
 
+import '../../data/repositories/auth_repository.dart';
 import '../../features/home/data/datasources/home_remote_data_source.dart';
 import '../../features/home/data/repositories/home_repository_impl.dart';
 import '../../features/home/domain/repositories/home_repository.dart';
 import '../../features/home/presentation/bloc/home_bloc.dart';
+import '../network/api_service.dart';
 import '../network/api_repository.dart';
 import '../network/dio_client.dart';
 import '../network/network_info.dart';
@@ -27,6 +29,10 @@ void configureDependencies() {
 
   getIt.registerLazySingleton<ApiRepository>(
     () => ApiRepository(getIt<DioClient>().instance),
+  );
+  getIt.registerLazySingleton<ApiService>(() => ApiService.instance);
+  getIt.registerLazySingleton<AuthRepository>(
+    () => AuthRepository(apiService: getIt<ApiService>()),
   );
 
   getIt.registerLazySingleton<HomeRemoteDataSource>(
