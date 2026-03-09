@@ -35,16 +35,20 @@ class HealthScoreCard extends StatelessWidget {
             const SizedBox(height: 16),
             Center(
               child: SizedBox(
-                height: 170,
-                width: 170,
+                height: MediaQuery.of(context).size.width * 0.5,
+                width: MediaQuery.of(context).size.width * 0.5,
                 child: Stack(
                   alignment: Alignment.center,
                   children: <Widget>[
-                    CircularProgressIndicator(
-                      value: score / 100,
-                      strokeWidth: 12,
-                      backgroundColor: ColorTokens.border,
-                      color: ColorTokens.primary,
+                    SizedBox(
+                height: MediaQuery.of(context).size.width * 0.4,
+                width: MediaQuery.of(context).size.width * 0.4,
+                      child: CircularProgressIndicator(
+                        value: score / 100,
+                        strokeWidth: 16,
+                        backgroundColor: ColorTokens.border,
+                        color: ColorTokens.primary,
+                      ),
                     ),
                     Column(
                       mainAxisSize: MainAxisSize.min,

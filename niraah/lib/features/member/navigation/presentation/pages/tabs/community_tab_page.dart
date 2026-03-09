@@ -40,12 +40,16 @@ class CommunityTabPage extends StatelessWidget {
                           'Doctor-led tips and peer support',
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          child: FilledButton(
+                                                onPressed: () {},
+                                                child: const Text('Request Invite'),
+                                              ),
+                        ),
                       ],
                     ),
-                    FilledButton(
-                      onPressed: () {},
-                      child: const Text('Request Invite'),
-                    ),
+                    
                   ],
                 ),
                 const SizedBox(height: 10),

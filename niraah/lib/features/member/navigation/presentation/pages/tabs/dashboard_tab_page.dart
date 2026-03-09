@@ -20,7 +20,7 @@ class DashboardTabPage extends StatelessWidget {
         ),
         const SizedBox(height: 4),
         Text(
-          AppContentConfig.homeDate,
+          DateTime.now().toString(),
           style: Theme.of(context).textTheme.bodyMedium,
         ),
         const SizedBox(height: 12),

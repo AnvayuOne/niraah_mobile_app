@@ -61,18 +61,18 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
                   children: <Widget>[
                     const BrandLogoHeader(showMenu: true),
                     const SizedBox(height: 18),
-                    Card(
-                      child: SizedBox(
-                        height: 230,
-                        child: Center(
-                          child: Icon(
-                            Icons.groups_rounded,
-                            size: 120,
-                            color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.65),
-                          ),
-                        ),
-                      ),
-                    ),
+                    // Card(
+                    //   child: SizedBox(
+                    //     height: 230,
+                    //     child: Center(
+                    //       child: Icon(
+                    //         Icons.groups_rounded,
+                    //         size: 120,
+                    //         color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.65),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                     const SizedBox(height: 16),
                     AuthCardContainer(
                       child: Column(

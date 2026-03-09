@@ -120,7 +120,7 @@ class _QuestionnairePageState extends State<QuestionnairePage> {
                               flex: 2,
                               child: AppButton(
                                 label: _currentStep == _questions.length
-                                    ? 'See Plan Recommendation'
+                                    ? 'Plan for you'
                                     : 'Continue',
                                 onPressed: _onContinue,
                               ),

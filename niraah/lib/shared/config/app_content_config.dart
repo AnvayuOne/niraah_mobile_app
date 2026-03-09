@@ -3,7 +3,7 @@ class AppContentConfig {
 
   static const String appName = 'Niraah';
   static const String homeGreeting = 'Good evening, Mounika!';
-  static const String homeDate = 'Sunday, February 22, 2026';
+  // static const String homeDate = 'Sunday, February 22, 2026';
 
   static const String dashboardTab = 'Dashboard';
   static const String careTab = 'Care';

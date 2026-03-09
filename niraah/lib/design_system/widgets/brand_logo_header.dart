@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:niraah/shared/constants/asset_constants.dart';
 
-import '../icons/app_icons.dart';
 import '../tokens/color_tokens.dart';
 
 class BrandLogoHeader extends StatelessWidget {
@@ -18,16 +18,12 @@ class BrandLogoHeader extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        const CircleAvatar(
-          radius: 18,
-          backgroundColor: ColorTokens.surface,
-          child: Icon(Icons.spa, color: ColorTokens.primary, size: 20),
-        ),
-        if (showMenu)
-          IconButton(
-            onPressed: onMenuTap,
-            icon: const Icon(AppIcons.menu, color: ColorTokens.text, size: 20),
-          ),
+        Image.asset('assets/logo/niraah_mono.png'),
+        // if (showMenu)
+        //   IconButton(
+        //     onPressed: onMenuTap,
+        //     icon: const Icon(AppIcons.menu, color: ColorTokens.text, size: 20),
+        //   ),
       ],
     );
   }

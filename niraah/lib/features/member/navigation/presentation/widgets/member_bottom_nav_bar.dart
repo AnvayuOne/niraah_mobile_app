@@ -20,30 +20,33 @@ class MemberBottomNavBar extends StatelessWidget {
       onDestinationSelected: onTap,
       indicatorColor: ColorTokens.primary.withValues(alpha: 0.16),
       backgroundColor: ColorTokens.surface,
+      labelTextStyle: WidgetStateProperty.all(TextStyle(fontSize: 12, fontWeight: FontWeight.w600)),
+
+      // unselectedLabelTextStyle: WidgetStateProperty.all(TextStyle(fontSize: 12, fontWeight: FontWeight.w400)),
       destinations: const <NavigationDestination>[
         NavigationDestination(
-          icon: Icon(AppIcons.dashboard),
-          selectedIcon: Icon(AppIcons.dashboard),
+          icon: Icon(AppIcons.dashboard,color: ColorTokens.muted, size: 14,),
+          selectedIcon: Icon(AppIcons.dashboard,color: ColorTokens.primary, size: 16),
           label: 'Dashboard',
         ),
         NavigationDestination(
-          icon: Icon(AppIcons.care),
-          selectedIcon: Icon(AppIcons.care),
+          icon: Icon(AppIcons.care,color: ColorTokens.muted, size: 14,),
+          selectedIcon: Icon(AppIcons.care, color: ColorTokens.primary, size: 16),
           label: 'Care',
         ),
         NavigationDestination(
-          icon: Icon(AppIcons.programs),
-          selectedIcon: Icon(AppIcons.programs),
+          icon: Icon(AppIcons.programs,color: ColorTokens.muted, size: 14,),
+          selectedIcon: Icon(AppIcons.programs,color: ColorTokens.primary, size: 16),
           label: 'Programs',
         ),
         NavigationDestination(
-          icon: Icon(AppIcons.community),
-          selectedIcon: Icon(AppIcons.community),
+          icon: Icon(AppIcons.community,color: ColorTokens.muted, size: 14,),
+          selectedIcon: Icon(AppIcons.community,color: ColorTokens.primary, size: 16),
           label: 'Community',
         ),
         NavigationDestination(
-          icon: Icon(AppIcons.profile),
-          selectedIcon: Icon(AppIcons.profile),
+          icon: Icon(AppIcons.profile,color: ColorTokens.muted, size: 14,),
+          selectedIcon: Icon(AppIcons.profile,color: ColorTokens.primary, size: 16),
           label: 'Profile',
         ),
       ],
