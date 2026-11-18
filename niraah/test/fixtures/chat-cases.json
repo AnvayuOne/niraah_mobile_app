@@ -1,0 +1,31 @@
+{
+  "$sample": "Shared test cases for design/sample/chat-rules.md. `remaining` is the allowance before the message. Web and Flutter must both produce `expect`.",
+  "cases": [
+    { "name": "self-harm gets the crisis card, even at the limit", "message": "I want to end my life", "remaining": 0, "personalised": true, "phase": null,
+      "expect": { "kind": "safety", "card": "crisis", "usesMessage": false } },
+    { "name": "emergency gets the urgent-care card", "message": "I have chest pain and feel dizzy", "remaining": 5, "personalised": true, "phase": null,
+      "expect": { "kind": "safety", "card": "emergency", "usesMessage": false } },
+    { "name": "a dose question gets the medicines card", "message": "What dose of metformin should I take?", "remaining": 5, "personalised": true, "phase": null,
+      "expect": { "kind": "safety", "card": "medicine", "usesMessage": false } },
+    { "name": "at the limit, an ordinary question gets the limit state", "message": "How can I sleep better?", "remaining": 0, "personalised": true, "phase": null,
+      "expect": { "kind": "limit", "usesMessage": false } },
+    { "name": "a cycle question is answered with citations and the footer", "message": "Is my cycle length normal?", "remaining": 5, "personalised": true, "phase": null,
+      "expect": { "kind": "answer", "intent": "cycle_length", "sentences": 4, "lastSentence": "AI insights do not replace medical advice.", "sources": ["doc-cycle"], "usesMessage": true } },
+    { "name": "with personalisation off, personal sentences are left out", "message": "Is my cycle length normal?", "remaining": 5, "personalised": false, "phase": null,
+      "expect": { "kind": "answer", "intent": "cycle_length", "sentences": 3, "usesMessage": true } },
+    { "name": "a phase sentence appears only with a phase", "message": "Why am I so tired?", "remaining": 5, "personalised": true, "phase": "luteal",
+      "expect": { "kind": "answer", "intent": "tired", "sentences": 4, "contains": "You're in your luteal phase right now", "sources": ["doc-cycle", "doc-food"] } },
+    { "name": "no phase, no phase sentence", "message": "Why am I so tired?", "remaining": 5, "personalised": true, "phase": null,
+      "expect": { "kind": "answer", "intent": "tired", "sentences": 3 } },
+    { "name": "a diagnosis question leads with the diagnosis line", "message": "Do I have PCOS?", "remaining": 5, "personalised": true, "phase": null,
+      "expect": { "kind": "answer", "intent": "pcos_lifestyle", "firstSentence": "Only a clinician can diagnose a condition. I can share general information.", "sentences": 4 } },
+    { "name": "no relevant source: says so, no citations", "message": "What is the capital of France?", "remaining": 5, "personalised": true, "phase": null,
+      "expect": { "kind": "answer", "intent": null, "firstSentence": "I don't have reliable information on that. A doctor is the best person to ask.", "sentences": 2, "sources": [], "usesMessage": true } },
+    { "name": "the specialist guide names a kind of specialist, no citation", "message": "Which specialist should I see?", "remaining": 5, "personalised": true, "phase": null,
+      "expect": { "kind": "answer", "intent": "specialist_guide", "sources": [] } }
+  ],
+  "starterCases": [
+    { "name": "luteal with low energy", "phase": "luteal", "todayLog": { "energy": "low" }, "expect": ["Why do I feel tired before my period?", "Why am I so tired lately?", "How can I sleep better?"] },
+    { "name": "no phase, no log", "phase": null, "todayLog": {}, "expect": ["Is my cycle length normal?", "How can I sleep better?", "Which specialist should I see?"] }
+  ]
+}

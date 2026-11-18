@@ -1,20 +1,19 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
+
+import '../tokens/tokens.dart';
 
 class LoadingView extends StatelessWidget {
-  const LoadingView({super.key, this.message = 'Loading...'});
+  const LoadingView({required this.label, super.key});
 
-  final String message;
+  /// Announced to screen readers.
+  final String label;
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          const CircularProgressIndicator(),
-          const SizedBox(height: 12),
-          Text(message),
-        ],
+      child: Semantics(
+        label: label,
+        child: const CircularProgressIndicator(color: NColors.actionPrimary),
       ),
     );
   }

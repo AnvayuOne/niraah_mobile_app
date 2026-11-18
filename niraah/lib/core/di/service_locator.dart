@@ -1,45 +1,24 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get_it/get_it.dart';
 
-import '../../data/repositories/auth_repository.dart';
-import '../../features/home/data/datasources/home_remote_data_source.dart';
-import '../../features/home/data/repositories/home_repository_impl.dart';
-import '../../features/home/domain/repositories/home_repository.dart';
-import '../../features/home/presentation/bloc/home_bloc.dart';
-import '../network/api_service.dart';
 import '../network/api_repository.dart';
 import '../network/dio_client.dart';
 import '../network/network_info.dart';
 
 final GetIt getIt = GetIt.instance;
 
-void configureDependencies() {
-  if (getIt.isRegistered<HomeBloc>()) {
-    return;
-  }
+/// Registers feature repositories. `main.dart` passes the API versions and
+/// `main_sample.dart` the sample versions, so release builds of `main.dart`
+/// never include sample data (constitution §2 rule 6).
+typedef RepositoryRegistrar = void Function(GetIt getIt);
+
+void configureDependencies(RepositoryRegistrar registerRepositories) {
+  if (getIt.isRegistered<DioClient>()) return;
 
   getIt.registerLazySingleton<Connectivity>(Connectivity.new);
   getIt.registerLazySingleton<NetworkInfo>(() => NetworkInfo(getIt<Connectivity>()));
+  getIt.registerLazySingleton<DioClient>(() => DioClient(tokenProvider: () async => null));
+  getIt.registerLazySingleton<ApiRepository>(() => ApiRepository(getIt<DioClient>().instance));
 
-  getIt.registerLazySingleton<DioClient>(
-    () => DioClient(
-      tokenProvider: () async => null,
-    ),
-  );
-
-  getIt.registerLazySingleton<ApiRepository>(
-    () => ApiRepository(getIt<DioClient>().instance),
-  );
-  getIt.registerLazySingleton<ApiService>(() => ApiService.instance);
-  getIt.registerLazySingleton<AuthRepository>(
-    () => AuthRepository(apiService: getIt<ApiService>()),
-  );
-
-  getIt.registerLazySingleton<HomeRemoteDataSource>(
-    () => HomeRemoteDataSource(getIt<ApiRepository>()),
-  );
-  getIt.registerLazySingleton<HomeRepository>(
-    () => HomeRepositoryImpl(getIt<HomeRemoteDataSource>()),
-  );
-  getIt.registerFactory<HomeBloc>(() => HomeBloc(getIt<HomeRepository>()));
+  registerRepositories(getIt);
 }

@@ -43,3 +43,13 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Local-only files: never pushed (secrets, signing, built apps)
+.env
+.env.*
+*.apk
+*.aab
+key.properties
+*.jks
+*.keystore
+.claude/settings.local.json

@@ -1,0 +1,2537 @@
+{
+  "@@locale": "en",
+  "appName": "Niraah",
+  "back": "Back",
+  "skip": "Skip",
+  "next": "Next",
+  "continueLabel": "Continue",
+  "comingSoonTitle": "Coming soon",
+  "comingSoonBody": "This part of Niraah is still being built.",
+  "goHome": "Go to home",
+  "somethingWentWrong": "We couldn't load this just now. Your answers are safe.",
+  "tryAgain": "Try again",
+  "loading": "Loading",
+  "notConnectedYet": "This screen isn't connected to Niraah's servers yet.",
+  "navHome": "Home",
+  "navCycle": "Cycle",
+  "navAiCare": "AI Care",
+  "navPractice": "Practice",
+  "navMe": "Me",
+  "splashLabel": "Niraah, women's wellness",
+  "introTitle1": "Know your cycle, know yourself",
+  "introBody1": "Track your period, ovulation and symptoms, all in one calm place.",
+  "introTitle2": "Care for PCOS, fertility and more",
+  "introBody2": "Guidance for hormones, nutrition and movement, shaped around you.",
+  "introTitle3": "Checked by real doctors",
+  "introBody3": "On plans that include it, a Niraah doctor reviews your care.",
+  "introSlideLabel": "Slide {current} of {total}",
+  "@introSlideLabel": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "welcomeTitle": "Your holistic wellness journey",
+  "welcomeBody": "Niraah helps you understand your cycle, hormones and daily habits, with AI guidance and care from doctors and dietitians.",
+  "welcomeWellness": "Niraah is a wellness service. It does not replace your own doctor and is not for emergencies.",
+  "welcomeContinue": "Get started",
+  "signInTitle": "Welcome to Niraah",
+  "signInBody": "Enter your mobile number and we'll send you a code.",
+  "signInFieldLabel": "Mobile number or email",
+  "signInCountryCode": "+91",
+  "signInContinueHint": "Enter a mobile number or an email",
+  "signInUnrecognised": "Enter a mobile number or an email",
+  "signInPhoneInvalid": "Check the number: an Indian mobile number has 10 digits.",
+  "signInNumberHint": "We'll send a 6-digit code by SMS.",
+  "signInEmailHint": "Doctors, dietitians, instructors and staff sign in with email.",
+  "passwordTitle": "Enter your password",
+  "passwordFor": "Signing in as {email}",
+  "@passwordFor": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "passwordLabel": "Password",
+  "passwordContinueHint": "Enter your password to continue",
+  "passwordRejected": "That email or password is not right.",
+  "passwordForgot": "Forgot password?",
+  "passwordChangeEmail": "Use a different email",
+  "codeTitle": "Enter your code",
+  "codeBody": "We sent a 6-digit code to {masked}.",
+  "@codeBody": {
+    "placeholders": {
+      "masked": {
+        "type": "String"
+      }
+    }
+  },
+  "codeFieldLabel": "6-digit code",
+  "codeContinueHint": "Enter the 6 digits to continue",
+  "codeVerify": "Verify",
+  "codeResendIn": "Send a new code in {seconds}s",
+  "@codeResendIn": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "codeResend": "Send a new code",
+  "codeExpiresIn": "Code expires in {minutes}:{seconds}",
+  "@codeExpiresIn": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      },
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "codeExpired": "This code has expired. Send a new one.",
+  "codeChangeNumber": "Change number",
+  "codeNotAccepted": "That code didn't work. Check it and try again.",
+  "detailsTitle": "Let's set up your account",
+  "detailsBody": "Just a couple of things before we begin.",
+  "detailsNameLabel": "What should we call you?",
+  "detailsNameHint": "Your first name",
+  "detailsEmailLabel": "Recovery email (optional)",
+  "detailsEmailHelp": "Only used to help you get back into your account. You can't sign in with it.",
+  "detailsEmailInvalid": "Check the email address, or leave it empty.",
+  "detailsAgree": "I agree to the Terms of Service and the Privacy Notice.",
+  "detailsTermsLink": "Read the Terms of Service",
+  "detailsPrivacyLink": "Read the Privacy Notice",
+  "detailsContinue": "Continue",
+  "detailsContinueHint": "Add your name and agree to continue",
+  "consentTitle": "Before we begin",
+  "consentBody": "A few gentle questions about your cycle, mood and daily life help us understand where you are today.",
+  "consentDuration": "About {minutes} minutes",
+  "@consentDuration": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "consentResume": "You can stop at any time and pick up where you left off.",
+  "consentReviewByPlan": "On plans that include it, a Niraah doctor reviews your result. On the free plan, your result comes from our doctor-built rules and AI.",
+  "consentHealthData": "I agree that Niraah may store and use my health answers to personalise my care.",
+  "consentDoctorReview": "When my plan includes it, let a Niraah doctor review my result.",
+  "consentStart": "Start",
+  "consentStartHint": "Tick the first box to continue",
+  "consentTextVersion": "Consent text version {version}",
+  "@consentTextVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "assessmentSection": "About you",
+  "assessmentStep": "Step {current} of {total}",
+  "@assessmentStep": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "assessmentChooseToContinue": "Choose an answer to continue",
+  "assessmentSeeResult": "See my result",
+  "assessmentChooseDate": "Choose your date of birth",
+  "assessmentDateChosen": "Born {date}",
+  "@assessmentDateChosen": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "assessmentScaleSelected": "Selected: {label}",
+  "@assessmentScaleSelected": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "assessmentTextHint": "Type here",
+  "assessmentSaveFailed": "We couldn't save that answer. Check your connection and try again.",
+  "assessmentUpdateApp": "This question needs a newer version of the app. Please update Niraah to continue.",
+  "minimumAgeTitle": "Niraah is for adults for now",
+  "minimumAgeBody": "Thank you for your interest. Niraah's care is designed for women aged 18 and over, so we've paused this account. Nothing you shared about your health has been stored.",
+  "minimumAgeWrongDate": "If you entered your date of birth by mistake, our support team can correct it.",
+  "minimumAgeContact": "Contact support",
+  "processingTitle": "Reading your answers",
+  "processingBody": "This takes a few seconds.",
+  "prescoreTitle": "Your wellness pre-score",
+  "prescoreOutOf": "out of {maximum}",
+  "@prescoreOutOf": {
+    "placeholders": {
+      "maximum": {
+        "type": "int"
+      }
+    }
+  },
+  "prescoreScoreLabel": "Your pre-score is {total} out of {maximum}. {band}.",
+  "@prescoreScoreLabel": {
+    "placeholders": {
+      "total": {
+        "type": "int"
+      },
+      "maximum": {
+        "type": "int"
+      },
+      "band": {
+        "type": "String"
+      }
+    }
+  },
+  "prescoreNotDiagnosis": "This is not a diagnosis. It's a starting point for your care.",
+  "prescoreNoticed": "What we noticed",
+  "prescoreAreas": "Your areas",
+  "prescoreProgram": "Suggested for you",
+  "prescoreFreeNoDoctor": "Niraah has not passed this to a doctor. Please see a doctor yourself soon.",
+  "nextBookDoctor": "Book a doctor",
+  "nextSeePlans": "See plans",
+  "nextGoHome": "Go to home",
+  "clinicianNotRequired": "Built on guidance from our doctors.",
+  "clinicianIncludedIn": "A doctor's review is included with {plans}.",
+  "@clinicianIncludedIn": {
+    "placeholders": {
+      "plans": {
+        "type": "String"
+      }
+    }
+  },
+  "clinicianAwaiting": "A doctor will review this within {target}.",
+  "@clinicianAwaiting": {
+    "placeholders": {
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "clinicianVerified": "Clinician Verified",
+  "clinicianVerifiedBy": "{name} · {speciality}",
+  "@clinicianVerifiedBy": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "speciality": {
+        "type": "String"
+      }
+    }
+  },
+  "clinicianFollowUp": "{name} would like to talk with you",
+  "@clinicianFollowUp": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "clinicianBook": "Book a consult",
+  "plansTitle": "Choose your plan",
+  "plansBody": "Every plan includes AI Care chat. You can change or cancel any time.",
+  "plansRecommended": "Recommended for you",
+  "plansCurrent": "Your plan",
+  "plansFreePrice": "Free",
+  "plansFreeNote": "No payment needed",
+  "plansEvery": "every {count} {unit}",
+  "@plansEvery": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "unit": {
+        "type": "String"
+      }
+    }
+  },
+  "plansFor": "for {count} {unit}",
+  "@plansFor": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "unit": {
+        "type": "String"
+      }
+    }
+  },
+  "plansIncludesGst": "{validity}, including GST",
+  "@plansIncludesGst": {
+    "placeholders": {
+      "validity": {
+        "type": "String"
+      }
+    }
+  },
+  "plansUnitDays": "{count, plural, =1{day} other{days}}",
+  "@plansUnitDays": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "plansUnitWeeks": "{count, plural, =1{week} other{weeks}}",
+  "@plansUnitWeeks": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "plansUnitMonths": "{count, plural, =1{month} other{months}}",
+  "@plansUnitMonths": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "plansUnitYears": "{count, plural, =1{year} other{years}}",
+  "@plansUnitYears": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "plansStartTrial": "Start {days}-day free trial",
+  "@plansStartTrial": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "plansChoose": "Choose {name}",
+  "@plansChoose": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "plansContinueFree": "Continue free",
+  "plansUnlimited": "{name}: unlimited",
+  "@plansUnlimited": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "plansLimit": "{name}: {amount} a {period}",
+  "@plansLimit": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "int"
+      },
+      "period": {
+        "type": "String"
+      }
+    }
+  },
+  "plansQuantity": "{name}: {amount} a {period}",
+  "@plansQuantity": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "int"
+      },
+      "period": {
+        "type": "String"
+      }
+    }
+  },
+  "plansPaymentLater": "Payment in the app opens soon. You can keep using the free plan until then.",
+  "homeTitle": "Home",
+  "homeGreeting": "Good {part}, {name}",
+  "@homeGreeting": {
+    "placeholders": {
+      "part": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "homeGreetingNoName": "Good {part}",
+  "@homeGreetingNoName": {
+    "placeholders": {
+      "part": {
+        "type": "String"
+      }
+    }
+  },
+  "homePartMorning": "morning",
+  "homePartAfternoon": "afternoon",
+  "homePartEvening": "evening",
+  "homeRingLabel": "Your cycle",
+  "homeDay": "Day {n}",
+  "@homeDay": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "homePhaseMenstrual": "Period",
+  "homePhaseFollicular": "Follicular phase",
+  "homePhaseOvulatory": "Ovulatory phase",
+  "homePhaseLuteal": "Luteal phase",
+  "homeEstimatedSuffix": "estimated",
+  "homeNextInSame": "Next period estimated in {a} {a, plural, =1{day} other{days}}",
+  "@homeNextInSame": {
+    "placeholders": {
+      "a": {
+        "type": "int"
+      }
+    }
+  },
+  "homeNextIn": "Next period estimated in {a} to {b} days",
+  "@homeNextIn": {
+    "placeholders": {
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
+    }
+  },
+  "homeNextBetween": "Estimated between {from} and {to}",
+  "@homeNextBetween": {
+    "placeholders": {
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      }
+    }
+  },
+  "homeLate": "Your period is later than estimated.",
+  "homeFromAssessment": "This estimate is based on your health check-in. Log two cycles for a closer one.",
+  "homeNoWindow": "Not enough data yet to estimate your next period.",
+  "homeInvitation": "Tell us when your last period started.",
+  "homeInvitationLabel": "First day of your last period",
+  "homeSave": "Save",
+  "homeSaveInactive": "Choose a date to save",
+  "homeOffPregnant": "Predictions are paused because you've told us you're pregnant.",
+  "homeOffHormonalContraception": "Predictions are paused because you've told us you use hormonal contraception.",
+  "homeOffNoPeriods": "Predictions are paused because you've told us you're not having periods.",
+  "homeOffBreastfeeding": "Predictions are paused while you're breastfeeding.",
+  "homeLogTitle": "Today",
+  "homeLogFlow": "Flow",
+  "homeLogMood": "Mood",
+  "homeLogEnergy": "Energy",
+  "homeLogSymptoms": "Symptoms",
+  "homeNotLogged": "Add",
+  "homeFlowNone": "None",
+  "homeFlowSpotting": "Spotting",
+  "homeFlowLight": "Light",
+  "homeFlowMedium": "Medium",
+  "homeFlowHeavy": "Heavy",
+  "homeMoodCalm": "Calm",
+  "homeMoodHappy": "Happy",
+  "homeMoodLow": "Low",
+  "homeMoodAnxious": "Anxious",
+  "homeMoodIrritable": "Irritable",
+  "homeEnergyLow": "Low",
+  "homeEnergyOkay": "Okay",
+  "homeEnergyHigh": "High",
+  "homePickerTitle": "{field} today",
+  "@homePickerTitle": {
+    "placeholders": {
+      "field": {
+        "type": "String"
+      }
+    }
+  },
+  "homeClose": "Close",
+  "homeSaved": "Saved",
+  "homeSuggestionTitle": "For today",
+  "homeAiMark": "AI",
+  "homeFromLibrary": "From Niraah's wellness library",
+  "homePrescoreTitle": "Your wellness pre-score",
+  "homePrescoreLine": "{total} out of {max} · {band}",
+  "@homePrescoreLine": {
+    "placeholders": {
+      "total": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      },
+      "band": {
+        "type": "String"
+      }
+    }
+  },
+  "homeViewResult": "View result",
+  "homeHide": "Hide",
+  "homeHidePrescore": "Hide pre-score card",
+  "homeReviewNotRequired": "Built on guidance from our doctors.",
+  "homeReviewAwaiting": "A doctor will review this within {target}.",
+  "@homeReviewAwaiting": {
+    "placeholders": {
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "homeGateTitle": "Your health check-in comes first",
+  "homeGateBody": "It takes about {min} {min, plural, =1{minute} other{minutes}}. Everything else opens when you've finished.",
+  "@homeGateBody": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "homeGateBodyNoTime": "Everything else opens when you've finished.",
+  "homeGateAction": "Continue",
+  "navLabel": "Main",
+  "navComingSoon": "{area} arrives in a later phase of the build.",
+  "@navComingSoon": {
+    "placeholders": {
+      "area": {
+        "type": "String"
+      }
+    }
+  },
+  "cycleTitle": "Cycle",
+  "cycleLogPeriod": "Log a period",
+  "cycleLogSymptoms": "Log symptoms",
+  "cycleCalendarTitle": "Calendar",
+  "cyclePrevMonth": "Previous month",
+  "cycleNextMonth": "Next month",
+  "cycleLegendLogged": "Period, logged",
+  "cycleLegendPredicted": "Next period, estimated",
+  "cycleLegendToday": "Today",
+  "cycleDayLogged": "period, logged",
+  "cycleDayPredicted": "next period estimated",
+  "cycleDayToday": "today",
+  "cycleDayHasLog": "has a log",
+  "cycleHistoryTitle": "Your cycles",
+  "cycleHistoryEmpty": "Your cycle history appears here once you've logged two periods.",
+  "cycleHistoryRow": "{cycle}-day cycle",
+  "@cycleHistoryRow": {
+    "placeholders": {
+      "cycle": {
+        "type": "int"
+      }
+    }
+  },
+  "cyclePeriodDays": "period {n} {n, plural, =1{day} other{days}}",
+  "@cyclePeriodDays": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "cycleCurrentCycle": "Current cycle",
+  "cycleAverage": "Average {n} days",
+  "@cycleAverage": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "cycleRangeSame": "Each {a} days",
+  "@cycleRangeSame": {
+    "placeholders": {
+      "a": {
+        "type": "int"
+      }
+    }
+  },
+  "cycleRange": "Range {a} to {b} days",
+  "@cycleRange": {
+    "placeholders": {
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
+    }
+  },
+  "cyclePatternSame": "Your last {count} cycles were each {min} days.",
+  "@cyclePatternSame": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "cyclePattern": "Your last {count} cycles ranged from {min} to {max} days.",
+  "@cyclePattern": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "min": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "cycleSituationTitle": "Your situation",
+  "cycleSituationHint": "These change what we estimate. You can change them at any time.",
+  "cycleSituationNone": "None of these",
+  "cycleMarkerPregnant": "I'm pregnant",
+  "cycleMarkerBreastfeeding": "I'm breastfeeding",
+  "cycleMarkerHormonalContraception": "I use hormonal contraception",
+  "cycleMarkerNoPeriods": "I'm not currently having periods",
+  "cycleEdit": "Change",
+  "cyclePeriodStartedHere": "My period started this day",
+  "cyclePeriodEndedHere": "My period ended this day",
+  "cycleRemovePeriod": "Remove this period",
+  "cycleNote": "Note",
+  "cycleSaveNote": "Save note",
+  "cycleSaveNoteInactive": "Write a note to save",
+  "cycleErrorEndBeforeStart": "The end day is before the start day. Choose a later day.",
+  "cycleErrorFuture": "Choose today or an earlier day.",
+  "cycleErrorOverlaps": "This overlaps a period you've already logged. Change that one instead.",
+  "cyclePeriodSheetTitle": "Log a period",
+  "cycleStartLabel": "First day",
+  "cycleEndLabel": "Last day (if it has ended)",
+  "cycleSavePeriod": "Save period",
+  "cycleSavePeriodInactive": "Choose the first day to save",
+  "symptomsTitle": "Symptoms",
+  "symptomsBack": "Cycle",
+  "symptomsFrequent": "You log these often",
+  "symptomsPick": "Choose a symptom to log it",
+  "symptomsSeverityLabel": "How strong is it?",
+  "symptomsSeverityValue": "{n} out of 10",
+  "@symptomsSeverityValue": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "symptomsNoteLabel": "Note (optional)",
+  "symptomsSave": "Save",
+  "symptomsSaved": "{name} saved",
+  "@symptomsSaved": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "symptomsDone": "Done",
+  "symptomsHistoryTitle": "Recent",
+  "symptomsHistoryEmpty": "Symptoms you log appear here, with where you were in your cycle.",
+  "symptomsHistoryRow": "{name} · {severity} out of 10",
+  "@symptomsHistoryRow": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "severity": {
+        "type": "int"
+      }
+    }
+  },
+  "symptomsPhaseOnDay": "{phase}, estimated",
+  "@symptomsPhaseOnDay": {
+    "placeholders": {
+      "phase": {
+        "type": "String"
+      }
+    }
+  },
+  "symptomsSeverityRefused": "Choose a number from 1 to 10.",
+  "commonLoadError": "We couldn't load this screen. Your data is safe.",
+  "chatTitle": "AI Care",
+  "chatNewChat": "New conversation",
+  "chatConversations": "Your conversations",
+  "chatNoConversations": "Your conversations appear here.",
+  "chatStarterTitle": "You could ask",
+  "chatInputLabel": "Message AI Care",
+  "chatInputPlaceholder": "Ask about your cycle, food, sleep…",
+  "chatSend": "Send",
+  "chatSendInactive": "Type a message to send",
+  "chatSources": "Sources",
+  "chatSourceSheetTitle": "Source",
+  "chatIncomplete": "This answer stopped before it finished.",
+  "chatTryAgain": "Try again",
+  "chatPersonalisedOn": "Using your cycle and logs",
+  "chatPersonalisedOff": "General answers: personalisation is off",
+  "chatPersonalisedSettings": "Change in privacy settings",
+  "chatRemaining": "{n} {n, plural, =1{message} other{messages}} left today",
+  "@chatRemaining": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "chatLimitTitle": "You've used today's messages",
+  "chatLimitText": "Your plan includes {limit} AI Care messages a day. They refill on {resets}.",
+  "@chatLimitText": {
+    "placeholders": {
+      "limit": {
+        "type": "int"
+      },
+      "resets": {
+        "type": "String"
+      }
+    }
+  },
+  "chatLimitPlans": "{plans} include more messages.",
+  "@chatLimitPlans": {
+    "placeholders": {
+      "plans": {
+        "type": "String"
+      }
+    }
+  },
+  "chatSeePlans": "See plans",
+  "chatRename": "Rename",
+  "chatRenameLabel": "Conversation name",
+  "chatSave": "Save",
+  "chatDelete": "Delete",
+  "chatDeleteConfirm": "Delete this conversation? This can't be undone.",
+  "chatDeleteYes": "Delete conversation",
+  "chatCancel": "Cancel",
+  "chatBack": "Conversations",
+  "chatYou": "You",
+  "chatAssistant": "AI Care",
+  "chatThinking": "AI Care is writing",
+  "pvPasswordForgotSent": "If that email has an account, we have sent a link.",
+  "pvPasswordLocked": "Too many attempts. Try again in 15 minutes.",
+  "pvPasswordSampleHint": "Sample mode: use a sample account with the password niraah-sample-pass.",
+  "pvAuthTitle": "Enter your authenticator code",
+  "pvAuthBody": "Open your authenticator app and enter the 6-digit code for Niraah.",
+  "pvAuthLabel": "6-digit code",
+  "pvAuthVerify": "Verify",
+  "pvAuthInactive": "Enter the 6 digits to continue",
+  "pvAuthFailed": "That code is not right. Try the current code.",
+  "pvAuthUseRecovery": "Use a recovery code instead",
+  "pvAuthRecoveryLabel": "Recovery code",
+  "pvAuthRecoveryHint": "Each recovery code works once.",
+  "pvAuthUseAuthenticator": "Use my authenticator app",
+  "pvAuthSampleHint": "Sample mode: any 6 digits will work.",
+  "pvSetupInvalidTitle": "This link is no longer valid",
+  "pvSetupInvalidBody": "Ask the person who invited you for a new one.",
+  "pvSetupWelcome": "Welcome, {name}",
+  "@pvSetupWelcome": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "pvSetupStep1": "Set a password",
+  "pvSetupStep2": "Add an authenticator",
+  "pvSetupStep3": "Save recovery codes",
+  "pvSetupStepOf": "Step {n} of {total}",
+  "@pvSetupStepOf": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "pvSetupPasswordLabel": "New password",
+  "pvSetupPasswordHint": "At least 12 characters. Longer is stronger; no other rules.",
+  "pvSetupPasswordTooShort": "Use at least 12 characters.",
+  "pvSetupPasswordBreached": "This password has appeared in a data breach. Choose a different one.",
+  "pvSetupNext": "Continue",
+  "pvSetupPasswordInactive": "Enter a password to continue",
+  "pvSetupAuthTitle": "Add an authenticator app",
+  "pvSetupAuthBody": "Scan this in your authenticator app, then enter the 6-digit code it shows.",
+  "pvSetupAuthKeyLabel": "Setup key",
+  "pvSetupAuthSampleKey": "SAMPLE KEY NOT FOR USE",
+  "pvSetupCodesTitle": "Save your recovery codes",
+  "pvSetupCodesBody": "If you lose your phone, each code lets you in once. Keep them somewhere safe and private.",
+  "pvSetupCodesConfirm": "I have saved these codes",
+  "pvSetupFinish": "Finish set-up",
+  "pvSetupFinishInactive": "Confirm you've saved the codes",
+  "pvStatusTitle": "Your application",
+  "pvStatusBody": "Complete your details and send them for review. An admin checks them, and you can see members once you're approved.",
+  "pvStatusMissingTitle": "Still needed",
+  "pvStatusNothingMissing": "Nothing more is needed from you right now.",
+  "pvSignOut": "Sign out",
+  "pvShellNav": "Doctor",
+  "pvShellHome": "Home",
+  "pvShellPatients": "Patients",
+  "pvShellQueue": "Queue",
+  "pvShellSchedule": "Schedule",
+  "pvShellMore": "More",
+  "pvShellComingSoon": "{area} arrives in a later step of Phase 4.",
+  "@pvShellComingSoon": {
+    "placeholders": {
+      "area": {
+        "type": "String"
+      }
+    }
+  },
+  "pvShellRoleSoon": "The {role} workspace arrives in a later phase.",
+  "@pvShellRoleSoon": {
+    "placeholders": {
+      "role": {
+        "type": "String"
+      }
+    }
+  },
+  "pvRoleDietitian": "dietitian",
+  "pvRoleInstructor": "instructor",
+  "pvDashGreeting": "Good day, {name}",
+  "@pvDashGreeting": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "pvDashNeedsMe": "Needs you",
+  "pvDashUrgentAlerts": "Urgent alerts",
+  "pvDashReviews": "Pre-score reviews",
+  "pvDashOldestOverdue": "Oldest is overdue",
+  "pvDashOldestUnderHour": "Oldest due in under an hour",
+  "pvDashOldestDue": "Oldest due in {h} h",
+  "@pvDashOldestDue": {
+    "placeholders": {
+      "h": {
+        "type": "int"
+      }
+    }
+  },
+  "pvDashCarePlans": "Care plans to sign",
+  "pvDashLabResults": "Lab results to review",
+  "pvDashMessages": "Unread messages",
+  "pvDashDrafts": "Prescriptions in draft",
+  "pvDashToday": "Today",
+  "pvDashNoAppointments": "No appointments today.",
+  "pvDashJoin": "Join",
+  "pvDashJoinSoon": "Join opens 10 minutes before",
+  "pvDashOnCallNow": "You're on call until {to}.",
+  "@pvDashOnCallNow": {
+    "placeholders": {
+      "to": {
+        "type": "String"
+      }
+    }
+  },
+  "pvDashOnCallLater": "Not on call now. Next on call {from}–{to}.",
+  "@pvDashOnCallLater": {
+    "placeholders": {
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      }
+    }
+  },
+  "pvDashOpenQueue": "Open queue",
+  "pvDashOnCall": "You're on call now.",
+  "pvDashNotOnCall": "Not on call now.",
+  "pvDashJoinOnWeb": "Join from the web app for now",
+  "pvDashClinicalReview": "Clinical review",
+  "pvQueueFlags": "{n, plural, =1{1 flag} other{{n} flags}}",
+  "@pvQueueFlags": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "pvQueueOpenedByMe": "Opened by you",
+  "pvReviewTitle": "Pre-score review",
+  "pvQueueTitle": "Pre-score reviews",
+  "pvQueueEmpty": "No reviews waiting. Well done.",
+  "pvQueueOverdue": "Overdue",
+  "pvQueueDueUnderHour": "Due in under an hour",
+  "pvQueueDue": "Due in {h} h",
+  "@pvQueueDue": {
+    "placeholders": {
+      "h": {
+        "type": "int"
+      }
+    }
+  },
+  "pvQueueDedicated": "Your patient",
+  "pvQueueNoFlags": "No flags",
+  "pvQueueUrgent": "Urgent",
+  "pvQueueAttention": "Attention",
+  "pvQueueInfo": "Info",
+  "pvQueueHoldingAnother": "Finish or release your current review first.",
+  "pvQueueGone": "This review has already been completed.",
+  "pvQueuePick": "Choose a review to open it.",
+  "pvReviewBack": "Queue",
+  "pvReviewSummary": "AI clinician summary",
+  "pvReviewSummaryNote": "Drafted by AI from her answers. Check it against the answers.",
+  "pvReviewFlags": "Flags",
+  "pvReviewScores": "Score",
+  "pvReviewTotal": "{t} out of {m} · {band}",
+  "@pvReviewTotal": {
+    "placeholders": {
+      "t": {
+        "type": "int"
+      },
+      "m": {
+        "type": "int"
+      },
+      "band": {
+        "type": "String"
+      }
+    }
+  },
+  "pvReviewScoreLocked": "Score, band and flags come from the questionnaire's rules and can't be changed here.",
+  "pvReviewObservations": "What she will see",
+  "pvReviewEdited": "Edited",
+  "pvReviewOriginalAi": "Original AI text",
+  "pvReviewEdit": "Edit",
+  "pvReviewRemove": "Remove",
+  "pvReviewRestore": "Restore",
+  "pvReviewSave": "Save",
+  "pvReviewCancel": "Cancel",
+  "pvReviewAnswers": "Her answers",
+  "pvReviewConsent": "Consent",
+  "pvReviewConsentView": "View",
+  "pvReviewConsentNone": "No consent",
+  "pvReviewAccept": "Accept as is",
+  "pvReviewVerifyNext": "Verify and next",
+  "pvReviewFollowUp": "Request follow-up",
+  "pvReviewFollowUpLabel": "Note to her (required)",
+  "pvReviewFollowUpSend": "Send follow-up request",
+  "pvReviewFollowUpInactive": "Write a note to send",
+  "pvReviewNoteLabel": "Short note to her (optional)",
+  "pvReviewConcern": "Scoring concern",
+  "pvReviewConcernLabel": "What looks wrong with the scoring?",
+  "pvReviewConcernSend": "Send to clinical reviewer",
+  "pvReviewConcernInactive": "Describe the concern to send",
+  "pvReviewConcernSent": "Sent to the clinical reviewer. The result is unchanged.",
+  "pvReviewClaimNote": "This review is yours for {min} minutes.",
+  "@pvReviewClaimNote": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "pvReviewRelease": "Release",
+  "pvReviewDone": "Review completed.",
+  "pvRoleAdminWebOnly": "The admin workspace is on the web. Sign in on a computer to use it.",
+  "scTitle": "Is this your account?",
+  "scBody": "It's been a while, or this is a new device. Before we open the account, show us it's you.",
+  "scDobLabel": "Your date of birth",
+  "scDobPlaceholder": "Choose your date of birth",
+  "scDobChosen": "Date of birth: {date}",
+  "@scDobChosen": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "scEmailOption": "Send a code to my recovery email",
+  "scEmailSent": "We've sent a code to your recovery email.",
+  "scEmailCodeLabel": "Code from the email",
+  "scDeviceOption": "Use this device",
+  "scDeviceBody": "This device has been used with this account before.",
+  "scCheck": "Check",
+  "scInactive": "Fill this in to continue",
+  "scNotMine": "This is not my account",
+  "scNotMineTitle": "Start a new account?",
+  "scNotMineBody": "We'll give this number a new, empty account. The old account is not opened or shown to you.",
+  "scNotMineConfirm": "Yes, start a new account",
+  "scCancel": "Go back",
+  "scSupport": "We can't confirm it's you here. Contact support and we'll help you get back in.",
+  "stSuspendedTitle": "Your account is not available",
+  "stSuspendedBody": "Contact support.",
+  "stPausedTitle": "Your account is paused",
+  "stPausedBody": "Contact support, or delete your account.",
+  "stDeletionTitle": "Your account is being deleted",
+  "stDeletionBody": "You can cancel the deletion here within the grace period, or sign out.",
+  "reauthTitle": "Add a new authenticator",
+  "reauthBody": "Your recovery code worked. Add your authenticator app again before you continue.",
+  "setupKeyLoading": "Getting your setup key…",
+  "mealsTitle": "Meals",
+  "mealsHomeTitle": "Your meals today",
+  "mealsHomeBody": "Snap your plate and we will work out what is on it.",
+  "mealsHomeNone": "Nothing logged yet today.",
+  "mealsHomeCount": "{count, plural, =1{1 meal logged today} other{{count} meals logged today}}",
+  "@mealsHomeCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "mealsScanAction": "Scan a meal",
+  "mealsTakePhoto": "Take a photo",
+  "mealsChoosePhoto": "Choose from gallery",
+  "mealsScanIntro": "Take a clear photo from above, with the whole plate in view.",
+  "mealsReading": "Reading your meal…",
+  "mealsResultTitle": "Here is what we found",
+  "mealsResultHint": "Check each dish and its portion. Nothing is saved until you tap Save.",
+  "mealsNotSureHint": "Tap to choose the dish",
+  "mealsRemove": "Remove",
+  "mealsSlot": "Which meal is this?",
+  "mealsSlotBreakfast": "Breakfast",
+  "mealsSlotLunch": "Lunch",
+  "mealsSlotDinner": "Dinner",
+  "mealsSlotSnack": "Snack",
+  "mealsSave": "Save meal",
+  "mealsSaveInactive": "Choose every dish to save",
+  "mealsSaved": "Meal saved",
+  "mealsDone": "Done",
+  "mealsScanAnother": "Scan another meal",
+  "mealsUnavailable": "The meal scanner isn’t available right now. Please try again in a little while.",
+  "mealsLimit": "You have used today’s meal scans.",
+  "mealsSearchTitle": "Which dish is this?",
+  "mealsSearchHint": "Search, e.g. dal, idli, roti",
+  "mealsSearchNone": "No dish found. Try another name.",
+  "mealsTotals": "This meal",
+  "mealsDayTotals": "Today so far",
+  "mealsKcal": "{value} kcal",
+  "@mealsKcal": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "mealsProtein": "Protein {value} g",
+  "@mealsProtein": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "mealsCarbs": "Carbs {value} g",
+  "@mealsCarbs": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "mealsFat": "Fat {value} g",
+  "@mealsFat": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "mealsFibre": "Fibre {value} g",
+  "@mealsFibre": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "mealsAiMark": "Identified by AI · nutrients from the Indian food table",
+  "mealsTodayEmpty": "No meals logged today yet.",
+  "mealsTagLowGi": "Low GI",
+  "mealsTagHighProtein": "High protein",
+  "mealsTagHighFibre": "High fibre",
+  "mealsTagPcosFriendly": "PCOS-friendly",
+  "mealsTagUnder400": "Under 400 kcal",
+  "commonCancel": "Cancel",
+  "stCancelDeletion": "Cancel deletion",
+  "areaStartsOn": "This starts when your trial ends and your first payment goes through, on {date}.",
+  "@areaStartsOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "areaIncludedIn": "Included in: {plans}",
+  "@areaIncludedIn": {
+    "placeholders": {
+      "plans": {
+        "type": "String"
+      }
+    }
+  },
+  "areaSeePlans": "See plans",
+  "areaNotOnPlan": "{area} isn't on your plan.",
+  "@areaNotOnPlan": {
+    "placeholders": {
+      "area": {
+        "type": "String"
+      }
+    }
+  },
+  "practiceTitle": "Practice",
+  "practiceForToday": "For today",
+  "practiceForPhase": "Chosen for your {phase} phase.",
+  "@practiceForPhase": {
+    "placeholders": {
+      "phase": {
+        "type": "String"
+      }
+    }
+  },
+  "practiceNoPhase": "Yoga and breathwork, at your own pace.",
+  "practiceTodayEmpty": "Nothing picked for today yet. The library has sessions for any day.",
+  "practiceBrowse": "Browse the library",
+  "practiceMore": "More",
+  "practiceMinutes": "{minutes} min",
+  "@practiceMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "practiceLevel": "Level: {level}",
+  "@practiceLevel": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "practiceCaptions": "Captions",
+  "practicePlay": "Play the session",
+  "practiceNoVideo": "The video for this session is not available yet.",
+  "practiceFinished": "I've finished this session",
+  "practiceLogged": "Saved to what you did",
+  "practiceLibraryTitle": "Library",
+  "practiceLibraryEmpty": "No sessions match these filters. Try fewer filters.",
+  "practiceUpTo": "Up to {minutes} min",
+  "@practiceUpTo": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "practiceHistoryTitle": "What you did",
+  "practiceHistoryEmpty": "Sessions you finish will show here, week by week.",
+  "practiceWeekOf": "Week of {date}",
+  "@practiceWeekOf": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "practiceWeekSummary": "{count, plural, =1{1 session} other{{count} sessions}}, {minutes} min",
+  "@practiceWeekSummary": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "practiceLiveTitle": "Live classes",
+  "practiceClassesEmpty": "No live classes in the next two weeks.",
+  "practiceClassesAfterTrial": "Live classes start with your first payment.",
+  "practicePlacesLeft": "{count, plural, =1{1 place left} other{{count} places left}}",
+  "@practicePlacesLeft": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "practiceClassFull": "This class is full",
+  "practiceBook": "Book a place",
+  "practiceBooked": "Your place is booked",
+  "practicePayOnWeb": "This class needs a payment, which the app can't take yet.",
+  "meYourPlan": "Your plan",
+  "meNoPlan": "No plan yet",
+  "mePlanRenews": "Renews on {date}",
+  "@mePlanRenews": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "mePlanEnds": "Ends on {date}",
+  "@mePlanEnds": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "mePlanRetired": "This plan is no longer offered. You keep it until {date}.",
+  "@mePlanRetired": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "meSeePlans": "See plans",
+  "meAreas": "More for you",
+  "meLocked": "not on your plan",
+  "meSettings": "Settings",
+  "meWellness": "Niraah supports your wellbeing. It does not replace your own doctor and is not an emergency service.",
+  "profileTitle": "Profile",
+  "profileName": "Name you'd like us to use",
+  "profileHeight": "Height (cm)",
+  "profileHeightRange": "Enter a height between 50 and 250 cm.",
+  "profileGoals": "Your goals",
+  "profileAddGoal": "Add a goal",
+  "profileRemoveGoal": "Remove {goal}",
+  "@profileRemoveGoal": {
+    "placeholders": {
+      "goal": {
+        "type": "String"
+      }
+    }
+  },
+  "profileSave": "Save",
+  "profileSaved": "Profile saved",
+  "profileAccount": "Account",
+  "profilePhone": "Mobile number",
+  "profileRecoveryEmail": "Recovery email",
+  "profileDob": "Date of birth",
+  "profileDobNote": "To correct this, contact support.",
+  "profileLanguage": "Language",
+  "profileTimeZone": "Time zone",
+  "profileNotSet": "Not set",
+  "privacyTitle": "Privacy",
+  "privacyWhoCanSee": "Who can see my data",
+  "privacyNoConsents": "No one else can see your health data.",
+  "privacyGivenOn": "Given on {date}",
+  "@privacyGivenOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "privacyWithdraw": "Withdraw",
+  "privacyWithdrawTitle": "Withdraw access?",
+  "privacyWithdrawBody": "{who} will no longer see your {category} data. This takes effect at once.",
+  "@privacyWithdrawBody": {
+    "placeholders": {
+      "who": {
+        "type": "String"
+      },
+      "category": {
+        "type": "String"
+      }
+    }
+  },
+  "privacyWithdrawn": "Access withdrawn",
+  "privacyStaffAccess": "When Niraah staff opened your data",
+  "privacyNoStaffAccess": "Niraah staff have not opened your health data.",
+  "privacyAiTitle": "Personalised AI",
+  "privacyAiSwitch": "Use my data to personalise AI answers",
+  "privacyAiOn": "On: AI features use your logs and answers.",
+  "privacyAiOff": "Off: AI features use only what you type.",
+  "privacyChatTitle": "AI Care chat history",
+  "privacyChatBody": "All your AI Care conversations will be deleted. This cannot be undone.",
+  "privacyChatDelete": "Delete all conversations",
+  "privacyChatDeleted": "Conversations deleted",
+  "privacyExportTitle": "Export my data",
+  "privacyExportBody": "We prepare a copy of everything you've given us and let you know when it's ready. Opening it needs a quick sign-in check.",
+  "privacyExportRequest": "Request an export",
+  "privacyExportRequested": "We're preparing your export",
+  "privacyExportRequestedOn": "Requested {date}",
+  "@privacyExportRequestedOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "privacyExportPreparing": "Being prepared",
+  "privacyExportReadyUntil": "Ready until {date}",
+  "@privacyExportReadyUntil": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "privacyExportExpired": "Expired",
+  "privacyExportFailed": "This export didn't finish. Please request a new one.",
+  "privacyExportOpen": "Open",
+  "privacyExportCopy": "Copy",
+  "privacyExportCopied": "Copied",
+  "privacyDeleteTitle": "Delete my account",
+  "privacyDeleteSummary": "Your account and data are deleted after a grace period, in which you can sign in and cancel. Records the law requires us to keep, such as invoices, are kept. An active plan is cancelled.",
+  "privacyDeleteBody": "After the grace period your account and data are deleted and cannot be recovered. Records the law requires, such as invoices, are kept. Your plan is cancelled now. Next, we'll check it's you.",
+  "privacyDeleteContinue": "Continue",
+  "privacyDeleteAction": "Delete my account",
+  "privacyDeleteStarted": "Your account will be deleted on {date}.",
+  "@privacyDeleteStarted": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "freshTitle": "Check it's you",
+  "freshBody": "We sent a 6-digit code to your mobile number.",
+  "freshConfirm": "Confirm",
+  "notifTitle": "Notifications",
+  "notifPush": "App notifications",
+  "notifSms": "SMS",
+  "notifEmail": "Email",
+  "notifAlwaysOn": "Always on. {reason}",
+  "@notifAlwaysOn": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "programsTitle": "Programs",
+  "programsAll": "Programs",
+  "programsEmpty": "No programs are open right now.",
+  "programsSuggested": "Suggested for you",
+  "programsLength": "{weeks, plural, =1{1 week} other{{weeks} weeks}}",
+  "@programsLength": {
+    "placeholders": {
+      "weeks": {
+        "type": "int"
+      }
+    }
+  },
+  "programsJoin": "Join this program",
+  "programsStartOn": "Choose a start day",
+  "programsJoined": "You've joined {name}",
+  "@programsJoined": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "programsWeek": "Week {week}",
+  "@programsWeek": {
+    "placeholders": {
+      "week": {
+        "type": "int"
+      }
+    }
+  },
+  "programsWeekOf": "Week {week} of {weeks}",
+  "@programsWeekOf": {
+    "placeholders": {
+      "week": {
+        "type": "int"
+      },
+      "weeks": {
+        "type": "int"
+      }
+    }
+  },
+  "programsStarted": "Started {date}",
+  "@programsStarted": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "programsPaused": "Paused. Your progress is kept.",
+  "programsPause": "Pause",
+  "programsResume": "Resume",
+  "programsPausedNote": "Program paused",
+  "programsResumed": "Program resumed",
+  "programsLeave": "Leave program",
+  "programsLeft": "You've left the program",
+  "careTitle": "Care plan",
+  "careNone": "When your doctor signs a care plan for you, it will appear here.",
+  "careSignedBy": "Signed by {doctor} on {date}",
+  "@careSignedBy": {
+    "placeholders": {
+      "doctor": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "careYourDoctor": "your doctor",
+  "careNutrition": "Nutrition",
+  "careMovement": "Movement",
+  "careSleep": "Sleep",
+  "careSupplements": "Supplements",
+  "careTodayTasks": "Today's tasks",
+  "careNoTasks": "No tasks for today.",
+  "careWeek": "Your week",
+  "careWeekDay": "{date}: {count, plural, =1{1 task done} other{{count} tasks done}}",
+  "@careWeekDay": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "careHistory": "Earlier plans",
+  "checkInsTitle": "Weekly check-in",
+  "checkInsNoneDue": "No check-in this week. Your trend is below.",
+  "checkInsThisWeek": "Week of {date}",
+  "@checkInsThisWeek": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "checkInsWeight": "Weight in kg (optional)",
+  "checkInsWaist": "Waist in cm (optional)",
+  "checkInsEnergy": "Energy this week",
+  "checkInsCravings": "Cravings this week",
+  "checkInsScale": "{value} of 5",
+  "@checkInsScale": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "checkInsScaleEnds": "1 is low, 5 is high",
+  "checkInsNote": "Anything else (optional)",
+  "checkInsSubmit": "Save check-in",
+  "checkInsSaved": "Check-in saved",
+  "checkInsTrend": "Your trend",
+  "checkInsTrendEmpty": "Your check-ins will show here over time.",
+  "checkInsEnergyValue": "energy {value}",
+  "@checkInsEnergyValue": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "checkInsCravingsValue": "cravings {value}",
+  "@checkInsCravingsValue": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "checkInsWeightValue": "{value} kg",
+  "@checkInsWeightValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "checkInsWaistValue": "waist {value} cm",
+  "@checkInsWaistValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "labsTitle": "Lab tests",
+  "labsReports": "Your reports",
+  "labsEmpty": "Add a lab report to keep your results in one place.",
+  "labsAdd": "Add a report",
+  "labsReport": "Report",
+  "labsTestedOn": "Tested on {date}",
+  "@labsTestedOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "labsRange": "Lab's range {low} to {high}",
+  "@labsRange": {
+    "placeholders": {
+      "low": {
+        "type": "String"
+      },
+      "high": {
+        "type": "String"
+      }
+    }
+  },
+  "labsOutside": "Outside the lab's range",
+  "labsCollection": "Home collection",
+  "labsOrder": "Book home collection",
+  "labsAfterTrial": "Home collection starts when your trial ends and your first payment goes through.",
+  "labsNotIncluded": "Home collection isn't on your plan. You can still add your own reports.",
+  "labsCollectionUnavailable": "Home collection isn't available right now.",
+  "labsPickDate": "Choose the test date",
+  "labsPickDateFirst": "Choose the test date to save",
+  "labsResults": "Results",
+  "labsResultsHelp": "Copy each result and the range printed on your report. Leave this empty to save the report only.",
+  "labsMarker": "Test name",
+  "labsValue": "Value",
+  "labsUnit": "Unit",
+  "labsLow": "Range from",
+  "labsHigh": "Range to",
+  "labsAddResult": "Add another result",
+  "labsResultIncomplete": "Each result needs a name and a number.",
+  "labsSave": "Save report",
+  "labsChooseTests": "Choose tests",
+  "labsFasting": "Needs fasting",
+  "labsPartner": "Lab",
+  "labsAddress": "Address for collection",
+  "labsAddressLine": "House, street and area",
+  "labsCity": "City",
+  "labsPincode": "PIN code",
+  "labsTime": "Collection time",
+  "labsPickTime": "Choose a day and time",
+  "labsTimeNote": "The lab confirms the exact time with you.",
+  "labsOrderSubmit": "Request collection",
+  "labsOrderIncomplete": "Choose tests, an address and a time",
+  "communityTitle": "Community",
+  "communityRulesTitle": "Community rules",
+  "communityAcceptRules": "I agree to the rules",
+  "communityAcceptFirst": "Agree to the community rules to post.",
+  "communityCircles": "Circles",
+  "communityNoCircles": "No circles are open yet.",
+  "communityJoin": "Join",
+  "communityLeave": "Leave",
+  "communityFeedEmpty": "No posts here yet. You could start the conversation.",
+  "communityNewPost": "New post",
+  "communityWrite": "Write your post",
+  "communityPostAnonymously": "Post anonymously",
+  "communityAnonymousNote": "Other members won't see your name or photo.",
+  "communitySend": "Post",
+  "communityPosted": "Posted",
+  "communityReplied": "Reply posted",
+  "communityThread": "Post",
+  "communityReply": "Reply",
+  "communityReplies": "{count, plural, =0{No replies} =1{1 reply} other{{count} replies}}",
+  "@communityReplies": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityEdited": "edited",
+  "communityEditedNote": "Post updated",
+  "communityBeingReviewed": "Your post is being reviewed",
+  "communityYou": "You",
+  "communityYouAnonymous": "You, anonymously",
+  "communityAnonymous": "Anonymous member",
+  "communityMember": "Member",
+  "communityMore": "More options",
+  "communityEdit": "Edit",
+  "communityDelete": "Delete",
+  "communityDeleted": "Deleted",
+  "communityReport": "Report",
+  "communityReportTitle": "Why are you reporting this?",
+  "communityReported": "Thank you. Our moderators will look at it.",
+  "communityMute": "Mute this author",
+  "communityMuted": "You won't see posts from this author",
+  "communityReasonHarmful": "Harmful health advice",
+  "communityReasonHarassment": "Harassment",
+  "communityReasonSpam": "Spam",
+  "communityReasonPersonal": "Personal information",
+  "communityReasonSelfHarm": "Someone may be at risk",
+  "communityReasonOther": "Something else",
+  "homeManagePlan": "Manage plan",
+  "homeOpenCarePlan": "Open care plan",
+  "homeNextTitle": "Coming up",
+  "homeNextClass": "Live class",
+  "homeNextConsult": "Consult",
+  "homeNextConsultWith": "Consult with {name}",
+  "@homeNextConsultWith": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "homeCheckInTitle": "Your weekly check-in",
+  "homeCheckInBody": "A few quick questions about your week, whenever suits you.",
+  "homeCheckInAction": "Start check-in",
+  "drUnnamed": "Member",
+  "drSearchName": "Search by name",
+  "drPast": "Past patients",
+  "drRelDedicated": "Dedicated",
+  "drRelConsult": "Consult",
+  "drRelReview": "Review",
+  "drOpenAlert": "Open alert",
+  "drPlanAwaiting": "Care plan awaiting",
+  "drNoPatients": "No members have a care relationship with you right now.",
+  "drNoPastPatients": "No past patients.",
+  "drNext": "Next {date}",
+  "@drNext": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "drPastPatient": "Past patient",
+  "drDietitian": "Dietitian: {name}",
+  "@drDietitian": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "drConsent": "Consent",
+  "drConsentView": "View",
+  "drConsentNone": "No consent",
+  "drFlags": "Flags",
+  "drMessages": "Messages",
+  "drBrief": "Clinician brief",
+  "drBriefOpen": "Show the brief",
+  "drNotShared": "She has not shared: {categories}",
+  "@drNotShared": {
+    "placeholders": {
+      "categories": {
+        "type": "String"
+      }
+    }
+  },
+  "drNotSharedSection": "She has not shared this.",
+  "drSecSummary": "Summary",
+  "drSecAssessment": "Assessment",
+  "drSecCycle": "Cycle and symptoms",
+  "drSecCarePlan": "Care plan",
+  "drSecAdvice": "Wellness advice",
+  "drSecLabs": "Labs",
+  "drSecMeals": "Meals",
+  "drSecShared": "Shared from AI chat",
+  "drSecNotes": "Notes",
+  "drSecTimeline": "Timeline",
+  "drAddNote": "Add a note",
+  "drNoteHint": "Visible to clinicians caring for her, never to her",
+  "drSave": "Save",
+  "drSaved": "Saved",
+  "drRecommendTests": "Recommend tests",
+  "drRecommendNote": "Note for her (optional), for example \"fasting\"",
+  "drRecommend": "Recommend",
+  "drRecommended": "Tests recommended",
+  "drOpenDraft": "Open the care plan draft",
+  "drCarePlans": "Care plans to sign",
+  "drCarePlan": "Care plan",
+  "drNoCarePlans": "No care plans are waiting for you.",
+  "drDue": "Due {date}",
+  "@drDue": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "drClaimedByMe": "Yours",
+  "drOfferedToMe": "Offered to you",
+  "drSharedQueue": "Shared queue",
+  "drRevision": "Revision",
+  "drEmptyPlan": "No AI draft: write it yourself",
+  "drReturnNoteWas": "Returned with: {note}",
+  "@drReturnNoteWas": {
+    "placeholders": {
+      "note": {
+        "type": "String"
+      }
+    }
+  },
+  "drAiSuggestion": "AI suggestion",
+  "drNoSuggestion": "No suggestion for this section.",
+  "drYourVersion": "Your version",
+  "drClearedBecause": "Left out: {reason}",
+  "@drClearedBecause": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "drAccepted": "Accepted",
+  "drEdited": "Edited",
+  "drCleared": "Left out",
+  "drUndecided": "Not decided yet",
+  "drAccept": "Accept",
+  "drEdit": "Edit",
+  "drClear": "Leave out",
+  "drClearSection": "Leave this section out",
+  "drClearReason": "Reason (optional)",
+  "drDoseWarning": "This text reads as a dose or a medicine. Confirm it is yours to give, or that it only refers to a medicine she already takes from her own doctor.",
+  "drDoseConfirm": "Confirm",
+  "drTasks": "Daily tasks",
+  "drNoTasks": "No tasks yet.",
+  "drAddTask": "Add a task",
+  "drTaskTitle": "Task",
+  "drRemoveTask": "Remove task",
+  "drDaily": "Daily",
+  "drWeekdays": "Weekdays",
+  "drWeekly": "Weekly",
+  "drProposedByAi": "proposed by AI",
+  "drSign": "Sign the care plan",
+  "drSignTitle": "Sign this care plan?",
+  "drSigned": "Signed. She can see it now.",
+  "drDecideAll": "Decide every section to sign",
+  "drKeepOne": "Keep at least one section to sign",
+  "drConfirmDoses": "Confirm the dose-like text to sign",
+  "drReturn": "Return for a new draft",
+  "drReturnHint": "What should change? The AI is given this note.",
+  "drReturned": "A new draft has been made with your note",
+  "drRevise": "Revise this plan",
+  "drRevisionStarted": "A revision has been started",
+  "drAlerts": "Alerts",
+  "drAlertsOpen": "Open",
+  "drAlertsResolved": "Resolved",
+  "drNoAlerts": "No alerts.",
+  "drUrgent": "Urgent",
+  "drAge": "{minutes} min ago",
+  "@drAge": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "drOnCallAlert": "On call",
+  "drNotOpened": "Not opened",
+  "drAlertOpen": "Open",
+  "drAlertAcknowledged": "Acknowledged",
+  "drAlertResolved": "Resolved",
+  "drOpenProfile": "Open her profile",
+  "drAcknowledge": "Acknowledge",
+  "drAcknowledged": "Acknowledged",
+  "drAskToBook": "Ask her to book",
+  "drAskedToBook": "She has been asked to book",
+  "drResolve": "Resolve",
+  "drResolveHint": "What was done (required)",
+  "drResolved": "Resolved",
+  "drLabResults": "Lab results to review",
+  "drNoLabResults": "No lab results are waiting for you.",
+  "drFlagged": "Flagged",
+  "drTypedByMember": "Typed in by her",
+  "drTypedByMemberLong": "These values were typed in by her from her report.",
+  "drLabReport": "Lab report",
+  "drReview": "Your review",
+  "drReviewed": "Reviewed",
+  "drCommentForHer": "Comment for her, in plain words (optional)",
+  "drMarkReviewed": "Mark reviewed",
+  "drConfirmOwnDoctor": "It refers to a medicine from her own doctor",
+  "drAdviceDrafts": "Wellness advice drafts",
+  "drNoDrafts": "No drafts.",
+  "drUpdated": "Updated {date}",
+  "@drUpdated": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "drCorrection": "Correction",
+  "drWellnessAdvice": "Wellness advice",
+  "drWriteAdvice": "Write wellness advice",
+  "drAssessment": "Assessment",
+  "drAssessmentHelp": "In plain words. Do not name a disease as diagnosed.",
+  "drSupplements": "Supplements",
+  "drAddSupplement": "Add a supplement",
+  "drChooseSupplement": "Choose from the catalogue",
+  "drNoSupplements": "The catalogue has no approved supplements yet.",
+  "drRemoveLine": "Remove",
+  "drSupplementsOnly": "Health supplements from the catalogue only. No prescription medicine and no hormonal product.",
+  "drDosePattern": "Dose pattern",
+  "drTiming": "Timing",
+  "drBeforeFood": "Before food",
+  "drAfterFood": "After food",
+  "drWithFood": "With food",
+  "drAnyTime": "Any time",
+  "drDuration": "Duration",
+  "drInstructions": "Instructions",
+  "drAdvice": "Advice",
+  "drSeeDoctorLine": "See a doctor in person",
+  "drTestsAdvised": "Tests advised",
+  "drCommaSeparated": "Separate with commas",
+  "drNoFollowUp": "No follow-up date",
+  "drFollowUpOn": "Follow up on {date}",
+  "@drFollowUpOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "drSetFollowUp": "Set follow-up",
+  "drWordingCheck": "{field} names a medicine or a dose. Remove it, or confirm it only refers to a medicine she already takes from her own doctor.",
+  "@drWordingCheck": {
+    "placeholders": {
+      "field": {
+        "type": "String"
+      }
+    }
+  },
+  "drSaveDraft": "Save draft",
+  "drSignAdvice": "Sign and send",
+  "drAdviceSigned": "Signed. She has been told there is something new in her app.",
+  "drAdviceSignedOn": "Signed {date}",
+  "@drAdviceSignedOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "drVerificationCode": "Verification code: {code}",
+  "@drVerificationCode": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "drDiscard": "Discard draft",
+  "drDiscarded": "Draft discarded",
+  "drMedicinesNotShared": "She has not shared her assessment, so reported medicines and allergies are not shown.",
+  "drMedicinesNotRecorded": "Medicines and allergies: not recorded.",
+  "drOnMedicationFlag": "She said she takes medicine. Details are not recorded.",
+  "drMedicinesReported": "Reported medicines: {medicines}. Allergies: {allergies}.",
+  "@drMedicinesReported": {
+    "placeholders": {
+      "medicines": {
+        "type": "String"
+      },
+      "allergies": {
+        "type": "String"
+      }
+    }
+  },
+  "drApproval": "Approval: {status}",
+  "@drApproval": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "drReverify": "Re-verification by {date}",
+  "@drReverify": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "drRegistration": "Registration {number}, {council}",
+  "@drRegistration": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      },
+      "council": {
+        "type": "String"
+      }
+    }
+  },
+  "drNoRegistration": "No registration number on file. You can't sign until it is added.",
+  "drRating": "Rating {average} from {count} reviews",
+  "@drRating": {
+    "placeholders": {
+      "average": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "drOnCallSwitch": "I'm on call now",
+  "drBio": "Bio",
+  "drLanguages": "Languages",
+  "drSpecialities": "Consult specialities",
+  "drRegistrationNote": "To change your registration or qualifications, send a new document to Niraah for review.",
+  "drReviewerTasks": "Clinical review",
+  "drReviewerOnWeb": "Approving these tasks isn't in the app yet.",
+  "earnTitle": "Earnings",
+  "earnAvailable": "Available",
+  "earnPending": "Pending",
+  "earnPaid": "Paid",
+  "earnReversed": "Reversed",
+  "earnAvailableOn": "available {date}",
+  "@earnAvailableOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "earnCashOut": "Cash out",
+  "earnNothingAvailable": "Nothing available to cash out yet",
+  "earnPayoutRequested": "Cash-out requested",
+  "earnLines": "Earning lines",
+  "earnNoLines": "No earnings yet.",
+  "earnRules": "What each kind of work pays",
+  "earnRuleAmount": "{kind}: {amount}",
+  "@earnRuleAmount": {
+    "placeholders": {
+      "kind": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "earnRuleShare": "{kind}: {percent}% of the fee",
+  "@earnRuleShare": {
+    "placeholders": {
+      "kind": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "earnPayouts": "Payouts",
+  "earnNoPayouts": "No payouts yet.",
+  "earnTaxWithheld": "Tax withheld {amount}",
+  "@earnTaxWithheld": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "earnRequestedOn": "Requested {date}",
+  "@earnRequestedOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "schedTitle": "Schedule",
+  "schedTimeZone": "Times in {zone}",
+  "@schedTimeZone": {
+    "placeholders": {
+      "zone": {
+        "type": "String"
+      }
+    }
+  },
+  "schedNoHours": "You have no consult hours set, so members can't book you.",
+  "schedNextTwoWeeks": "Next two weeks",
+  "schedNoAppointments": "No appointments in the next two weeks.",
+  "schedHold": "Being booked",
+  "schedBeingBooked": "Being booked",
+  "schedConfirmed": "Confirmed",
+  "schedInProgress": "In progress",
+  "schedCompleted": "Completed",
+  "schedCancelled": "Cancelled",
+  "schedNoShow": "No-show",
+  "schedWeeklyHours": "Weekly hours",
+  "schedNoWeeklyHours": "No weekly hours set.",
+  "schedConsults": "Consults",
+  "schedReviewsOnCall": "Reviews and on call",
+  "schedHoursOnWeb": "Changing weekly hours isn't in the app yet.",
+  "schedExceptions": "Blocked time and extra hours",
+  "schedAddException": "Block time or add hours",
+  "schedExceptionKind": "What is this time?",
+  "schedBlocked": "Blocked",
+  "schedExtra": "Extra consult hours",
+  "schedFrom": "From",
+  "schedTo": "To",
+  "schedSaved": "Saved",
+  "schedRemove": "Remove",
+  "staffCheckTitle": "Check it's you",
+  "staffCheckBody": "Enter your password and the code from your authenticator app to sign.",
+  "staffCheckPassword": "Password",
+  "staffCheckCode": "Authenticator code",
+  "msgTitle": "Messages",
+  "msgNoThreads": "No conversations yet.",
+  "msgNotOnPlan": "Messaging your care team isn't on your plan.",
+  "msgUnread": "{count} unread",
+  "@msgUnread": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "msgReadOnly": "You can read this conversation but not reply.",
+  "msgStart": "Start a conversation",
+  "msgConsentTitle": "Share your messages?",
+  "msgConsentBody": "{name} will be able to read what you send in this conversation.",
+  "@msgConsentBody": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "msgConsentAgree": "Agree and continue",
+  "msgWrite": "Write a message",
+  "msgSend": "Send",
+  "msgDeleted": "Message deleted",
+  "msgSharedFromChat": "Shared from AI Care",
+  "msgEdit": "Edit message",
+  "msgSendAnyway": "It refers to her own doctor's medicine: send",
+  "msgAway": "Away until {date}. {note}",
+  "@msgAway": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "note": {
+        "type": "String"
+      }
+    }
+  },
+  "msgSetAway": "Set away",
+  "msgAwayTitle": "Away note",
+  "msgAwayNote": "A line members will see",
+  "msgAwayUntil": "Back on",
+  "msgAwaySet": "Away until {date}",
+  "@msgAwaySet": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "dtClients": "Clients",
+  "dtReview": "Review",
+  "dtFoodLogs": "Food logs to review",
+  "dtPlansToBuild": "Meal plans to build",
+  "dtEndingSoon": "{count, plural, =0{None ending this week} =1{1 ending within 7 days} other{{count} ending within 7 days}}",
+  "@dtEndingSoon": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dtCheckIns": "Check-ins to read",
+  "dtPastClients": "Past clients",
+  "dtNoClients": "No clients with a care relationship right now.",
+  "dtPlanNone": "No plan",
+  "dtPlanDraft": "Draft",
+  "dtPlanScheduled": "Scheduled",
+  "dtPlanActive": "Active",
+  "dtPlanEnded": "Ended",
+  "dtPlanUntil": "until {date}",
+  "@dtPlanUntil": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "dtLastCheckIn": "Last check-in {date}",
+  "@dtLastCheckIn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "dtUnreviewedLogs": "Food logs to review",
+  "dtSecMealPlan": "Meal plan",
+  "dtSecProgress": "Progress",
+  "dtDoctor": "Doctor: {name}",
+  "@dtDoctor": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "dtNewPlan": "New meal plan",
+  "dtMealPlan": "Meal plan",
+  "dtMealPlans": "Meal plans",
+  "dtRecipes": "Recipes",
+  "dtRecipe": "Recipe",
+  "dtSpecialities": "Specialities",
+  "dtPlanPeriods": "Plan periods: {periods}",
+  "@dtPlanPeriods": {
+    "placeholders": {
+      "periods": {
+        "type": "String"
+      }
+    }
+  },
+  "dtNoCheckIns": "No check-ins yet.",
+  "dtYourReply": "Your reply: {text}",
+  "@dtYourReply": {
+    "placeholders": {
+      "text": {
+        "type": "String"
+      }
+    }
+  },
+  "dtMarkRead": "Mark read",
+  "dtMarkedRead": "Marked read",
+  "dtReply": "Reply",
+  "dtReplyHint": "A short, kind note",
+  "dtReplied": "Reply sent",
+  "dtMissed": "Missed weeks",
+  "dtNudge": "Send a gentle nudge",
+  "dtNudged": "Nudge sent",
+  "dtNudgeSent": "Nudge sent",
+  "dtAssign": "Assign a check-in questionnaire",
+  "dtAssigned": "Questionnaire assigned",
+  "dtNoQuestionnaires": "No check-in questionnaires are published yet.",
+  "dtSchedule": "How often?",
+  "dtFortnightly": "Fortnightly",
+  "dtMonthly": "Monthly",
+  "dtEndsOn": "Ends on",
+  "dtNoUnreadCheckIns": "All check-ins are read.",
+  "dtRefer": "Refer to her doctor",
+  "dtReferHint": "Your note for her doctor",
+  "dtReferred": "Referred to her doctor",
+  "dtNeedPlan": "Clients waiting for a plan",
+  "dtNobodyWaiting": "Nobody is waiting for a plan.",
+  "dtYourPlans": "Your plans",
+  "dtNoPlans": "No plans yet.",
+  "dtPortion": "Portion",
+  "dtTargets": "Targets",
+  "dtEnergy": "Energy (kcal)",
+  "dtProtein": "Protein (g)",
+  "dtCarbs": "Carbs (g)",
+  "dtFat": "Fat (g)",
+  "dtFibre": "Fibre (g)",
+  "dtMin": "From",
+  "dtMax": "To",
+  "dtCopyDay": "Copy this day",
+  "dtCopyDayTo": "Copy day {day} to",
+  "@dtCopyDayTo": {
+    "placeholders": {
+      "day": {
+        "type": "int"
+      }
+    }
+  },
+  "dtDayN": "Day {day}",
+  "@dtDayN": {
+    "placeholders": {
+      "day": {
+        "type": "int"
+      }
+    }
+  },
+  "dtCopy": "Copy",
+  "dtCopied": "Copied",
+  "dtStartsOn": "Plan starts on",
+  "dtCarePlanTitle": "Her care plan: nutrition",
+  "dtCarePlanNoNutrition": "Her signed care plan has no nutrition section.",
+  "dtCarePlanRead": "I have read it",
+  "dtPublished": "Published. She'll see it from the start date.",
+  "dtPlanDates": "{start} to {end}",
+  "@dtPlanDates": {
+    "placeholders": {
+      "start": {
+        "type": "String"
+      },
+      "end": {
+        "type": "String"
+      }
+    }
+  },
+  "dtSuppressedPreview": "Calorie and weight content is hidden for this member. She will see the plan without energy figures or energy targets.",
+  "dtDayTotals": "Day totals, from the food table",
+  "dtWithin": "within",
+  "dtBelow": "below",
+  "dtAbove": "above",
+  "dtSlotEarly": "Early morning",
+  "dtSlotMidMorning": "Mid-morning",
+  "dtSlotEvening": "Evening snack",
+  "dtSlotBedtime": "Bedtime",
+  "dtSlotNote": "Note",
+  "dtSlotNoteHint": "For example \"soak overnight\"",
+  "dtPreferenceWarning": "Doesn't match her food choice or is a food she avoids",
+  "dtConflict": "Check before publishing: {what}",
+  "@dtConflict": {
+    "placeholders": {
+      "what": {
+        "type": "String"
+      }
+    }
+  },
+  "dtPregnancy": "not tagged pregnancy-safe",
+  "dtConfirmConflict": "I've checked this, keep it",
+  "dtAddDish": "Add a dish",
+  "dtRepeats": "Repeated often this week: {names}",
+  "@dtRepeats": {
+    "placeholders": {
+      "names": {
+        "type": "String"
+      }
+    }
+  },
+  "dtSaveTemplate": "Save as template",
+  "dtTemplateHint": "Template name",
+  "dtTemplateSaved": "Template saved",
+  "dtPublish": "Publish plan",
+  "dtConfirmFirst": "Confirm the marked items to publish",
+  "dtDiscard": "Discard draft",
+  "dtAdjust": "Adjust from tomorrow",
+  "dtAdjustStarted": "A copy from tomorrow is ready to change",
+  "dtEnd": "End this plan",
+  "dtEnded": "Plan ended",
+  "dtSearchDish": "Search dishes and foods",
+  "dtSearchHint": "Type at least two letters and search",
+  "dtRequestFood": "Not in the list? Request \"{name}\"",
+  "@dtRequestFood": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "dtRequested": "Requested. You can add it once the nutrition team adds it to the food table.",
+  "dtNoLogs": "No food logs are waiting for you.",
+  "dtLogs": "{count, plural, =1{1 meal} other{{count} meals}}",
+  "@dtLogs": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dtComment": "Comment",
+  "dtCommentHint": "Up to 280 characters, kind and specific",
+  "dtCommented": "Comment sent",
+  "dtCorrect": "Correct this dish",
+  "dtCorrectTo": "Change to {name}",
+  "@dtCorrectTo": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "dtCorrected": "Corrected. She has been told.",
+  "dtCorrectedMark": "corrected",
+  "dtHasTargets": "Her plan's targets apply to this day.",
+  "dtTakeDay": "Take this day",
+  "dtPhoto": "photo",
+  "dtApprove": "Approve",
+  "dtApproved": "Approved",
+  "dtApproveDay": "Approve all for this day",
+  "dtDayApproved": "Day approved",
+  "dtNewRecipe": "New recipe",
+  "dtSearchRecipes": "Search recipes",
+  "dtMine": "Mine",
+  "dtNoRecipes": "No recipes yet.",
+  "dtPublishedLabel": "Published",
+  "dtGrams": "Grams",
+  "dtRecipeIncomplete": "A recipe needs a title, at least one ingredient and servings.",
+  "dtRecipePublished": "Recipe published",
+  "dtVersion": "version {n}",
+  "@dtVersion": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "dtVersionNote": "Changing ingredients or servings makes a new version; plans already published keep this one.",
+  "dtRecipeTitle": "Title",
+  "dtIngredients": "Ingredients",
+  "dtRequestedFood": "Requested from the nutrition team",
+  "dtAddIngredient": "Add an ingredient",
+  "dtPerServing": "Per serving, from the food table",
+  "dtServings": "Servings",
+  "dtMinutes": "Minutes",
+  "dtSteps": "Steps",
+  "dtStepsHelp": "One step per line",
+  "dtTags": "Tags",
+  "dtComputedTags": "Set from the numbers: {tags}",
+  "@dtComputedTags": {
+    "placeholders": {
+      "tags": {
+        "type": "String"
+      }
+    }
+  },
+  "dtPublishRecipe": "Publish recipe",
+  "inSessions": "Sessions",
+  "inStudents": "Students",
+  "inLibrary": "Library",
+  "inAwaitingApproval": "Waiting for approval",
+  "inLive": "Live",
+  "inNextSoon": "{title} starts {when}",
+  "@inNextSoon": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "inNoToday": "No classes today.",
+  "inBooked": "{booked} of {capacity} booked",
+  "@inBooked": {
+    "placeholders": {
+      "booked": {
+        "type": "int"
+      },
+      "capacity": {
+        "type": "int"
+      }
+    }
+  },
+  "inStartOnWeb": "Starting and running a class isn't in the app yet.",
+  "inRequests": "Student requests waiting",
+  "inAttendanceToConfirm": "Attendance to confirm",
+  "inContentReturned": "Sessions returned by a reviewer",
+  "inNoBookings": "Classes this week with no bookings",
+  "inNewClass": "New class",
+  "inNoClasses": "No classes yet. Schedule one to get started.",
+  "inWaiting": "{count} waiting",
+  "@inWaiting": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "inNewRequests": "{count, plural, =1{1 new request} other{{count} new requests}}",
+  "@inNewRequests": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "inClass": "Class",
+  "inCancelWhy": "Why are you cancelling?",
+  "inReasonUnwell": "I'm unwell",
+  "inReasonEmergency": "A personal emergency",
+  "inReasonTechnical": "A technical problem",
+  "inReasonOther": "Something else",
+  "inCancelled": "Cancelled. Everyone booked has been told and their place returned.",
+  "inLateCancellation": "Cancelled at short notice; this is recorded.",
+  "inBookings": "Bookings",
+  "inNoBookingsYet": "No bookings yet.",
+  "inOnWaitingList": "on the waiting list",
+  "inAttended": "attended",
+  "inNotAttended": "did not attend",
+  "inRequest": "Request: {choice} {text}",
+  "@inRequest": {
+    "placeholders": {
+      "choice": {
+        "type": "String"
+      },
+      "text": {
+        "type": "String"
+      }
+    }
+  },
+  "inMarkSeen": "Mark the request as seen",
+  "inSeen": "She'll see it was seen",
+  "inCorrected": "Attendance corrected",
+  "inPublish": "Publish",
+  "inPublished": "Done",
+  "inChange": "Change class",
+  "inDeleteDraft": "Delete draft",
+  "inCancelClass": "Cancel class",
+  "inConfirmAttendance": "Confirm attendance",
+  "inAttendanceConfirmed": "Attendance confirmed",
+  "inReqFirst": "First class",
+  "inReqCamera": "Camera optional",
+  "inReqLate": "Arriving late",
+  "inReqEarly": "Leaving early",
+  "inReqOther": "Other",
+  "inIncomplete": "A class needs a title, a start, a length and a capacity.",
+  "inTitle": "Title",
+  "inDescription": "Description",
+  "inNoMedicalClaims": "Say what the practice is and who it suits. No claims to treat a condition.",
+  "inPickStart": "Choose the start",
+  "inCapacity": "Capacity",
+  "inLevel": "Level",
+  "inPhaseTags": "Suits these cycle phases",
+  "inWeekly": "Repeat weekly",
+  "inUntil": "Repeat until",
+  "inUntilDate": "Until {date}",
+  "@inUntilDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "inFeeNote": "The class fee is set by Niraah.",
+  "inRecommend": "Suggest a recorded session",
+  "inNoPublished": "You have no published sessions yet.",
+  "inRecommended": "Suggestion sent",
+  "inNoStudents": "Students who book your classes will appear here.",
+  "inAttendedOf": "attended {attended} of {booked}",
+  "@inAttendedOf": {
+    "placeholders": {
+      "attended": {
+        "type": "int"
+      },
+      "booked": {
+        "type": "int"
+      }
+    }
+  },
+  "inPhase": "{phase} phase",
+  "@inPhase": {
+    "placeholders": {
+      "phase": {
+        "type": "String"
+      }
+    }
+  },
+  "inProgress": "{sessions} sessions, {minutes} min this month",
+  "@inProgress": {
+    "placeholders": {
+      "sessions": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "inInReview": "In review",
+  "inReturned": "Returned",
+  "inWithdrawn": "Withdrawn",
+  "inNewSession": "New session",
+  "inNoContent": "Recorded sessions you create will appear here.",
+  "inStats": "{plays} plays, {completions} completed",
+  "@inStats": {
+    "placeholders": {
+      "plays": {
+        "type": "int"
+      },
+      "completions": {
+        "type": "int"
+      }
+    }
+  },
+  "inStatsLong": "{plays} plays and {completions} completions. Counts only; no member is named.",
+  "@inStatsLong": {
+    "placeholders": {
+      "plays": {
+        "type": "int"
+      },
+      "completions": {
+        "type": "int"
+      }
+    }
+  },
+  "inIntensity": "Intensity",
+  "inProposePregnancy": "I propose this is pregnancy-safe",
+  "inReviewerDecides": "The reviewer decides the tag.",
+  "inRights": "I own this content and any music in it",
+  "inVideoNotInApp": "Uploading the video isn't in the app yet, so this can't be sent for review from here.",
+  "inSubmit": "Send for review",
+  "inSubmitted": "Sent for review",
+  "inWithdraw": "Withdraw from the library",
+  "inPracticeTypes": "Practice types",
+  "pvApplyLink": "Doctor, dietitian or yoga instructor? Apply to join",
+  "paStatus": "Status",
+  "paAsked": "The team asked for",
+  "paReason": "Reason",
+  "paDetails": "Your details",
+  "paName": "Full name",
+  "paPhone": "Contact number",
+  "paBio": "Short bio",
+  "paSpecialities": "Specialities",
+  "paLanguages": "Languages",
+  "paCommaHint": "Separate with commas",
+  "paYears": "Years of experience",
+  "paRegNumber": "Registration number",
+  "paRegCouncil": "Registration council",
+  "paRegHint": "Needed for doctors; give it if you have one.",
+  "paReferences": "Professional references",
+  "paReferencesHint": "Two references for doctors and dietitians.",
+  "paRefName": "Name",
+  "paRefRole": "Role",
+  "paRefContact": "Email or phone",
+  "paSave": "Save",
+  "paSaved": "Saved.",
+  "paDocuments": "Documents",
+  "paDocumentsHint": "Photos of your documents, JPEG or PNG, up to 3 MB each. PDFs can be uploaded on the website.",
+  "paKindPhoto": "Photo",
+  "paKindIdentity": "Government photo identity",
+  "paKindQualification": "Qualification certificate",
+  "paKindRegistration": "Registration certificate",
+  "paUpload": "Upload",
+  "paRemove": "Remove",
+  "paTooBig": "Files can be up to 3 MB.",
+  "paTerms": "I accept the provider terms and code of conduct (version {version}).",
+  "paSubmit": "Submit for review",
+  "paResubmit": "Send again",
+  "paSubmitInactive": "Add what is still needed first",
+  "paSubmitted": "Sent. We will email you when there is a decision.",
+  "paReapply": "Apply again",
+  "paReapplyFrom": "You can apply again from {date}.",
+  "paReadOnly": "Your application is with the team. You can change it if they ask for more information.",
+  "paMissing": "Still needed",
+  "@paTerms": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "@paReapplyFrom": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "signInAs": "Sign in as",
+  "signInAsMember": "Member",
+  "signInAsDoctor": "Doctor",
+  "signInAsDietitian": "Dietitian",
+  "signInAsTrainer": "Trainer",
+  "signInNumberLabel": "Mobile number",
+  "signInEmailLabel": "Email",
+  "signInStaffBody": "Enter your work email. Then your password and authenticator code.",
+  "signInNeedNumber": "Members sign in with a mobile number.",
+  "signInNeedEmail": "Enter your email address.",
+  "signInEnterNumber": "Enter your mobile number",
+  "signInEnterEmail": "Enter your email"
+}

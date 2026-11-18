@@ -1,4 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- The app calls the Niraah API (constitution §3.3). -->
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:label="niraah"
         android:name="${applicationName}"
