@@ -1,6 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 
 import '../tokens/tokens.dart';
+import 'n_living.dart';
 
 /// Primary pill button. When it cannot be used yet, pass [inactiveHint]: the
 /// button then reads as guidance ("Choose an answer to continue") instead of
@@ -25,8 +26,14 @@ class NPrimaryButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final bool inactive = onPressed == null && !loading;
     final String text = inactive && inactiveHint != null ? inactiveHint! : label;
-    return SizedBox(
+    final bool live = onPressed != null && !loading;
+    // Press feedback and a soft glow while the button can be used.
+    return NPressable(
+      enabled: live,
+      child: AnimatedContainer(
+      duration: NMotion.fast,
       width: double.infinity,
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(NRadius.pill), boxShadow: live ? NShadow.brandGlow : const <BoxShadow>[]),
       child: FilledButton(
         onPressed: loading ? null : onPressed,
         child: loading
@@ -48,6 +55,7 @@ class NPrimaryButton extends StatelessWidget {
                 ],
               ),
       ),
+      ),
     );
   }
 }
@@ -61,9 +69,12 @@ class NSecondaryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: OutlinedButton(onPressed: onPressed, child: Text(label, textAlign: TextAlign.center)),
+    return NPressable(
+      enabled: onPressed != null,
+      child: SizedBox(
+        width: double.infinity,
+        child: OutlinedButton(onPressed: onPressed, child: Text(label, textAlign: TextAlign.center)),
+      ),
     );
   }
 }

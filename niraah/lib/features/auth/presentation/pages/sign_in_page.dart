@@ -90,6 +90,7 @@ class _SignInPageState extends State<SignInPage> {
       SignInAs.trainer: s.signInAsTrainer,
     };
     return NPage(
+      decor: true,
       onBack: () => context.go(RouteConstants.welcome),
       backLabel: s.back,
       body: AutofillGroup(

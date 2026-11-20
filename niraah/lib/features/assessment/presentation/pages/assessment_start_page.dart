@@ -50,12 +50,12 @@ class _AssessmentStartPageState extends State<AssessmentStartPage> {
         if (st.status == AssessmentStatus.failure) {
           return Scaffold(body: ErrorView(message: s.notConnectedYet));
         }
-        if (st.session == null) return Scaffold(body: LoadingView(label: s.loading));
+        if (st.session == null) return Scaffold(body: LoadingView(label: s.loadAssessment, kind: NLoaderKind.assessment));
         return NPage(
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              const Center(child: NIllustration(asset: NImages.screen02AssessmentWoman, height: NSpace.xl3 * 2 + NSpace.xl, entrance: NEntrance.float)),
+              const Center(child: NLottie(path: NLotties.companion, size: NSpace.xl3 * 3)),
               const SizedBox(height: NSpace.lg),
               Text(s.consentTitle, style: NType.h2.copyWith(color: NColors.inkPrimary)),
               const SizedBox(height: NSpace.xs),

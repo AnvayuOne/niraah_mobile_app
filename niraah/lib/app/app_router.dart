@@ -19,6 +19,7 @@ import '../features/chat/presentation/chat_home_page.dart';
 import '../features/chat/presentation/conversation_page.dart';
 import '../features/community/presentation/community_pages.dart';
 import '../features/cycle/presentation/cycle_page.dart';
+import '../features/diet_plan/presentation/diet_plan_page.dart';
 import '../features/dietitian/dietitian_pages.dart';
 import '../features/dietitian/meal_plan_pages.dart';
 import '../features/dietitian/review_recipe_pages.dart';
@@ -35,6 +36,7 @@ import '../features/home/presentation/area_coming_soon_page.dart';
 import '../features/home/presentation/home_page.dart';
 import '../features/instructor/instructor_pages.dart';
 import '../features/labs/presentation/labs_pages.dart';
+import '../features/landing/landing_page.dart';
 import '../features/me/presentation/me_page.dart';
 import '../features/me/presentation/notification_settings_page.dart';
 import '../features/me/presentation/privacy_page.dart';
@@ -65,6 +67,7 @@ class AppRouter {
         initialLocation: initialLocation,
         routes: <RouteBase>[
           GoRoute(path: RouteConstants.splash, builder: (_, _) => const SplashPage()),
+          GoRoute(path: RouteConstants.landing, builder: (_, _) => const LandingPage()),
           GoRoute(path: RouteConstants.intro, builder: (_, _) => const IntroPage()),
           GoRoute(path: RouteConstants.welcome, builder: (_, _) => const WelcomePage()),
           GoRoute(path: RouteConstants.signIn, builder: (_, _) => const SignInPage()),
@@ -97,6 +100,7 @@ class AppRouter {
           GoRoute(path: RouteConstants.symptoms, builder: (_, _) => const SymptomsPage()),
           GoRoute(path: RouteConstants.cycle, builder: (_, _) => const CyclePage()),
           GoRoute(path: RouteConstants.meals, builder: (_, _) => const MealsPage()),
+          GoRoute(path: RouteConstants.dietPlan, builder: (_, _) => const DietPlanPage()),
           GoRoute(path: RouteConstants.mealScan, builder: (_, _) => const MealScanPage()),
           GoRoute(path: RouteConstants.chat, builder: (_, _) => const ChatHomePage()),
           GoRoute(

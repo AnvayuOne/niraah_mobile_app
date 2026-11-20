@@ -1,11 +1,12 @@
 import 'package:material_ui/material_ui.dart';
 
 import '../tokens/tokens.dart';
+import 'n_living.dart';
 
 /// Page frame: safe area, side gutters, content width capped for tablets,
 /// scrolling body and an optional pinned footer for the main action.
 class NPage extends StatelessWidget {
-  const NPage({required this.body, super.key, this.footer, this.onBack, this.backLabel, this.background});
+  const NPage({required this.body, super.key, this.footer, this.onBack, this.backLabel, this.background, this.decor = false});
 
   final Widget body;
   final Widget? footer;
@@ -13,11 +14,13 @@ class NPage extends StatelessWidget {
   final String? backLabel;
   final Color? background;
 
+  /// Adds the soft brand washes behind the page (onboarding, sign-in).
+  final bool decor;
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: background ?? NColors.surfacePage,
-      body: SafeArea(
+    final Color base = background ?? NColors.surfacePage;
+    final Widget content = SafeArea(
         child: Center(
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: NLayout.breakpointTablet - NSpace.xl3 * 3),
@@ -48,7 +51,7 @@ class NPage extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
+      );
+    return Scaffold(backgroundColor: base, body: decor ? NBackdrop(base: base, child: content) : content);
   }
 }

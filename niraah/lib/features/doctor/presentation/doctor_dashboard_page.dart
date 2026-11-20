@@ -3,6 +3,7 @@ import 'package:material_ui/material_ui.dart';
 
 import '../../../core/di/service_locator.dart';
 import '../../../design_system/tokens/tokens.dart';
+import '../../../design_system/widgets/clinician_ui.dart';
 import '../../../design_system/widgets/error_view.dart';
 import '../../../design_system/widgets/loading_view.dart';
 import '../../../design_system/widgets/n_button.dart';
@@ -38,7 +39,7 @@ class _DoctorDashboardPageState extends State<DoctorDashboardPage> {
             return ErrorView(message: s.commonLoadError, retryLabel: s.tryAgain, onRetry: () => setState(() => _dash = _repo.getDashboard()));
           }
           final DoctorDashboard? d = snap.data;
-          if (d == null) return LoadingView(label: s.loading);
+          if (d == null) return LoadingView(label: s.loadCare, kind: NLoaderKind.care);
           final NeedsMe n = d.needsMe;
           final double? oldest = n.oldestReviewDueInHours;
           final String? oldestText = oldest == null
@@ -55,107 +56,100 @@ class _DoctorDashboardPageState extends State<DoctorDashboardPage> {
 
           Future<void> openQueue() => open('/doctor/queue');
 
-          return ListView(
-            padding: const EdgeInsets.fromLTRB(NSpace.lg, NSpace.sm, NSpace.lg, NSpace.xl),
-            children: <Widget>[
-              Semantics(
-                header: true,
-                child: Text(s.pvDashGreeting(d.name ?? ''), style: NType.h2.copyWith(color: NColors.inkPrimary)),
-              ),
-              if (d.speciality != null) Text(d.speciality!, style: NType.bodySm.copyWith(color: NColors.inkMuted)),
-              const SizedBox(height: NSpace.xs),
-              Row(
-                children: <Widget>[
-                  Icon(Icons.schedule_rounded, size: NSpace.md, color: d.onCall ? NColors.statusSuccess : NColors.inkMuted),
-                  const SizedBox(width: NSpace.xs),
-                  Expanded(
-                    child: Text(d.onCall ? s.pvDashOnCall : s.pvDashNotOnCall, style: NType.bodySm.copyWith(color: NColors.inkSecondary)),
-                  ),
-                ],
-              ),
-              const SizedBox(height: NSpace.lg),
-              Semantics(
-                header: true,
-                child: Text(s.pvDashNeedsMe, style: NType.h4.copyWith(color: NColors.inkPrimary)),
-              ),
-              const SizedBox(height: NSpace.sm),
-              _TileGrid(
-                tiles: <_Tile>[
-                  _Tile(label: s.pvDashUrgentAlerts, count: n.urgentAlerts, urgent: n.urgentAlerts > 0, onTap: () => open('/doctor/alerts')),
-                  _Tile(label: s.pvDashReviews, count: n.reviews, detail: oldestText, onTap: openQueue),
-                  _Tile(label: s.pvDashCarePlans, count: n.carePlans, onTap: () => open('/doctor/care-plans')),
-                  _Tile(label: s.pvDashLabResults, count: n.labResults, onTap: () => open('/doctor/labs')),
-                  _Tile(label: s.pvDashMessages, count: n.messages, onTap: () => open('/doctor/messages')),
-                  _Tile(label: s.pvDashDrafts, count: n.draftPrescriptions, onTap: () => open('/doctor/advice')),
-                  if (n.clinicalReview != null) _Tile(label: s.drReviewerTasks, count: n.clinicalReview!, onTap: () => open('/doctor/reviewer')),
-                ],
-              ),
-              const SizedBox(height: NSpace.sm),
-              NSecondaryButton(label: s.pvDashOpenQueue, onPressed: openQueue),
-              const SizedBox(height: NSpace.lg),
-              Semantics(
-                header: true,
-                child: Text(s.pvDashToday, style: NType.h4.copyWith(color: NColors.inkPrimary)),
-              ),
-              const SizedBox(height: NSpace.sm),
-              if (d.today.isEmpty)
-                Text(s.pvDashNoAppointments, style: NType.bodySm.copyWith(color: NColors.inkMuted))
-              else
-                for (final TodayAppointment a in d.today)
-                  Container(
-                    margin: const EdgeInsets.only(bottom: NSpace.xs),
-                    padding: const EdgeInsets.all(NSpace.md),
-                    decoration: BoxDecoration(
-                      color: NColors.surfaceCard,
-                      borderRadius: BorderRadius.circular(NRadius.lg),
-                      border: Border.all(color: NColors.lineDefault),
-                    ),
+          final List<TodayAppointment> today = d.today;
+          final DateTime now = DateTime.now();
+          final TodayAppointment? next = today.where((TodayAppointment a) => a.startsAt.isAfter(now.subtract(const Duration(minutes: 20)))).firstOrNull;
+          final int waiting = n.urgentAlerts + n.reviews + n.carePlans + n.labResults + n.messages + n.draftPrescriptions;
+          String hhmm(DateTime t) => MaterialLocalizations.of(context).formatTimeOfDay(TimeOfDay.fromDateTime(t.toLocal()));
+
+          return RefreshIndicator(
+            onRefresh: () async => setState(() => _dash = _repo.getDashboard()),
+            child: ListView(
+              padding: const EdgeInsets.fromLTRB(NSpace.md, NSpace.xs, NSpace.md, NSpace.xl),
+              children: <Widget>[
+                CHero(
+                  eyebrow: d.speciality ?? s.pvShellHome,
+                  title: s.pvDashGreeting(d.name ?? ''),
+                  subtitle: waiting > 0 ? s.drDashWaiting(waiting, today.length) : s.drDashAllClear(today.length),
+                  trailing: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: NSpace.sm, vertical: NSpace.xxs + 2),
+                    decoration: BoxDecoration(color: d.onCall ? NColors.brandApricot : NColors.surfaceCard, borderRadius: BorderRadius.circular(NRadius.pill)),
                     child: Row(
+                      mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        SizedBox(
-                          width: NSpace.xl3,
-                          child: Text(
-                            MaterialLocalizations.of(context).formatTimeOfDay(TimeOfDay.fromDateTime(a.startsAt.toLocal())),
-                            style: NType.body.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w700),
-                          ),
-                        ),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              if (a.member != null) Text(a.member!, style: NType.body.copyWith(color: NColors.inkPrimary)),
-                              if (a.reason != null) Text(a.reason!, style: NType.bodySm.copyWith(color: NColors.inkSecondary)),
-                              // Wellness advice is written in or after the consult (spec 011 §7 "Who and when" 2); the server checks the window.
-                              if (!a.startsAt.isAfter(DateTime.now()))
-                                TextButton(
-                                  onPressed: () async {
-                                    await startAdvice(context, a.id);
-                                    if (mounted) setState(() => _dash = _repo.getDashboard());
-                                  },
-                                  child: Text(s.drWriteAdvice),
-                                ),
-                            ],
-                          ),
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: <Widget>[
-                            // The consult room is on the web app; the app's room comes next (plan 011 "Screens").
-                            FilledButton(onPressed: null, child: Text(s.pvDashJoin)),
-                            ConstrainedBox(
-                              constraints: const BoxConstraints(maxWidth: 110),
-                              child: Text(
-                                a.joinable ? s.pvDashJoinOnWeb : s.pvDashJoinSoon,
-                                textAlign: TextAlign.end,
-                                style: NType.label.copyWith(color: NColors.inkMuted, letterSpacing: 0),
-                              ),
-                            ),
-                          ],
-                        ),
+                        Container(width: 7, height: 7, decoration: BoxDecoration(color: d.onCall ? NColors.statusClinicalRedFlag : NColors.inkMuted, shape: BoxShape.circle)),
+                        const SizedBox(width: 6),
+                        Text(d.onCall ? s.drOnCallShort : s.drOffCallShort, style: NType.caption.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w700)),
                       ],
                     ),
                   ),
-            ],
+                  child: CStatGrid(
+                    children: <Widget>[
+                      CHeroStat(label: s.pvDashUrgentAlerts, value: '${n.urgentAlerts}', icon: Icons.notifications_active_outlined, alert: n.urgentAlerts > 0, onTap: () => open('/doctor/alerts')),
+                      CHeroStat(label: s.pvDashReviews, value: '${n.reviews}', icon: Icons.fact_check_outlined, note: oldestText, onTap: openQueue),
+                      CHeroStat(label: s.pvDashCarePlans, value: '${n.carePlans}', icon: Icons.draw_outlined, onTap: () => open('/doctor/care-plans')),
+                      CHeroStat(label: s.pvDashLabResults, value: '${n.labResults}', icon: Icons.science_outlined, onTap: () => open('/doctor/labs')),
+                      CHeroStat(label: s.pvDashMessages, value: '${n.messages}', icon: Icons.chat_bubble_outline_rounded, onTap: () => open('/doctor/messages')),
+                      CHeroStat(label: s.pvDashDrafts, value: '${n.draftPrescriptions}', icon: Icons.edit_note_rounded, onTap: () => open('/doctor/advice')),
+                      if (n.clinicalReview != null) CHeroStat(label: s.drReviewerTasks, value: '${n.clinicalReview}', icon: Icons.verified_user_outlined, onTap: () => open('/doctor/reviewer')),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: NSpace.md),
+                CPanel(
+                  title: s.pvDashToday,
+                  note: s.drDashBooked(today.length),
+                  icon: Icons.event_available_outlined,
+                  action: TextButton(onPressed: () => context.go('/doctor/schedule'), child: Text(s.pvShellSchedule)),
+                  child: today.isEmpty
+                      ? CEmpty(icon: Icons.event_available_outlined, title: s.pvDashNoAppointments)
+                      : Column(
+                          children: <Widget>[
+                            for (int i = 0; i < today.length; i++)
+                              CEntrance(
+                                delayMs: 60 * i,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(bottom: NSpace.xs),
+                                  child: _ConsultRow(
+                                    a: today[i],
+                                    time: hhmm(today[i].startsAt),
+                                    isNext: today[i].id == next?.id,
+                                    nextLabel: s.drNextUp,
+                                    joinLabel: s.pvDashJoin,
+                                    joinNote: today[i].joinable ? s.pvDashJoinOnWeb : s.pvDashJoinSoon,
+                                    adviceLabel: !today[i].startsAt.isAfter(now) ? s.drWriteAdvice : null,
+                                    onAdvice: () async {
+                                      await startAdvice(context, today[i].id);
+                                      if (mounted) setState(() => _dash = _repo.getDashboard());
+                                    },
+                                  ),
+                                ),
+                              ),
+                          ],
+                        ),
+                ),
+                const SizedBox(height: NSpace.md),
+                CPanel(
+                  title: s.pvShellQueue,
+                  note: oldestText,
+                  icon: Icons.fact_check_outlined,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      Row(
+                        children: <Widget>[
+                          Text('${n.reviews}', style: NType.h1.copyWith(color: NColors.inkPrimary, fontFamily: NType.body.fontFamily, fontWeight: FontWeight.w700)),
+                          const SizedBox(width: NSpace.sm),
+                          Expanded(child: Text(s.pvDashReviews, style: NType.body.copyWith(color: NColors.inkSecondary))),
+                        ],
+                      ),
+                      const SizedBox(height: NSpace.sm),
+                      NPrimaryButton(label: s.pvDashOpenQueue, onPressed: n.reviews > 0 ? openQueue : null, inactiveHint: s.drQueueClear),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           );
         },
       ),
@@ -163,69 +157,57 @@ class _DoctorDashboardPageState extends State<DoctorDashboardPage> {
   }
 }
 
-class _Tile {
-  const _Tile({required this.label, required this.count, this.detail, this.onTap, this.urgent = false});
+class _ConsultRow extends StatelessWidget {
+  const _ConsultRow({required this.a, required this.time, required this.isNext, required this.nextLabel, required this.joinLabel, required this.joinNote, required this.onAdvice, this.adviceLabel});
 
-  final String label;
-  final int count;
-  final String? detail;
-  final VoidCallback? onTap;
-  final bool urgent;
-}
-
-class _TileGrid extends StatelessWidget {
-  const _TileGrid({required this.tiles});
-
-  final List<_Tile> tiles;
+  final TodayAppointment a;
+  final String time;
+  final bool isNext;
+  final String nextLabel;
+  final String joinLabel;
+  final String joinNote;
+  final String? adviceLabel;
+  final VoidCallback onAdvice;
 
   @override
-  Widget build(BuildContext context) {
-    Widget tile(_Tile t) => Semantics(
-      button: t.onTap != null,
-      label: '${t.label}: ${t.count}${t.detail == null ? '' : '. ${t.detail}'}',
-      excludeSemantics: true,
-      child: Material(
-        color: t.onTap != null ? NColors.brandLavenderLight : NColors.surfaceCard,
-        borderRadius: BorderRadius.circular(NRadius.lg),
-        child: InkWell(
-          onTap: t.onTap,
+  Widget build(BuildContext context) => Container(
+        padding: const EdgeInsets.all(NSpace.sm),
+        decoration: BoxDecoration(
+          color: isNext ? NColors.brandBlushLight : NColors.surfacePage,
           borderRadius: BorderRadius.circular(NRadius.lg),
-          child: Container(
-            constraints: const BoxConstraints(minHeight: NLayout.minTapTarget * 2),
-            padding: const EdgeInsets.all(NSpace.md),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(NRadius.lg),
-              border: Border.all(color: NColors.lineDefault),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text('${t.count}', style: NType.h2.copyWith(color: t.urgent ? NColors.statusClinicalRedFlag : NColors.inkPrimary)),
-                Text(t.label, style: NType.bodySm.copyWith(color: NColors.inkSecondary)),
-                if (t.detail != null) Text(t.detail!, style: NType.label.copyWith(color: NColors.inkMuted, letterSpacing: 0)),
-              ],
-            ),
-          ),
+          border: Border.all(color: isNext ? NColors.brandBlush : Colors.transparent),
         ),
-      ),
-    );
-    return Column(
-      children: <Widget>[
-        for (int i = 0; i < tiles.length; i += 2)
-          Padding(
-            padding: const EdgeInsets.only(bottom: NSpace.xs),
-            child: IntrinsicHeight(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+        child: Row(
+          children: <Widget>[
+            SizedBox(
+              width: 70,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Expanded(child: tile(tiles[i])),
-                  const SizedBox(width: NSpace.xs),
-                  Expanded(child: i + 1 < tiles.length ? tile(tiles[i + 1]) : const SizedBox.shrink()),
+                  Text(time, style: NType.caption.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w700, letterSpacing: 0, fontSize: 13)),
+                  if (isNext) ...<Widget>[const SizedBox(height: 2), CPill(nextLabel, tone: CTone.plum)],
                 ],
               ),
             ),
-          ),
-      ],
-    );
-  }
+            CAvatar(name: a.member, size: 36),
+            const SizedBox(width: NSpace.sm),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(a.member ?? '—', maxLines: 1, overflow: TextOverflow.ellipsis, style: NType.body.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w600)),
+                  if (a.reason != null) Text(a.reason!, maxLines: 1, overflow: TextOverflow.ellipsis, style: NType.bodySm.copyWith(color: NColors.inkMuted)),
+                  if (adviceLabel != null)
+                    GestureDetector(
+                      onTap: onAdvice,
+                      child: Padding(padding: const EdgeInsets.only(top: 2), child: Text(adviceLabel!, style: NType.caption.copyWith(color: NColors.actionLink, fontWeight: FontWeight.w700, letterSpacing: 0))),
+                    ),
+                ],
+              ),
+            ),
+            Tooltip(message: joinNote, child: a.joinable ? CPill(joinLabel, tone: CTone.sage) : const Icon(Icons.videocam_off_outlined, size: 20, color: NColors.inkMuted)),
+          ],
+        ),
+      );
 }
+

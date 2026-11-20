@@ -23,7 +23,7 @@ class PreScorePage extends StatelessWidget {
     return BlocBuilder<AssessmentCubit, AssessmentState>(
       builder: (BuildContext context, AssessmentState st) {
         final PreScore? p = st.preScore;
-        if (p == null) return Scaffold(body: LoadingView(label: s.loading));
+        if (p == null) return Scaffold(body: LoadingView(label: s.loadAssessment, kind: NLoaderKind.assessment));
         return PreScoreView(preScore: p);
       },
     );

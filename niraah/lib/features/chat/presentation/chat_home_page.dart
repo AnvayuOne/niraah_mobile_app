@@ -53,7 +53,7 @@ class _ChatHomeView extends StatelessWidget {
         final Widget body = st.status == ChatLoad.failure
             ? ErrorView(message: s.commonLoadError, retryLabel: s.tryAgain, onRetry: context.read<ChatHomeCubit>().load)
             : home == null
-                ? LoadingView(label: s.loading)
+                ? LoadingView(label: s.loadChat, kind: NLoaderKind.chat)
                 : ListView(
                     padding: const EdgeInsets.fromLTRB(NSpace.lg, NSpace.lg, NSpace.lg, NSpace.xl),
                     children: <Widget>[

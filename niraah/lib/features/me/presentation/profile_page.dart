@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../../../core/di/service_locator.dart';
@@ -113,8 +114,8 @@ class _ProfilePageState extends State<ProfilePage> {
               NSectionTitle(s.profileAccount),
               _Fact(label: s.profilePhone, value: p.phone ?? s.profileNotSet),
               _Fact(label: s.profileRecoveryEmail, value: p.recoveryEmail ?? s.profileNotSet),
-              _Fact(label: s.profileDob, value: p.dateOfBirth == null ? s.profileNotSet : shortDate(context, p.dateOfBirth!), note: p.dateOfBirth == null ? null : s.profileDobNote),
-              _Fact(label: s.profileLanguage, value: p.language),
+              _Fact(label: s.profileDob, value: p.dateOfBirth == null ? s.profileNotSet : _fullDate(context, p.dateOfBirth!), note: p.dateOfBirth == null ? null : s.profileDobNote),
+              _Fact(label: s.profileLanguage, value: _languageName(p.language)),
               _Fact(label: s.profileTimeZone, value: p.timeZone),
             ],
           );
@@ -123,6 +124,26 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 }
+
+/// A date of birth needs its year, which [shortDate] leaves out.
+String _fullDate(BuildContext context, String iso) {
+  final DateTime? d = DateTime.tryParse(iso);
+  return d == null ? iso : DateFormat.yMMMMd(Localizations.localeOf(context).toString()).format(d);
+}
+
+/// The server holds a language code ("en", "hi"); show it by name.
+String _languageName(String code) => switch (code.toLowerCase().split(RegExp('[-_]')).first) {
+      'en' => 'English',
+      'hi' => 'हिन्दी (Hindi)',
+      'ta' => 'தமிழ் (Tamil)',
+      'te' => 'తెలుగు (Telugu)',
+      'kn' => 'ಕನ್ನಡ (Kannada)',
+      'ml' => 'മലയാളം (Malayalam)',
+      'mr' => 'मराठी (Marathi)',
+      'bn' => 'বাংলা (Bengali)',
+      'gu' => 'ગુજરાતી (Gujarati)',
+      _ => code,
+    };
 
 class _Fact extends StatelessWidget {
   const _Fact({required this.label, required this.value, this.note});

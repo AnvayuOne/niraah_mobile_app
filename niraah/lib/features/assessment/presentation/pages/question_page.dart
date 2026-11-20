@@ -26,12 +26,6 @@ import '../assessment_cubit.dart';
 class QuestionPage extends StatelessWidget {
   const QuestionPage({super.key});
 
-  static NEntrance _entrance(IllustrationMotion m) => switch (m) {
-        IllustrationMotion.breathe => NEntrance.breathe,
-        IllustrationMotion.float => NEntrance.float,
-        IllustrationMotion.sway => NEntrance.sway,
-        IllustrationMotion.none => NEntrance.none,
-      };
 
   Future<void> _next(BuildContext context) async {
     final S s = S.of(context);
@@ -59,7 +53,7 @@ class QuestionPage extends StatelessWidget {
     return BlocBuilder<AssessmentCubit, AssessmentState>(
       builder: (BuildContext context, AssessmentState st) {
         final Question? q = st.current;
-        if (q == null) return Scaffold(body: LoadingView(label: s.loading));
+        if (q == null) return Scaffold(body: LoadingView(label: s.loadAssessment, kind: NLoaderKind.assessment));
         final Answer? answer = st.answers[q.key];
         final bool unknownType = q.type == QuestionType.unknown;
         final bool canGo = !unknownType && AnswerRules.canContinue(q, answer);
@@ -124,8 +118,8 @@ class QuestionPage extends StatelessWidget {
                                 Text(q.helpText!, style: NType.bodySm.copyWith(color: NColors.inkMuted)),
                               ],
                               if (art != null) ...<Widget>[
-                                const SizedBox(height: NSpace.md),
-                                Center(child: NIllustration(asset: art, height: NSpace.xl3 * 2 + NSpace.lg, entrance: _entrance(q.motion))),
+                                const SizedBox(height: NSpace.sm),
+                                Center(child: NIllustration(asset: art, height: NSpace.xl3 * 2 + NSpace.lg, entrance: NEntrance.breathe)),
                               ],
                             ],
                           ),
@@ -194,6 +188,8 @@ class _AnswerInput extends StatelessWidget {
                   selected: chosen.contains(o.value),
                   colorToken: o.colorToken,
                   icon: NAssetLookup.image(o.iconId),
+                  imagePath: 'assets/images/options/${q.key}_${o.value}.webp',
+                  fallbackIcon: optionIcon(o.value),
                   onTap: () {
                     final List<String> next = multi ? AnswerRules.toggleMultiple(q, chosen, o.value) : <String>[o.value];
                     next.isEmpty ? cubit.clearAnswer(q.key) : cubit.answer(q.key, Answer.values(next));
@@ -260,3 +256,38 @@ class _TextAnswerState extends State<_TextAnswer> {
     );
   }
 }
+
+/// Icons shown beside answers until their pictures are added (`assets/images/options/question_value.webp`).
+IconData optionIcon(String value) => switch (value) {
+      'regular' => Icons.event_available_rounded,
+      'sometimes_off' => Icons.event_repeat_rounded,
+      'irregular' => Icons.shuffle_rounded,
+      'rare' => Icons.event_busy_rounded,
+      'pregnant' => Icons.pregnant_woman_rounded,
+      'under_3_months' => Icons.today_rounded,
+      'over_3_months' => Icons.history_rounded,
+      'energetic' => Icons.bolt_rounded,
+      'anxious' => Icons.psychology_alt_rounded,
+      'tired' => Icons.bedtime_rounded,
+      'hormonal' => Icons.waves_rounded,
+      'acne' => Icons.face_retouching_natural_rounded,
+      'hair_growth' => Icons.face_rounded,
+      'hair_thinning' => Icons.content_cut_rounded,
+      'weight_change' => Icons.monitor_weight_rounded,
+      'heavy_bleeding' => Icons.water_drop_rounded,
+      'pelvic_pain' => Icons.healing_rounded,
+      'none' => Icons.check_circle_outline_rounded,
+      'balanced' => Icons.restaurant_rounded,
+      'mostly_home' => Icons.soup_kitchen_rounded,
+      'rushed' => Icons.timer_rounded,
+      'outside' => Icons.delivery_dining_rounded,
+      'rested' => Icons.wb_sunny_rounded,
+      'light' => Icons.nights_stay_rounded,
+      'hard' => Icons.do_not_disturb_on_rounded,
+      'understand_cycle' => Icons.loop_rounded,
+      'pcos' => Icons.spa_rounded,
+      'conceive' => Icons.child_friendly_rounded,
+      'energy_weight' => Icons.fitness_center_rounded,
+      'calm' => Icons.self_improvement_rounded,
+      _ => Icons.circle_outlined,
+    };

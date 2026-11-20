@@ -35,7 +35,11 @@ class NBottomNav extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool sel(Set<WidgetState> s) => s.contains(WidgetState.selected);
-    return NavigationBarTheme(
+    // Five short labels must fit one line on a 320 pt phone, so the bar caps text scaling.
+    final MediaQueryData mq = MediaQuery.of(context);
+    return MediaQuery(
+      data: mq.copyWith(textScaler: mq.textScaler.clamp(maxScaleFactor: 1.05)),
+      child: NavigationBarTheme(
       data: NavigationBarThemeData(
         backgroundColor: NColors.surfaceCard,
         indicatorColor: NColors.brandBlushLight,
@@ -50,12 +54,16 @@ class NBottomNav extends StatelessWidget {
         ),
       ),
       child: NavigationBar(
+        // Short screens (a phone in landscape) get a slimmer bar with only the current label.
+        height: MediaQuery.sizeOf(context).height < 500 ? 56 : null,
+        labelBehavior: MediaQuery.sizeOf(context).height < 500 ? NavigationDestinationLabelBehavior.onlyShowSelected : null,
         selectedIndex: index,
         onDestinationSelected: onSelected,
         destinations: <Widget>[
           for (int i = 0; i < icons.length; i++) NavigationDestination(icon: Icon(icons[i]), label: labels[i]),
         ],
       ),
+    ),
     );
   }
 }

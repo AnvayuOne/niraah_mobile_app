@@ -1,4 +1,3 @@
-import 'package:lottie/lottie.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../generated/niraah_assets.dart';
@@ -51,22 +50,29 @@ class NIllustration extends StatelessWidget {
   }
 }
 
-/// A Lottie animation from the generated set. With reduced motion it shows
-/// its first frame and does not move. Always decorative.
+/// Shown where a Lottie animation used to be. The Lottie drawings are no
+/// longer used anywhere: each one maps to the matching illustration from the
+/// image set, which fades in once.
 class NLottie extends StatelessWidget {
   const NLottie({required this.path, required this.size, super.key});
 
   final String path;
   final double size;
 
+  static NImageAsset imageFor(String path) => switch (path) {
+        NLotties.cycle => NImages.screen04CycleCenterWoman,
+        NLotties.companion => NImages.i04FemaleAiCompanionOrb,
+        NLotties.yoga => NImages.i02YogaPadmasanaBreathWoman,
+        NLotties.nutrition => NImages.i10IndianThaliMealPlate,
+        NLotties.doctor => NImages.i03FemaleGynecologistClipboard,
+        NLotties.pregnancy => NImages.onb05PregnancyCare,
+        NLotties.celebrate => NImages.onb07PrescoreBloom,
+        _ => NImages.onb01SanctuaryWelcome,
+      };
+
   @override
-  Widget build(BuildContext context) {
-    final bool reduced = NMotionRules.reduced(context);
-    return ExcludeSemantics(
-      child: SizedBox.square(
+  Widget build(BuildContext context) => SizedBox.square(
         dimension: size,
-        child: Lottie.asset(path, animate: !reduced, repeat: !reduced, fit: BoxFit.contain),
-      ),
-    );
-  }
+        child: FittedBox(child: NIllustration(asset: imageFor(path), height: size, entrance: NEntrance.breathe)),
+      );
 }

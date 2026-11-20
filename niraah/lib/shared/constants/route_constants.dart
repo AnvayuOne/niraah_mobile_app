@@ -2,6 +2,7 @@ class RouteConstants {
   const RouteConstants._();
 
   static const String splash = '/';
+  static const String landing = '/landing';
   static const String intro = '/intro';
   static const String welcome = '/welcome';
   static const String signIn = '/sign-in';
@@ -29,6 +30,7 @@ class RouteConstants {
   static const String chat = '/chat';
   static const String meals = '/meals';
   static const String mealScan = '/meals/scan';
+  static const String dietPlan = '/meals/diet-plan';
 
   /// `/area/<name>`: an area with no screen yet.
   static const String area = '/area';

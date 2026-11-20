@@ -15,6 +15,8 @@ import '../features/community/data/api_community_repository.dart';
 import '../features/community/domain/community.dart';
 import '../features/cycle/data/api_cycle_repository.dart';
 import '../features/cycle/domain/cycle.dart';
+import '../features/diet_plan/data/api_diet_plan_repository.dart';
+import '../features/diet_plan/domain/diet_plan.dart';
 import '../features/dietitian/dietitian_repository.dart';
 import '../features/doctor/data/api_doctor_repository.dart';
 import '../features/doctor/data/api_doctor_work_repository.dart';
@@ -59,6 +61,7 @@ void registerApiRepositories(GetIt getIt) {
     ..registerLazySingleton<SymptomsRepository>(() => ApiSymptomsRepository(getIt<NiraahApi>()))
     ..registerLazySingleton<ChatRepository>(() => ApiChatRepository(getIt<NiraahApi>()))
     ..registerLazySingleton<MealsRepository>(() => ApiMealsRepository(getIt<NiraahApi>()))
+    ..registerLazySingleton<DietPlanRepository>(() => ApiDietPlanRepository(getIt<NiraahApi>()))
     ..registerLazySingleton<DoctorRepository>(() => ApiDoctorRepository(getIt<NiraahApi>()))
     // The rest of the member workspace (spec 010 §7, §9, §10-§13).
     ..registerLazySingleton<PracticeRepository>(() => ApiPracticeRepository(getIt<NiraahApi>()))

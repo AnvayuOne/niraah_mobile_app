@@ -29,7 +29,7 @@ class ProviderStatusPage extends StatelessWidget {
     return FutureBuilder<ProviderSession?>(
       future: getIt<ProviderAuthRepository>().currentSession(),
       builder: (BuildContext context, AsyncSnapshot<ProviderSession?> snap) {
-        if (snap.connectionState != ConnectionState.done) return Scaffold(body: LoadingView(label: s.loading));
+        if (snap.connectionState != ConnectionState.done) return Scaffold(body: LoadingView(label: s.loadCare, kind: NLoaderKind.care));
         final ProviderSession? session = snap.data;
         return NPage(
           body: Column(

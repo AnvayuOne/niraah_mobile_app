@@ -62,12 +62,13 @@ class _PlansPageState extends State<PlansPage> {
     final S s = S.of(context);
     return Scaffold(
       backgroundColor: NColors.surfacePage,
+      appBar: context.canPop() ? AppBar(backgroundColor: NColors.surfacePage) : null,
       body: SafeArea(
         child: FutureBuilder<Result<PlansOffer>>(
           future: _offer,
           builder: (BuildContext context, AsyncSnapshot<Result<PlansOffer>> snap) {
             final Result<PlansOffer>? r = snap.data;
-            if (r == null) return LoadingView(label: s.loading);
+            if (r == null) return LoadingView(label: s.loadPlans, kind: NLoaderKind.plans);
             if (r case FailureResult<PlansOffer>()) {
               return ErrorView(
                 message: s.notConnectedYet,

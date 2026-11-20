@@ -20,7 +20,7 @@ class ComingSoonPage extends StatelessWidget {
       body: Column(
         children: <Widget>[
           const SizedBox(height: NSpace.xl),
-          const NIllustration(asset: NImages.i08EnergeticBalancedWoman, height: NSpace.xl3 * 3, entrance: NEntrance.float),
+          const NLottie(path: NLotties.yoga, size: NSpace.xl3 * 3),
           const SizedBox(height: NSpace.lg),
           Text(s.comingSoonTitle, style: NType.h3.copyWith(color: NColors.inkPrimary)),
           const SizedBox(height: NSpace.xs),

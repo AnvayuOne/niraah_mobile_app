@@ -54,7 +54,7 @@ class _HomeView extends StatelessWidget {
           (HomeStatus.failure, _) => ErrorView(message: s.notConnectedYet, retryLabel: s.tryAgain, onRetry: context.read<HomeCubit>().load),
           (_, final HomeGate g) => _Gate(minutes: g.estimatedMinutes),
           (_, final HomeContent c) => _Content(home: c),
-          _ => LoadingView(label: s.loading),
+          _ => LoadingView(label: s.loadHome),
         };
         return Scaffold(
           backgroundColor: NColors.surfacePage,

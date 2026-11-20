@@ -93,7 +93,7 @@ class _SetupPageState extends State<SetupPage> {
     return FutureBuilder<InviteInfo?>(
       future: _invite,
       builder: (BuildContext context, AsyncSnapshot<InviteInfo?> snap) {
-        if (snap.connectionState != ConnectionState.done) return Scaffold(body: LoadingView(label: s.loading));
+        if (snap.connectionState != ConnectionState.done) return Scaffold(body: LoadingView(label: s.loadSecure, kind: NLoaderKind.secure));
         final InviteInfo? invite = snap.data;
         if (invite == null) {
           // A neutral page: it never says why the link failed.

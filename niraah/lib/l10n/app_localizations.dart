@@ -648,13 +648,13 @@ abstract class S {
   /// No description provided for @processingTitle.
   ///
   /// In en, this message translates to:
-  /// **'Reading your answers'**
+  /// **'Working out your pre-score'**
   String get processingTitle;
 
   /// No description provided for @processingBody.
   ///
   /// In en, this message translates to:
-  /// **'This takes a few seconds.'**
+  /// **'Niraah AI is looking across your answers. This takes a few seconds.'**
   String get processingBody;
 
   /// No description provided for @prescoreTitle.
@@ -4485,6 +4485,78 @@ abstract class S {
   /// **'Review'**
   String get drRelReview;
 
+  /// No description provided for @drAPatientsEyebrow.
+  ///
+  /// In en, this message translates to:
+  /// **'Your care list'**
+  String get drAPatientsEyebrow;
+
+  /// No description provided for @drAPatientsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{n, plural, =1{1 patient} other{{n} patients}}'**
+  String drAPatientsCount(int n);
+
+  /// No description provided for @drAPatientsAlerts.
+  ///
+  /// In en, this message translates to:
+  /// **'{n, plural, =0{No open alerts} =1{1 with an open alert} other{{n} with an open alert}}'**
+  String drAPatientsAlerts(int n);
+
+  /// No description provided for @drALockedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'She decides what she shares. Nothing from this section is shown until she gives consent.'**
+  String get drALockedBody;
+
+  /// No description provided for @drACycleLengths.
+  ///
+  /// In en, this message translates to:
+  /// **'Cycle lengths'**
+  String get drACycleLengths;
+
+  /// No description provided for @drACycleAvg.
+  ///
+  /// In en, this message translates to:
+  /// **'Average {n} days'**
+  String drACycleAvg(int n);
+
+  /// No description provided for @drADays.
+  ///
+  /// In en, this message translates to:
+  /// **'{n} d'**
+  String drADays(int n);
+
+  /// No description provided for @drASymptoms.
+  ///
+  /// In en, this message translates to:
+  /// **'Symptoms'**
+  String get drASymptoms;
+
+  /// No description provided for @drADimensions.
+  ///
+  /// In en, this message translates to:
+  /// **'By dimension'**
+  String get drADimensions;
+
+  /// No description provided for @drACareTeam.
+  ///
+  /// In en, this message translates to:
+  /// **'Care team'**
+  String get drACareTeam;
+
+  /// No description provided for @drADetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Details'**
+  String get drADetails;
+
+  /// No description provided for @drAQueueWaiting.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting'**
+  String get drAQueueWaiting;
+
   /// No description provided for @drOpenAlert.
   ///
   /// In en, this message translates to:
@@ -6723,6 +6795,162 @@ abstract class S {
   /// **'Publish recipe'**
   String get dtPublishRecipe;
 
+  /// No description provided for @dtShellTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Dietitian'**
+  String get dtShellTitle;
+
+  /// No description provided for @dtDashShortcuts.
+  ///
+  /// In en, this message translates to:
+  /// **'Plans and recipes'**
+  String get dtDashShortcuts;
+
+  /// No description provided for @dtRecipesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your recipes and the shared library'**
+  String get dtRecipesSubtitle;
+
+  /// No description provided for @dtClientsEyebrow.
+  ///
+  /// In en, this message translates to:
+  /// **'Your clients'**
+  String get dtClientsEyebrow;
+
+  /// No description provided for @dtCareTeam.
+  ///
+  /// In en, this message translates to:
+  /// **'Care team'**
+  String get dtCareTeam;
+
+  /// No description provided for @dtRelationship.
+  ///
+  /// In en, this message translates to:
+  /// **'Relationship'**
+  String get dtRelationship;
+
+  /// No description provided for @dtPlanLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan'**
+  String get dtPlanLabel;
+
+  /// No description provided for @dtDoctorLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Her doctor'**
+  String get dtDoctorLabel;
+
+  /// No description provided for @dtMealsLogged.
+  ///
+  /// In en, this message translates to:
+  /// **'Meals logged by day'**
+  String get dtMealsLogged;
+
+  /// No description provided for @dtUnread.
+  ///
+  /// In en, this message translates to:
+  /// **'Unread'**
+  String get dtUnread;
+
+  /// No description provided for @dtTrendEnergy.
+  ///
+  /// In en, this message translates to:
+  /// **'Energy'**
+  String get dtTrendEnergy;
+
+  /// No description provided for @dtTrendCravings.
+  ///
+  /// In en, this message translates to:
+  /// **'Cravings'**
+  String get dtTrendCravings;
+
+  /// No description provided for @dtCheckInsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Read each one and reply with a short, kind note.'**
+  String get dtCheckInsSubtitle;
+
+  /// No description provided for @dtMoreSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Plans, recipes, check-ins and your account'**
+  String get dtMoreSubtitle;
+
+  /// No description provided for @dtMoreWork.
+  ///
+  /// In en, this message translates to:
+  /// **'Your work'**
+  String get dtMoreWork;
+
+  /// No description provided for @dtAboutYou.
+  ///
+  /// In en, this message translates to:
+  /// **'About you'**
+  String get dtAboutYou;
+
+  /// No description provided for @dtQueueSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Oldest first. Your dedicated clients\' days are yours.'**
+  String get dtQueueSubtitle;
+
+  /// No description provided for @dtMealsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Meals logged'**
+  String get dtMealsLabel;
+
+  /// No description provided for @schedNothingThisDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing booked this day.'**
+  String get schedNothingThisDay;
+
+  /// No description provided for @dtDashWaiting.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{Nothing is waiting for you} =1{1 thing is waiting for you} other{{count} things are waiting for you}}'**
+  String dtDashWaiting(int count);
+
+  /// No description provided for @dtClientsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No clients} =1{1 client} other{{count} clients}}'**
+  String dtClientsCount(int count);
+
+  /// No description provided for @dtUnreadCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No unread check-ins} =1{1 unread check-in} other{{count} unread check-ins}}'**
+  String dtUnreadCount(int count);
+
+  /// No description provided for @dtPlansCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No meal plans yet} =1{1 meal plan} other{{count} meal plans}}'**
+  String dtPlansCount(int count);
+
+  /// No description provided for @dtWaitingCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{Nobody is waiting for a plan} =1{1 client waiting for a plan} other{{count} clients waiting for a plan}}'**
+  String dtWaitingCount(int count);
+
+  /// No description provided for @dtQueueCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{Nothing to review} =1{1 day to review} other{{count} days to review}}'**
+  String dtQueueCount(int count);
+
+  /// No description provided for @schedAppointmentsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No appointments} =1{1 appointment} other{{count} appointments}}'**
+  String schedAppointmentsCount(int count);
+
   /// No description provided for @inSessions.
   ///
   /// In en, this message translates to:
@@ -7520,6 +7748,1296 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Enter your email'**
   String get signInEnterEmail;
+
+  /// No description provided for @welcomeChipDoctors.
+  ///
+  /// In en, this message translates to:
+  /// **'Doctor-reviewed'**
+  String get welcomeChipDoctors;
+
+  /// No description provided for @welcomeChipPrivate.
+  ///
+  /// In en, this message translates to:
+  /// **'Private by design'**
+  String get welcomeChipPrivate;
+
+  /// No description provided for @landingNavProfessionals.
+  ///
+  /// In en, this message translates to:
+  /// **'For care professionals'**
+  String get landingNavProfessionals;
+
+  /// No description provided for @landingNavSignIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in'**
+  String get landingNavSignIn;
+
+  /// No description provided for @landingHeroEyebrow.
+  ///
+  /// In en, this message translates to:
+  /// **'Women\'s health, made personal'**
+  String get landingHeroEyebrow;
+
+  /// No description provided for @landingHeroTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Care for your cycle, hormones and whole self'**
+  String get landingHeroTitle;
+
+  /// No description provided for @landingHeroBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Niraah brings verified doctors, dietitians and yoga trainers together with an AI companion, for PCOS, fertility, metabolic health and pregnancy.'**
+  String get landingHeroBody;
+
+  /// No description provided for @landingHeroCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Start your free assessment'**
+  String get landingHeroCta;
+
+  /// No description provided for @landingHeroSecondary.
+  ///
+  /// In en, this message translates to:
+  /// **'I\'m a care professional'**
+  String get landingHeroSecondary;
+
+  /// No description provided for @landingTick1.
+  ///
+  /// In en, this message translates to:
+  /// **'Free to start'**
+  String get landingTick1;
+
+  /// No description provided for @landingTick2.
+  ///
+  /// In en, this message translates to:
+  /// **'Doctor-reviewed plans'**
+  String get landingTick2;
+
+  /// No description provided for @landingTick3.
+  ///
+  /// In en, this message translates to:
+  /// **'Indian diets'**
+  String get landingTick3;
+
+  /// No description provided for @landingChipDoctors.
+  ///
+  /// In en, this message translates to:
+  /// **'Verified doctors'**
+  String get landingChipDoctors;
+
+  /// No description provided for @landingChipAi.
+  ///
+  /// In en, this message translates to:
+  /// **'AI companion'**
+  String get landingChipAi;
+
+  /// No description provided for @landingChipYoga.
+  ///
+  /// In en, this message translates to:
+  /// **'Yoga for your phase'**
+  String get landingChipYoga;
+
+  /// No description provided for @landingTrust1.
+  ///
+  /// In en, this message translates to:
+  /// **'Registered doctors and dietitians'**
+  String get landingTrust1;
+
+  /// No description provided for @landingTrust2.
+  ///
+  /// In en, this message translates to:
+  /// **'Plans built on Indian food'**
+  String get landingTrust2;
+
+  /// No description provided for @landingTrust3.
+  ///
+  /// In en, this message translates to:
+  /// **'Your data stays private'**
+  String get landingTrust3;
+
+  /// No description provided for @landingTrust4.
+  ///
+  /// In en, this message translates to:
+  /// **'Prices in rupees, including GST'**
+  String get landingTrust4;
+
+  /// No description provided for @landingProgramsEyebrow.
+  ///
+  /// In en, this message translates to:
+  /// **'Programs'**
+  String get landingProgramsEyebrow;
+
+  /// No description provided for @landingProgramsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Support shaped around you'**
+  String get landingProgramsTitle;
+
+  /// No description provided for @landingProgramPcos.
+  ///
+  /// In en, this message translates to:
+  /// **'PCOS & hormones'**
+  String get landingProgramPcos;
+
+  /// No description provided for @landingProgramPcosBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Understand symptoms and build steady habits with your care team.'**
+  String get landingProgramPcosBody;
+
+  /// No description provided for @landingProgramFertility.
+  ///
+  /// In en, this message translates to:
+  /// **'Fertility journey'**
+  String get landingProgramFertility;
+
+  /// No description provided for @landingProgramFertilityBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Know your cycle and prepare with expert guidance.'**
+  String get landingProgramFertilityBody;
+
+  /// No description provided for @landingProgramMetabolic.
+  ///
+  /// In en, this message translates to:
+  /// **'Metabolic balance'**
+  String get landingProgramMetabolic;
+
+  /// No description provided for @landingProgramMetabolicBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Food, movement and rest for steadier energy.'**
+  String get landingProgramMetabolicBody;
+
+  /// No description provided for @landingProgramPregnancy.
+  ///
+  /// In en, this message translates to:
+  /// **'Pregnancy care'**
+  String get landingProgramPregnancy;
+
+  /// No description provided for @landingProgramPregnancyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Gentle support for each trimester.'**
+  String get landingProgramPregnancyBody;
+
+  /// No description provided for @landingStepsEyebrow.
+  ///
+  /// In en, this message translates to:
+  /// **'How it works'**
+  String get landingStepsEyebrow;
+
+  /// No description provided for @landingStepsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Four calm steps'**
+  String get landingStepsTitle;
+
+  /// No description provided for @landingStep1.
+  ///
+  /// In en, this message translates to:
+  /// **'Take the assessment'**
+  String get landingStep1;
+
+  /// No description provided for @landingStep1Body.
+  ///
+  /// In en, this message translates to:
+  /// **'A few minutes of questions about your cycle, health and habits.'**
+  String get landingStep1Body;
+
+  /// No description provided for @landingStep2.
+  ///
+  /// In en, this message translates to:
+  /// **'See your insights'**
+  String get landingStep2;
+
+  /// No description provided for @landingStep2Body.
+  ///
+  /// In en, this message translates to:
+  /// **'A wellness pre-score and the areas that need care.'**
+  String get landingStep2Body;
+
+  /// No description provided for @landingStep3.
+  ///
+  /// In en, this message translates to:
+  /// **'Meet your care team'**
+  String get landingStep3;
+
+  /// No description provided for @landingStep3Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Doctors, dietitians and trainers who are verified by Niraah.'**
+  String get landingStep3Body;
+
+  /// No description provided for @landingStep4.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow your plan'**
+  String get landingStep4;
+
+  /// No description provided for @landingStep4Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily tasks, meals and practice, adjusted as you go.'**
+  String get landingStep4Body;
+
+  /// No description provided for @landingTeamEyebrow.
+  ///
+  /// In en, this message translates to:
+  /// **'Your care team'**
+  String get landingTeamEyebrow;
+
+  /// No description provided for @landingTeamTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Real experts, with AI by your side'**
+  String get landingTeamTitle;
+
+  /// No description provided for @landingTeamDoctor.
+  ///
+  /// In en, this message translates to:
+  /// **'Doctors'**
+  String get landingTeamDoctor;
+
+  /// No description provided for @landingTeamDoctorBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Video consults and care plans from registered doctors.'**
+  String get landingTeamDoctorBody;
+
+  /// No description provided for @landingTeamDietitian.
+  ///
+  /// In en, this message translates to:
+  /// **'Dietitians'**
+  String get landingTeamDietitian;
+
+  /// No description provided for @landingTeamDietitianBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Indian meal plans checked by a dietitian before you see them.'**
+  String get landingTeamDietitianBody;
+
+  /// No description provided for @landingTeamYoga.
+  ///
+  /// In en, this message translates to:
+  /// **'Yoga & fitness trainers'**
+  String get landingTeamYoga;
+
+  /// No description provided for @landingTeamYogaBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Classes and sessions matched to your cycle phase.'**
+  String get landingTeamYogaBody;
+
+  /// No description provided for @landingTeamAi.
+  ///
+  /// In en, this message translates to:
+  /// **'AI companion'**
+  String get landingTeamAi;
+
+  /// No description provided for @landingTeamAiBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Answers any time, with sources, and never medicine doses.'**
+  String get landingTeamAiBody;
+
+  /// No description provided for @landingSafetyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Wellness support, not emergency care'**
+  String get landingSafetyTitle;
+
+  /// No description provided for @landingSafetyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Niraah supports and does not replace your own doctor. In an emergency, call 112. For mental health support, call Tele-MANAS on 14416.'**
+  String get landingSafetyBody;
+
+  /// No description provided for @landingCtaTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Begin with a free assessment'**
+  String get landingCtaTitle;
+
+  /// No description provided for @landingCtaBody.
+  ///
+  /// In en, this message translates to:
+  /// **'It takes about five minutes. You can stop any time.'**
+  String get landingCtaBody;
+
+  /// No description provided for @landingFooter.
+  ///
+  /// In en, this message translates to:
+  /// **'© Niraah by Anvayuone'**
+  String get landingFooter;
+
+  /// No description provided for @landingEmergency.
+  ///
+  /// In en, this message translates to:
+  /// **'Emergency: 112 · Tele-MANAS: 14416'**
+  String get landingEmergency;
+
+  /// No description provided for @landingMobileHeroBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Doctors, dietitians, yoga trainers and an AI companion, for PCOS, fertility, metabolic health and pregnancy.'**
+  String get landingMobileHeroBody;
+
+  /// No description provided for @landingMobileGetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What you get'**
+  String get landingMobileGetTitle;
+
+  /// No description provided for @landingMobileBenefit1.
+  ///
+  /// In en, this message translates to:
+  /// **'Cycle and symptom tracking'**
+  String get landingMobileBenefit1;
+
+  /// No description provided for @landingMobileBenefit1Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Predictions and patterns, in one calm place.'**
+  String get landingMobileBenefit1Body;
+
+  /// No description provided for @landingMobileBenefit2.
+  ///
+  /// In en, this message translates to:
+  /// **'Indian meal plans'**
+  String get landingMobileBenefit2;
+
+  /// No description provided for @landingMobileBenefit2Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Built on foods you already eat.'**
+  String get landingMobileBenefit2Body;
+
+  /// No description provided for @landingMobileBenefit3.
+  ///
+  /// In en, this message translates to:
+  /// **'Yoga for your phase'**
+  String get landingMobileBenefit3;
+
+  /// No description provided for @landingMobileBenefit3Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Classes matched to your cycle.'**
+  String get landingMobileBenefit3Body;
+
+  /// No description provided for @landingMobileBenefit4.
+  ///
+  /// In en, this message translates to:
+  /// **'AI Care, any time'**
+  String get landingMobileBenefit4;
+
+  /// No description provided for @landingMobileBenefit4Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Answers with sources, never medicine doses.'**
+  String get landingMobileBenefit4Body;
+
+  /// No description provided for @landingMobileTeamYoga.
+  ///
+  /// In en, this message translates to:
+  /// **'Yoga'**
+  String get landingMobileTeamYoga;
+
+  /// No description provided for @landingMobileTeamAi.
+  ///
+  /// In en, this message translates to:
+  /// **'AI Care'**
+  String get landingMobileTeamAi;
+
+  /// No description provided for @landingMobileHaveAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'I already have an account'**
+  String get landingMobileHaveAccount;
+
+  /// No description provided for @landingMobileProgramsBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Programs for PCOS, fertility, metabolic health and pregnancy.'**
+  String get landingMobileProgramsBody;
+
+  /// No description provided for @landingMobileDailyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Small steps, every day'**
+  String get landingMobileDailyTitle;
+
+  /// No description provided for @landingMobileDailyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Track your cycle, eat Indian meals that suit you and move for your phase.'**
+  String get landingMobileDailyBody;
+
+  /// No description provided for @landingMobileTeamBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Doctors, dietitians and yoga trainers verified by Niraah, with AI Care any time.'**
+  String get landingMobileTeamBody;
+
+  /// No description provided for @landingMobileTeamYou.
+  ///
+  /// In en, this message translates to:
+  /// **'You'**
+  String get landingMobileTeamYou;
+
+  /// No description provided for @dietTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your diet plan'**
+  String get dietTitle;
+
+  /// No description provided for @dietMaking.
+  ///
+  /// In en, this message translates to:
+  /// **'Cooking your plan…'**
+  String get dietMaking;
+
+  /// No description provided for @dietEditPreferences.
+  ///
+  /// In en, this message translates to:
+  /// **'Food preferences'**
+  String get dietEditPreferences;
+
+  /// No description provided for @dietLockedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Diet plans are part of some plans'**
+  String get dietLockedTitle;
+
+  /// No description provided for @dietLockedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a plan that includes the AI diet plan.'**
+  String get dietLockedBody;
+
+  /// No description provided for @dietLockedPlans.
+  ///
+  /// In en, this message translates to:
+  /// **'Included in: {plans}'**
+  String dietLockedPlans(String plans);
+
+  /// No description provided for @dietSeePlans.
+  ///
+  /// In en, this message translates to:
+  /// **'See plans'**
+  String get dietSeePlans;
+
+  /// No description provided for @dietNeedsDietitianTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'A dietitian is the right fit'**
+  String get dietNeedsDietitianTitle;
+
+  /// No description provided for @dietDietitianPlanTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your dietitian\'s plan'**
+  String get dietDietitianPlanTitle;
+
+  /// No description provided for @dietDietitianPlanBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your dietitian has made a meal plan for you. You\'ll find it in Care.'**
+  String get dietDietitianPlanBody;
+
+  /// No description provided for @dietUnavailableTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No plan just yet'**
+  String get dietUnavailableTitle;
+
+  /// No description provided for @dietMadeByAi.
+  ///
+  /// In en, this message translates to:
+  /// **'Made by AI · not reviewed by a dietitian'**
+  String get dietMadeByAi;
+
+  /// No description provided for @dietMadeByRules.
+  ///
+  /// In en, this message translates to:
+  /// **'Made from your food choices · not reviewed by a dietitian'**
+  String get dietMadeByRules;
+
+  /// No description provided for @dietSwap.
+  ///
+  /// In en, this message translates to:
+  /// **'Swap'**
+  String get dietSwap;
+
+  /// No description provided for @dietSwapTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Swap {dish}'**
+  String dietSwapTitle(String dish);
+
+  /// No description provided for @dietSwapBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your choice replaces this dish for the rest of the week.'**
+  String get dietSwapBody;
+
+  /// No description provided for @dietDayTotals.
+  ///
+  /// In en, this message translates to:
+  /// **'This day'**
+  String get dietDayTotals;
+
+  /// No description provided for @dietKcal.
+  ///
+  /// In en, this message translates to:
+  /// **'kcal'**
+  String get dietKcal;
+
+  /// No description provided for @dietProtein.
+  ///
+  /// In en, this message translates to:
+  /// **'protein'**
+  String get dietProtein;
+
+  /// No description provided for @dietFibre.
+  ///
+  /// In en, this message translates to:
+  /// **'fibre'**
+  String get dietFibre;
+
+  /// No description provided for @dietCarbs.
+  ///
+  /// In en, this message translates to:
+  /// **'carbs'**
+  String get dietCarbs;
+
+  /// No description provided for @dietNewWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'Make a new week'**
+  String get dietNewWeek;
+
+  /// No description provided for @dietNewWeekTomorrow.
+  ///
+  /// In en, this message translates to:
+  /// **'New week available tomorrow'**
+  String get dietNewWeekTomorrow;
+
+  /// No description provided for @dietSlotBreakfast.
+  ///
+  /// In en, this message translates to:
+  /// **'Breakfast'**
+  String get dietSlotBreakfast;
+
+  /// No description provided for @dietSlotMidMorning.
+  ///
+  /// In en, this message translates to:
+  /// **'Mid-morning'**
+  String get dietSlotMidMorning;
+
+  /// No description provided for @dietSlotLunch.
+  ///
+  /// In en, this message translates to:
+  /// **'Lunch'**
+  String get dietSlotLunch;
+
+  /// No description provided for @dietSlotEveningSnack.
+  ///
+  /// In en, this message translates to:
+  /// **'Evening snack'**
+  String get dietSlotEveningSnack;
+
+  /// No description provided for @dietSlotDinner.
+  ///
+  /// In en, this message translates to:
+  /// **'Dinner'**
+  String get dietSlotDinner;
+
+  /// No description provided for @dietProfileTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Tell us how you eat'**
+  String get dietProfileTitle;
+
+  /// No description provided for @dietProfileBody.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'ll plan Indian meals around your choices. You can change these any time.'**
+  String get dietProfileBody;
+
+  /// No description provided for @dietFoodChoice.
+  ///
+  /// In en, this message translates to:
+  /// **'Food choice'**
+  String get dietFoodChoice;
+
+  /// No description provided for @dietAllergies.
+  ///
+  /// In en, this message translates to:
+  /// **'Allergies'**
+  String get dietAllergies;
+
+  /// No description provided for @dietNoAllergies.
+  ///
+  /// In en, this message translates to:
+  /// **'No allergies'**
+  String get dietNoAllergies;
+
+  /// No description provided for @dietCuisine.
+  ///
+  /// In en, this message translates to:
+  /// **'Regional cuisine'**
+  String get dietCuisine;
+
+  /// No description provided for @dietFastingDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Fasting days (optional)'**
+  String get dietFastingDays;
+
+  /// No description provided for @dietAvoided.
+  ///
+  /// In en, this message translates to:
+  /// **'Foods you avoid (optional)'**
+  String get dietAvoided;
+
+  /// No description provided for @dietAvoidedNone.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose foods'**
+  String get dietAvoidedNone;
+
+  /// No description provided for @dietAvoidedCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} chosen'**
+  String dietAvoidedCount(int count);
+
+  /// No description provided for @dietSaveAndMake.
+  ///
+  /// In en, this message translates to:
+  /// **'Save and make my plan'**
+  String get dietSaveAndMake;
+
+  /// No description provided for @dietProfileHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your food choice and allergies'**
+  String get dietProfileHint;
+
+  /// No description provided for @dietDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get dietDone;
+
+  /// No description provided for @dietVegetarian.
+  ///
+  /// In en, this message translates to:
+  /// **'Vegetarian'**
+  String get dietVegetarian;
+
+  /// No description provided for @dietEggetarian.
+  ///
+  /// In en, this message translates to:
+  /// **'Eggetarian'**
+  String get dietEggetarian;
+
+  /// No description provided for @dietNonVegetarian.
+  ///
+  /// In en, this message translates to:
+  /// **'Non-vegetarian'**
+  String get dietNonVegetarian;
+
+  /// No description provided for @dietVegan.
+  ///
+  /// In en, this message translates to:
+  /// **'Vegan'**
+  String get dietVegan;
+
+  /// No description provided for @dietJain.
+  ///
+  /// In en, this message translates to:
+  /// **'Jain'**
+  String get dietJain;
+
+  /// No description provided for @dietPanIndian.
+  ///
+  /// In en, this message translates to:
+  /// **'Pan-Indian'**
+  String get dietPanIndian;
+
+  /// No description provided for @dietNorthIndian.
+  ///
+  /// In en, this message translates to:
+  /// **'North Indian'**
+  String get dietNorthIndian;
+
+  /// No description provided for @dietSouthIndian.
+  ///
+  /// In en, this message translates to:
+  /// **'South Indian'**
+  String get dietSouthIndian;
+
+  /// No description provided for @dietEastIndian.
+  ///
+  /// In en, this message translates to:
+  /// **'East Indian'**
+  String get dietEastIndian;
+
+  /// No description provided for @dietWestIndian.
+  ///
+  /// In en, this message translates to:
+  /// **'West Indian'**
+  String get dietWestIndian;
+
+  /// No description provided for @dietPeanut.
+  ///
+  /// In en, this message translates to:
+  /// **'Peanut'**
+  String get dietPeanut;
+
+  /// No description provided for @dietTreeNut.
+  ///
+  /// In en, this message translates to:
+  /// **'Tree nuts'**
+  String get dietTreeNut;
+
+  /// No description provided for @dietGluten.
+  ///
+  /// In en, this message translates to:
+  /// **'Gluten'**
+  String get dietGluten;
+
+  /// No description provided for @dietMilk.
+  ///
+  /// In en, this message translates to:
+  /// **'Milk'**
+  String get dietMilk;
+
+  /// No description provided for @dietEgg.
+  ///
+  /// In en, this message translates to:
+  /// **'Egg'**
+  String get dietEgg;
+
+  /// No description provided for @dietSoy.
+  ///
+  /// In en, this message translates to:
+  /// **'Soy'**
+  String get dietSoy;
+
+  /// No description provided for @dietSesame.
+  ///
+  /// In en, this message translates to:
+  /// **'Sesame'**
+  String get dietSesame;
+
+  /// No description provided for @dietMustard.
+  ///
+  /// In en, this message translates to:
+  /// **'Mustard'**
+  String get dietMustard;
+
+  /// No description provided for @dietFish.
+  ///
+  /// In en, this message translates to:
+  /// **'Fish'**
+  String get dietFish;
+
+  /// No description provided for @dietShellfish.
+  ///
+  /// In en, this message translates to:
+  /// **'Shellfish'**
+  String get dietShellfish;
+
+  /// No description provided for @dietSun.
+  ///
+  /// In en, this message translates to:
+  /// **'Sun'**
+  String get dietSun;
+
+  /// No description provided for @dietMon.
+  ///
+  /// In en, this message translates to:
+  /// **'Mon'**
+  String get dietMon;
+
+  /// No description provided for @dietTue.
+  ///
+  /// In en, this message translates to:
+  /// **'Tue'**
+  String get dietTue;
+
+  /// No description provided for @dietWed.
+  ///
+  /// In en, this message translates to:
+  /// **'Wed'**
+  String get dietWed;
+
+  /// No description provided for @dietThu.
+  ///
+  /// In en, this message translates to:
+  /// **'Thu'**
+  String get dietThu;
+
+  /// No description provided for @dietFri.
+  ///
+  /// In en, this message translates to:
+  /// **'Fri'**
+  String get dietFri;
+
+  /// No description provided for @dietSat.
+  ///
+  /// In en, this message translates to:
+  /// **'Sat'**
+  String get dietSat;
+
+  /// No description provided for @dietEntryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your AI diet plan'**
+  String get dietEntryTitle;
+
+  /// No description provided for @dietEntryBody.
+  ///
+  /// In en, this message translates to:
+  /// **'A week of Indian meals made for you, with swaps.'**
+  String get dietEntryBody;
+
+  /// No description provided for @mealsScanStepDishes.
+  ///
+  /// In en, this message translates to:
+  /// **'Finding each dish on your plate…'**
+  String get mealsScanStepDishes;
+
+  /// No description provided for @mealsScanStepPortions.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimating portions…'**
+  String get mealsScanStepPortions;
+
+  /// No description provided for @mealsScanStepNutrients.
+  ///
+  /// In en, this message translates to:
+  /// **'Matching the Indian food table for nutrients…'**
+  String get mealsScanStepNutrients;
+
+  /// No description provided for @dietOpenCta.
+  ///
+  /// In en, this message translates to:
+  /// **'See this week\'s meals'**
+  String get dietOpenCta;
+
+  /// No description provided for @dietMakingHint.
+  ///
+  /// In en, this message translates to:
+  /// **'This can take up to a minute. Please keep the app open.'**
+  String get dietMakingHint;
+
+  /// No description provided for @cycleFertileLegend.
+  ///
+  /// In en, this message translates to:
+  /// **'Fertile window, estimated'**
+  String get cycleFertileLegend;
+
+  /// No description provided for @cycleTodayLegend.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get cycleTodayLegend;
+
+  /// No description provided for @cyclePhaseShortPeriod.
+  ///
+  /// In en, this message translates to:
+  /// **'Period'**
+  String get cyclePhaseShortPeriod;
+
+  /// No description provided for @cyclePhaseShortFollicular.
+  ///
+  /// In en, this message translates to:
+  /// **'Follicular'**
+  String get cyclePhaseShortFollicular;
+
+  /// No description provided for @cyclePhaseShortOvulation.
+  ///
+  /// In en, this message translates to:
+  /// **'Ovulation'**
+  String get cyclePhaseShortOvulation;
+
+  /// No description provided for @cyclePhaseShortLuteal.
+  ///
+  /// In en, this message translates to:
+  /// **'Luteal'**
+  String get cyclePhaseShortLuteal;
+
+  /// No description provided for @dietCook1.
+  ///
+  /// In en, this message translates to:
+  /// **'Reading your food choice and allergies…'**
+  String get dietCook1;
+
+  /// No description provided for @dietCook2.
+  ///
+  /// In en, this message translates to:
+  /// **'Picking dishes from your cuisine…'**
+  String get dietCook2;
+
+  /// No description provided for @dietCook3.
+  ///
+  /// In en, this message translates to:
+  /// **'Balancing protein, fibre and energy…'**
+  String get dietCook3;
+
+  /// No description provided for @dietCook4.
+  ///
+  /// In en, this message translates to:
+  /// **'Adding swaps you might like…'**
+  String get dietCook4;
+
+  /// No description provided for @dietCook5.
+  ///
+  /// In en, this message translates to:
+  /// **'Plating your week…'**
+  String get dietCook5;
+
+  /// No description provided for @dietCooking.
+  ///
+  /// In en, this message translates to:
+  /// **'Cooking your plan…'**
+  String get dietCooking;
+
+  /// No description provided for @dietPreparing.
+  ///
+  /// In en, this message translates to:
+  /// **'Getting your kitchen ready…'**
+  String get dietPreparing;
+
+  /// No description provided for @loadPlans.
+  ///
+  /// In en, this message translates to:
+  /// **'Laying out your plans'**
+  String get loadPlans;
+
+  /// No description provided for @loadCare.
+  ///
+  /// In en, this message translates to:
+  /// **'Getting your care desk ready'**
+  String get loadCare;
+
+  /// No description provided for @loadSecure.
+  ///
+  /// In en, this message translates to:
+  /// **'Keeping your account safe'**
+  String get loadSecure;
+
+  /// No description provided for @loadAssessment.
+  ///
+  /// In en, this message translates to:
+  /// **'Getting your check-in ready'**
+  String get loadAssessment;
+
+  /// No description provided for @loadMeals.
+  ///
+  /// In en, this message translates to:
+  /// **'Setting out today\'s meals'**
+  String get loadMeals;
+
+  /// No description provided for @loadChat.
+  ///
+  /// In en, this message translates to:
+  /// **'Opening AI Care'**
+  String get loadChat;
+
+  /// No description provided for @loadSymptoms.
+  ///
+  /// In en, this message translates to:
+  /// **'Checking in with your body'**
+  String get loadSymptoms;
+
+  /// No description provided for @loadHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Bringing your day together'**
+  String get loadHome;
+
+  /// No description provided for @loadCycle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reading your cycle'**
+  String get loadCycle;
+
+  /// No description provided for @scoreAreaCycle.
+  ///
+  /// In en, this message translates to:
+  /// **'Cycle'**
+  String get scoreAreaCycle;
+
+  /// No description provided for @scoreAreaMetabolic.
+  ///
+  /// In en, this message translates to:
+  /// **'Metabolic'**
+  String get scoreAreaMetabolic;
+
+  /// No description provided for @scoreAreaMind.
+  ///
+  /// In en, this message translates to:
+  /// **'Mind'**
+  String get scoreAreaMind;
+
+  /// No description provided for @scoreAreaRest.
+  ///
+  /// In en, this message translates to:
+  /// **'Rest'**
+  String get scoreAreaRest;
+
+  /// No description provided for @scoreStep1.
+  ///
+  /// In en, this message translates to:
+  /// **'Reading your answers'**
+  String get scoreStep1;
+
+  /// No description provided for @scoreStep2.
+  ///
+  /// In en, this message translates to:
+  /// **'Looking at your cycle pattern'**
+  String get scoreStep2;
+
+  /// No description provided for @scoreStep3.
+  ///
+  /// In en, this message translates to:
+  /// **'Weighing symptoms and energy'**
+  String get scoreStep3;
+
+  /// No description provided for @scoreStep4.
+  ///
+  /// In en, this message translates to:
+  /// **'Checking stress and sleep'**
+  String get scoreStep4;
+
+  /// No description provided for @scoreStep5.
+  ///
+  /// In en, this message translates to:
+  /// **'Building your pre-score'**
+  String get scoreStep5;
+
+  /// No description provided for @drDashWaiting.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} things need you today · {consults} consults booked'**
+  String drDashWaiting(int count, int consults);
+
+  /// No description provided for @drDashAllClear.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re all caught up · {consults} consults booked'**
+  String drDashAllClear(int consults);
+
+  /// No description provided for @drOnCallShort.
+  ///
+  /// In en, this message translates to:
+  /// **'On call'**
+  String get drOnCallShort;
+
+  /// No description provided for @drOffCallShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Off call'**
+  String get drOffCallShort;
+
+  /// No description provided for @drDashBooked.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} booked'**
+  String drDashBooked(int count);
+
+  /// No description provided for @drQueueClear.
+  ///
+  /// In en, this message translates to:
+  /// **'The queue is clear'**
+  String get drQueueClear;
+
+  /// No description provided for @drNextUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get drNextUp;
+
+  /// No description provided for @drMoreWork.
+  ///
+  /// In en, this message translates to:
+  /// **'Clinical work'**
+  String get drMoreWork;
+
+  /// No description provided for @drMoreYou.
+  ///
+  /// In en, this message translates to:
+  /// **'You and your account'**
+  String get drMoreYou;
+
+  /// No description provided for @drMoreSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Alerts, care plans, results and your profile'**
+  String get drMoreSubtitle;
+
+  /// No description provided for @drRatingLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Average rating'**
+  String get drRatingLabel;
+
+  /// No description provided for @drRatingCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{from 1 review} other{from {count} reviews}}'**
+  String drRatingCount(int count);
+
+  /// No description provided for @drOnCallNote.
+  ///
+  /// In en, this message translates to:
+  /// **'While this is on, urgent alerts reach you first.'**
+  String get drOnCallNote;
+
+  /// No description provided for @drDecidedCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{done} of {total} sections decided'**
+  String drDecidedCount(int done, int total);
+
+  /// No description provided for @drFlaggedCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 flagged} other{{count} flagged}}'**
+  String drFlaggedCount(int count);
+
+  /// No description provided for @drRegistrationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Registration'**
+  String get drRegistrationTitle;
+
+  /// No description provided for @drAboutYou.
+  ///
+  /// In en, this message translates to:
+  /// **'About you'**
+  String get drAboutYou;
+
+  /// No description provided for @drInRange.
+  ///
+  /// In en, this message translates to:
+  /// **'In range'**
+  String get drInRange;
+
+  /// No description provided for @drMedicinesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Her medicines'**
+  String get drMedicinesTitle;
+
+  /// No description provided for @inWorkspace.
+  ///
+  /// In en, this message translates to:
+  /// **'Instructor studio'**
+  String get inWorkspace;
+
+  /// No description provided for @inHomeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s practice'**
+  String get inHomeTitle;
+
+  /// No description provided for @inTodayCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No classes on your mat today} =1{1 class on your mat today} other{{count} classes on your mat today}}'**
+  String inTodayCount(int count);
+
+  /// No description provided for @inNextUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Next up'**
+  String get inNextUp;
+
+  /// No description provided for @inAgendaTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your agenda'**
+  String get inAgendaTitle;
+
+  /// No description provided for @inUpcomingCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{Nothing scheduled ahead} =1{1 class ahead} other{{count} classes ahead}}'**
+  String inUpcomingCount(int count);
+
+  /// No description provided for @inPastWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'Past week'**
+  String get inPastWeek;
+
+  /// No description provided for @inComingUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Coming up'**
+  String get inComingUp;
+
+  /// No description provided for @inClassDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Class details'**
+  String get inClassDetails;
+
+  /// No description provided for @inTimeAndSize.
+  ///
+  /// In en, this message translates to:
+  /// **'Time and size'**
+  String get inTimeAndSize;
+
+  /// No description provided for @inRepeatSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Repeat'**
+  String get inRepeatSection;
+
+  /// No description provided for @inStudentsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The people who practise with you'**
+  String get inStudentsTitle;
+
+  /// No description provided for @inStudentsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 student} other{{count} students}}'**
+  String inStudentsCount(int count);
+
+  /// No description provided for @inLibraryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your recorded sessions'**
+  String get inLibraryTitle;
+
+  /// No description provided for @inRatingLine.
+  ///
+  /// In en, this message translates to:
+  /// **'{rating} from {count} ratings'**
+  String inRatingLine(String rating, int count);
+
+  /// No description provided for @inMoreTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your studio'**
+  String get inMoreTitle;
+
+  /// No description provided for @inClassActions.
+  ///
+  /// In en, this message translates to:
+  /// **'What you can do'**
+  String get inClassActions;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

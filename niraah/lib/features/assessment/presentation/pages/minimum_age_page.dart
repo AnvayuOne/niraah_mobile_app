@@ -21,7 +21,7 @@ class MinimumAgePage extends StatelessWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          const Center(child: NIllustration(asset: NImages.i07CozyCrampsHerbalTeaWoman, height: NSpace.xl3 * 3, entrance: NEntrance.float)),
+          const Center(child: NLottie(path: NLotties.welcome, size: NSpace.xl3 * 3)),
           const SizedBox(height: NSpace.lg),
           Semantics(header: true, child: Text(s.minimumAgeTitle, style: NType.h2.copyWith(color: NColors.inkPrimary))),
           const SizedBox(height: NSpace.sm),

@@ -9,11 +9,11 @@ import '../domain/meals.dart';
 String formatNumber(double v) => v == v.roundToDouble() ? v.toStringAsFixed(0) : v.toStringAsFixed(1);
 
 String slotName(S s, MealSlot slot) => switch (slot) {
-      MealSlot.breakfast => s.mealsSlotBreakfast,
-      MealSlot.lunch => s.mealsSlotLunch,
-      MealSlot.dinner => s.mealsSlotDinner,
-      MealSlot.snack => s.mealsSlotSnack,
-    };
+  MealSlot.breakfast => s.mealsSlotBreakfast,
+  MealSlot.lunch => s.mealsSlotLunch,
+  MealSlot.dinner => s.mealsSlotDinner,
+  MealSlot.snack => s.mealsSlotSnack,
+};
 
 /// A sensible default from the time of day; she can change it.
 MealSlot slotForNow(DateTime now) {
@@ -25,13 +25,13 @@ MealSlot slotForNow(DateTime now) {
 }
 
 String? tagName(S s, String tag) => switch (tag) {
-      'low_gi' => s.mealsTagLowGi,
-      'high_protein' => s.mealsTagHighProtein,
-      'high_fibre' => s.mealsTagHighFibre,
-      'pcos_friendly' => s.mealsTagPcosFriendly,
-      'under_400_kcal' => s.mealsTagUnder400,
-      _ => null,
-    };
+  'low_gi' => s.mealsTagLowGi,
+  'high_protein' => s.mealsTagHighProtein,
+  'high_fibre' => s.mealsTagHighFibre,
+  'pcos_friendly' => s.mealsTagPcosFriendly,
+  'under_400_kcal' => s.mealsTagUnder400,
+  _ => null,
+};
 
 class MealCard extends StatelessWidget {
   const MealCard({required this.child, this.color = NColors.surfaceCard, super.key});
@@ -41,15 +41,15 @@ class MealCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        padding: const EdgeInsets.all(NSpace.lg),
-        decoration: BoxDecoration(
-          color: color,
-          borderRadius: BorderRadius.circular(NRadius.xl),
-          border: Border.all(color: NColors.lineDefault),
-          boxShadow: NShadow.xs,
-        ),
-        child: child,
-      );
+    padding: const EdgeInsets.all(NSpace.lg),
+    decoration: BoxDecoration(
+      color: color,
+      borderRadius: BorderRadius.circular(NRadius.xl),
+      border: Border.all(color: NColors.lineDefault),
+      boxShadow: NShadow.xs,
+    ),
+    child: child,
+  );
 }
 
 /// Calories (unless hidden for her), protein, carbohydrate, fat and fibre, all from the food table.
@@ -101,7 +101,10 @@ class TagChips extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: NSpace.sm, vertical: NSpace.xxs),
             decoration: BoxDecoration(color: NColors.brandSageLight, borderRadius: BorderRadius.circular(NRadius.pill)),
-            child: Text(n, style: NType.caption.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w600)),
+            child: Text(
+              n,
+              style: NType.caption.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w600),
+            ),
           ),
       ],
     );

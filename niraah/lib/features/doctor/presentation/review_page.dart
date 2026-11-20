@@ -3,6 +3,7 @@ import 'package:material_ui/material_ui.dart';
 
 import '../../../core/di/service_locator.dart';
 import '../../../design_system/tokens/tokens.dart';
+import '../../../design_system/widgets/clinician_ui.dart';
 import '../../../design_system/widgets/loading_view.dart';
 import '../../../design_system/widgets/n_button.dart';
 import '../../../l10n/app_localizations.dart';
@@ -138,112 +139,219 @@ class _ReviewPageState extends State<ReviewPage> {
       );
     }
     final ReviewDetail? r = _review;
-    if (r == null) return Scaffold(body: LoadingView(label: s.loading));
+    if (r == null) {
+      return Scaffold(
+        body: LoadingView(label: s.loadCare, kind: NLoaderKind.care),
+      );
+    }
 
     return Scaffold(
       backgroundColor: NColors.surfacePage,
       appBar: AppBar(
         backgroundColor: NColors.surfacePage,
         leading: IconButton(tooltip: s.pvReviewBack, icon: const Icon(Icons.arrow_back_rounded), onPressed: () => context.canPop() ? context.pop() : context.go('/doctor/queue')),
-        title: Text(r.member ?? s.pvReviewTitle, style: NType.h4.copyWith(color: NColors.inkPrimary)),
+        title: Text(s.pvReviewTitle, style: NType.h4.copyWith(color: NColors.inkPrimary)),
         actions: <Widget>[TextButton(onPressed: _release, child: Text(s.pvReviewRelease))],
       ),
       body: ListView(
-        padding: const EdgeInsets.fromLTRB(NSpace.lg, NSpace.xs, NSpace.lg, NSpace.xl),
+        padding: const EdgeInsets.fromLTRB(NSpace.md, NSpace.xs, NSpace.md, NSpace.xl),
         children: <Widget>[
-          Text(<String?>[r.ageBand, r.plan, r.dueInHours == null ? null : dueText(s, r.dueInHours)].whereType<String>().join(' · '), style: NType.bodySm.copyWith(color: NColors.inkSecondary)),
-          const SizedBox(height: NSpace.sm),
-          Text(
-            s.pvReviewConsent,
-            style: NType.label.copyWith(color: NColors.inkSecondary, fontWeight: FontWeight.w600),
-          ),
-          const SizedBox(height: NSpace.xxs),
-          Wrap(
-            spacing: NSpace.xs,
-            runSpacing: NSpace.xxs,
-            children: <Widget>[
-              for (final String c in r.consentCategories)
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: NSpace.xs, vertical: NSpace.xxs / 2),
-                  decoration: BoxDecoration(color: r.consent.contains(c) ? NColors.brandSageLight : NColors.surfaceBackdrop, borderRadius: BorderRadius.circular(NRadius.pill)),
-                  child: Text(
-                    '$c · ${r.consent.contains(c) ? s.pvReviewConsentView : s.pvReviewConsentNone}',
-                    style: NType.label.copyWith(color: r.consent.contains(c) ? NColors.statusSuccess : NColors.inkMuted, letterSpacing: 0),
+          CHero(
+            eyebrow: s.pvShellQueue,
+            title: r.member ?? s.pvReviewTitle,
+            subtitle: <String?>[r.ageBand, r.plan].whereType<String>().join(' · '),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                if (r.dueInHours != null) ...<Widget>[
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: NSpace.sm, vertical: NSpace.xxs + 2),
+                    decoration: BoxDecoration(color: r.dueInHours! <= 0 ? NColors.brandApricot : NColors.surfaceCard, borderRadius: BorderRadius.circular(NRadius.pill), border: Border.all(color: NColors.lineDefault)),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Icon(Icons.schedule_rounded, size: 14, color: r.dueInHours! <= 0 ? NColors.inkPrimary : NColors.inkSecondary),
+                        const SizedBox(width: 4),
+                        Text(
+                          dueText(s, r.dueInHours),
+                          style: NType.caption.copyWith(color: r.dueInHours! <= 0 ? NColors.inkPrimary : NColors.inkSecondary, fontWeight: FontWeight.w700, letterSpacing: 0),
+                        ),
+                      ],
+                    ),
                   ),
+                  const SizedBox(height: NSpace.sm),
+                ],
+                Text(
+                  s.pvReviewConsent.toUpperCase(),
+                  style: NType.label.copyWith(color: NColors.inkMuted, letterSpacing: 1.2, fontWeight: FontWeight.w700),
                 ),
-            ],
+                const SizedBox(height: NSpace.xxs),
+                Wrap(
+                  spacing: NSpace.xxs,
+                  runSpacing: NSpace.xxs,
+                  children: <Widget>[
+                    for (final String c in r.consentCategories)
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: NSpace.xs + 2, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: r.consent.contains(c) ? NColors.brandSageLight : NColors.surfaceCard.withValues(alpha: 0.6),
+                          borderRadius: BorderRadius.circular(NRadius.pill),
+                          border: Border.all(color: NColors.lineDefault),
+                        ),
+                        child: Text(
+                          '$c · ${r.consent.contains(c) ? s.pvReviewConsentView : s.pvReviewConsentNone}',
+                          style: NType.caption.copyWith(
+                            color: r.consent.contains(c) ? NColors.statusSuccess : NColors.inkMuted,
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: 0,
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              ],
+            ),
           ),
-          const SizedBox(height: NSpace.lg),
+          const SizedBox(height: NSpace.md),
 
           // The AI's clinician summary leads the screen (spec 007 §7.6); absent when none was made.
-          if (r.summary != null)
-            Container(
-              padding: const EdgeInsets.all(NSpace.md),
-              decoration: BoxDecoration(color: NColors.brandLavenderLight, borderRadius: BorderRadius.circular(NRadius.lg)),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(s.pvReviewSummary, style: NType.h4.copyWith(color: NColors.inkPrimary)),
-                  const SizedBox(height: NSpace.xs),
-                  Text(r.summary!, style: NType.body.copyWith(color: NColors.inkPrimary)),
-                  const SizedBox(height: NSpace.xs),
-                  Text(s.pvReviewSummaryNote, style: NType.label.copyWith(color: NColors.inkSecondary, letterSpacing: 0)),
-                ],
-              ),
-            ),
-          const SizedBox(height: NSpace.md),
-          Text(s.pvReviewFlags, style: NType.h4.copyWith(color: NColors.inkPrimary)),
-          const SizedBox(height: NSpace.xs),
-          if (r.flags.isEmpty)
-            Text(s.pvQueueNoFlags, style: NType.bodySm.copyWith(color: NColors.inkMuted))
-          else
-            Wrap(
-              spacing: NSpace.xs,
-              runSpacing: NSpace.xxs,
-              children: <Widget>[for (final QueueFlag f in r.flags) FlagBadge(flag: f)],
-            ),
-          const SizedBox(height: NSpace.md),
-          Text(s.pvReviewScores, style: NType.h4.copyWith(color: NColors.inkPrimary)),
-          const SizedBox(height: NSpace.xxs),
-          Text(
-            s.pvReviewTotal(r.total, r.maximum, r.band ?? '—'),
-            style: NType.body.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w600),
-          ),
-          for (final DimensionPoints d in r.dimensions) Text('${d.name}: ${d.points}/${d.max}${d.level == null ? '' : ' · ${d.level}'}', style: NType.bodySm.copyWith(color: NColors.inkSecondary)),
-          const SizedBox(height: NSpace.xxs),
-          Text(s.pvReviewScoreLocked, style: NType.label.copyWith(color: NColors.inkMuted, letterSpacing: 0)),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: TextButton(
-              onPressed: () async {
-                final String? note = await _noteSheet(title: s.pvReviewConcern, label: s.pvReviewConcernLabel, send: s.pvReviewConcernSend, inactive: s.pvReviewConcernInactive);
-                if (note == null || !context.mounted) return;
-                await _repo.scoringConcern(widget.reviewId, note);
-                if (context.mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(s.pvReviewConcernSent)));
-              },
-              child: Text(s.pvReviewConcern),
-            ),
-          ),
-          const SizedBox(height: NSpace.sm),
-          Text(s.pvReviewObservations, style: NType.h4.copyWith(color: NColors.inkPrimary)),
-          const SizedBox(height: NSpace.xs),
-          for (final (int i, ReviewObservation o) in r.observations.indexed) _observation(s, i, o),
-          const SizedBox(height: NSpace.md),
-          Text(s.pvReviewAnswers, style: NType.h4.copyWith(color: NColors.inkPrimary)),
-          const SizedBox(height: NSpace.xs),
-          for (final ReviewAnswer a in r.answers)
-            Padding(
-              padding: const EdgeInsets.only(bottom: NSpace.xs),
-              child: MergeSemantics(
+          if (r.summary != null) ...<Widget>[
+            CEntrance(
+              delayMs: 40,
+              child: Container(
+                padding: const EdgeInsets.all(NSpace.md),
+                decoration: BoxDecoration(
+                  color: NColors.brandLavenderLight,
+                  borderRadius: BorderRadius.circular(NRadius.xl),
+                  border: Border.all(color: NColors.brandLavender.withValues(alpha: 0.6)),
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(a.q, style: NType.label.copyWith(color: NColors.inkMuted, letterSpacing: 0)),
-                    Text(a.a, style: NType.body.copyWith(color: NColors.inkPrimary)),
+                    Row(
+                      children: <Widget>[
+                        const Icon(Icons.auto_awesome_outlined, size: 18, color: NColors.statusInfo),
+                        const SizedBox(width: NSpace.xs),
+                        Expanded(
+                          child: Semantics(
+                            header: true,
+                            child: Text(s.pvReviewSummary, style: NType.h4.copyWith(color: NColors.inkPrimary)),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: NSpace.xs),
+                    Text(r.summary!, style: NType.body.copyWith(color: NColors.inkPrimary)),
+                    const SizedBox(height: NSpace.xs),
+                    Text(s.pvReviewSummaryNote, style: NType.label.copyWith(color: NColors.inkSecondary, letterSpacing: 0)),
                   ],
                 ),
               ),
             ),
+            const SizedBox(height: NSpace.md),
+          ],
+          CPanel(
+            title: s.pvReviewFlags,
+            icon: Icons.flag_outlined,
+            child: r.flags.isEmpty
+                ? Text(s.pvQueueNoFlags, style: NType.bodySm.copyWith(color: NColors.inkMuted))
+                : Wrap(
+                    spacing: NSpace.xs,
+                    runSpacing: NSpace.xs,
+                    children: <Widget>[for (final QueueFlag f in r.flags) FlagBadge(flag: f)],
+                  ),
+          ),
+          const SizedBox(height: NSpace.md),
+          CPanel(
+            title: s.pvReviewScores,
+            icon: Icons.insights_rounded,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    ScoreRing(value: r.total.toDouble(), max: r.maximum.toDouble()),
+                    const SizedBox(width: NSpace.md),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            s.pvReviewTotal(r.total, r.maximum, r.band ?? '—'),
+                            style: NType.body.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w600),
+                          ),
+                          const SizedBox(height: NSpace.xxs),
+                          Row(
+                            children: <Widget>[
+                              const Icon(Icons.lock_outline_rounded, size: 14, color: NColors.inkMuted),
+                              const SizedBox(width: 4),
+                              Expanded(
+                                child: Text(s.pvReviewScoreLocked, style: NType.caption.copyWith(color: NColors.inkMuted, letterSpacing: 0)),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                if (r.dimensions.isNotEmpty) ...<Widget>[
+                  const SizedBox(height: NSpace.sm),
+                  CLabel(s.drADimensions),
+                  for (final DimensionPoints d in r.dimensions) DimensionBar(name: d.name, points: d.points, max: d.max, level: d.level),
+                ],
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: TextButton.icon(
+                    icon: const Icon(Icons.report_outlined, size: 18),
+                    onPressed: () async {
+                      final String? note = await _noteSheet(title: s.pvReviewConcern, label: s.pvReviewConcernLabel, send: s.pvReviewConcernSend, inactive: s.pvReviewConcernInactive);
+                      if (note == null || !context.mounted) return;
+                      await _repo.scoringConcern(widget.reviewId, note);
+                      if (context.mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(s.pvReviewConcernSent)));
+                    },
+                    label: Text(s.pvReviewConcern),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: NSpace.md),
+          CPanel(
+            title: s.pvReviewObservations,
+            icon: Icons.visibility_outlined,
+            child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: <Widget>[for (final (int i, ReviewObservation o) in r.observations.indexed) _observation(s, i, o)]),
+          ),
+          const SizedBox(height: NSpace.md),
+          CPanel(
+            title: s.pvReviewAnswers,
+            icon: Icons.question_answer_outlined,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                for (final (int i, ReviewAnswer a) in r.answers.indexed)
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: NSpace.xs),
+                    decoration: BoxDecoration(
+                      border: i == 0 ? null : const Border(top: BorderSide(color: NColors.lineDefault)),
+                    ),
+                    child: MergeSemantics(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(a.q, style: NType.caption.copyWith(color: NColors.inkMuted, letterSpacing: 0)),
+                          const SizedBox(height: 2),
+                          Text(
+                            a.a,
+                            style: NType.body.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w600),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ),
         ],
       ),
       bottomNavigationBar: SafeArea(
@@ -303,11 +411,11 @@ class _ReviewPageState extends State<ReviewPage> {
     final bool editing = _editing == i;
     return Container(
       margin: const EdgeInsets.only(bottom: NSpace.xs),
-      padding: const EdgeInsets.all(NSpace.md),
+      padding: const EdgeInsets.fromLTRB(NSpace.sm, NSpace.sm, NSpace.sm, NSpace.xxs),
       decoration: BoxDecoration(
-        color: NColors.surfaceCard,
+        color: o.removed ? NColors.surfaceBackdrop : (o.edited != null ? NColors.brandBlushLight.withValues(alpha: 0.5) : NColors.surfacePage),
         borderRadius: BorderRadius.circular(NRadius.lg),
-        border: Border.all(color: NColors.lineDefault),
+        border: Border(left: BorderSide(color: o.removed ? NColors.lineStrong : NColors.brandRosewood, width: 3)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -329,9 +437,9 @@ class _ReviewPageState extends State<ReviewPage> {
             ),
           ] else ...<Widget>[
             if (o.edited != null && !o.removed)
-              Text(
-                s.pvReviewEdited,
-                style: NType.label.copyWith(color: NColors.actionLink, fontWeight: FontWeight.w600),
+              Padding(
+                padding: const EdgeInsets.only(bottom: NSpace.xxs),
+                child: CPill(s.pvReviewEdited, tone: CTone.rose),
               ),
             Text(
               o.shown,

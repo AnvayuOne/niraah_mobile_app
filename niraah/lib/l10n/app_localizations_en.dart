@@ -328,10 +328,11 @@ class SEn extends S {
   String get minimumAgeContact => 'Contact support';
 
   @override
-  String get processingTitle => 'Reading your answers';
+  String get processingTitle => 'Working out your pre-score';
 
   @override
-  String get processingBody => 'This takes a few seconds.';
+  String get processingBody =>
+      'Niraah AI is looking across your answers. This takes a few seconds.';
 
   @override
   String get prescoreTitle => 'Your wellness pre-score';
@@ -2602,6 +2603,64 @@ class SEn extends S {
   String get drRelReview => 'Review';
 
   @override
+  String get drAPatientsEyebrow => 'Your care list';
+
+  @override
+  String drAPatientsCount(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n patients',
+      one: '1 patient',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String drAPatientsAlerts(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n with an open alert',
+      one: '1 with an open alert',
+      zero: 'No open alerts',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get drALockedBody =>
+      'She decides what she shares. Nothing from this section is shown until she gives consent.';
+
+  @override
+  String get drACycleLengths => 'Cycle lengths';
+
+  @override
+  String drACycleAvg(int n) {
+    return 'Average $n days';
+  }
+
+  @override
+  String drADays(int n) {
+    return '$n d';
+  }
+
+  @override
+  String get drASymptoms => 'Symptoms';
+
+  @override
+  String get drADimensions => 'By dimension';
+
+  @override
+  String get drACareTeam => 'Care team';
+
+  @override
+  String get drADetails => 'Details';
+
+  @override
+  String get drAQueueWaiting => 'Waiting';
+
+  @override
   String get drOpenAlert => 'Open alert';
 
   @override
@@ -3842,6 +3901,149 @@ class SEn extends S {
   String get dtPublishRecipe => 'Publish recipe';
 
   @override
+  String get dtShellTitle => 'Dietitian';
+
+  @override
+  String get dtDashShortcuts => 'Plans and recipes';
+
+  @override
+  String get dtRecipesSubtitle => 'Your recipes and the shared library';
+
+  @override
+  String get dtClientsEyebrow => 'Your clients';
+
+  @override
+  String get dtCareTeam => 'Care team';
+
+  @override
+  String get dtRelationship => 'Relationship';
+
+  @override
+  String get dtPlanLabel => 'Plan';
+
+  @override
+  String get dtDoctorLabel => 'Her doctor';
+
+  @override
+  String get dtMealsLogged => 'Meals logged by day';
+
+  @override
+  String get dtUnread => 'Unread';
+
+  @override
+  String get dtTrendEnergy => 'Energy';
+
+  @override
+  String get dtTrendCravings => 'Cravings';
+
+  @override
+  String get dtCheckInsSubtitle =>
+      'Read each one and reply with a short, kind note.';
+
+  @override
+  String get dtMoreSubtitle => 'Plans, recipes, check-ins and your account';
+
+  @override
+  String get dtMoreWork => 'Your work';
+
+  @override
+  String get dtAboutYou => 'About you';
+
+  @override
+  String get dtQueueSubtitle =>
+      'Oldest first. Your dedicated clients\' days are yours.';
+
+  @override
+  String get dtMealsLabel => 'Meals logged';
+
+  @override
+  String get schedNothingThisDay => 'Nothing booked this day.';
+
+  @override
+  String dtDashWaiting(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count things are waiting for you',
+      one: '1 thing is waiting for you',
+      zero: 'Nothing is waiting for you',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String dtClientsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count clients',
+      one: '1 client',
+      zero: 'No clients',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String dtUnreadCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count unread check-ins',
+      one: '1 unread check-in',
+      zero: 'No unread check-ins',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String dtPlansCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count meal plans',
+      one: '1 meal plan',
+      zero: 'No meal plans yet',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String dtWaitingCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count clients waiting for a plan',
+      one: '1 client waiting for a plan',
+      zero: 'Nobody is waiting for a plan',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String dtQueueCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count days to review',
+      one: '1 day to review',
+      zero: 'Nothing to review',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String schedAppointmentsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count appointments',
+      one: '1 appointment',
+      zero: 'No appointments',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get inSessions => 'Sessions';
 
   @override
@@ -4281,4 +4483,735 @@ class SEn extends S {
 
   @override
   String get signInEnterEmail => 'Enter your email';
+
+  @override
+  String get welcomeChipDoctors => 'Doctor-reviewed';
+
+  @override
+  String get welcomeChipPrivate => 'Private by design';
+
+  @override
+  String get landingNavProfessionals => 'For care professionals';
+
+  @override
+  String get landingNavSignIn => 'Sign in';
+
+  @override
+  String get landingHeroEyebrow => 'Women\'s health, made personal';
+
+  @override
+  String get landingHeroTitle => 'Care for your cycle, hormones and whole self';
+
+  @override
+  String get landingHeroBody =>
+      'Niraah brings verified doctors, dietitians and yoga trainers together with an AI companion, for PCOS, fertility, metabolic health and pregnancy.';
+
+  @override
+  String get landingHeroCta => 'Start your free assessment';
+
+  @override
+  String get landingHeroSecondary => 'I\'m a care professional';
+
+  @override
+  String get landingTick1 => 'Free to start';
+
+  @override
+  String get landingTick2 => 'Doctor-reviewed plans';
+
+  @override
+  String get landingTick3 => 'Indian diets';
+
+  @override
+  String get landingChipDoctors => 'Verified doctors';
+
+  @override
+  String get landingChipAi => 'AI companion';
+
+  @override
+  String get landingChipYoga => 'Yoga for your phase';
+
+  @override
+  String get landingTrust1 => 'Registered doctors and dietitians';
+
+  @override
+  String get landingTrust2 => 'Plans built on Indian food';
+
+  @override
+  String get landingTrust3 => 'Your data stays private';
+
+  @override
+  String get landingTrust4 => 'Prices in rupees, including GST';
+
+  @override
+  String get landingProgramsEyebrow => 'Programs';
+
+  @override
+  String get landingProgramsTitle => 'Support shaped around you';
+
+  @override
+  String get landingProgramPcos => 'PCOS & hormones';
+
+  @override
+  String get landingProgramPcosBody =>
+      'Understand symptoms and build steady habits with your care team.';
+
+  @override
+  String get landingProgramFertility => 'Fertility journey';
+
+  @override
+  String get landingProgramFertilityBody =>
+      'Know your cycle and prepare with expert guidance.';
+
+  @override
+  String get landingProgramMetabolic => 'Metabolic balance';
+
+  @override
+  String get landingProgramMetabolicBody =>
+      'Food, movement and rest for steadier energy.';
+
+  @override
+  String get landingProgramPregnancy => 'Pregnancy care';
+
+  @override
+  String get landingProgramPregnancyBody =>
+      'Gentle support for each trimester.';
+
+  @override
+  String get landingStepsEyebrow => 'How it works';
+
+  @override
+  String get landingStepsTitle => 'Four calm steps';
+
+  @override
+  String get landingStep1 => 'Take the assessment';
+
+  @override
+  String get landingStep1Body =>
+      'A few minutes of questions about your cycle, health and habits.';
+
+  @override
+  String get landingStep2 => 'See your insights';
+
+  @override
+  String get landingStep2Body =>
+      'A wellness pre-score and the areas that need care.';
+
+  @override
+  String get landingStep3 => 'Meet your care team';
+
+  @override
+  String get landingStep3Body =>
+      'Doctors, dietitians and trainers who are verified by Niraah.';
+
+  @override
+  String get landingStep4 => 'Follow your plan';
+
+  @override
+  String get landingStep4Body =>
+      'Daily tasks, meals and practice, adjusted as you go.';
+
+  @override
+  String get landingTeamEyebrow => 'Your care team';
+
+  @override
+  String get landingTeamTitle => 'Real experts, with AI by your side';
+
+  @override
+  String get landingTeamDoctor => 'Doctors';
+
+  @override
+  String get landingTeamDoctorBody =>
+      'Video consults and care plans from registered doctors.';
+
+  @override
+  String get landingTeamDietitian => 'Dietitians';
+
+  @override
+  String get landingTeamDietitianBody =>
+      'Indian meal plans checked by a dietitian before you see them.';
+
+  @override
+  String get landingTeamYoga => 'Yoga & fitness trainers';
+
+  @override
+  String get landingTeamYogaBody =>
+      'Classes and sessions matched to your cycle phase.';
+
+  @override
+  String get landingTeamAi => 'AI companion';
+
+  @override
+  String get landingTeamAiBody =>
+      'Answers any time, with sources, and never medicine doses.';
+
+  @override
+  String get landingSafetyTitle => 'Wellness support, not emergency care';
+
+  @override
+  String get landingSafetyBody =>
+      'Niraah supports and does not replace your own doctor. In an emergency, call 112. For mental health support, call Tele-MANAS on 14416.';
+
+  @override
+  String get landingCtaTitle => 'Begin with a free assessment';
+
+  @override
+  String get landingCtaBody =>
+      'It takes about five minutes. You can stop any time.';
+
+  @override
+  String get landingFooter => '© Niraah by Anvayuone';
+
+  @override
+  String get landingEmergency => 'Emergency: 112 · Tele-MANAS: 14416';
+
+  @override
+  String get landingMobileHeroBody =>
+      'Doctors, dietitians, yoga trainers and an AI companion, for PCOS, fertility, metabolic health and pregnancy.';
+
+  @override
+  String get landingMobileGetTitle => 'What you get';
+
+  @override
+  String get landingMobileBenefit1 => 'Cycle and symptom tracking';
+
+  @override
+  String get landingMobileBenefit1Body =>
+      'Predictions and patterns, in one calm place.';
+
+  @override
+  String get landingMobileBenefit2 => 'Indian meal plans';
+
+  @override
+  String get landingMobileBenefit2Body => 'Built on foods you already eat.';
+
+  @override
+  String get landingMobileBenefit3 => 'Yoga for your phase';
+
+  @override
+  String get landingMobileBenefit3Body => 'Classes matched to your cycle.';
+
+  @override
+  String get landingMobileBenefit4 => 'AI Care, any time';
+
+  @override
+  String get landingMobileBenefit4Body =>
+      'Answers with sources, never medicine doses.';
+
+  @override
+  String get landingMobileTeamYoga => 'Yoga';
+
+  @override
+  String get landingMobileTeamAi => 'AI Care';
+
+  @override
+  String get landingMobileHaveAccount => 'I already have an account';
+
+  @override
+  String get landingMobileProgramsBody =>
+      'Programs for PCOS, fertility, metabolic health and pregnancy.';
+
+  @override
+  String get landingMobileDailyTitle => 'Small steps, every day';
+
+  @override
+  String get landingMobileDailyBody =>
+      'Track your cycle, eat Indian meals that suit you and move for your phase.';
+
+  @override
+  String get landingMobileTeamBody =>
+      'Doctors, dietitians and yoga trainers verified by Niraah, with AI Care any time.';
+
+  @override
+  String get landingMobileTeamYou => 'You';
+
+  @override
+  String get dietTitle => 'Your diet plan';
+
+  @override
+  String get dietMaking => 'Cooking your plan…';
+
+  @override
+  String get dietEditPreferences => 'Food preferences';
+
+  @override
+  String get dietLockedTitle => 'Diet plans are part of some plans';
+
+  @override
+  String get dietLockedBody => 'Choose a plan that includes the AI diet plan.';
+
+  @override
+  String dietLockedPlans(String plans) {
+    return 'Included in: $plans';
+  }
+
+  @override
+  String get dietSeePlans => 'See plans';
+
+  @override
+  String get dietNeedsDietitianTitle => 'A dietitian is the right fit';
+
+  @override
+  String get dietDietitianPlanTitle => 'Your dietitian\'s plan';
+
+  @override
+  String get dietDietitianPlanBody =>
+      'Your dietitian has made a meal plan for you. You\'ll find it in Care.';
+
+  @override
+  String get dietUnavailableTitle => 'No plan just yet';
+
+  @override
+  String get dietMadeByAi => 'Made by AI · not reviewed by a dietitian';
+
+  @override
+  String get dietMadeByRules =>
+      'Made from your food choices · not reviewed by a dietitian';
+
+  @override
+  String get dietSwap => 'Swap';
+
+  @override
+  String dietSwapTitle(String dish) {
+    return 'Swap $dish';
+  }
+
+  @override
+  String get dietSwapBody =>
+      'Your choice replaces this dish for the rest of the week.';
+
+  @override
+  String get dietDayTotals => 'This day';
+
+  @override
+  String get dietKcal => 'kcal';
+
+  @override
+  String get dietProtein => 'protein';
+
+  @override
+  String get dietFibre => 'fibre';
+
+  @override
+  String get dietCarbs => 'carbs';
+
+  @override
+  String get dietNewWeek => 'Make a new week';
+
+  @override
+  String get dietNewWeekTomorrow => 'New week available tomorrow';
+
+  @override
+  String get dietSlotBreakfast => 'Breakfast';
+
+  @override
+  String get dietSlotMidMorning => 'Mid-morning';
+
+  @override
+  String get dietSlotLunch => 'Lunch';
+
+  @override
+  String get dietSlotEveningSnack => 'Evening snack';
+
+  @override
+  String get dietSlotDinner => 'Dinner';
+
+  @override
+  String get dietProfileTitle => 'Tell us how you eat';
+
+  @override
+  String get dietProfileBody =>
+      'We\'ll plan Indian meals around your choices. You can change these any time.';
+
+  @override
+  String get dietFoodChoice => 'Food choice';
+
+  @override
+  String get dietAllergies => 'Allergies';
+
+  @override
+  String get dietNoAllergies => 'No allergies';
+
+  @override
+  String get dietCuisine => 'Regional cuisine';
+
+  @override
+  String get dietFastingDays => 'Fasting days (optional)';
+
+  @override
+  String get dietAvoided => 'Foods you avoid (optional)';
+
+  @override
+  String get dietAvoidedNone => 'Choose foods';
+
+  @override
+  String dietAvoidedCount(int count) {
+    return '$count chosen';
+  }
+
+  @override
+  String get dietSaveAndMake => 'Save and make my plan';
+
+  @override
+  String get dietProfileHint => 'Choose your food choice and allergies';
+
+  @override
+  String get dietDone => 'Done';
+
+  @override
+  String get dietVegetarian => 'Vegetarian';
+
+  @override
+  String get dietEggetarian => 'Eggetarian';
+
+  @override
+  String get dietNonVegetarian => 'Non-vegetarian';
+
+  @override
+  String get dietVegan => 'Vegan';
+
+  @override
+  String get dietJain => 'Jain';
+
+  @override
+  String get dietPanIndian => 'Pan-Indian';
+
+  @override
+  String get dietNorthIndian => 'North Indian';
+
+  @override
+  String get dietSouthIndian => 'South Indian';
+
+  @override
+  String get dietEastIndian => 'East Indian';
+
+  @override
+  String get dietWestIndian => 'West Indian';
+
+  @override
+  String get dietPeanut => 'Peanut';
+
+  @override
+  String get dietTreeNut => 'Tree nuts';
+
+  @override
+  String get dietGluten => 'Gluten';
+
+  @override
+  String get dietMilk => 'Milk';
+
+  @override
+  String get dietEgg => 'Egg';
+
+  @override
+  String get dietSoy => 'Soy';
+
+  @override
+  String get dietSesame => 'Sesame';
+
+  @override
+  String get dietMustard => 'Mustard';
+
+  @override
+  String get dietFish => 'Fish';
+
+  @override
+  String get dietShellfish => 'Shellfish';
+
+  @override
+  String get dietSun => 'Sun';
+
+  @override
+  String get dietMon => 'Mon';
+
+  @override
+  String get dietTue => 'Tue';
+
+  @override
+  String get dietWed => 'Wed';
+
+  @override
+  String get dietThu => 'Thu';
+
+  @override
+  String get dietFri => 'Fri';
+
+  @override
+  String get dietSat => 'Sat';
+
+  @override
+  String get dietEntryTitle => 'Your AI diet plan';
+
+  @override
+  String get dietEntryBody =>
+      'A week of Indian meals made for you, with swaps.';
+
+  @override
+  String get mealsScanStepDishes => 'Finding each dish on your plate…';
+
+  @override
+  String get mealsScanStepPortions => 'Estimating portions…';
+
+  @override
+  String get mealsScanStepNutrients =>
+      'Matching the Indian food table for nutrients…';
+
+  @override
+  String get dietOpenCta => 'See this week\'s meals';
+
+  @override
+  String get dietMakingHint =>
+      'This can take up to a minute. Please keep the app open.';
+
+  @override
+  String get cycleFertileLegend => 'Fertile window, estimated';
+
+  @override
+  String get cycleTodayLegend => 'Today';
+
+  @override
+  String get cyclePhaseShortPeriod => 'Period';
+
+  @override
+  String get cyclePhaseShortFollicular => 'Follicular';
+
+  @override
+  String get cyclePhaseShortOvulation => 'Ovulation';
+
+  @override
+  String get cyclePhaseShortLuteal => 'Luteal';
+
+  @override
+  String get dietCook1 => 'Reading your food choice and allergies…';
+
+  @override
+  String get dietCook2 => 'Picking dishes from your cuisine…';
+
+  @override
+  String get dietCook3 => 'Balancing protein, fibre and energy…';
+
+  @override
+  String get dietCook4 => 'Adding swaps you might like…';
+
+  @override
+  String get dietCook5 => 'Plating your week…';
+
+  @override
+  String get dietCooking => 'Cooking your plan…';
+
+  @override
+  String get dietPreparing => 'Getting your kitchen ready…';
+
+  @override
+  String get loadPlans => 'Laying out your plans';
+
+  @override
+  String get loadCare => 'Getting your care desk ready';
+
+  @override
+  String get loadSecure => 'Keeping your account safe';
+
+  @override
+  String get loadAssessment => 'Getting your check-in ready';
+
+  @override
+  String get loadMeals => 'Setting out today\'s meals';
+
+  @override
+  String get loadChat => 'Opening AI Care';
+
+  @override
+  String get loadSymptoms => 'Checking in with your body';
+
+  @override
+  String get loadHome => 'Bringing your day together';
+
+  @override
+  String get loadCycle => 'Reading your cycle';
+
+  @override
+  String get scoreAreaCycle => 'Cycle';
+
+  @override
+  String get scoreAreaMetabolic => 'Metabolic';
+
+  @override
+  String get scoreAreaMind => 'Mind';
+
+  @override
+  String get scoreAreaRest => 'Rest';
+
+  @override
+  String get scoreStep1 => 'Reading your answers';
+
+  @override
+  String get scoreStep2 => 'Looking at your cycle pattern';
+
+  @override
+  String get scoreStep3 => 'Weighing symptoms and energy';
+
+  @override
+  String get scoreStep4 => 'Checking stress and sleep';
+
+  @override
+  String get scoreStep5 => 'Building your pre-score';
+
+  @override
+  String drDashWaiting(int count, int consults) {
+    return '$count things need you today · $consults consults booked';
+  }
+
+  @override
+  String drDashAllClear(int consults) {
+    return 'You\'re all caught up · $consults consults booked';
+  }
+
+  @override
+  String get drOnCallShort => 'On call';
+
+  @override
+  String get drOffCallShort => 'Off call';
+
+  @override
+  String drDashBooked(int count) {
+    return '$count booked';
+  }
+
+  @override
+  String get drQueueClear => 'The queue is clear';
+
+  @override
+  String get drNextUp => 'Next';
+
+  @override
+  String get drMoreWork => 'Clinical work';
+
+  @override
+  String get drMoreYou => 'You and your account';
+
+  @override
+  String get drMoreSubtitle => 'Alerts, care plans, results and your profile';
+
+  @override
+  String get drRatingLabel => 'Average rating';
+
+  @override
+  String drRatingCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'from $count reviews',
+      one: 'from 1 review',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get drOnCallNote => 'While this is on, urgent alerts reach you first.';
+
+  @override
+  String drDecidedCount(int done, int total) {
+    return '$done of $total sections decided';
+  }
+
+  @override
+  String drFlaggedCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count flagged',
+      one: '1 flagged',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get drRegistrationTitle => 'Registration';
+
+  @override
+  String get drAboutYou => 'About you';
+
+  @override
+  String get drInRange => 'In range';
+
+  @override
+  String get drMedicinesTitle => 'Her medicines';
+
+  @override
+  String get inWorkspace => 'Instructor studio';
+
+  @override
+  String get inHomeTitle => 'Today\'s practice';
+
+  @override
+  String inTodayCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count classes on your mat today',
+      one: '1 class on your mat today',
+      zero: 'No classes on your mat today',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get inNextUp => 'Next up';
+
+  @override
+  String get inAgendaTitle => 'Your agenda';
+
+  @override
+  String inUpcomingCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count classes ahead',
+      one: '1 class ahead',
+      zero: 'Nothing scheduled ahead',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get inPastWeek => 'Past week';
+
+  @override
+  String get inComingUp => 'Coming up';
+
+  @override
+  String get inClassDetails => 'Class details';
+
+  @override
+  String get inTimeAndSize => 'Time and size';
+
+  @override
+  String get inRepeatSection => 'Repeat';
+
+  @override
+  String get inStudentsTitle => 'The people who practise with you';
+
+  @override
+  String inStudentsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count students',
+      one: '1 student',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get inLibraryTitle => 'Your recorded sessions';
+
+  @override
+  String inRatingLine(String rating, int count) {
+    return '$rating from $count ratings';
+  }
+
+  @override
+  String get inMoreTitle => 'Your studio';
+
+  @override
+  String get inClassActions => 'What you can do';
 }

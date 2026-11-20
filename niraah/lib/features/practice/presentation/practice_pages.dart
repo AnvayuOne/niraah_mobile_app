@@ -139,27 +139,17 @@ class _PracticeLibraryPageState extends State<PracticeLibraryPage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.fromLTRB(NSpace.lg, NSpace.sm, NSpace.lg, 0),
-            child: Row(
+          // Wrapped, not scrolled sideways: a sideways row clipped the last chips at the screen edge.
+          Padding(
+            padding: const EdgeInsets.fromLTRB(NSpace.lg, NSpace.sm, NSpace.lg, NSpace.sm),
+            child: Wrap(
+              spacing: NSpace.xs,
+              runSpacing: NSpace.xs,
               children: <Widget>[
-                for (final int m in const <int>[10, 20, 30]) ...<Widget>[
+                for (final int m in const <int>[10, 20, 30])
                   FilterChip(label: Text(s.practiceUpTo(m)), selected: _maxMinutes == m, onSelected: (bool on) => _set(() => _maxMinutes = on ? m : null)),
-                  const SizedBox(width: NSpace.xs),
-                ],
-              ],
-            ),
-          ),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.fromLTRB(NSpace.lg, NSpace.xs, NSpace.lg, NSpace.sm),
-            child: Row(
-              children: <Widget>[
-                for (final Phase p in Phase.values) ...<Widget>[
+                for (final Phase p in Phase.values)
                   FilterChip(label: Text(s.phaseName(p)), selected: _phase == p, onSelected: (bool on) => _set(() => _phase = on ? p : null)),
-                  const SizedBox(width: NSpace.xs),
-                ],
               ],
             ),
           ),

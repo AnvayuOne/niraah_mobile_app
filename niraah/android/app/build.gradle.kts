@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.niraah"
+    namespace = "com.anvayuone.niraah"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -16,13 +16,17 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.example.niraah"
+        applicationId = "com.anvayuone.niraah"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        // Plain http:// is refused by Android in release builds. For a release APK that talks to a
+        // local development server, build with: flutter build apk -P niraahLocalHttp=true
+        // Production always uses https and leaves this off.
+        manifestPlaceholders["usesCleartextTraffic"] = (project.findProperty("niraahLocalHttp") as String?) ?: "false"
     }
 
     buildTypes {

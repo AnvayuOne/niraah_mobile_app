@@ -71,13 +71,7 @@ class _IntroPageState extends State<IntroPage> {
                         children: <Widget>[
                           Expanded(
                             child: Center(
-                              child: Stack(
-                                alignment: Alignment.bottomRight,
-                                children: <Widget>[
-                                  NIllustration(asset: image, height: NSpace.xl3 * 4, entrance: NEntrance.breathe),
-                                  NLottie(path: lottie, size: NSpace.xl3 + NSpace.lg),
-                                ],
-                              ),
+                              child: NIllustration(asset: image, height: NSpace.xl3 * 4.5, entrance: NEntrance.breathe),
                             ),
                           ),
                           Text(title, style: NType.h2.copyWith(color: NColors.inkPrimary)),

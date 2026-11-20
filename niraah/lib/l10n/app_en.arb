@@ -171,8 +171,8 @@
   "minimumAgeBody": "Thank you for your interest. Niraah's care is designed for women aged 18 and over, so we've paused this account. Nothing you shared about your health has been stored.",
   "minimumAgeWrongDate": "If you entered your date of birth by mistake, our support team can correct it.",
   "minimumAgeContact": "Contact support",
-  "processingTitle": "Reading your answers",
-  "processingBody": "This takes a few seconds.",
+  "processingTitle": "Working out your pre-score",
+  "processingBody": "Niraah AI is looking across your answers. This takes a few seconds.",
   "prescoreTitle": "Your wellness pre-score",
   "prescoreOutOf": "out of {maximum}",
   "@prescoreOutOf": {
@@ -1594,6 +1594,46 @@
   "drRelDedicated": "Dedicated",
   "drRelConsult": "Consult",
   "drRelReview": "Review",
+  "drAPatientsEyebrow": "Your care list",
+  "drAPatientsCount": "{n, plural, =1{1 patient} other{{n} patients}}",
+  "@drAPatientsCount": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "drAPatientsAlerts": "{n, plural, =0{No open alerts} =1{1 with an open alert} other{{n} with an open alert}}",
+  "@drAPatientsAlerts": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "drALockedBody": "She decides what she shares. Nothing from this section is shown until she gives consent.",
+  "drACycleLengths": "Cycle lengths",
+  "drACycleAvg": "Average {n} days",
+  "@drACycleAvg": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "drADays": "{n} d",
+  "@drADays": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "drASymptoms": "Symptoms",
+  "drADimensions": "By dimension",
+  "drACareTeam": "Care team",
+  "drADetails": "Details",
+  "drAQueueWaiting": "Waiting",
   "drOpenAlert": "Open alert",
   "drPlanAwaiting": "Care plan awaiting",
   "drNoPatients": "No members have a care relationship with you right now.",
@@ -2289,6 +2329,39 @@
     }
   },
   "dtPublishRecipe": "Publish recipe",
+  "dtShellTitle": "Dietitian",
+  "dtDashShortcuts": "Plans and recipes",
+  "dtRecipesSubtitle": "Your recipes and the shared library",
+  "dtClientsEyebrow": "Your clients",
+  "dtCareTeam": "Care team",
+  "dtRelationship": "Relationship",
+  "dtPlanLabel": "Plan",
+  "dtDoctorLabel": "Her doctor",
+  "dtMealsLogged": "Meals logged by day",
+  "dtUnread": "Unread",
+  "dtTrendEnergy": "Energy",
+  "dtTrendCravings": "Cravings",
+  "dtCheckInsSubtitle": "Read each one and reply with a short, kind note.",
+  "dtMoreSubtitle": "Plans, recipes, check-ins and your account",
+  "dtMoreWork": "Your work",
+  "dtAboutYou": "About you",
+  "dtQueueSubtitle": "Oldest first. Your dedicated clients' days are yours.",
+  "dtMealsLabel": "Meals logged",
+  "schedNothingThisDay": "Nothing booked this day.",
+  "dtDashWaiting": "{count, plural, =0{Nothing is waiting for you} =1{1 thing is waiting for you} other{{count} things are waiting for you}}",
+  "@dtDashWaiting": {"placeholders": {"count": {"type": "int"}}},
+  "dtClientsCount": "{count, plural, =0{No clients} =1{1 client} other{{count} clients}}",
+  "@dtClientsCount": {"placeholders": {"count": {"type": "int"}}},
+  "dtUnreadCount": "{count, plural, =0{No unread check-ins} =1{1 unread check-in} other{{count} unread check-ins}}",
+  "@dtUnreadCount": {"placeholders": {"count": {"type": "int"}}},
+  "dtPlansCount": "{count, plural, =0{No meal plans yet} =1{1 meal plan} other{{count} meal plans}}",
+  "@dtPlansCount": {"placeholders": {"count": {"type": "int"}}},
+  "dtWaitingCount": "{count, plural, =0{Nobody is waiting for a plan} =1{1 client waiting for a plan} other{{count} clients waiting for a plan}}",
+  "@dtWaitingCount": {"placeholders": {"count": {"type": "int"}}},
+  "dtQueueCount": "{count, plural, =0{Nothing to review} =1{1 day to review} other{{count} days to review}}",
+  "@dtQueueCount": {"placeholders": {"count": {"type": "int"}}},
+  "schedAppointmentsCount": "{count, plural, =0{No appointments} =1{1 appointment} other{{count} appointments}}",
+  "@schedAppointmentsCount": {"placeholders": {"count": {"type": "int"}}},
   "inSessions": "Sessions",
   "inStudents": "Students",
   "inLibrary": "Library",
@@ -2533,5 +2606,320 @@
   "signInNeedNumber": "Members sign in with a mobile number.",
   "signInNeedEmail": "Enter your email address.",
   "signInEnterNumber": "Enter your mobile number",
-  "signInEnterEmail": "Enter your email"
+  "signInEnterEmail": "Enter your email",
+  "welcomeChipDoctors": "Doctor-reviewed",
+  "welcomeChipPrivate": "Private by design",
+  "landingNavProfessionals": "For care professionals",
+  "landingNavSignIn": "Sign in",
+  "landingHeroEyebrow": "Women's health, made personal",
+  "landingHeroTitle": "Care for your cycle, hormones and whole self",
+  "landingHeroBody": "Niraah brings verified doctors, dietitians and yoga trainers together with an AI companion, for PCOS, fertility, metabolic health and pregnancy.",
+  "landingHeroCta": "Start your free assessment",
+  "landingHeroSecondary": "I'm a care professional",
+  "landingTick1": "Free to start",
+  "landingTick2": "Doctor-reviewed plans",
+  "landingTick3": "Indian diets",
+  "landingChipDoctors": "Verified doctors",
+  "landingChipAi": "AI companion",
+  "landingChipYoga": "Yoga for your phase",
+  "landingTrust1": "Registered doctors and dietitians",
+  "landingTrust2": "Plans built on Indian food",
+  "landingTrust3": "Your data stays private",
+  "landingTrust4": "Prices in rupees, including GST",
+  "landingProgramsEyebrow": "Programs",
+  "landingProgramsTitle": "Support shaped around you",
+  "landingProgramPcos": "PCOS & hormones",
+  "landingProgramPcosBody": "Understand symptoms and build steady habits with your care team.",
+  "landingProgramFertility": "Fertility journey",
+  "landingProgramFertilityBody": "Know your cycle and prepare with expert guidance.",
+  "landingProgramMetabolic": "Metabolic balance",
+  "landingProgramMetabolicBody": "Food, movement and rest for steadier energy.",
+  "landingProgramPregnancy": "Pregnancy care",
+  "landingProgramPregnancyBody": "Gentle support for each trimester.",
+  "landingStepsEyebrow": "How it works",
+  "landingStepsTitle": "Four calm steps",
+  "landingStep1": "Take the assessment",
+  "landingStep1Body": "A few minutes of questions about your cycle, health and habits.",
+  "landingStep2": "See your insights",
+  "landingStep2Body": "A wellness pre-score and the areas that need care.",
+  "landingStep3": "Meet your care team",
+  "landingStep3Body": "Doctors, dietitians and trainers who are verified by Niraah.",
+  "landingStep4": "Follow your plan",
+  "landingStep4Body": "Daily tasks, meals and practice, adjusted as you go.",
+  "landingTeamEyebrow": "Your care team",
+  "landingTeamTitle": "Real experts, with AI by your side",
+  "landingTeamDoctor": "Doctors",
+  "landingTeamDoctorBody": "Video consults and care plans from registered doctors.",
+  "landingTeamDietitian": "Dietitians",
+  "landingTeamDietitianBody": "Indian meal plans checked by a dietitian before you see them.",
+  "landingTeamYoga": "Yoga & fitness trainers",
+  "landingTeamYogaBody": "Classes and sessions matched to your cycle phase.",
+  "landingTeamAi": "AI companion",
+  "landingTeamAiBody": "Answers any time, with sources, and never medicine doses.",
+  "landingSafetyTitle": "Wellness support, not emergency care",
+  "landingSafetyBody": "Niraah supports and does not replace your own doctor. In an emergency, call 112. For mental health support, call Tele-MANAS on 14416.",
+  "landingCtaTitle": "Begin with a free assessment",
+  "landingCtaBody": "It takes about five minutes. You can stop any time.",
+  "landingFooter": "© Niraah by Anvayuone",
+  "landingEmergency": "Emergency: 112 · Tele-MANAS: 14416",
+  "landingMobileHeroBody": "Doctors, dietitians, yoga trainers and an AI companion, for PCOS, fertility, metabolic health and pregnancy.",
+  "landingMobileGetTitle": "What you get",
+  "landingMobileBenefit1": "Cycle and symptom tracking",
+  "landingMobileBenefit1Body": "Predictions and patterns, in one calm place.",
+  "landingMobileBenefit2": "Indian meal plans",
+  "landingMobileBenefit2Body": "Built on foods you already eat.",
+  "landingMobileBenefit3": "Yoga for your phase",
+  "landingMobileBenefit3Body": "Classes matched to your cycle.",
+  "landingMobileBenefit4": "AI Care, any time",
+  "landingMobileBenefit4Body": "Answers with sources, never medicine doses.",
+  "landingMobileTeamYoga": "Yoga",
+  "landingMobileTeamAi": "AI Care",
+  "landingMobileHaveAccount": "I already have an account",
+  "landingMobileProgramsBody": "Programs for PCOS, fertility, metabolic health and pregnancy.",
+  "landingMobileDailyTitle": "Small steps, every day",
+  "landingMobileDailyBody": "Track your cycle, eat Indian meals that suit you and move for your phase.",
+  "landingMobileTeamBody": "Doctors, dietitians and yoga trainers verified by Niraah, with AI Care any time.",
+  "landingMobileTeamYou": "You",
+  "dietTitle": "Your diet plan",
+  "dietMaking": "Cooking your plan…",
+  "dietEditPreferences": "Food preferences",
+  "dietLockedTitle": "Diet plans are part of some plans",
+  "dietLockedBody": "Choose a plan that includes the AI diet plan.",
+  "dietLockedPlans": "Included in: {plans}",
+  "@dietLockedPlans": {
+    "placeholders": {
+      "plans": {
+        "type": "String"
+      }
+    }
+  },
+  "dietSeePlans": "See plans",
+  "dietNeedsDietitianTitle": "A dietitian is the right fit",
+  "dietDietitianPlanTitle": "Your dietitian's plan",
+  "dietDietitianPlanBody": "Your dietitian has made a meal plan for you. You'll find it in Care.",
+  "dietUnavailableTitle": "No plan just yet",
+  "dietMadeByAi": "Made by AI · not reviewed by a dietitian",
+  "dietMadeByRules": "Made from your food choices · not reviewed by a dietitian",
+  "dietSwap": "Swap",
+  "dietSwapTitle": "Swap {dish}",
+  "@dietSwapTitle": {
+    "placeholders": {
+      "dish": {
+        "type": "String"
+      }
+    }
+  },
+  "dietSwapBody": "Your choice replaces this dish for the rest of the week.",
+  "dietDayTotals": "This day",
+  "dietKcal": "kcal",
+  "dietProtein": "protein",
+  "dietFibre": "fibre",
+  "dietCarbs": "carbs",
+  "dietNewWeek": "Make a new week",
+  "dietNewWeekTomorrow": "New week available tomorrow",
+  "dietSlotBreakfast": "Breakfast",
+  "dietSlotMidMorning": "Mid-morning",
+  "dietSlotLunch": "Lunch",
+  "dietSlotEveningSnack": "Evening snack",
+  "dietSlotDinner": "Dinner",
+  "dietProfileTitle": "Tell us how you eat",
+  "dietProfileBody": "We'll plan Indian meals around your choices. You can change these any time.",
+  "dietFoodChoice": "Food choice",
+  "dietAllergies": "Allergies",
+  "dietNoAllergies": "No allergies",
+  "dietCuisine": "Regional cuisine",
+  "dietFastingDays": "Fasting days (optional)",
+  "dietAvoided": "Foods you avoid (optional)",
+  "dietAvoidedNone": "Choose foods",
+  "dietAvoidedCount": "{count} chosen",
+  "@dietAvoidedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dietSaveAndMake": "Save and make my plan",
+  "dietProfileHint": "Choose your food choice and allergies",
+  "dietDone": "Done",
+  "dietVegetarian": "Vegetarian",
+  "dietEggetarian": "Eggetarian",
+  "dietNonVegetarian": "Non-vegetarian",
+  "dietVegan": "Vegan",
+  "dietJain": "Jain",
+  "dietPanIndian": "Pan-Indian",
+  "dietNorthIndian": "North Indian",
+  "dietSouthIndian": "South Indian",
+  "dietEastIndian": "East Indian",
+  "dietWestIndian": "West Indian",
+  "dietPeanut": "Peanut",
+  "dietTreeNut": "Tree nuts",
+  "dietGluten": "Gluten",
+  "dietMilk": "Milk",
+  "dietEgg": "Egg",
+  "dietSoy": "Soy",
+  "dietSesame": "Sesame",
+  "dietMustard": "Mustard",
+  "dietFish": "Fish",
+  "dietShellfish": "Shellfish",
+  "dietSun": "Sun",
+  "dietMon": "Mon",
+  "dietTue": "Tue",
+  "dietWed": "Wed",
+  "dietThu": "Thu",
+  "dietFri": "Fri",
+  "dietSat": "Sat",
+  "dietEntryTitle": "Your AI diet plan",
+  "dietEntryBody": "A week of Indian meals made for you, with swaps.",
+  "mealsScanStepDishes": "Finding each dish on your plate…",
+  "mealsScanStepPortions": "Estimating portions…",
+  "mealsScanStepNutrients": "Matching the Indian food table for nutrients…",
+  "dietOpenCta": "See this week's meals",
+  "dietMakingHint": "This can take up to a minute. Please keep the app open.",
+  "cycleFertileLegend": "Fertile window, estimated",
+  "cycleTodayLegend": "Today",
+  "cyclePhaseShortPeriod": "Period",
+  "cyclePhaseShortFollicular": "Follicular",
+  "cyclePhaseShortOvulation": "Ovulation",
+  "cyclePhaseShortLuteal": "Luteal",
+  "dietCook1": "Reading your food choice and allergies…",
+  "dietCook2": "Picking dishes from your cuisine…",
+  "dietCook3": "Balancing protein, fibre and energy…",
+  "dietCook4": "Adding swaps you might like…",
+  "dietCook5": "Plating your week…",
+  "dietCooking": "Cooking your plan…",
+  "dietPreparing": "Getting your kitchen ready…",
+  "loadPlans": "Laying out your plans",
+  "loadCare": "Getting your care desk ready",
+  "loadSecure": "Keeping your account safe",
+  "loadAssessment": "Getting your check-in ready",
+  "loadMeals": "Setting out today's meals",
+  "loadChat": "Opening AI Care",
+  "loadSymptoms": "Checking in with your body",
+  "loadHome": "Bringing your day together",
+  "loadCycle": "Reading your cycle",
+  "scoreAreaCycle": "Cycle",
+  "scoreAreaMetabolic": "Metabolic",
+  "scoreAreaMind": "Mind",
+  "scoreAreaRest": "Rest",
+  "scoreStep1": "Reading your answers",
+  "scoreStep2": "Looking at your cycle pattern",
+  "scoreStep3": "Weighing symptoms and energy",
+  "scoreStep4": "Checking stress and sleep",
+  "scoreStep5": "Building your pre-score",
+  "drDashWaiting": "{count} things need you today · {consults} consults booked",
+  "@drDashWaiting": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "consults": {
+        "type": "int"
+      }
+    }
+  },
+  "drDashAllClear": "You're all caught up · {consults} consults booked",
+  "@drDashAllClear": {
+    "placeholders": {
+      "consults": {
+        "type": "int"
+      }
+    }
+  },
+  "drOnCallShort": "On call",
+  "drOffCallShort": "Off call",
+  "drDashBooked": "{count} booked",
+  "@drDashBooked": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "drQueueClear": "The queue is clear",
+  "drNextUp": "Next",
+  "drMoreWork": "Clinical work",
+  "drMoreYou": "You and your account",
+  "drMoreSubtitle": "Alerts, care plans, results and your profile",
+  "drRatingLabel": "Average rating",
+  "drRatingCount": "{count, plural, =1{from 1 review} other{from {count} reviews}}",
+  "@drRatingCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "drOnCallNote": "While this is on, urgent alerts reach you first.",
+  "drDecidedCount": "{done} of {total} sections decided",
+  "@drDecidedCount": {
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "drFlaggedCount": "{count, plural, =1{1 flagged} other{{count} flagged}}",
+  "@drFlaggedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "drRegistrationTitle": "Registration",
+  "drAboutYou": "About you",
+  "drInRange": "In range",
+  "drMedicinesTitle": "Her medicines",
+  "inWorkspace": "Instructor studio",
+  "inHomeTitle": "Today's practice",
+  "inTodayCount": "{count, plural, =0{No classes on your mat today} =1{1 class on your mat today} other{{count} classes on your mat today}}",
+  "@inTodayCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "inNextUp": "Next up",
+  "inAgendaTitle": "Your agenda",
+  "inUpcomingCount": "{count, plural, =0{Nothing scheduled ahead} =1{1 class ahead} other{{count} classes ahead}}",
+  "@inUpcomingCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "inPastWeek": "Past week",
+  "inComingUp": "Coming up",
+  "inClassDetails": "Class details",
+  "inTimeAndSize": "Time and size",
+  "inRepeatSection": "Repeat",
+  "inStudentsTitle": "The people who practise with you",
+  "inStudentsCount": "{count, plural, =1{1 student} other{{count} students}}",
+  "@inStudentsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "inLibraryTitle": "Your recorded sessions",
+  "inRatingLine": "{rating} from {count} ratings",
+  "@inRatingLine": {
+    "placeholders": {
+      "rating": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "inMoreTitle": "Your studio",
+  "inClassActions": "What you can do"
 }

@@ -12,8 +12,7 @@ class UnavailableMealsRepository implements MealsRepository {
   Future<List<FoodOption>> searchFoods(String query) async => throw const HomeNotConnected();
 
   @override
-  Future<Meal> save({required DateTime eatenAt, required MealSlot slot, required bool fromScan, required List<MealItemInput> items}) async =>
-      throw const HomeNotConnected();
+  Future<Meal> save({required DateTime eatenAt, required MealSlot slot, required bool fromScan, required List<MealItemInput> items}) async => throw const HomeNotConnected();
 
   @override
   Future<MealDay> today() async => throw const HomeNotConnected();

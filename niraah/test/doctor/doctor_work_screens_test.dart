@@ -89,6 +89,9 @@ void main() {
     await settle(tester);
     expect(find.text('Wind down by 10 pm.'), findsOneWidget);
     expect(find.text('Decide every section to sign'), findsOneWidget);
+    // The redesigned review puts the decision under the AI text; bring it into view first.
+    await tester.ensureVisible(find.text('Accept'));
+    await tester.pump();
     await tester.tap(find.text('Accept'));
     await settle(tester);
     expect(repo.calls, <String>['sleep:accepted']);
@@ -99,7 +102,8 @@ void main() {
   testWidgets('alerts list urgent ones with what raised them and their age (spec 011 §12 rule 3)', (WidgetTester tester) async {
     await tester.pumpApp(AlertsPage(repository: FakeDoctor(plan())));
     await settle(tester);
-    expect(find.text('Urgent · Asha'), findsOneWidget);
+    expect(find.text('Asha'), findsOneWidget);
+    expect(find.text('Urgent'), findsOneWidget);
     expect(find.text('A lab value past its urgent threshold'), findsOneWidget);
     expect(find.textContaining('40 min ago'), findsOneWidget);
   });

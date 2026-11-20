@@ -9,8 +9,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:niraah/design_system/theme/app_theme.dart';
+import 'package:niraah/design_system/widgets/answer_card.dart';
 import 'package:niraah/features/assessment/domain/assessment_repository.dart';
 import 'package:niraah/features/assessment/domain/prescore.dart';
 import 'package:niraah/features/assessment/domain/questionnaire.dart';
@@ -30,6 +32,7 @@ import 'package:niraah/features/doctor/presentation/review_page.dart';
 import 'package:niraah/features/doctor/presentation/review_queue_page.dart';
 import 'package:niraah/features/home/presentation/home_cubit.dart';
 import 'package:niraah/features/home/presentation/home_page.dart';
+import 'package:niraah/features/landing/landing_page.dart';
 import 'package:niraah/features/onboarding/presentation/pages/welcome_page.dart';
 import 'package:niraah/features/plans/domain/plan.dart';
 import 'package:niraah/features/plans/presentation/plans_page.dart';
@@ -77,12 +80,13 @@ Widget _frame(Widget child, AssessmentCubit cubit) => RepaintBoundary(
       key: _boundary,
       child: BlocProvider<AssessmentCubit>.value(
         value: cubit,
-        child: MaterialApp(
+        // A one-route router so pages that ask GoRouter (canPop, go) build as they do in the app.
+        child: MaterialApp.router(
           debugShowCheckedModeBanner: false,
           theme: AppTheme.lightTheme,
           localizationsDelegates: S.localizationsDelegates,
           supportedLocales: S.supportedLocales,
-          home: child,
+          routerConfig: GoRouter(routes: <RouteBase>[GoRoute(path: '/', builder: (_, _) => child)]),
         ),
       ),
     );
@@ -120,6 +124,42 @@ void main() {
     addTearDown(tester.view.reset);
   }
 
+  testWidgets('landing, phone full page', (WidgetTester tester) async {
+    tester.view.physicalSize = const Size(1170, 2532);
+    tester.view.devicePixelRatio = 3;
+    addTearDown(tester.view.reset);
+    await tester.pumpWidget(_frame(const LandingPage(), AssessmentCubit(GetIt.instance<AssessmentRepository>())));
+    await _shot(tester, '00-landing-phone');
+  }, skip: _out == null);
+
+  testWidgets('landing, phone slides', (WidgetTester tester) async {
+    phone(tester);
+    await tester.pumpWidget(_frame(const LandingPage(), AssessmentCubit(GetIt.instance<AssessmentRepository>())));
+    for (int i = 1; i <= 4; i++) {
+      await _shot(tester, '00-landing-phone-slide$i');
+      if (i < 4) {
+        await tester.tap(find.byTooltip('Next'));
+        await tester.pumpAndSettle();
+      }
+    }
+  }, skip: _out == null);
+
+  testWidgets('landing, small phone fits without scrolling', (WidgetTester tester) async {
+    tester.view.physicalSize = const Size(720, 1280);
+    tester.view.devicePixelRatio = 2;
+    addTearDown(tester.view.reset);
+    await tester.pumpWidget(_frame(const LandingPage(), AssessmentCubit(GetIt.instance<AssessmentRepository>())));
+    await _shot(tester, '00-landing-small-phone');
+  }, skip: _out == null);
+
+  testWidgets('landing, desktop full page', (WidgetTester tester) async {
+    tester.view.physicalSize = const Size(1440, 2500);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+    await tester.pumpWidget(_frame(const LandingPage(), AssessmentCubit(GetIt.instance<AssessmentRepository>())));
+    await _shot(tester, '00-landing-desktop');
+  }, skip: _out == null);
+
   testWidgets('welcome', (WidgetTester tester) async {
     phone(tester);
     await tester.pumpWidget(_frame(const WelcomePage(), AssessmentCubit(GetIt.instance<AssessmentRepository>())));
@@ -146,6 +186,27 @@ void main() {
     await tester.pumpWidget(_frame(const QuestionPage(), cubit));
     await _shot(tester, '03-question');
   }, skip: _out == null);
+
+  for (final (String name, List<(String, Answer)> before) in <(String, List<(String, Answer)>)>[
+    ('03a-question-cycle', <(String, Answer)>[('date_of_birth', const Answer.text('1995-05-01'))]),
+    ('03b-question-symptoms', <(String, Answer)>[('date_of_birth', const Answer.text('1995-05-01')), ('cycle_regularity', v('regular')), ('mood', v('tired'))]),
+    ('03c-question-diet', <(String, Answer)>[('date_of_birth', const Answer.text('1995-05-01')), ('cycle_regularity', v('regular')), ('mood', v('tired')), ('symptoms', v('acne'))]),
+  ]) {
+    testWidgets(name, (WidgetTester tester) async {
+      phone(tester);
+      await tester.runAsync(NOptionImages.load);
+      final AssessmentCubit cubit = AssessmentCubit(SampleAssessmentRepository(SampleBackend()));
+      final Future<void> loading = cubit.load();
+      await tester.pump(const Duration(seconds: 1));
+      await loading;
+      for (final (String k, Answer a) in before) {
+        cubit.answer(k, a);
+        await cubit.next();
+      }
+      await tester.pumpWidget(_frame(const QuestionPage(), cubit));
+      await _shot(tester, name);
+    }, skip: _out == null);
+  }
 
   testWidgets('pre-score', (WidgetTester tester) async {
     phone(tester);

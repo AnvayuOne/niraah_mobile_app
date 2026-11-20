@@ -3,21 +3,25 @@ import 'package:material_ui/material_ui.dart';
 
 import '../../../core/di/service_locator.dart';
 import '../../../design_system/tokens/tokens.dart';
+import '../../../design_system/widgets/clinician_ui.dart';
 import '../../../design_system/widgets/n_button.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../shared/area/area_access.dart';
 import '../../../shared/area/area_widgets.dart';
 import '../../provider_auth/presentation/provider_pages.dart';
 import '../../provider_work/domain/provider_work.dart';
+import '../domain/doctor.dart';
 import '../domain/doctor_work.dart';
+import 'doctor_list_card.dart';
 import 'doctor_shell.dart';
 import 'patients_pages.dart';
 
 /// More (spec 011 "Web and mobile": Home, Patients, Queue, Schedule, More): every other area of the workspace.
 class DoctorMorePage extends StatefulWidget {
-  const DoctorMorePage({super.key, this.repository});
+  const DoctorMorePage({super.key, this.repository, this.dashboard});
 
   final DoctorWorkRepository? repository;
+  final DoctorRepository? dashboard;
 
   @override
   State<DoctorMorePage> createState() => _DoctorMorePageState();
@@ -25,54 +29,72 @@ class DoctorMorePage extends StatefulWidget {
 
 class _DoctorMorePageState extends State<DoctorMorePage> {
   late final DoctorWorkRepository _repo = widget.repository ?? getIt<DoctorWorkRepository>();
-  late final Future<Json> _profile = _repo.profile();
+  // ignore() keeps a late failure (after leaving the page) from surfacing as an uncaught error;
+  // the FutureBuilder below still receives it.
+  late final Future<Json> _profile = _repo.profile()..ignore();
+  // The counts on the tiles come from the dashboard; without them the tiles simply show no badge.
+  late final Future<NeedsMe?> _counts = _loadCounts();
+
+  Future<NeedsMe?> _loadCounts() async {
+    try {
+      final DoctorRepository r = widget.dashboard ?? getIt<DoctorRepository>();
+      return (await r.getDashboard()).needsMe;
+    } on Object {
+      return null;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final S s = S.of(context);
-    Widget row(IconData icon, String label, String path) => Padding(
-      padding: const EdgeInsets.only(bottom: NSpace.xs),
-      child: NCard(
-        onTap: () => context.push(path),
-        semanticsLabel: label,
-        child: Row(
-          children: <Widget>[
-            Icon(icon, color: NColors.inkSecondary),
-            const SizedBox(width: NSpace.sm),
-            Expanded(
-              child: Text(
-                label,
-                style: NType.body.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w600),
-              ),
-            ),
-            const Icon(Icons.chevron_right_rounded, color: NColors.inkMuted),
-          ],
-        ),
-      ),
-    );
+    String? badge(int? n) => n == null || n <= 0 ? null : '$n';
     return DoctorShell(
       index: 4,
       title: s.pvShellMore,
-      body: ListView(
-        padding: const EdgeInsets.all(NSpace.lg),
-        children: <Widget>[
-          row(Icons.notification_important_outlined, s.drAlerts, '/doctor/alerts'),
-          row(Icons.assignment_outlined, s.drCarePlans, '/doctor/care-plans'),
-          row(Icons.science_outlined, s.drLabResults, '/doctor/labs'),
-          row(Icons.edit_note_rounded, s.drAdviceDrafts, '/doctor/advice'),
-          row(Icons.forum_outlined, s.msgTitle, '/doctor/messages'),
-          row(Icons.account_balance_wallet_outlined, s.earnTitle, '/doctor/earnings'),
-          row(Icons.person_outline_rounded, s.profileTitle, '/doctor/profile'),
-          // Shown only to a clinical reviewer (spec 011 §13).
-          FutureBuilder<Json>(
-            future: _profile,
-            builder: (BuildContext context, AsyncSnapshot<Json> snap) =>
-                snap.data?.flag('clinicalReviewer') ?? false ? row(Icons.fact_check_outlined, s.drReviewerTasks, '/doctor/reviewer') : const SizedBox.shrink(),
-          ),
-          row(Icons.notifications_none_rounded, s.notifTitle, RouteNotifications.path),
-          const SizedBox(height: NSpace.md),
-          OutlinedButton.icon(onPressed: () => providerSignOut(context), icon: const Icon(Icons.logout_rounded), label: Text(s.pvSignOut)),
-        ],
+      body: FutureBuilder<Json>(
+        future: _profile,
+        builder: (BuildContext context, AsyncSnapshot<Json> prof) => FutureBuilder<NeedsMe?>(
+          future: _counts,
+          builder: (BuildContext context, AsyncSnapshot<NeedsMe?> cs) {
+            final Json p = prof.data ?? const <String, dynamic>{};
+            final NeedsMe? n = cs.data;
+            final List<Widget> work = <Widget>[
+              CHubTile(icon: Icons.notification_important_outlined, title: s.drAlerts, badge: badge(n?.urgentAlerts), onTap: () => context.push('/doctor/alerts')),
+              CHubTile(icon: Icons.assignment_outlined, title: s.drCarePlans, badge: badge(n?.carePlans), onTap: () => context.push('/doctor/care-plans')),
+              CHubTile(icon: Icons.science_outlined, title: s.drLabResults, badge: badge(n?.labResults), onTap: () => context.push('/doctor/labs')),
+              CHubTile(icon: Icons.edit_note_rounded, title: s.drAdviceDrafts, badge: badge(n?.draftPrescriptions), onTap: () => context.push('/doctor/advice')),
+              CHubTile(icon: Icons.forum_outlined, title: s.msgTitle, badge: badge(n?.messages), onTap: () => context.push('/doctor/messages')),
+              // Shown only to a clinical reviewer (spec 011 §13).
+              if (p.flag('clinicalReviewer')) CHubTile(icon: Icons.fact_check_outlined, title: s.drReviewerTasks, badge: badge(n?.clinicalReview), onTap: () => context.push('/doctor/reviewer')),
+            ];
+            final List<Widget> you = <Widget>[
+              CHubTile(icon: Icons.account_balance_wallet_outlined, title: s.earnTitle, onTap: () => context.push('/doctor/earnings')),
+              CHubTile(icon: Icons.person_outline_rounded, title: s.profileTitle, onTap: () => context.push('/doctor/profile')),
+              CHubTile(icon: Icons.notifications_none_rounded, title: s.notifTitle, onTap: () => context.push(RouteNotifications.path)),
+            ];
+            return ListView(
+              padding: const EdgeInsets.fromLTRB(NSpace.md, NSpace.xs, NSpace.md, NSpace.xl),
+              children: <Widget>[
+                CHero(
+                  eyebrow: s.pvShellMore,
+                  title: p.str('name') ?? s.pvShellMore,
+                  subtitle: s.drMoreSubtitle,
+                  trailing: p.str('name') == null ? null : DecoratedBox(
+                    decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: NColors.surfaceCard, width: 2)),
+                    child: CAvatar(name: p.str('name'), size: 48),
+                  ),
+                ),
+                const SizedBox(height: NSpace.sm),
+                CLabel(s.drMoreWork),
+                DrStagger(children: work),
+                CLabel(s.drMoreYou),
+                DrStagger(children: you),
+                const SizedBox(height: NSpace.md),
+                OutlinedButton.icon(onPressed: () => providerSignOut(context), icon: const Icon(Icons.logout_rounded), label: Text(s.pvSignOut)),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
@@ -116,6 +138,8 @@ class _AlertsPageState extends State<AlertsPage> {
       await showModalBottomSheet<void>(
         context: context,
         isScrollControlled: true,
+        backgroundColor: NColors.surfaceCard,
+        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(NRadius.xl))),
         builder: (_) => _AlertSheet(alert: d, member: a.obj('member'), repo: _repo),
       );
     } on Object catch (e) {
@@ -133,11 +157,12 @@ class _AlertsPageState extends State<AlertsPage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.fromLTRB(NSpace.lg, NSpace.sm, NSpace.lg, 0),
+            padding: const EdgeInsets.fromLTRB(NSpace.md, NSpace.xs, NSpace.md, 0),
             child: SegmentedButton<bool>(
+              showSelectedIcon: false,
               segments: <ButtonSegment<bool>>[
-                ButtonSegment<bool>(value: false, label: Text(s.drAlertsOpen)),
-                ButtonSegment<bool>(value: true, label: Text(s.drAlertsResolved)),
+                ButtonSegment<bool>(value: false, label: Text(s.drAlertsOpen), icon: const Icon(Icons.notifications_active_outlined, size: 18)),
+                ButtonSegment<bool>(value: true, label: Text(s.drAlertsResolved), icon: const Icon(Icons.task_alt_rounded, size: 18)),
               ],
               selected: <bool>{_resolved},
               onSelectionChanged: (Set<bool> v) => setState(() {
@@ -152,45 +177,42 @@ class _AlertsPageState extends State<AlertsPage> {
               onRetry: () => setState(() => _list = _load()),
               builder: (BuildContext context, List<Json> rows) => rows.isEmpty
                   ? Padding(
-                      padding: const EdgeInsets.all(NSpace.lg),
-                      child: EmptyNote(text: s.drNoAlerts),
+                      padding: const EdgeInsets.all(NSpace.md),
+                      child: Align(alignment: Alignment.topCenter, child: CEmpty(icon: Icons.notifications_off_outlined, title: s.drNoAlerts)),
                     )
                   : ListView(
-                      padding: const EdgeInsets.all(NSpace.lg),
+                      padding: const EdgeInsets.fromLTRB(NSpace.md, NSpace.md, NSpace.md, NSpace.xl),
                       children: <Widget>[
-                        for (final Json a in rows) ...<Widget>[
-                          NCard(
-                            color: a.str('severity') == 'urgent' ? NColors.statusClinicalRedFlagLight : NColors.surfaceCard,
-                            onTap: () => _open(a),
-                            semanticsLabel: '${a.str('severity')}, ${a.obj('member').str('name')}, ${a.str('raisedBy')}',
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  '${a.str('severity') == 'urgent' ? '${s.drUrgent} · ' : ''}${a.obj('member').str('name') ?? s.drUnnamed}',
-                                  style: NType.body.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w700),
-                                ),
-                                Text(a.str('raisedBy') ?? '', style: NType.bodySm.copyWith(color: NColors.inkSecondary)),
-                                Text(
-                                  <String>[
-                                    alertStatusName(s, a.str('status')),
-                                    s.drAge(a.integer('ageMinutes')),
-                                    if (a.flag('onCall')) s.drOnCallAlert,
-                                    if (!a.flag('opened')) s.drNotOpened,
-                                  ].join(' · '),
-                                  style: NType.caption.copyWith(color: NColors.inkSecondary),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: NSpace.xs),
-                        ],
+                        DrStagger(
+                          children: <Widget>[
+                            for (final Json a in rows) _alertRow(s, a),
+                          ],
+                        ),
                       ],
                     ),
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _alertRow(S s, Json a) {
+    final bool urgent = a.str('severity') == 'urgent';
+    final String st = a.str('status') ?? '';
+    return DrListCard(
+      name: a.obj('member').str('name') ?? s.drUnnamed,
+      subtitle: a.str('raisedBy') ?? '',
+      meta: <String>[alertStatusName(s, st), s.drAge(a.integer('ageMinutes'))].join(' · '),
+      accent: st == 'resolved' ? NColors.statusSuccess : (urgent ? NColors.statusClinicalRedFlag : NColors.brandApricot),
+      tint: urgent && st != 'resolved' ? NColors.statusClinicalRedFlagLight.withValues(alpha: 0.45) : null,
+      onTap: () => _open(a),
+      semanticsLabel: '${a.str('severity')}, ${a.obj('member').str('name')}, ${a.str('raisedBy')}',
+      pills: <Widget>[
+        if (urgent) CPill(s.drUrgent, tone: CTone.red),
+        if (a.flag('onCall')) CPill(s.drOnCallAlert, tone: CTone.plum),
+        if (!a.flag('opened')) CPill(s.drNotOpened, tone: CTone.apricot),
+      ],
     );
   }
 }
@@ -218,21 +240,54 @@ class _AlertSheet extends StatelessWidget {
     final S s = S.of(context);
     final List<String> actions = alert.strs('actions');
     final String id = alert.str('id')!;
-    final bool resolved = alert.str('status') == 'resolved';
+    final String status = alert.str('status') ?? '';
+    final bool resolved = status == 'resolved';
+    final bool urgent = alert.str('severity') == 'urgent';
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.all(NSpace.lg),
+        padding: const EdgeInsets.fromLTRB(NSpace.lg, NSpace.sm, NSpace.lg, NSpace.lg),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Text(member.str('name') ?? s.drUnnamed, style: NType.h3.copyWith(color: NColors.inkPrimary)),
-            Text('${alert.str('raisedBy')} · ${shortDate(context, alert.str('createdAt') ?? '')}', style: NType.bodySm.copyWith(color: NColors.inkSecondary)),
-            Text(alertStatusName(s, alert.str('status')), style: NType.bodySm.copyWith(color: NColors.inkSecondary)),
+            Center(
+              child: Container(width: 40, height: 4, decoration: BoxDecoration(color: NColors.lineStrong, borderRadius: BorderRadius.circular(NRadius.pill))),
+            ),
+            const SizedBox(height: NSpace.md),
+            Row(
+              children: <Widget>[
+                CAvatar(name: member.str('name'), size: 48),
+                const SizedBox(width: NSpace.sm),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(member.str('name') ?? s.drUnnamed, style: NType.h3.copyWith(color: NColors.inkPrimary)),
+                      const SizedBox(height: 4),
+                      Wrap(
+                        spacing: 6,
+                        runSpacing: 6,
+                        children: <Widget>[
+                          if (urgent) CPill(s.drUrgent, tone: CTone.red),
+                          CPill(alertStatusName(s, status), tone: resolved ? CTone.sage : (status == 'open' ? CTone.apricot : CTone.lavender)),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: NSpace.md),
+            DrTextBox(
+              label: shortDate(context, alert.str('createdAt') ?? ''),
+              text: alert.str('raisedBy') ?? '',
+              icon: Icons.schedule_rounded,
+              color: urgent ? NColors.statusClinicalRedFlagLight : NColors.surfacePage,
+            ),
             const SizedBox(height: NSpace.md),
             NSecondaryButton(label: s.drOpenProfile, onPressed: () => context.push('/doctor/patients/${alert.str('memberId')}')),
             if (!resolved) ...<Widget>[
-              if (actions.contains('acknowledge') && alert.str('status') == 'open') ...<Widget>[
+              if (actions.contains('acknowledge') && status == 'open') ...<Widget>[
                 const SizedBox(height: NSpace.xs),
                 NSecondaryButton(label: s.drAcknowledge, onPressed: () => _do(context, () => repo.acknowledgeAlert(id), s.drAcknowledged)),
               ],
@@ -259,6 +314,8 @@ class _AlertSheet extends StatelessWidget {
   }
 }
 
+bool _isFlag(Json x) => x.str('flag') == 'low' || x.str('flag') == 'high' || (x.str('flag')?.isNotEmpty ?? false) && x.str('flag') != 'normal';
+
 /// Results to review (spec 011 §9 "Results"): flagged first, then the report with markers and ranges; she marks it
 /// reviewed with an optional plain-words comment. Values typed in by the member are said to be so.
 class LabResultsPage extends StatefulWidget {
@@ -284,43 +341,35 @@ class _LabResultsPageState extends State<LabResultsPage> {
         onRetry: () => setState(() => _list = _repo.labReportsToReview()),
         builder: (BuildContext context, List<Json> rows) => rows.isEmpty
             ? Padding(
-                padding: const EdgeInsets.all(NSpace.lg),
-                child: EmptyNote(text: s.drNoLabResults),
+                padding: const EdgeInsets.all(NSpace.md),
+                child: Align(alignment: Alignment.topCenter, child: CEmpty(icon: Icons.science_outlined, title: s.drNoLabResults)),
               )
             : ListView(
-                padding: const EdgeInsets.all(NSpace.lg),
+                padding: const EdgeInsets.fromLTRB(NSpace.md, NSpace.sm, NSpace.md, NSpace.xl),
                 children: <Widget>[
-                  for (final Json r in rows) ...<Widget>[
-                    NCard(
-                      onTap: () async {
-                        await Navigator.of(context).push(
-                          MaterialPageRoute<void>(
-                            builder: (_) => LabReportReviewPage(reportId: r.str('id')!, repository: _repo),
-                          ),
-                        );
-                        if (mounted) setState(() => _list = _repo.labReportsToReview());
-                      },
-                      semanticsLabel: r.obj('member').str('name'),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            r.obj('member').str('name') ?? s.drUnnamed,
-                            style: NType.body.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w700),
-                          ),
-                          Text(
-                            <String>[
-                              if (r.flag('flagged')) s.drFlagged,
-                              if (r.str('testDate') != null) s.labsTestedOn(shortDate(context, r.str('testDate')!)),
-                              if (r.flag('enteredByMember')) s.drTypedByMember,
-                            ].join(' · '),
-                            style: NType.caption.copyWith(color: NColors.inkSecondary),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: NSpace.xs),
-                  ],
+                  DrStagger(
+                    children: <Widget>[
+                      for (final Json r in rows)
+                        DrListCard(
+                          name: r.obj('member').str('name') ?? s.drUnnamed,
+                          semanticsLabel: r.obj('member').str('name'),
+                          accent: r.flag('flagged') ? NColors.statusClinicalRedFlag : null,
+                          subtitle: r.str('testDate') != null ? s.labsTestedOn(shortDate(context, r.str('testDate')!)) : null,
+                          pills: <Widget>[
+                            if (r.flag('flagged')) CPill(r.integer('flaggedCount') > 0 ? s.drFlaggedCount(r.integer('flaggedCount')) : s.drFlagged, tone: CTone.red),
+                            if (r.flag('enteredByMember')) CPill(s.drTypedByMember, tone: CTone.lavender),
+                          ],
+                          onTap: () async {
+                            await Navigator.of(context).push(
+                              MaterialPageRoute<void>(
+                                builder: (_) => LabReportReviewPage(reportId: r.str('id')!, repository: _repo),
+                              ),
+                            );
+                            if (mounted) setState(() => _list = _repo.labReportsToReview());
+                          },
+                        ),
+                    ],
+                  ),
                 ],
               ),
       ),
@@ -390,38 +439,181 @@ class _LabReportReviewPageState extends State<LabReportReviewPage> {
       body: AsyncBody<Json>(
         future: _report,
         onRetry: () => setState(() => _report = widget.repository.labReport(widget.reportId)),
-        builder: (BuildContext context, Json r) => ListView(
-          padding: const EdgeInsets.all(NSpace.lg),
-          children: <Widget>[
-            if (r.str('testDate') != null) Text(s.labsTestedOn(shortDate(context, r.str('testDate')!)), style: NType.h4.copyWith(color: NColors.inkPrimary)),
-            if (r.flag('typedByMember')) Text(s.drTypedByMemberLong, style: NType.bodySm.copyWith(color: NColors.inkSecondary)),
-            NSectionTitle(s.labsResults),
-            for (final Json x in r.objs('results'))
-              Padding(
-                padding: const EdgeInsets.only(bottom: NSpace.xs),
-                child: Text(
-                  '${x.str('name')}: ${x.number('value')} ${x.str('unit')}'
-                  '${x.obj('range').number('low') != null || x.obj('range').number('high') != null ? ' (${x.obj('range').number('low') ?? '–'}–${x.obj('range').number('high') ?? '–'})' : ''}'
-                  '${x.str('flag') != null ? ' · ${x.str('flag')}' : ''}',
-                  style: NType.body.copyWith(color: NColors.inkPrimary, fontWeight: x.str('flag') == 'low' || x.str('flag') == 'high' ? FontWeight.w700 : FontWeight.w400),
+        builder: (BuildContext context, Json r) {
+          final List<Json> all = r.objs('results');
+          final List<Json> flagged = all.where(_isFlag).toList();
+          final List<Json> rest = all.where((Json x) => !_isFlag(x)).toList();
+          return ListView(
+            padding: const EdgeInsets.fromLTRB(NSpace.md, NSpace.xs, NSpace.md, NSpace.xl),
+            children: <Widget>[
+              CHero(
+                eyebrow: s.drLabReport,
+                title: r.obj('member').str('name') ?? (r.str('testDate') != null ? s.labsTestedOn(shortDate(context, r.str('testDate')!)) : s.drLabReport),
+                subtitle: <String>[
+                  if (r.obj('member').str('name') != null && r.str('testDate') != null) s.labsTestedOn(shortDate(context, r.str('testDate')!)),
+                  if (r.flag('typedByMember')) s.drTypedByMemberLong,
+                ].join('\n'),
+                child: CStatGrid(
+                  children: <Widget>[
+                    CHeroStat(label: s.drFlagged, value: '${flagged.length}', icon: Icons.flag_outlined, alert: flagged.isNotEmpty),
+                    CHeroStat(label: s.drInRange, value: '${rest.length}', icon: Icons.check_circle_outline_rounded),
+                    CHeroStat(label: s.labsResults, value: '${all.length}', icon: Icons.science_outlined),
+                  ],
                 ),
               ),
-            NSectionTitle(s.drReview),
-            if (r.flag('reviewed')) ...<Widget>[
-              Text(s.drReviewed, style: NType.body.copyWith(color: NColors.inkPrimary)),
-              if (r.str('comment') != null) Text(r.str('comment')!, style: NType.bodySm.copyWith(color: NColors.inkSecondary)),
-            ] else ...<Widget>[
-              TextField(
-                controller: _comment,
-                minLines: 2,
-                maxLines: 6,
-                maxLength: 2000,
-                decoration: InputDecoration(labelText: s.drCommentForHer),
+              if (flagged.isNotEmpty) ...<Widget>[
+                const SizedBox(height: NSpace.md),
+                CPanel(
+                  title: s.drFlagged,
+                  icon: Icons.flag_outlined,
+                  action: CPill(s.drFlaggedCount(flagged.length), tone: CTone.red),
+                  child: Column(children: <Widget>[for (final Json x in flagged) _Marker(x: x)]),
+                ),
+              ],
+              if (rest.isNotEmpty) ...<Widget>[
+                const SizedBox(height: NSpace.md),
+                CPanel(
+                  title: s.labsResults,
+                  icon: Icons.science_outlined,
+                  child: Column(children: <Widget>[for (final Json x in rest) _Marker(x: x)]),
+                ),
+              ],
+              const SizedBox(height: NSpace.md),
+              CPanel(
+                title: s.drReview,
+                icon: Icons.rate_review_outlined,
+                action: r.flag('reviewed') ? CPill(s.drReviewed, tone: CTone.sage) : null,
+                child: r.flag('reviewed')
+                    ? (r.str('comment') != null ? DrTextBox(label: s.drCommentForHer, text: r.str('comment')!) : Text(s.drReviewed, style: NType.body.copyWith(color: NColors.inkPrimary)))
+                    : Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: <Widget>[
+                          TextField(
+                            controller: _comment,
+                            minLines: 2,
+                            maxLines: 6,
+                            maxLength: 2000,
+                            decoration: InputDecoration(labelText: s.drCommentForHer),
+                          ),
+                          const SizedBox(height: NSpace.xs),
+                          NPrimaryButton(label: s.drMarkReviewed, loading: _busy, onPressed: _review),
+                        ],
+                      ),
               ),
-              NPrimaryButton(label: s.drMarkReviewed, loading: _busy, onPressed: _review),
             ],
+          );
+        },
+      ),
+    );
+  }
+}
+
+/// One lab marker: name, value with unit, a flag pill, and where it sits in its printed range.
+class _Marker extends StatelessWidget {
+  const _Marker({required this.x});
+
+  final Json x;
+
+  String _n(num? v) => v == null ? '–' : (v == v.roundToDouble() ? v.toInt().toString() : v.toString());
+
+  @override
+  Widget build(BuildContext context) {
+    final num? value = x.number('value');
+    final num? low = x.obj('range').number('low');
+    final num? high = x.obj('range').number('high');
+    final String? flag = x.str('flag');
+    final bool flagged = _isFlag(x);
+    final bool hasRange = low != null || high != null;
+    return Semantics(
+      label: '${x.str('name')}: ${_n(value)} ${x.str('unit') ?? ''}${hasRange ? ' (${_n(low)}–${_n(high)})' : ''}${flag != null ? ' · $flag' : ''}',
+      excludeSemantics: true,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: NSpace.xs),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: <Widget>[
+                Expanded(child: Text(x.str('name') ?? '', style: NType.body.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w600))),
+                Text(
+                  _n(value),
+                  style: NType.h4.copyWith(
+                    color: flagged ? NColors.statusClinicalRedFlag : NColors.inkPrimary,
+                    fontFamily: NType.body.fontFamily,
+                    fontWeight: FontWeight.w700,
+                    fontFeatures: const <FontFeature>[FontFeature.tabularFigures()],
+                  ),
+                ),
+                const SizedBox(width: 4),
+                Text(x.str('unit') ?? '', style: NType.caption.copyWith(color: NColors.inkMuted, letterSpacing: 0)),
+              ],
+            ),
+            const SizedBox(height: 6),
+            Row(
+              children: <Widget>[
+                Expanded(child: hasRange && value != null ? _RangeBar(value: value.toDouble(), low: low?.toDouble(), high: high?.toDouble(), flagged: flagged) : const SizedBox.shrink()),
+                if (hasRange) ...<Widget>[
+                  const SizedBox(width: NSpace.sm),
+                  Text('${_n(low)}–${_n(high)}', style: NType.caption.copyWith(color: NColors.inkMuted, letterSpacing: 0)),
+                ],
+                if (flag != null && flag.isNotEmpty) ...<Widget>[const SizedBox(width: NSpace.xs), CPill(flag, tone: flagged ? CTone.red : CTone.sage)],
+              ],
+            ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// A track with the healthy range in sage and a dot where the value sits.
+class _RangeBar extends StatelessWidget {
+  const _RangeBar({required this.value, required this.flagged, this.low, this.high});
+
+  final double value;
+  final double? low;
+  final double? high;
+  final bool flagged;
+
+  @override
+  Widget build(BuildContext context) {
+    final double lo = low ?? 0;
+    final double hi = high ?? (lo * 2 == 0 ? 1 : lo * 2);
+    final double span = (hi - lo).abs() < 1e-9 ? 1 : hi - lo;
+    final double min = (low == null ? 0 : lo - span * 0.6);
+    final double max = hi + span * 0.6;
+    double f(double v) => ((v - min) / (max - min)).clamp(0.0, 1.0);
+    return SizedBox(
+      height: 14,
+      child: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints c) {
+          final double w = c.maxWidth;
+          return Stack(
+            clipBehavior: Clip.none,
+            alignment: Alignment.centerLeft,
+            children: <Widget>[
+              Container(height: 6, decoration: BoxDecoration(color: NColors.surfaceBackdrop, borderRadius: BorderRadius.circular(NRadius.pill))),
+              Positioned(
+                left: w * f(lo),
+                width: w * (f(hi) - f(lo)),
+                child: Container(height: 6, decoration: BoxDecoration(color: NColors.brandSage, borderRadius: BorderRadius.circular(NRadius.pill))),
+              ),
+              Positioned(
+                left: (w * f(value) - 7).clamp(0.0, w - 14),
+                child: Container(
+                  width: 14,
+                  height: 14,
+                  decoration: BoxDecoration(
+                    color: flagged ? NColors.statusClinicalRedFlag : NColors.roleDoctor,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.white, width: 2),
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
@@ -494,42 +686,134 @@ class _DoctorProfilePageState extends State<DoctorProfilePage> {
           }
           final Json reg = p.obj('registration');
           final Json rating = p.obj('rating');
+          final bool onCall = p.flag('onCall');
+          final String approval = p.str('approvalStatus') ?? '';
           return ListView(
-            padding: const EdgeInsets.all(NSpace.lg),
+            padding: const EdgeInsets.fromLTRB(NSpace.md, NSpace.xs, NSpace.md, NSpace.xl),
             children: <Widget>[
-              Text(p.str('name') ?? '', style: NType.h3.copyWith(color: NColors.inkPrimary)),
-              Text(s.drApproval(p.str('approvalStatus') ?? ''), style: NType.bodySm.copyWith(color: NColors.inkSecondary)),
-              if (p.str('reverifyBy') != null) Text(s.drReverify(shortDate(context, p.str('reverifyBy')!)), style: NType.bodySm.copyWith(color: NColors.inkSecondary)),
-              Text(
-                reg.str('number') == null ? s.drNoRegistration : s.drRegistration(reg.str('number')!, reg.str('council') ?? ''),
-                style: NType.bodySm.copyWith(color: reg.str('number') == null ? NColors.statusAttention : NColors.inkSecondary),
-              ),
-              if (rating.number('average') != null) Text(s.drRating(rating.number('average')!.toStringAsFixed(1), rating.integer('count')), style: NType.bodySm.copyWith(color: NColors.inkSecondary)),
-              SwitchListTile(
-                contentPadding: EdgeInsets.zero,
-                title: Text(s.drOnCallSwitch),
-                value: p.flag('onCall'),
-                onChanged: _busy ? null : (bool v) => _save(onCall: v),
-              ),
-              TextField(
-                controller: _bio,
-                minLines: 3,
-                maxLines: 6,
-                maxLength: 1000,
-                decoration: InputDecoration(labelText: s.drBio),
-              ),
-              TextField(
-                controller: _languages,
-                decoration: InputDecoration(labelText: s.drLanguages, helperText: s.drCommaSeparated),
-              ),
-              TextField(
-                controller: _specialities,
-                decoration: InputDecoration(labelText: s.drSpecialities, helperText: s.drCommaSeparated),
+              CHero(
+                eyebrow: s.profileTitle,
+                title: p.str('name') ?? '',
+                subtitle: s.drApproval(approval),
+                trailing: DecoratedBox(
+                  decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: NColors.surfaceCard, width: 2)),
+                  child: CAvatar(name: p.str('name'), size: 56),
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: <Widget>[
+                    if (rating.number('average') != null) ...<Widget>[
+                      Semantics(
+                        label: s.drRating(rating.number('average')!.toStringAsFixed(1), rating.integer('count')),
+                        excludeSemantics: true,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: <Widget>[
+                            Text(
+                              rating.number('average')!.toStringAsFixed(1),
+                              style: NType.h1.copyWith(color: NColors.inkPrimary, fontFamily: NType.body.fontFamily, fontWeight: FontWeight.w700, height: 1, fontFeatures: const <FontFeature>[FontFeature.tabularFigures()]),
+                            ),
+                            const SizedBox(width: 6),
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 4),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  const Icon(Icons.star_rounded, size: 18, color: NColors.brandApricot),
+                                  Text(s.drRatingCount(rating.integer('count')), style: NType.caption.copyWith(color: NColors.inkSecondary, letterSpacing: 0)),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                    const Spacer(),
+                    if (p.str('reverifyBy') != null)
+                      Flexible(
+                        flex: 3,
+                        child: Text(
+                          s.drReverify(shortDate(context, p.str('reverifyBy')!)),
+                          textAlign: TextAlign.end,
+                          style: NType.caption.copyWith(color: NColors.inkSecondary, letterSpacing: 0),
+                        ),
+                      ),
+                  ],
+                ),
               ),
               const SizedBox(height: NSpace.md),
-              NPrimaryButton(label: s.profileSave, loading: _busy, onPressed: _save),
-              const SizedBox(height: NSpace.sm),
-              Text(s.drRegistrationNote, style: NType.caption.copyWith(color: NColors.inkMuted)),
+              CEntrance(
+                delayMs: 60,
+                child: Material(
+                  color: onCall ? NColors.brandApricotLight : NColors.surfaceCard,
+                  borderRadius: BorderRadius.circular(NRadius.xl),
+                  child: Container(
+                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(NRadius.xl), border: Border.all(color: onCall ? NColors.brandApricot : NColors.lineDefault)),
+                    child: SwitchListTile(
+                      contentPadding: const EdgeInsets.symmetric(horizontal: NSpace.md, vertical: NSpace.xxs),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(NRadius.xl)),
+                      secondary: Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(color: onCall ? NColors.roleDoctor : NColors.brandBlushLight, borderRadius: BorderRadius.circular(NRadius.md)),
+                        child: Icon(Icons.phone_in_talk_outlined, size: 20, color: onCall ? NColors.brandApricot : NColors.brandRosewood),
+                      ),
+                      title: Text(s.drOnCallSwitch, style: NType.body.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w700)),
+                      subtitle: Text(s.drOnCallNote, style: NType.bodySm.copyWith(color: NColors.inkSecondary)),
+                      activeThumbColor: Colors.white,
+                      activeTrackColor: NColors.roleDoctor,
+                      value: onCall,
+                      onChanged: _busy ? null : (bool v) => _save(onCall: v),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: NSpace.md),
+              CPanel(
+                title: s.drRegistrationTitle,
+                icon: Icons.verified_outlined,
+                action: CPill(approval, tone: approval == 'approved' ? CTone.sage : CTone.apricot),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    if (reg.str('number') == null)
+                      DrTextBox(label: s.drRegistrationTitle, text: s.drNoRegistration, color: NColors.statusWarningLight, labelColor: NColors.statusWarningText, icon: Icons.error_outline_rounded)
+                    else
+                      Text(s.drRegistration(reg.str('number')!, reg.str('council') ?? ''), style: NType.body.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w600)),
+                    const SizedBox(height: NSpace.xs),
+                    Text(s.drRegistrationNote, style: NType.caption.copyWith(color: NColors.inkMuted, letterSpacing: 0)),
+                  ],
+                ),
+              ),
+              const SizedBox(height: NSpace.md),
+              CPanel(
+                title: s.drAboutYou,
+                icon: Icons.person_outline_rounded,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    TextField(
+                      controller: _bio,
+                      minLines: 3,
+                      maxLines: 6,
+                      maxLength: 1000,
+                      decoration: InputDecoration(labelText: s.drBio),
+                    ),
+                    const SizedBox(height: NSpace.xs),
+                    TextField(
+                      controller: _languages,
+                      decoration: InputDecoration(labelText: s.drLanguages, helperText: s.drCommaSeparated),
+                    ),
+                    const SizedBox(height: NSpace.sm),
+                    TextField(
+                      controller: _specialities,
+                      decoration: InputDecoration(labelText: s.drSpecialities, helperText: s.drCommaSeparated),
+                    ),
+                    const SizedBox(height: NSpace.md),
+                    NPrimaryButton(label: s.profileSave, loading: _busy, onPressed: _save),
+                  ],
+                ),
+              ),
             ],
           );
         },
@@ -561,19 +845,52 @@ class _ReviewerTasksPageState extends State<ReviewerTasksPage> {
       body: AsyncBody<Json>(
         future: _tasks,
         onRetry: () => setState(() => _tasks = _repo.reviewerTasks()),
-        builder: (BuildContext context, Json t) => ListView(
-          padding: const EdgeInsets.all(NSpace.lg),
-          children: <Widget>[
-            for (final Json x in t.objs('tasks'))
-              ListTile(
-                contentPadding: EdgeInsets.zero,
-                title: Text(x.str('label') ?? ''),
-                trailing: Text('${x.integer('count')}', style: NType.h4.copyWith(color: NColors.inkPrimary)),
+        builder: (BuildContext context, Json t) {
+          final List<Json> tasks = t.objs('tasks');
+          final int total = tasks.fold<int>(0, (int a, Json x) => a + x.integer('count'));
+          return ListView(
+            padding: const EdgeInsets.fromLTRB(NSpace.md, NSpace.xs, NSpace.md, NSpace.xl),
+            children: <Widget>[
+              CPanel(
+                title: s.drReviewerTasks,
+                icon: Icons.verified_user_outlined,
+                note: s.drReviewerOnWeb,
+                action: Text(
+                  '$total',
+                  style: NType.h2.copyWith(color: NColors.inkPrimary, fontFamily: NType.body.fontFamily, fontWeight: FontWeight.w700, fontFeatures: const <FontFeature>[FontFeature.tabularFigures()]),
+                ),
+                child: Column(
+                  children: <Widget>[
+                    for (int i = 0; i < tasks.length; i++)
+                      CEntrance(
+                        delayMs: 50 * i,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: NSpace.sm),
+                          decoration: BoxDecoration(border: i == 0 ? null : const Border(top: BorderSide(color: NColors.lineDefault))),
+                          child: Row(
+                            children: <Widget>[
+                              Expanded(child: Text(tasks[i].str('label') ?? '', style: NType.body.copyWith(color: NColors.inkPrimary))),
+                              const SizedBox(width: NSpace.sm),
+                              Container(
+                                constraints: const BoxConstraints(minWidth: 40),
+                                padding: const EdgeInsets.symmetric(horizontal: NSpace.sm, vertical: 4),
+                                decoration: BoxDecoration(color: tasks[i].integer('count') > 0 ? NColors.roleDoctor : NColors.surfaceBackdrop, borderRadius: BorderRadius.circular(NRadius.pill)),
+                                child: Text(
+                                  '${tasks[i].integer('count')}',
+                                  textAlign: TextAlign.center,
+                                  style: NType.body.copyWith(color: tasks[i].integer('count') > 0 ? Colors.white : NColors.inkMuted, fontWeight: FontWeight.w700, fontFeatures: const <FontFeature>[FontFeature.tabularFigures()]),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
               ),
-            const SizedBox(height: NSpace.sm),
-            Text(s.drReviewerOnWeb, style: NType.caption.copyWith(color: NColors.inkMuted)),
-          ],
-        ),
+            ],
+          );
+        },
       ),
     );
   }

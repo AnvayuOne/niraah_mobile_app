@@ -10,6 +10,7 @@ import '../../../design_system/tokens/tokens.dart';
 import '../../../design_system/widgets/error_view.dart';
 import '../../../design_system/widgets/loading_view.dart';
 import '../../../design_system/widgets/n_button.dart';
+import '../../../design_system/widgets/n_loaders.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../shared/constants/route_constants.dart';
 import '../../cycle/domain/cycle.dart';
@@ -100,7 +101,7 @@ class _ConversationViewState extends State<_ConversationView> {
         final Conversation? c = st.conversation;
         final ChatHome? home = st.home;
         if (st.status == ChatLoad.failure) return Scaffold(body: ErrorView(message: s.commonLoadError));
-        if (c == null || home == null) return Scaffold(body: LoadingView(label: s.loading));
+        if (c == null || home == null) return Scaffold(body: LoadingView(label: s.loadChat, kind: NLoaderKind.chat));
         final bool waiting = st.sending && (c.items.isEmpty || c.items.last is MemberMessage) && !st.failed;
         final bool failedWithoutAnswer = st.failed && c.items.isNotEmpty && c.items.last is MemberMessage;
         return Scaffold(
@@ -152,7 +153,7 @@ class _ConversationViewState extends State<_ConversationView> {
                       if (waiting)
                         Padding(
                           padding: const EdgeInsets.only(top: NSpace.xs),
-                          child: Semantics(liveRegion: true, child: Text(s.chatThinking, style: NType.bodySm.copyWith(color: NColors.inkMuted))),
+                          child: NTypingBubble(label: s.chatThinking),
                         ),
                       if (failedWithoutAnswer) _Incomplete(onRetry: st.sending ? null : context.read<ConversationCubit>().retry),
                     ],

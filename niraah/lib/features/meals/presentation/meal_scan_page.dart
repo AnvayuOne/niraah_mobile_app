@@ -7,11 +7,14 @@ import 'package:image_picker/image_picker.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../../../core/di/service_locator.dart';
+import '../../../design_system/generated/niraah_assets.dart';
 import '../../../design_system/tokens/tokens.dart';
 import '../../../design_system/widgets/n_button.dart';
+import '../../../design_system/widgets/n_illustration.dart';
 import '../../../l10n/app_localizations.dart';
 import '../domain/meals.dart';
 import 'meal_widgets.dart';
+import 'scan_fx.dart';
 
 /// The meal scanner (spec 010 §6 rules 1, 2, 4; spec 009 "Meal scan"): photo → the AI names the dishes and
 /// portions → she checks and corrects them → saved. Nutrients come from the food table on the server.
@@ -51,6 +54,13 @@ class _MealScanPageState extends State<MealScanPage> {
   MealSlot _slot = slotForNow(DateTime.now());
   String? _message;
   Meal? _saved;
+
+  @override
+  void initState() {
+    super.initState();
+    // The camera opens straight away; the choices stay on screen if she backs out of it.
+    if (widget.picker == null) WidgetsBinding.instance.addPostFrameCallback((_) => _pick(ImageSource.camera));
+  }
 
   Future<void> _pick(ImageSource source) async {
     // Kept small for upload: the scan needs the plate, not every pixel.
@@ -139,13 +149,13 @@ class _MealScanPageState extends State<MealScanPage> {
   }
 
   void _restart() => setState(() {
-        _step = _Step.pick;
-        _photo = null;
-        _lines = <_Line>[];
-        _tags = <String>[];
-        _message = null;
-        _saved = null;
-      });
+    _step = _Step.pick;
+    _photo = null;
+    _lines = <_Line>[];
+    _tags = <String>[];
+    _message = null;
+    _saved = null;
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -169,40 +179,46 @@ class _MealScanPageState extends State<MealScanPage> {
       ? const SizedBox.shrink()
       : ClipRRect(
           borderRadius: BorderRadius.circular(NRadius.xl),
-          child: AspectRatio(aspectRatio: 4 / 3, child: Image.memory(_photo!, fit: BoxFit.cover)),
+          child: AspectRatio(
+            aspectRatio: 4 / 3,
+            child: Image.memory(_photo!, fit: BoxFit.cover),
+          ),
         );
 
   Widget _pickView(S s) => ListView(
+    padding: const EdgeInsets.all(NSpace.lg),
+    children: <Widget>[
+      Container(
         padding: const EdgeInsets.all(NSpace.lg),
-        children: <Widget>[
-          MealCard(
-            color: NColors.brandApricotLight,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                const Icon(Icons.restaurant_rounded, color: NColors.brandTerracotta, size: 40),
-                const SizedBox(height: NSpace.sm),
-                Text(s.mealsScanIntro, style: NType.body.copyWith(color: NColors.inkPrimary)),
-              ],
+        decoration: BoxDecoration(
+          gradient: const LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: <Color>[NColors.brandApricotLight, NColors.brandBlushLight]),
+          borderRadius: BorderRadius.circular(NRadius.xl),
+        ),
+        child: Column(
+          children: <Widget>[
+            const NLottie(path: NLotties.nutrition, size: 180),
+            const SizedBox(height: NSpace.sm),
+            Text(
+              s.mealsScanIntro,
+              textAlign: TextAlign.center,
+              style: NType.body.copyWith(color: NColors.inkPrimary),
             ),
-          ),
-          const SizedBox(height: NSpace.lg),
-          NPrimaryButton(label: s.mealsTakePhoto, onPressed: () => _pick(ImageSource.camera)),
-          const SizedBox(height: NSpace.sm),
-          NSecondaryButton(label: s.mealsChoosePhoto, onPressed: () => _pick(ImageSource.gallery)),
-        ],
-      );
+          ],
+        ),
+      ),
+      const SizedBox(height: NSpace.lg),
+      NPrimaryButton(label: s.mealsTakePhoto, onPressed: () => _pick(ImageSource.camera)),
+      const SizedBox(height: NSpace.sm),
+      NSecondaryButton(label: s.mealsChoosePhoto, onPressed: () => _pick(ImageSource.gallery)),
+    ],
+  );
 
   Widget _readingView(S s) => ListView(
-        padding: const EdgeInsets.all(NSpace.lg),
-        children: <Widget>[
-          _photoBox(),
-          const SizedBox(height: NSpace.xl),
-          const Center(child: CircularProgressIndicator()),
-          const SizedBox(height: NSpace.md),
-          Center(child: Text(s.mealsReading, style: NType.body.copyWith(color: NColors.inkSecondary))),
-        ],
-      );
+    padding: const EdgeInsets.all(NSpace.lg),
+    children: <Widget>[
+      ScanningPhoto(photo: _photo!, steps: <String>[s.mealsReading, s.mealsScanStepDishes, s.mealsScanStepPortions, s.mealsScanStepNutrients]),
+    ],
+  );
 
   Widget _reviewView(S s) {
     final bool ready = _lines.isNotEmpty && _lines.every((_Line l) => l.food != null);
@@ -211,11 +227,21 @@ class _MealScanPageState extends State<MealScanPage> {
       children: <Widget>[
         _photoBox(),
         const SizedBox(height: NSpace.lg),
-        Semantics(header: true, child: Text(s.mealsResultTitle, style: NType.h3.copyWith(color: NColors.inkPrimary))),
+        if (sumNutrients(_lines.map((_Line l) => l.nutrients)) case final Nutrients total) ...<Widget>[
+          SlideInItem(
+            index: 0,
+            child: NutrientSummary(n: total, title: s.mealsTotals),
+          ),
+          const SizedBox(height: NSpace.lg),
+        ],
+        Semantics(
+          header: true,
+          child: Text(s.mealsResultTitle, style: NType.h3.copyWith(color: NColors.inkPrimary)),
+        ),
         const SizedBox(height: NSpace.xxs),
         Text(s.mealsResultHint, style: NType.bodySm.copyWith(color: NColors.inkSecondary)),
         const SizedBox(height: NSpace.md),
-        for (final _Line l in _lines) ...<Widget>[_lineCard(s, l), const SizedBox(height: NSpace.sm)],
+        for (int i = 0; i < _lines.length; i++) ...<Widget>[SlideInItem(index: i + 1, child: _lineCard(s, _lines[i])), const SizedBox(height: NSpace.sm)],
         if (_tags.isNotEmpty) ...<Widget>[TagChips(tags: _tags), const SizedBox(height: NSpace.sm)],
         Text(s.mealsAiMark, style: NType.caption.copyWith(color: NColors.inkMuted)),
         const SizedBox(height: NSpace.lg),
@@ -223,10 +249,7 @@ class _MealScanPageState extends State<MealScanPage> {
         const SizedBox(height: NSpace.xs),
         Wrap(
           spacing: NSpace.xs,
-          children: <Widget>[
-            for (final MealSlot m in MealSlot.values)
-              ChoiceChip(label: Text(slotName(s, m)), selected: _slot == m, onSelected: (_) => setState(() => _slot = m)),
-          ],
+          children: <Widget>[for (final MealSlot m in MealSlot.values) ChoiceChip(label: Text(slotName(s, m)), selected: _slot == m, onSelected: (_) => setState(() => _slot = m))],
         ),
         const SizedBox(height: NSpace.lg),
         NPrimaryButton(label: s.mealsSave, inactiveHint: s.mealsSaveInactive, loading: _step == _Step.saving, onPressed: ready ? _save : null),
@@ -270,12 +293,24 @@ class _MealScanPageState extends State<MealScanPage> {
             children: <Widget>[
               IconButton(
                 icon: const Icon(Icons.remove_circle_outline_rounded),
-                onPressed: l.count > 0.5 ? () => setState(() => l..count = l.count - 0.5..nutrients = null) : null,
+                onPressed: l.count > 0.5
+                    ? () => setState(
+                        () => l
+                          ..count = l.count - 0.5
+                          ..nutrients = null,
+                      )
+                    : null,
               ),
               Text(formatNumber(l.count), style: NType.body.copyWith(fontWeight: FontWeight.w600)),
               IconButton(
                 icon: const Icon(Icons.add_circle_outline_rounded),
-                onPressed: l.count < 20 ? () => setState(() => l..count = l.count + 0.5..nutrients = null) : null,
+                onPressed: l.count < 20
+                    ? () => setState(
+                        () => l
+                          ..count = l.count + 0.5
+                          ..nutrients = null,
+                      )
+                    : null,
               ),
               const SizedBox(width: NSpace.xs),
               DropdownButton<String>(
@@ -283,7 +318,13 @@ class _MealScanPageState extends State<MealScanPage> {
                 underline: const SizedBox.shrink(),
                 items: <DropdownMenuItem<String>>[for (final String u in portionUnits) DropdownMenuItem<String>(value: u, child: Text(u))],
                 onChanged: (String? u) {
-                  if (u != null) setState(() => l..unit = u..nutrients = null);
+                  if (u != null) {
+                    setState(
+                      () => l
+                        ..unit = u
+                        ..nutrients = null,
+                    );
+                  }
                 },
               ),
             ],
@@ -305,7 +346,9 @@ class _MealScanPageState extends State<MealScanPage> {
             children: <Widget>[
               const Icon(Icons.check_circle_rounded, color: NColors.statusSuccess, size: 32),
               const SizedBox(width: NSpace.sm),
-              Expanded(child: Text('${s.mealsSaved} · ${slotName(s, m.slot)}', style: NType.h4.copyWith(color: NColors.inkPrimary))),
+              Expanded(
+                child: Text('${s.mealsSaved} · ${slotName(s, m.slot)}', style: NType.h4.copyWith(color: NColors.inkPrimary)),
+              ),
             ],
           ),
         ),
@@ -320,9 +363,7 @@ class _MealScanPageState extends State<MealScanPage> {
                   child: Text('${i.name} · ${i.portion ?? '${formatNumber(i.grams)} g'}', style: NType.body.copyWith(color: NColors.inkPrimary)),
                 ),
               const SizedBox(height: NSpace.xs),
-              Text(s.mealsTotals, style: NType.label.copyWith(color: NColors.inkMuted)),
-              const SizedBox(height: NSpace.xxs),
-              NutrientRow(n: m.totals),
+              NutrientSummary(n: m.totals, title: s.mealsTotals),
               const SizedBox(height: NSpace.xs),
               TagChips(tags: m.tags),
             ],
@@ -330,7 +371,10 @@ class _MealScanPageState extends State<MealScanPage> {
         ),
         if (m.suggestion != null) ...<Widget>[
           const SizedBox(height: NSpace.md),
-          MealCard(color: NColors.brandLavenderLight, child: Text(m.suggestion!, style: NType.body.copyWith(color: NColors.inkPrimary))),
+          MealCard(
+            color: NColors.brandLavenderLight,
+            child: Text(m.suggestion!, style: NType.body.copyWith(color: NColors.inkPrimary)),
+          ),
         ],
         const SizedBox(height: NSpace.lg),
         NPrimaryButton(label: s.mealsDone, onPressed: () => context.pop(true)),
@@ -341,15 +385,18 @@ class _MealScanPageState extends State<MealScanPage> {
   }
 
   Widget _messageView(S s) => ListView(
-        padding: const EdgeInsets.all(NSpace.lg),
-        children: <Widget>[
-          _photoBox(),
-          const SizedBox(height: NSpace.lg),
-          MealCard(color: NColors.statusInfoLight, child: Text(_message ?? s.mealsUnavailable, style: NType.body.copyWith(color: NColors.inkPrimary))),
-          const SizedBox(height: NSpace.lg),
-          NPrimaryButton(label: s.tryAgain, onPressed: _restart),
-        ],
-      );
+    padding: const EdgeInsets.all(NSpace.lg),
+    children: <Widget>[
+      _photoBox(),
+      const SizedBox(height: NSpace.lg),
+      MealCard(
+        color: NColors.statusInfoLight,
+        child: Text(_message ?? s.mealsUnavailable, style: NType.body.copyWith(color: NColors.inkPrimary)),
+      ),
+      const SizedBox(height: NSpace.lg),
+      NPrimaryButton(label: s.tryAgain, onPressed: _restart),
+    ],
+  );
 }
 
 /// "Not sure — what is this?": a search of the food table (spec 009 "Meal scan" 3).
@@ -398,7 +445,11 @@ class _FoodSearchSheetState extends State<_FoodSearchSheet> {
           children: <Widget>[
             Text(s.mealsSearchTitle, style: NType.h3.copyWith(color: NColors.inkPrimary)),
             const SizedBox(height: NSpace.sm),
-            TextField(autofocus: true, onChanged: _onChanged, decoration: InputDecoration(hintText: s.mealsSearchHint, prefixIcon: const Icon(Icons.search_rounded))),
+            TextField(
+              autofocus: true,
+              onChanged: _onChanged,
+              decoration: InputDecoration(hintText: s.mealsSearchHint, prefixIcon: const Icon(Icons.search_rounded)),
+            ),
             const SizedBox(height: NSpace.sm),
             Expanded(
               child: _searched && _results.isEmpty
@@ -406,11 +457,7 @@ class _FoodSearchSheetState extends State<_FoodSearchSheet> {
                   : ListView(
                       children: <Widget>[
                         for (final FoodOption f in _results)
-                          ListTile(
-                            title: Text(f.name),
-                            subtitle: f.regionalNames.isEmpty ? null : Text(f.regionalNames.take(3).join(', ')),
-                            onTap: () => Navigator.of(context).pop(f),
-                          ),
+                          ListTile(title: Text(f.name), subtitle: f.regionalNames.isEmpty ? null : Text(f.regionalNames.take(3).join(', ')), onTap: () => Navigator.of(context).pop(f)),
                       ],
                     ),
             ),

@@ -53,9 +53,20 @@ class ApiAuthRepository implements AuthRepository, SecondCheckRepository {
     required String termsVersion,
     required String privacyVersion,
     String? recoveryEmail,
-  }) async =>
-      // Create-account details are spec 010, built in a later phase.
-      const FailureResult<void>('not_connected');
+  }) async {
+    // POST /me/account (spec 010 "Create account"): the name and the accepted terms and privacy
+    // versions. A recovery email needs a fresh proof (second check), so it is added afterwards from
+    // Me > Privacy, never here; [recoveryEmail] is accepted for the interface and not sent.
+    final ApiResult<Map<String, dynamic>> r = await _api.post('/me/account', <String, dynamic>{
+      'displayName': displayName.trim(),
+      'termsVersion': termsVersion,
+      'privacyVersion': privacyVersion,
+    });
+    return switch (r) {
+      ApiOk<Map<String, dynamic>>() => const Success<void>(null),
+      ApiFail<Map<String, dynamic>>(:final ApiError error) => FailureResult<void>(error.message),
+    };
+  }
 
   // --- Second check ---
 

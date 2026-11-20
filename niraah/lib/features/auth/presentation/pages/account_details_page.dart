@@ -66,8 +66,9 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
     switch (r) {
       case Success<void>():
         context.go(RouteConstants.assessmentStart);
-      case FailureResult<void>():
-        setState(() => _message = s.notConnectedYet);
+      case FailureResult<void>(:final String message):
+        // The server's words are safe to show; 'not_connected' only comes from the offline stand-ins.
+        setState(() => _message = message == 'not_connected' ? s.notConnectedYet : message);
     }
   }
 

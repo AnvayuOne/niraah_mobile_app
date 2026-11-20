@@ -4,9 +4,11 @@ import 'package:material_ui/material_ui.dart';
 
 import '../core/di/service_locator.dart';
 import '../design_system/theme/app_theme.dart';
+import '../design_system/widgets/n_responsive.dart';
 import '../features/assessment/domain/assessment_repository.dart';
 import '../features/assessment/presentation/assessment_cubit.dart';
 import '../l10n/app_localizations.dart';
+import '../shared/constants/route_constants.dart';
 import 'app_router.dart';
 
 class NiraahApp extends StatefulWidget {
@@ -20,10 +22,31 @@ class NiraahApp extends StatefulWidget {
 }
 
 class _NiraahAppState extends State<NiraahApp> {
+  /// Routes that lay themselves out for wide screens.
+  static const Set<String> _fullWidth = <String>{RouteConstants.landing};
+
   late final GoRouter _router = widget.initialLocation == null ? AppRouter.create() : AppRouter.create(initialLocation: widget.initialLocation!);
+
+  /// Whether the current route sits in the app column. Updated after the frame in
+  /// which the route changed, never during a build.
+  final ValueNotifier<bool> _framed = ValueNotifier<bool>(true);
+
+  void _onRoute() => WidgetsBinding.instance.addPostFrameCallback((_) {
+    if (!mounted) return;
+    _framed.value = !_fullWidth.contains(_router.routerDelegate.currentConfiguration.uri.path);
+  });
+
+  @override
+  void initState() {
+    super.initState();
+    _router.routerDelegate.addListener(_onRoute);
+    _onRoute();
+  }
 
   @override
   void dispose() {
+    _router.routerDelegate.removeListener(_onRoute);
+    _framed.dispose();
     _router.dispose();
     super.dispose();
   }
@@ -39,6 +62,12 @@ class _NiraahAppState extends State<NiraahApp> {
         localizationsDelegates: S.localizationsDelegates,
         supportedLocales: S.supportedLocales,
         routerConfig: _router,
+        // One responsive rule for every screen: phones as designed, larger screens in a
+        // centered app column. The landing page has its own wide layout.
+        builder: (BuildContext context, Widget? child) => ValueListenableBuilder<bool>(
+          valueListenable: _framed,
+          builder: (BuildContext context, bool framed, _) => NResponsiveFrame(enabled: framed, child: child ?? const SizedBox.shrink()),
+        ),
       ),
     );
   }

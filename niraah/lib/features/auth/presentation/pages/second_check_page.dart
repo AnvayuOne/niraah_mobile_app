@@ -103,7 +103,7 @@ class _SecondCheckPageState extends State<SecondCheckPage> {
   Widget build(BuildContext context) {
     final S s = S.of(context);
     final SecondCheckOptions? o = _options;
-    if (o == null) return Scaffold(body: LoadingView(label: s.loading));
+    if (o == null) return Scaffold(body: LoadingView(label: s.loadSecure, kind: NLoaderKind.secure));
 
     if (_confirmNew) {
       return NPage(

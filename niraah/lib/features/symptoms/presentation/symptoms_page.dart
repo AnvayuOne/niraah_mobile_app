@@ -46,7 +46,7 @@ class _SymptomsView extends StatelessWidget {
         final Widget body = st.status == SymptomsStatus.failure
             ? ErrorView(message: s.commonLoadError, retryLabel: s.tryAgain, onRetry: context.read<SymptomsCubit>().load)
             : doc == null
-                ? LoadingView(label: s.loading)
+                ? LoadingView(label: s.loadSymptoms, kind: NLoaderKind.symptoms)
                 : _content(context, s, doc);
         return Scaffold(backgroundColor: NColors.surfacePage, body: SafeArea(child: body));
       },

@@ -22,7 +22,18 @@ class ApiPlansRepository implements PlansRepository {
   /// skipped the plan is active at once (plan 008); otherwise the answer is a gateway checkout the app does not open yet.
   @override
   Future<Result<bool>> choose(String priceId) async {
-    final ApiResult<Map<String, dynamic>> r = await _api.post('/me/subscription', <String, dynamic>{'priceId': priceId});
+    ApiResult<Map<String, dynamic>> r = await _api.post('/me/subscription', <String, dynamic>{'priceId': priceId});
+    // She already has a plan: switching goes through the change endpoint (upgrade now, downgrade at renewal).
+    if (r case ApiFail<Map<String, dynamic>>(:final ApiError error) when error.code == 'conflict') {
+      r = await _api.post('/me/subscription/change', <String, dynamic>{'priceId': priceId});
+      if (r case ApiOk<Map<String, dynamic>>(:final Map<String, dynamic> data)) {
+        if (data['kind'] == 'downgrade') {
+          final DateTime? at = DateTime.tryParse('${data['effectiveAt']}');
+          return FailureResult<bool>('Your plan will change when this one ends${at == null ? '' : ' on ${at.day}/${at.month}/${at.year}'}.');
+        }
+        return Success<bool>((data['checkout'] as Map?)?['skippedPayment'] == true);
+      }
+    }
     return switch (r) {
       ApiOk<Map<String, dynamic>>(:final Map<String, dynamic> data) => Success<bool>(data['skippedPayment'] == true),
       ApiFail<Map<String, dynamic>>(:final ApiError error) => FailureResult<bool>(error.message),

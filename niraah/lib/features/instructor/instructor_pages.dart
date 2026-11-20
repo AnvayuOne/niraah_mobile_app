@@ -3,8 +3,10 @@ import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../../core/di/service_locator.dart';
+import '../../design_system/generated/niraah_assets.dart';
 import '../../design_system/tokens/tokens.dart';
 import '../../design_system/widgets/bottom_nav.dart';
+import '../../design_system/widgets/clinician_ui.dart';
 import '../../design_system/widgets/n_button.dart';
 import '../../l10n/app_localizations.dart';
 import '../../shared/area/area_access.dart';
@@ -32,22 +34,44 @@ class InstructorShell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final S s = S.of(context);
+    CRole.fallback = const CRole.instructor(child: SizedBox.shrink());
     return Scaffold(
       backgroundColor: NColors.surfacePage,
       appBar: AppBar(
         backgroundColor: NColors.surfacePage,
+        surfaceTintColor: Colors.transparent,
         automaticallyImplyLeading: false,
-        title: Text(title ?? s.pvRoleInstructor, style: NType.h4.copyWith(color: NColors.inkPrimary)),
+        titleSpacing: NSpace.lg,
+        title: Row(
+          children: <Widget>[
+            Container(
+              width: 32,
+              height: 32,
+              padding: const EdgeInsets.all(4),
+              decoration: const BoxDecoration(color: NColors.brandPlum, shape: BoxShape.circle),
+              child: Image.asset(NImages.niraahLogo.path, fit: BoxFit.contain, excludeFromSemantics: true),
+            ),
+            const SizedBox(width: NSpace.sm),
+            Flexible(
+              child: Text(
+                title ?? s.inWorkspace,
+                overflow: TextOverflow.ellipsis,
+                style: NType.h4.copyWith(color: NColors.inkPrimary),
+              ),
+            ),
+          ],
+        ),
         actions: <Widget>[
-          TextButton.icon(
+          IconButton(
+            tooltip: s.pvSignOut,
             onPressed: () => providerSignOut(context),
-            icon: const Icon(Icons.logout_rounded, size: NSpace.md + NSpace.xxs),
-            label: Text(s.pvSignOut),
+            icon: const Icon(Icons.logout_rounded, color: NColors.inkSecondary),
           ),
+          const SizedBox(width: NSpace.xs),
         ],
       ),
       floatingActionButton: floatingActionButton,
-      body: SafeArea(top: false, child: body),
+      body: SafeArea(top: false, child: CRole.instructor(child: body)),
       bottomNavigationBar: NBottomNav(
         labels: <String>[s.pvShellHome, s.inSessions, s.inStudents, s.inLibrary, s.pvShellMore],
         icons: icons,
@@ -60,9 +84,31 @@ class InstructorShell extends StatelessWidget {
   }
 }
 
+/// A pushed instructor page (class, editors, profile): the workspace frame without the bottom bar.
+class _InstructorPage extends StatelessWidget {
+  const _InstructorPage({required this.title, required this.body});
+
+  final String title;
+  final Widget body;
+
+  @override
+  Widget build(BuildContext context) => AreaScaffold(
+    title: title,
+    body: CRole.instructor(child: body),
+  );
+}
+
+FloatingActionButton _fab(BuildContext context, String label, VoidCallback onPressed) =>
+    FloatingActionButton.extended(onPressed: onPressed, backgroundColor: NColors.roleInstructor, foregroundColor: Colors.white, shape: const StadiumBorder(), elevation: 2, icon: const Icon(Icons.add_rounded), label: Text(label));
+
 String _when(BuildContext context, String? iso) {
   if (iso == null) return '';
   return DateFormat('EEE d MMM, h:mm a', Localizations.localeOf(context).toString()).format(DateTime.parse(iso).toLocal());
+}
+
+String _time(BuildContext context, String? iso) {
+  if (iso == null) return '';
+  return MaterialLocalizations.of(context).formatTimeOfDay(TimeOfDay.fromDateTime(DateTime.parse(iso).toLocal()));
 }
 
 String classStatus(S s, String? st) => switch (st) {
@@ -74,6 +120,154 @@ String classStatus(S s, String? st) => switch (st) {
   'cancelled' => s.schedCancelled,
   _ => st ?? '',
 };
+
+CTone _statusTone(String? st) => switch (st) {
+  'live' => CTone.plum,
+  'scheduled' => CTone.sage,
+  'awaiting_approval' => CTone.apricot,
+  'draft' => CTone.lavender,
+  'cancelled' => CTone.red,
+  _ => CTone.quiet,
+};
+
+/// Booked against capacity as words and a bar in the role colour (amber when full).
+class _Capacity extends StatelessWidget {
+  const _Capacity({required this.booked, required this.capacity});
+
+  final int booked;
+  final int capacity;
+
+  @override
+  Widget build(BuildContext context) {
+    final S s = S.of(context);
+    final double v = capacity <= 0 ? 0 : booked / capacity;
+    final bool full = capacity > 0 && booked >= capacity;
+    return Row(
+      children: <Widget>[
+        Expanded(
+          child: CBar(value: v, height: 6, color: full ? NColors.statusWarning : CRole.of(context).accent),
+        ),
+        const SizedBox(width: NSpace.sm),
+        Text(
+          s.inBooked(booked, capacity),
+          style: NType.caption.copyWith(color: NColors.inkSecondary, letterSpacing: 0, fontWeight: FontWeight.w600),
+        ),
+      ],
+    );
+  }
+}
+
+/// One class as a timeline entry: time on the left rail, the card on the right.
+class _ClassTile extends StatelessWidget {
+  const _ClassTile({required this.c, required this.onTap, this.isNext = false, this.last = false});
+
+  final Json c;
+  final VoidCallback onTap;
+  final bool isNext;
+  final bool last;
+
+  @override
+  Widget build(BuildContext context) {
+    final S s = S.of(context);
+    final CRole role = CRole.of(context);
+    final String? status = c.str('status');
+    final bool muted = status == 'cancelled' || status == 'completed';
+    return IntrinsicHeight(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          SizedBox(
+            width: 58,
+            child: Padding(
+              padding: const EdgeInsets.only(top: NSpace.sm),
+              child: Text(
+                _time(context, c.str('startsAt')),
+                style: NType.caption.copyWith(color: muted ? NColors.inkMuted : NColors.inkPrimary, fontWeight: FontWeight.w700, letterSpacing: 0, fontSize: 13),
+              ),
+            ),
+          ),
+          SizedBox(
+            width: 18,
+            child: Column(
+              children: <Widget>[
+                const SizedBox(height: NSpace.sm + 3),
+                Container(
+                  width: 10,
+                  height: 10,
+                  decoration: BoxDecoration(
+                    color: muted ? NColors.lineStrong : role.accent,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: role.light, width: 2),
+                  ),
+                ),
+                if (!last) Expanded(child: Container(width: 2, color: NColors.lineDefault)),
+              ],
+            ),
+          ),
+          const SizedBox(width: NSpace.xs),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: NSpace.xs),
+              child: Semantics(
+                button: true,
+                label: c.str('title'),
+                child: Material(
+                  color: isNext ? role.light : NColors.surfaceCard,
+                  borderRadius: BorderRadius.circular(NRadius.lg),
+                  child: InkWell(
+                    onTap: onTap,
+                    borderRadius: BorderRadius.circular(NRadius.lg),
+                    child: Container(
+                      padding: const EdgeInsets.all(NSpace.sm),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(NRadius.lg),
+                        border: Border.all(color: isNext ? role.accent.withValues(alpha: 0.4) : NColors.lineDefault),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Expanded(
+                                child: Text(
+                                  c.str('title') ?? '',
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: NType.body.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w700),
+                                ),
+                              ),
+                              const SizedBox(width: NSpace.xs),
+                              CPill(isNext ? s.inNextUp : classStatus(s, status), tone: isNext ? CTone.plum : _statusTone(status)),
+                            ],
+                          ),
+                          const SizedBox(height: NSpace.xs),
+                          _Capacity(booked: c.integer('booked'), capacity: c.integer('capacity')),
+                          if (c.integer('waiting') > 0 || c.integer('requests') > 0) ...<Widget>[
+                            const SizedBox(height: NSpace.xs),
+                            Wrap(
+                              spacing: NSpace.xxs,
+                              runSpacing: NSpace.xxs,
+                              children: <Widget>[
+                                if (c.integer('waiting') > 0) CPill(s.inWaiting(c.integer('waiting')), tone: CTone.apricot),
+                                if (c.integer('requests') > 0) CPill(s.inNewRequests(c.integer('requests')), tone: CTone.rose),
+                              ],
+                            ),
+                          ],
+                          if (c.flag('startable')) ...<Widget>[const SizedBox(height: NSpace.xxs), Text(s.inStartOnWeb, style: NType.caption.copyWith(color: NColors.inkMuted, letterSpacing: 0))],
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
 
 /// Home (spec 013 §1): today's sessions with booked against capacity, the next one within the hour, and what needs
 /// me. Numbers of students only, never a health detail.
@@ -100,37 +294,105 @@ class _InstructorHomePageState extends State<InstructorHomePage> {
         onRetry: () => setState(() => _home = _repo.home()),
         builder: (BuildContext context, Json h) {
           final Json n = h.obj('needsMe');
+          final Json next = h.obj('next');
+          final List<Json> today = h.objs('today');
           return RefreshIndicator(
             onRefresh: () async => setState(() => _home = _repo.home()),
             child: ListView(
-              padding: const EdgeInsets.all(NSpace.lg),
+              padding: const EdgeInsets.fromLTRB(NSpace.md, NSpace.xs, NSpace.md, NSpace.xl),
               children: <Widget>[
-                if (h.obj('next').isNotEmpty) NCard(color: NColors.brandSageLight, child: Text(s.inNextSoon(h.obj('next').str('title') ?? '', _when(context, h.obj('next').str('startsAt'))))),
-                NSectionTitle(s.pvDashToday),
-                if (h.objs('today').isEmpty) EmptyNote(text: s.inNoToday),
-                for (final Json c in h.objs('today')) ...<Widget>[
-                  NCard(
-                    onTap: () => context.push('/instructor/sessions/${c.str('id')}'),
-                    semanticsLabel: c.str('title'),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(c.str('title') ?? '', style: NType.body.copyWith(fontWeight: FontWeight.w700)),
-                        Text(
-                          '${_when(context, c.str('startsAt'))} · ${s.inBooked(c.integer('booked'), c.integer('capacity'))} · ${classStatus(s, c.str('status'))}',
-                          style: NType.caption.copyWith(color: NColors.inkSecondary),
+                CHero(
+                  eyebrow: s.inWorkspace,
+                  title: s.inHomeTitle,
+                  subtitle: s.inTodayCount(today.length),
+                  trailing: next.isEmpty
+                      ? null
+                      : Container(
+                          padding: const EdgeInsets.symmetric(horizontal: NSpace.sm, vertical: NSpace.xxs + 2),
+                          decoration: BoxDecoration(
+                            color: NColors.surfaceCard,
+                            borderRadius: BorderRadius.circular(NRadius.pill),
+                            border: Border.all(color: NColors.lineDefault),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              const Icon(Icons.self_improvement_rounded, size: 16, color: NColors.roleInstructor),
+                              const SizedBox(width: 6),
+                              Flexible(
+                                child: Text(
+                                  s.inNextSoon(next.str('title') ?? '', _when(context, next.str('startsAt'))),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: NType.caption.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w700, letterSpacing: 0),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                        if (c.flag('startable')) Text(s.inStartOnWeb, style: NType.caption.copyWith(color: NColors.inkMuted)),
-                      ],
-                    ),
+                  child: Column(
+                    children: <Widget>[
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Expanded(
+                            child: CHeroStat(
+                              label: s.inRequests,
+                              value: '${n.integer('requests')}',
+                              icon: Icons.mark_chat_unread_outlined,
+                              alert: n.integer('requests') > 0,
+                              onTap: () => context.go('/instructor/sessions'),
+                            ),
+                          ),
+                          const SizedBox(width: NSpace.xs),
+                          Expanded(
+                            child: CHeroStat(
+                              label: s.inAttendanceToConfirm,
+                              value: '${n.integer('attendanceToConfirm')}',
+                              icon: Icons.how_to_reg_outlined,
+                              onTap: () => context.go('/instructor/sessions'),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: NSpace.xs),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Expanded(
+                            child: CHeroStat(label: s.inContentReturned, value: '${n.integer('contentReturned')}', icon: Icons.replay_rounded, onTap: () => context.go('/instructor/library')),
+                          ),
+                          const SizedBox(width: NSpace.xs),
+                          Expanded(
+                            child: CHeroStat(label: s.inNoBookings, value: '${n.integer('classesWithoutBookings')}', icon: Icons.event_busy_outlined, onTap: () => context.go('/instructor/sessions')),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: NSpace.xs),
-                ],
-                NSectionTitle(s.pvDashNeedsMe),
-                ListTile(contentPadding: EdgeInsets.zero, title: Text(s.inRequests), trailing: Text('${n.integer('requests')}'), onTap: () => context.go('/instructor/sessions')),
-                ListTile(contentPadding: EdgeInsets.zero, title: Text(s.inAttendanceToConfirm), trailing: Text('${n.integer('attendanceToConfirm')}'), onTap: () => context.go('/instructor/sessions')),
-                ListTile(contentPadding: EdgeInsets.zero, title: Text(s.inContentReturned), trailing: Text('${n.integer('contentReturned')}'), onTap: () => context.go('/instructor/library')),
-                ListTile(contentPadding: EdgeInsets.zero, title: Text(s.inNoBookings), trailing: Text('${n.integer('classesWithoutBookings')}'), onTap: () => context.go('/instructor/sessions')),
+                ),
+                const SizedBox(height: NSpace.md),
+                CPanel(
+                  title: s.pvDashToday,
+                  icon: Icons.event_available_outlined,
+                  action: TextButton(onPressed: () => context.go('/instructor/sessions'), child: Text(s.inSessions)),
+                  child: today.isEmpty
+                      ? CEmpty(icon: Icons.self_improvement_rounded, title: s.inNoToday)
+                      : Column(
+                          children: <Widget>[
+                            for (int i = 0; i < today.length; i++)
+                              CEntrance(
+                                delayMs: 60 * i,
+                                child: _ClassTile(
+                                  c: today[i],
+                                  isNext: next.isNotEmpty && today[i].str('id') == next.str('id'),
+                                  last: i == today.length - 1,
+                                  onTap: () => context.push('/instructor/sessions/${today[i].str('id')}'),
+                                ),
+                              ),
+                          ],
+                        ),
+                ),
               ],
             ),
           );
@@ -162,53 +424,52 @@ class _SessionsPageState extends State<SessionsPage> {
     return InstructorShell(
       index: 1,
       title: s.inSessions,
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () async {
-          await Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => ClassEditorPage(repository: _repo)));
-          if (mounted) setState(() => _list = _load());
-        },
-        icon: const Icon(Icons.add_rounded),
-        label: Text(s.inNewClass),
-      ),
+      floatingActionButton: _fab(context, s.inNewClass, () async {
+        await Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => ClassEditorPage(repository: _repo)));
+        if (mounted) setState(() => _list = _load());
+      }),
       body: AsyncBody<List<Json>>(
         future: _list,
         onRetry: () => setState(() => _list = _load()),
-        builder: (BuildContext context, List<Json> rows) => rows.isEmpty
-            ? Padding(
-                padding: const EdgeInsets.all(NSpace.lg),
-                child: EmptyNote(text: s.inNoClasses),
-              )
-            : ListView(
-                padding: const EdgeInsets.fromLTRB(NSpace.lg, NSpace.lg, NSpace.lg, 96),
-                children: <Widget>[
-                  for (final Json c in rows) ...<Widget>[
-                    NCard(
-                      onTap: () async {
-                        await context.push('/instructor/sessions/${c.str('id')}');
-                        if (mounted) setState(() => _list = _load());
-                      },
-                      semanticsLabel: c.str('title'),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(c.str('title') ?? '', style: NType.body.copyWith(fontWeight: FontWeight.w700)),
-                          Text(
-                            <String>[
-                              _when(context, c.str('startsAt')),
-                              classStatus(s, c.str('status')),
-                              s.inBooked(c.integer('booked'), c.integer('capacity')),
-                              if (c.integer('waiting') > 0) s.inWaiting(c.integer('waiting')),
-                              if (c.integer('requests') > 0) s.inNewRequests(c.integer('requests')),
-                            ].join(' · '),
-                            style: NType.caption.copyWith(color: NColors.inkSecondary),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: NSpace.xs),
-                  ],
-                ],
-              ),
+        builder: (BuildContext context, List<Json> rows) {
+          final DateTime now = DateTime.now();
+          bool past(Json c) => c.str('startsAt') != null && DateTime.parse(c.str('startsAt')!).isBefore(now) && c.str('status') != 'live';
+          final List<Json> ahead = rows.where((Json c) => !past(c)).toList();
+          final List<Json> before = rows.where(past).toList();
+          Future<void> open(Json c) async {
+            await context.push('/instructor/sessions/${c.str('id')}');
+            if (mounted) setState(() => _list = _load());
+          }
+
+          String day(Json c) => c.str('startsAt') == null ? '' : DateFormat('EEEE d MMMM', Localizations.localeOf(context).toString()).format(DateTime.parse(c.str('startsAt')!).toLocal());
+
+          List<Widget> timeline(List<Json> list) {
+            final List<Widget> out = <Widget>[];
+            for (int i = 0; i < list.length; i++) {
+              final bool newDay = i == 0 || day(list[i]) != day(list[i - 1]);
+              final bool lastOfDay = i == list.length - 1 || day(list[i]) != day(list[i + 1]);
+              if (newDay) out.add(CLabel(day(list[i])));
+              out.add(
+                CEntrance(
+                  delayMs: 40 * (i % 6),
+                  child: _ClassTile(c: list[i], last: lastOfDay, onTap: () => open(list[i])),
+                ),
+              );
+            }
+            return out;
+          }
+
+          return ListView(
+            padding: const EdgeInsets.fromLTRB(NSpace.md, NSpace.xs, NSpace.md, 96),
+            children: <Widget>[
+              CHero(eyebrow: s.inSessions, title: s.inAgendaTitle, subtitle: s.inUpcomingCount(ahead.length)),
+              const SizedBox(height: NSpace.md),
+              if (rows.isEmpty) CEmpty(icon: Icons.event_note_outlined, title: s.inNoClasses),
+              if (ahead.isNotEmpty) ...<Widget>[Text(s.inComingUp, style: NType.h3.copyWith(color: NColors.inkPrimary)), ...timeline(ahead)],
+              if (before.isNotEmpty) ...<Widget>[const SizedBox(height: NSpace.md), Text(s.inPastWeek, style: NType.h3.copyWith(color: NColors.inkPrimary)), ...timeline(before.reversed.toList())],
+            ],
+          );
+        },
       ),
     );
   }
@@ -258,7 +519,7 @@ class _ClassPageState extends State<ClassPage> {
   @override
   Widget build(BuildContext context) {
     final S s = S.of(context);
-    return AreaScaffold(
+    return _InstructorPage(
       title: s.inClass,
       body: AsyncBody<Json>(
         future: _c,
@@ -266,69 +527,121 @@ class _ClassPageState extends State<ClassPage> {
         builder: (BuildContext context, Json c) {
           final String status = c.str('status') ?? '';
           final bool before = status == 'draft' || status == 'scheduled' || status == 'awaiting_approval';
+          final bool confirm = status == 'completed' && !c.flag('attendanceConfirmed') && c.flag('attendanceCorrectable');
+          final List<Json> bookings = c.objs('bookings');
           return ListView(
-            padding: const EdgeInsets.all(NSpace.lg),
+            padding: const EdgeInsets.fromLTRB(NSpace.md, NSpace.xs, NSpace.md, NSpace.xl),
             children: <Widget>[
-              Text(c.str('title') ?? '', style: NType.h3),
-              Text(
-                '${_when(context, c.str('startsAt'))} · ${classStatus(s, status)} · ${s.inBooked(c.integer('booked'), c.integer('capacity'))}',
-                style: NType.bodySm.copyWith(color: NColors.inkSecondary),
-              ),
-              if ((c.str('description') ?? '').isNotEmpty)
-                Padding(
-                  padding: const EdgeInsets.only(top: NSpace.xs),
-                  child: Text(c.str('description')!),
-                ),
-              if (c.flag('lateCancellation')) Text(s.inLateCancellation, style: NType.caption.copyWith(color: NColors.statusAttention)),
-              NSectionTitle(s.inBookings),
-              if (c.objs('bookings').isEmpty) EmptyNote(text: s.inNoBookingsYet),
-              for (final Json b in c.objs('bookings'))
-                ListTile(
-                  contentPadding: EdgeInsets.zero,
-                  title: Text(b.str('firstName') ?? ''),
-                  subtitle: Text(
-                    <String>[
-                      if (b.str('status') == 'waitlisted') s.inOnWaitingList,
-                      if (b['attended'] != null) (b.flag('attended') ? s.inAttended : s.inNotAttended),
-                      if (b.obj('request').isNotEmpty) s.inRequest(_choice(s, b.obj('request').str('choice')), b.obj('request').str('text') ?? ''),
-                    ].join(' · '),
+              CHero(
+                eyebrow: classStatus(s, status),
+                title: c.str('title') ?? '',
+                subtitle: _when(context, c.str('startsAt')),
+                child: Container(
+                  padding: const EdgeInsets.all(NSpace.sm),
+                  decoration: BoxDecoration(
+                    color: NColors.surfaceCard.withValues(alpha: 0.92),
+                    borderRadius: BorderRadius.circular(NRadius.lg),
+                    border: Border.all(color: NColors.lineDefault),
                   ),
-                  trailing: Wrap(
+                  child: _Capacity(booked: c.integer('booked'), capacity: c.integer('capacity')),
+                ),
+              ),
+              if ((c.str('description') ?? '').isNotEmpty || c.flag('lateCancellation')) ...<Widget>[
+                const SizedBox(height: NSpace.md),
+                CPanel(
+                  title: s.inClassDetails,
+                  icon: Icons.notes_rounded,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      if (b.obj('request').isNotEmpty && !b.obj('request').flag('seen'))
-                        IconButton(tooltip: s.inMarkSeen, icon: const Icon(Icons.done_rounded), onPressed: () => _act(() => _repo.seeRequest(b.str('id')!), s.inSeen)),
-                      if (c.flag('attendanceCorrectable')) Switch(value: b.flag('attended'), onChanged: (bool v) => _act(() => _repo.correctAttendance(b.str('id')!, v), s.inCorrected)),
+                      if ((c.str('description') ?? '').isNotEmpty) Text(c.str('description')!, style: NType.body.copyWith(color: NColors.inkSecondary)),
+                      if (c.flag('lateCancellation')) ...<Widget>[
+                        const SizedBox(height: NSpace.xs),
+                        Text(
+                          s.inLateCancellation,
+                          style: NType.caption.copyWith(color: NColors.statusAttention, letterSpacing: 0, fontWeight: FontWeight.w600),
+                        ),
+                      ],
                     ],
                   ),
                 ),
-              const SizedBox(height: NSpace.lg),
-              if (status == 'draft')
-                NPrimaryButton(
-                  label: s.inPublish,
-                  onPressed: () => _act(() => _repo.publish(widget.classId, series: c.str('seriesId') != null), s.inPublished),
-                ),
-              if (before) ...<Widget>[
-                const SizedBox(height: NSpace.xs),
-                NSecondaryButton(
-                  label: s.inChange,
-                  onPressed: () async {
-                    await Navigator.of(context).push(
-                      MaterialPageRoute<void>(
-                        builder: (_) => ClassEditorPage(repository: _repo, existing: c),
-                      ),
-                    );
-                    if (mounted) setState(() => _c = _repo.classDetail(widget.classId));
-                  },
-                ),
-                TextButton(onPressed: _cancel, child: Text(status == 'draft' ? s.inDeleteDraft : s.inCancelClass)),
               ],
-              if (status == 'completed' && !c.flag('attendanceConfirmed') && c.flag('attendanceCorrectable'))
-                NPrimaryButton(label: s.inConfirmAttendance, onPressed: () => _act(() => _repo.confirmAttendance(widget.classId), s.inAttendanceConfirmed)),
-              if (status == 'scheduled' || status == 'live')
-                Padding(
-                  padding: const EdgeInsets.only(top: NSpace.sm),
-                  child: Text(s.inStartOnWeb, style: NType.caption.copyWith(color: NColors.inkMuted)),
+              const SizedBox(height: NSpace.md),
+              CPanel(
+                title: s.inBookings,
+                icon: Icons.groups_outlined,
+                note: s.inBooked(c.integer('booked'), c.integer('capacity')),
+                child: bookings.isEmpty
+                    ? CEmpty(icon: Icons.event_seat_outlined, title: s.inNoBookingsYet)
+                    : Column(
+                        children: <Widget>[
+                          for (int i = 0; i < bookings.length; i++)
+                            CEntrance(
+                              delayMs: 40 * i,
+                              child: Padding(
+                                padding: const EdgeInsets.only(bottom: NSpace.xs),
+                                child: _BookingRow(
+                                  b: bookings[i],
+                                  choice: _choice,
+                                  correctable: c.flag('attendanceCorrectable'),
+                                  onSeen: () => _act(() => _repo.seeRequest(bookings[i].str('id')!), s.inSeen),
+                                  onAttended: (bool v) => _act(() => _repo.correctAttendance(bookings[i].str('id')!, v), s.inCorrected),
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+              ),
+              if (status == 'draft' || before || confirm || status == 'scheduled' || status == 'live') ...<Widget>[
+                const SizedBox(height: NSpace.md),
+                CPanel(
+                  title: s.inClassActions,
+                  icon: Icons.tune_rounded,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      if (status == 'draft')
+                        NPrimaryButton(
+                          label: s.inPublish,
+                          onPressed: () => _act(() => _repo.publish(widget.classId, series: c.str('seriesId') != null), s.inPublished),
+                        ),
+                      if (before) ...<Widget>[
+                        const SizedBox(height: NSpace.xs),
+                        NSecondaryButton(
+                          label: s.inChange,
+                          onPressed: () async {
+                            await Navigator.of(context).push(
+                              MaterialPageRoute<void>(
+                                builder: (_) => ClassEditorPage(repository: _repo, existing: c),
+                              ),
+                            );
+                            if (mounted) setState(() => _c = _repo.classDetail(widget.classId));
+                          },
+                        ),
+                        TextButton(
+                          onPressed: _cancel,
+                          style: TextButton.styleFrom(foregroundColor: NColors.statusClinicalRedFlag),
+                          child: Text(status == 'draft' ? s.inDeleteDraft : s.inCancelClass),
+                        ),
+                      ],
+                      if (confirm) NPrimaryButton(label: s.inConfirmAttendance, onPressed: () => _act(() => _repo.confirmAttendance(widget.classId), s.inAttendanceConfirmed)),
+                      if (status == 'scheduled' || status == 'live')
+                        Padding(
+                          padding: const EdgeInsets.only(top: NSpace.xs),
+                          child: Row(
+                            children: <Widget>[
+                              const Icon(Icons.desktop_windows_outlined, size: 16, color: NColors.inkMuted),
+                              const SizedBox(width: NSpace.xs),
+                              Expanded(
+                                child: Text(s.inStartOnWeb, style: NType.caption.copyWith(color: NColors.inkMuted, letterSpacing: 0)),
+                              ),
+                            ],
+                          ),
+                        ),
+                    ],
+                  ),
                 ),
+              ],
             ],
           );
         },
@@ -344,6 +657,111 @@ class _ClassPageState extends State<ClassPage> {
     _ => s.inReqOther,
   };
 }
+
+class _BookingRow extends StatelessWidget {
+  const _BookingRow({required this.b, required this.choice, required this.correctable, required this.onSeen, required this.onAttended});
+
+  final Json b;
+  final String Function(S, String?) choice;
+  final bool correctable;
+  final VoidCallback onSeen;
+  final ValueChanged<bool> onAttended;
+
+  @override
+  Widget build(BuildContext context) {
+    final S s = S.of(context);
+    final Json req = b.obj('request');
+    final bool unseen = req.isNotEmpty && !req.flag('seen');
+    return Container(
+      padding: const EdgeInsets.all(NSpace.sm),
+      decoration: BoxDecoration(
+        color: NColors.surfacePage,
+        borderRadius: BorderRadius.circular(NRadius.lg),
+        border: Border.all(color: unseen ? NColors.brandBlush : Colors.transparent),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              CAvatar(name: b.str('firstName'), size: 36),
+              const SizedBox(width: NSpace.sm),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      b.str('firstName') ?? '',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: NType.body.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w600),
+                    ),
+                    if (b.str('status') == 'waitlisted' || b['attended'] != null)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 2),
+                        child: Wrap(
+                          spacing: NSpace.xxs,
+                          children: <Widget>[
+                            if (b.str('status') == 'waitlisted') CPill(s.inOnWaitingList, tone: CTone.apricot),
+                            if (b['attended'] != null) CPill(b.flag('attended') ? s.inAttended : s.inNotAttended, tone: b.flag('attended') ? CTone.sage : CTone.quiet),
+                          ],
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+              if (correctable) Switch(value: b.flag('attended'), activeTrackColor: CRole.of(context).accent, onChanged: onAttended),
+            ],
+          ),
+          if (req.isNotEmpty) ...<Widget>[
+            const SizedBox(height: NSpace.xs),
+            Container(
+              padding: const EdgeInsets.fromLTRB(NSpace.sm, NSpace.xs, NSpace.xxs, NSpace.xs),
+              decoration: BoxDecoration(color: unseen ? NColors.brandBlushLight : NColors.surfaceCard, borderRadius: BorderRadius.circular(NRadius.md)),
+              child: Row(
+                children: <Widget>[
+                  Icon(Icons.chat_bubble_outline_rounded, size: 16, color: unseen ? NColors.brandRosewood : NColors.inkMuted),
+                  const SizedBox(width: NSpace.xs),
+                  Expanded(
+                    child: Text(s.inRequest(choice(s, req.str('choice')), req.str('text') ?? ''), style: NType.bodySm.copyWith(color: NColors.inkPrimary)),
+                  ),
+                  if (unseen)
+                    IconButton(
+                      tooltip: s.inMarkSeen,
+                      icon: const Icon(Icons.done_rounded, color: NColors.brandRosewood),
+                      onPressed: onSeen,
+                    ),
+                ],
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+/// Tappable selection chips in the role colour.
+Widget _chips(BuildContext context, List<String> values, bool Function(String) selected, ValueChanged<String>? onToggle) => Wrap(
+  spacing: NSpace.xs,
+  runSpacing: NSpace.xs,
+  children: <Widget>[
+    for (final String p in values)
+      FilterChip(
+        label: Text(p),
+        selected: selected(p),
+        showCheckmark: true,
+        selectedColor: CRole.of(context).light,
+        checkmarkColor: CRole.of(context).accent,
+        side: BorderSide(color: selected(p) ? CRole.of(context).accent.withValues(alpha: 0.5) : NColors.lineDefault),
+        labelStyle: NType.bodySm.copyWith(color: NColors.inkPrimary, fontWeight: selected(p) ? FontWeight.w700 : FontWeight.w500),
+        backgroundColor: NColors.surfaceCard,
+        onSelected: onToggle == null ? null : (_) => onToggle(p),
+      ),
+  ],
+);
+
+const SizedBox _gap = SizedBox(height: NSpace.sm);
 
 /// Scheduling or changing a class (spec 013 §2): one occurrence, or weekly until a date.
 class ClassEditorPage extends StatefulWidget {
@@ -438,75 +856,135 @@ class _ClassEditorPageState extends State<ClassEditorPage> {
   @override
   Widget build(BuildContext context) {
     final S s = S.of(context);
-    return AreaScaffold(
+    return _InstructorPage(
       title: _e == null ? s.inNewClass : s.inChange,
-      body: ListView(
-        padding: const EdgeInsets.all(NSpace.lg),
-        children: <Widget>[
-          TextField(
-            controller: _title,
-            maxLength: 120,
-            decoration: InputDecoration(labelText: s.inTitle),
-          ),
-          TextField(
-            controller: _description,
-            minLines: 2,
-            maxLines: 5,
-            maxLength: 2000,
-            decoration: InputDecoration(labelText: s.inDescription, helperText: s.inNoMedicalClaims),
-          ),
-          OutlinedButton.icon(onPressed: _pickStart, icon: const Icon(Icons.event_rounded), label: Text(_start == null ? s.inPickStart : _when(context, _start!.toUtc().toIso8601String()))),
-          Row(
-            children: <Widget>[
-              Expanded(
-                child: TextField(
-                  controller: _minutes,
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(labelText: s.dtMinutes),
-                ),
+      body: Builder(
+        builder: (BuildContext context) => ListView(
+          padding: const EdgeInsets.fromLTRB(NSpace.md, NSpace.xs, NSpace.md, NSpace.xl),
+          children: <Widget>[
+            CPanel(
+              title: s.inClassDetails,
+              icon: Icons.self_improvement_rounded,
+              child: Column(
+                children: <Widget>[
+                  TextField(
+                    controller: _title,
+                    maxLength: 120,
+                    decoration: InputDecoration(labelText: s.inTitle),
+                  ),
+                  TextField(
+                    controller: _description,
+                    minLines: 2,
+                    maxLines: 5,
+                    maxLength: 2000,
+                    decoration: InputDecoration(labelText: s.inDescription, helperText: s.inNoMedicalClaims, helperMaxLines: 3),
+                  ),
+                ],
               ),
-              const SizedBox(width: NSpace.sm),
-              Expanded(
-                child: TextField(
-                  controller: _capacity,
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(labelText: s.inCapacity),
-                ),
-              ),
-            ],
-          ),
-          if (_e == null)
-            DropdownButton<String?>(
-              value: _level,
-              isExpanded: true,
-              hint: Text(s.inLevel),
-              items: <DropdownMenuItem<String?>>[for (final String l in _levels) DropdownMenuItem<String?>(value: l, child: Text(l))],
-              onChanged: (String? v) => setState(() => _level = v),
             ),
-          NSectionTitle(s.inPhaseTags),
-          Wrap(
-            spacing: NSpace.xs,
-            children: <Widget>[
-              for (final String p in _phases) FilterChip(label: Text(p), selected: _phaseTags.contains(p), onSelected: (bool v) => setState(() => v ? _phaseTags.add(p) : _phaseTags.remove(p))),
-            ],
-          ),
-          if (_e == null) ...<Widget>[
-            SwitchListTile(contentPadding: EdgeInsets.zero, title: Text(s.inWeekly), value: _weekly, onChanged: (bool v) => setState(() => _weekly = v)),
-            if (_weekly)
-              OutlinedButton(
-                onPressed: () async {
-                  final DateTime now = DateTime.now();
-                  final DateTime? u = await showDatePicker(context: context, initialDate: now.add(const Duration(days: 28)), firstDate: now, lastDate: now.add(const Duration(days: 182)));
-                  if (u != null) setState(() => _until = u);
-                },
-                child: Text(_until == null ? s.inUntil : s.inUntilDate(MaterialLocalizations.of(context).formatMediumDate(_until!))),
+            const SizedBox(height: NSpace.md),
+            CPanel(
+              title: s.inTimeAndSize,
+              icon: Icons.schedule_rounded,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  OutlinedButton.icon(
+                    onPressed: _pickStart,
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: NColors.inkPrimary,
+                      minimumSize: const Size.fromHeight(NLayout.minTapTarget),
+                      side: BorderSide(color: CRole.of(context).accent.withValues(alpha: 0.5)),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(NRadius.lg)),
+                    ),
+                    icon: Icon(Icons.event_rounded, color: CRole.of(context).accent),
+                    label: Text(_start == null ? s.inPickStart : _when(context, _start!.toUtc().toIso8601String())),
+                  ),
+                  _gap,
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: TextField(
+                          controller: _minutes,
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(labelText: s.dtMinutes),
+                        ),
+                      ),
+                      const SizedBox(width: NSpace.sm),
+                      Expanded(
+                        child: TextField(
+                          controller: _capacity,
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(labelText: s.inCapacity),
+                        ),
+                      ),
+                    ],
+                  ),
+                  if (_e == null) ...<Widget>[
+                    _gap,
+                    DropdownButtonFormField<String?>(
+                      initialValue: _level,
+                      isExpanded: true,
+                      decoration: InputDecoration(labelText: s.inLevel),
+                      items: <DropdownMenuItem<String?>>[for (final String l in _levels) DropdownMenuItem<String?>(value: l, child: Text(l))],
+                      onChanged: (String? v) => setState(() => _level = v),
+                    ),
+                  ],
+                ],
               ),
+            ),
+            const SizedBox(height: NSpace.md),
+            CPanel(
+              title: s.inPhaseTags,
+              icon: Icons.spa_outlined,
+              child: _chips(context, _phases, _phaseTags.contains, (String p) => setState(() => _phaseTags.contains(p) ? _phaseTags.remove(p) : _phaseTags.add(p))),
+            ),
+            if (_e == null) ...<Widget>[
+              const SizedBox(height: NSpace.md),
+              CPanel(
+                title: s.inRepeatSection,
+                icon: Icons.repeat_rounded,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    Material(
+                      type: MaterialType.transparency,
+                      child: SwitchListTile(
+                        contentPadding: EdgeInsets.zero,
+                        activeTrackColor: CRole.of(context).accent,
+                        title: Text(s.inWeekly, style: NType.body.copyWith(color: NColors.inkPrimary)),
+                        value: _weekly,
+                        onChanged: (bool v) => setState(() => _weekly = v),
+                      ),
+                    ),
+                    if (_weekly)
+                      OutlinedButton(
+                        style: OutlinedButton.styleFrom(foregroundColor: NColors.inkPrimary, minimumSize: const Size.fromHeight(NLayout.minTapTarget)),
+                        onPressed: () async {
+                          final DateTime now = DateTime.now();
+                          final DateTime? u = await showDatePicker(context: context, initialDate: now.add(const Duration(days: 28)), firstDate: now, lastDate: now.add(const Duration(days: 182)));
+                          if (u != null) setState(() => _until = u);
+                        },
+                        child: Text(_until == null ? s.inUntil : s.inUntilDate(MaterialLocalizations.of(context).formatMediumDate(_until!))),
+                      ),
+                  ],
+                ),
+              ),
+            ],
+            const SizedBox(height: NSpace.md),
+            Row(
+              children: <Widget>[
+                const Icon(Icons.info_outline_rounded, size: 16, color: NColors.inkMuted),
+                const SizedBox(width: NSpace.xs),
+                Expanded(
+                  child: Text(s.inFeeNote, style: NType.caption.copyWith(color: NColors.inkMuted, letterSpacing: 0)),
+                ),
+              ],
+            ),
+            const SizedBox(height: NSpace.sm),
+            NPrimaryButton(label: s.drSave, loading: _busy, onPressed: _save),
           ],
-          const SizedBox(height: NSpace.lg),
-          Text(s.inFeeNote, style: NType.caption.copyWith(color: NColors.inkMuted)),
-          const SizedBox(height: NSpace.sm),
-          NPrimaryButton(label: s.drSave, loading: _busy, onPressed: _save),
-        ],
+        ),
       ),
     );
   }
@@ -559,33 +1037,114 @@ class _StudentsPageState extends State<StudentsPage> {
       body: AsyncBody<List<Json>>(
         future: _list,
         onRetry: () => setState(() => _list = _repo.students()),
-        builder: (BuildContext context, List<Json> rows) => rows.isEmpty
-            ? Padding(
-                padding: const EdgeInsets.all(NSpace.lg),
-                child: EmptyNote(text: s.inNoStudents),
-              )
-            : ListView(
-                padding: const EdgeInsets.all(NSpace.lg),
-                children: <Widget>[
-                  for (final Json st in rows)
-                    ListTile(
-                      contentPadding: EdgeInsets.zero,
-                      title: Text(st.str('firstName') ?? ''),
-                      subtitle: Text(
-                        <String>[
-                          s.inAttendedOf(st.obj('attendance').integer('attended'), st.obj('attendance').integer('booked')),
-                          if (st.str('cyclePhase') != null) s.inPhase(st.str('cyclePhase')!),
-                          s.inProgress(st.obj('practiceProgress').integer('sessionsCompleted'), st.obj('practiceProgress').integer('minutesThisMonth')),
-                        ].join(' · '),
-                      ),
-                      trailing: IconButton(tooltip: s.inRecommend, icon: const Icon(Icons.recommend_outlined), onPressed: () => _recommend(st)),
-                    ),
-                ],
+        builder: (BuildContext context, List<Json> rows) => ListView(
+          padding: const EdgeInsets.fromLTRB(NSpace.md, NSpace.xs, NSpace.md, NSpace.xl),
+          children: <Widget>[
+            CHero(eyebrow: s.inStudentsCount(rows.length), title: s.inStudentsTitle),
+            const SizedBox(height: NSpace.md),
+            if (rows.isEmpty) CEmpty(icon: Icons.groups_outlined, title: s.inNoStudents),
+            for (int i = 0; i < rows.length; i++)
+              CEntrance(
+                delayMs: 40 * (i % 8),
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: NSpace.xs),
+                  child: _StudentCard(st: rows[i], onRecommend: () => _recommend(rows[i])),
+                ),
               ),
+          ],
+        ),
       ),
     );
   }
 }
+
+class _StudentCard extends StatelessWidget {
+  const _StudentCard({required this.st, required this.onRecommend});
+
+  final Json st;
+  final VoidCallback onRecommend;
+
+  @override
+  Widget build(BuildContext context) {
+    final S s = S.of(context);
+    final Json a = st.obj('attendance');
+    final Json pp = st.obj('practiceProgress');
+    final int booked = a.integer('booked');
+    return Container(
+      padding: const EdgeInsets.fromLTRB(NSpace.sm, NSpace.sm, NSpace.xxs, NSpace.sm),
+      decoration: BoxDecoration(
+        color: NColors.surfaceCard,
+        borderRadius: BorderRadius.circular(NRadius.lg),
+        border: Border.all(color: NColors.lineDefault),
+        boxShadow: NShadow.xs,
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          CAvatar(name: st.str('firstName'), size: 44),
+          const SizedBox(width: NSpace.sm),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    Flexible(
+                      child: Text(
+                        st.str('firstName') ?? '',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: NType.body.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w700),
+                      ),
+                    ),
+                    if (st.str('cyclePhase') != null) ...<Widget>[const SizedBox(width: NSpace.xs), CPill(s.inPhase(st.str('cyclePhase')!), tone: CTone.rose)],
+                  ],
+                ),
+                const SizedBox(height: NSpace.xxs),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: CBar(value: booked == 0 ? 0 : a.integer('attended') / booked, height: 6, color: CRole.of(context).accent),
+                    ),
+                    const SizedBox(width: NSpace.xs),
+                    Text(
+                      s.inAttendedOf(a.integer('attended'), booked),
+                      style: NType.caption.copyWith(color: NColors.inkSecondary, letterSpacing: 0, fontWeight: FontWeight.w600),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: NSpace.xxs),
+                Text(s.inProgress(pp.integer('sessionsCompleted'), pp.integer('minutesThisMonth')), style: NType.bodySm.copyWith(color: NColors.inkMuted)),
+              ],
+            ),
+          ),
+          IconButton(
+            tooltip: s.inRecommend,
+            icon: Icon(Icons.recommend_outlined, color: CRole.of(context).accent),
+            onPressed: onRecommend,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+String _contentState(S s, String? st) => switch (st) {
+  'draft' => s.dtPlanDraft,
+  'in_review' => s.inInReview,
+  'returned' => s.inReturned,
+  'published' => s.dtPublishedLabel,
+  'withdrawn' => s.inWithdrawn,
+  _ => st ?? '',
+};
+
+CTone _contentTone(String? st) => switch (st) {
+  'published' => CTone.sage,
+  'in_review' => CTone.lavender,
+  'returned' => CTone.apricot,
+  'withdrawn' => CTone.quiet,
+  _ => CTone.rose,
+};
 
 /// The content library (spec 013 §6): her recorded sessions with states and counts-only statistics.
 class LibraryPage extends StatefulWidget {
@@ -610,49 +1169,142 @@ class _LibraryPageState extends State<LibraryPage> {
     if (mounted) setState(() => _list = _repo.content());
   }
 
-  String _state(S s, String? st) => switch (st) {
-    'draft' => s.dtPlanDraft,
-    'in_review' => s.inInReview,
-    'returned' => s.inReturned,
-    'published' => s.dtPublishedLabel,
-    'withdrawn' => s.inWithdrawn,
-    _ => st ?? '',
-  };
-
   @override
   Widget build(BuildContext context) {
     final S s = S.of(context);
     return InstructorShell(
       index: 3,
       title: s.inLibrary,
-      floatingActionButton: FloatingActionButton.extended(onPressed: () => _edit(null), icon: const Icon(Icons.add_rounded), label: Text(s.inNewSession)),
+      floatingActionButton: _fab(context, s.inNewSession, () => _edit(null)),
       body: AsyncBody<List<Json>>(
         future: _list,
         onRetry: () => setState(() => _list = _repo.content()),
-        builder: (BuildContext context, List<Json> rows) => rows.isEmpty
-            ? Padding(
-                padding: const EdgeInsets.all(NSpace.lg),
-                child: EmptyNote(text: s.inNoContent),
-              )
-            : ListView(
-                padding: const EdgeInsets.fromLTRB(NSpace.lg, NSpace.lg, NSpace.lg, 96),
-                children: <Widget>[
-                  for (final Json c in rows)
-                    ListTile(
-                      contentPadding: EdgeInsets.zero,
-                      title: Text(c.str('title') ?? ''),
-                      subtitle: Text(
-                        <String>[
-                          _state(s, c.str('status')),
-                          s.practiceMinutes(c.integer('minutes')),
-                          s.inStats(c.obj('stats').integer('plays'), c.obj('stats').integer('completions')),
-                          if (c.str('reviewNote') != null) c.str('reviewNote')!,
-                        ].join(' · '),
-                      ),
-                      onTap: () => _edit(c),
-                    ),
-                ],
+        builder: (BuildContext context, List<Json> rows) {
+          int count(String st) => rows.where((Json c) => c.str('status') == st).length;
+          return ListView(
+            padding: const EdgeInsets.fromLTRB(NSpace.md, NSpace.xs, NSpace.md, 96),
+            children: <Widget>[
+              CHero(
+                eyebrow: s.inLibrary,
+                title: s.inLibraryTitle,
+                child: CStatGrid(
+                  children: <Widget>[
+                    CHeroStat(label: s.dtPublishedLabel, value: '${count('published')}', icon: Icons.play_circle_outline_rounded),
+                    CHeroStat(label: s.inInReview, value: '${count('in_review')}', icon: Icons.hourglass_top_rounded),
+                    CHeroStat(label: s.inReturned, value: '${count('returned')}', icon: Icons.replay_rounded, alert: count('returned') > 0),
+                  ],
+                ),
               ),
+              const SizedBox(height: NSpace.md),
+              if (rows.isEmpty) CEmpty(icon: Icons.video_library_outlined, title: s.inNoContent),
+              for (int i = 0; i < rows.length; i++)
+                CEntrance(
+                  delayMs: 40 * (i % 8),
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: NSpace.sm),
+                    child: _ContentCard(c: rows[i], state: _contentState(s, rows[i].str('status')), onTap: () => _edit(rows[i])),
+                  ),
+                ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _ContentCard extends StatelessWidget {
+  const _ContentCard({required this.c, required this.state, required this.onTap});
+
+  final Json c;
+  final String state;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final S s = S.of(context);
+    final CRole role = CRole.of(context);
+    return Semantics(
+      button: true,
+      label: c.str('title'),
+      child: Material(
+        color: NColors.surfaceCard,
+        borderRadius: BorderRadius.circular(NRadius.xl),
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(NRadius.xl),
+          child: Container(
+            padding: const EdgeInsets.all(NSpace.sm),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(NRadius.xl),
+              border: Border.all(color: NColors.lineDefault),
+              boxShadow: NShadow.xs,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      width: 56,
+                      height: 56,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: <Color>[role.light, NColors.brandBlushLight]),
+                        borderRadius: BorderRadius.circular(NRadius.lg),
+                      ),
+                      child: Icon(Icons.play_arrow_rounded, color: role.accent, size: 28),
+                    ),
+                    const SizedBox(width: NSpace.sm),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            c.str('title') ?? '',
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: NType.body.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w700),
+                          ),
+                          const SizedBox(height: NSpace.xxs),
+                          Wrap(
+                            spacing: NSpace.xxs,
+                            runSpacing: NSpace.xxs,
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            children: <Widget>[
+                              CPill(state, tone: _contentTone(c.str('status'))),
+                              CPill(s.practiceMinutes(c.integer('minutes'))),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Icon(Icons.chevron_right_rounded, color: NColors.inkMuted),
+                  ],
+                ),
+                const SizedBox(height: NSpace.xs),
+                Row(
+                  children: <Widget>[
+                    const Icon(Icons.bar_chart_rounded, size: 16, color: NColors.inkMuted),
+                    const SizedBox(width: NSpace.xxs),
+                    Expanded(
+                      child: Text(s.inStats(c.obj('stats').integer('plays'), c.obj('stats').integer('completions')), style: NType.caption.copyWith(color: NColors.inkSecondary, letterSpacing: 0)),
+                    ),
+                  ],
+                ),
+                if (c.str('reviewNote') != null) ...<Widget>[
+                  const SizedBox(height: NSpace.xs),
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(NSpace.xs + 2),
+                    decoration: BoxDecoration(color: NColors.brandApricotLight, borderRadius: BorderRadius.circular(NRadius.md)),
+                    child: Text(c.str('reviewNote')!, style: NType.bodySm.copyWith(color: NColors.inkPrimary)),
+                  ),
+                ],
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -718,72 +1370,167 @@ class _ContentEditorPageState extends State<ContentEditorPage> {
     final S s = S.of(context);
     final Json? c = _c;
     final bool editable = c == null || c.str('status') != 'withdrawn';
-    return AreaScaffold(
+    return _InstructorPage(
       title: c == null ? s.inNewSession : (c.str('title') ?? ''),
-      body: ListView(
-        padding: const EdgeInsets.all(NSpace.lg),
-        children: <Widget>[
-          if (c != null && c.str('reviewNote') != null) NCard(color: NColors.statusWarningLight, child: Text(c.str('reviewNote')!)),
-          TextField(
-            controller: _title,
-            enabled: editable,
-            maxLength: 120,
-            decoration: InputDecoration(labelText: s.inTitle),
-          ),
-          TextField(
-            controller: _description,
-            enabled: editable,
-            minLines: 2,
-            maxLines: 6,
-            maxLength: 2000,
-            decoration: InputDecoration(labelText: s.inDescription, helperText: s.inNoMedicalClaims),
-          ),
-          TextField(
-            controller: _minutes,
-            enabled: editable,
-            keyboardType: TextInputType.number,
-            decoration: InputDecoration(labelText: s.dtMinutes),
-          ),
-          NSectionTitle(s.inPhaseTags),
-          Wrap(
-            spacing: NSpace.xs,
+      body: Builder(
+        builder: (BuildContext context) {
+          final CRole role = CRole.of(context);
+          return ListView(
+            padding: const EdgeInsets.fromLTRB(NSpace.md, NSpace.xs, NSpace.md, NSpace.xl),
             children: <Widget>[
-              for (final String p in _phases)
-                FilterChip(label: Text(p), selected: _suitability.contains(p), onSelected: editable ? (bool v) => setState(() => v ? _suitability.add(p) : _suitability.remove(p)) : null),
+              if (c != null) ...<Widget>[
+                Row(
+                  children: <Widget>[
+                    CPill(_contentState(s, c.str('status')), tone: _contentTone(c.str('status'))),
+                    const SizedBox(width: NSpace.xs),
+                    Expanded(
+                      child: Text(s.inStatsLong(c.obj('stats').integer('plays'), c.obj('stats').integer('completions')), style: NType.caption.copyWith(color: NColors.inkSecondary, letterSpacing: 0)),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: NSpace.sm),
+              ],
+              if (c != null && c.str('reviewNote') != null) ...<Widget>[
+                Container(
+                  padding: const EdgeInsets.all(NSpace.sm),
+                  decoration: BoxDecoration(color: NColors.brandApricotLight, borderRadius: BorderRadius.circular(NRadius.lg)),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      const Icon(Icons.rate_review_outlined, size: 18, color: NColors.statusWarningText),
+                      const SizedBox(width: NSpace.xs),
+                      Expanded(
+                        child: Text(c.str('reviewNote')!, style: NType.bodySm.copyWith(color: NColors.inkPrimary)),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: NSpace.sm),
+              ],
+              CPanel(
+                title: s.inClassDetails,
+                icon: Icons.video_library_outlined,
+                child: Column(
+                  children: <Widget>[
+                    TextField(
+                      controller: _title,
+                      enabled: editable,
+                      maxLength: 120,
+                      decoration: InputDecoration(labelText: s.inTitle),
+                    ),
+                    TextField(
+                      controller: _description,
+                      enabled: editable,
+                      minLines: 2,
+                      maxLines: 6,
+                      maxLength: 2000,
+                      decoration: InputDecoration(labelText: s.inDescription, helperText: s.inNoMedicalClaims, helperMaxLines: 3),
+                    ),
+                    TextField(
+                      controller: _minutes,
+                      enabled: editable,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(labelText: s.dtMinutes),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: NSpace.md),
+              CPanel(
+                title: s.inPhaseTags,
+                icon: Icons.spa_outlined,
+                child: _chips(context, _phases, _suitability.contains, editable ? (String p) => setState(() => _suitability.contains(p) ? _suitability.remove(p) : _suitability.add(p)) : null),
+              ),
+              const SizedBox(height: NSpace.md),
+              CPanel(
+                title: s.inIntensity,
+                icon: Icons.local_fire_department_outlined,
+                child: Row(
+                  children: <Widget>[
+                    for (int i = 1; i <= 5; i++) ...<Widget>[
+                      if (i > 1) const SizedBox(width: NSpace.xs),
+                      Expanded(
+                        child: ChoiceChip(
+                          label: SizedBox(
+                            width: double.infinity,
+                            child: Text('$i', textAlign: TextAlign.center),
+                          ),
+                          showCheckmark: false,
+                          selected: _intensity == i,
+                          selectedColor: role.accent,
+                          backgroundColor: NColors.surfaceCard,
+                          side: BorderSide(color: _intensity == i ? role.accent : NColors.lineDefault),
+                          labelStyle: NType.body.copyWith(color: _intensity == i ? Colors.white : NColors.inkPrimary, fontWeight: FontWeight.w700),
+                          onSelected: editable ? (_) => setState(() => _intensity = i) : null,
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+              const SizedBox(height: NSpace.md),
+              CPanel(
+                title: s.inRights,
+                icon: Icons.verified_outlined,
+                child: Column(
+                  children: <Widget>[
+                    Material(
+                      type: MaterialType.transparency,
+                      child: SwitchListTile(
+                        contentPadding: EdgeInsets.zero,
+                        activeTrackColor: role.accent,
+                        title: Text(s.inProposePregnancy, style: NType.body.copyWith(color: NColors.inkPrimary)),
+                        subtitle: Text(s.inReviewerDecides, style: NType.bodySm.copyWith(color: NColors.inkMuted)),
+                        value: _pregnancy ?? false,
+                        onChanged: editable ? (bool v) => setState(() => _pregnancy = v) : null,
+                      ),
+                    ),
+                    Material(
+                      type: MaterialType.transparency,
+                      child: CheckboxListTile(
+                        contentPadding: EdgeInsets.zero,
+                        activeColor: role.accent,
+                        title: Text(s.inRights, style: NType.body.copyWith(color: NColors.inkPrimary)),
+                        value: _rights,
+                        onChanged: editable ? (bool? v) => setState(() => _rights = v ?? false) : null,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              if (c != null && !c.flag('hasVideo')) ...<Widget>[
+                const SizedBox(height: NSpace.sm),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    const Icon(Icons.info_outline_rounded, size: 16, color: NColors.inkMuted),
+                    const SizedBox(width: NSpace.xs),
+                    Expanded(
+                      child: Text(s.inVideoNotInApp, style: NType.caption.copyWith(color: NColors.inkMuted, letterSpacing: 0)),
+                    ),
+                  ],
+                ),
+              ],
+              const SizedBox(height: NSpace.md),
+              if (editable) NSecondaryButton(label: s.drSaveDraft, onPressed: _busy ? null : () => _run(() => widget.repository.saveContent(c?.str('id'), _input), s.drSaved)),
+              if (c != null && (c.str('status') == 'draft' || c.str('status') == 'returned')) ...<Widget>[
+                const SizedBox(height: NSpace.xs),
+                NPrimaryButton(label: s.inSubmit, loading: _busy, onPressed: () => _run(() => widget.repository.submitContent(c.str('id')!), s.inSubmitted)),
+              ],
+              if (c != null && c.str('status') == 'published')
+                TextButton(
+                  style: TextButton.styleFrom(foregroundColor: NColors.statusClinicalRedFlag),
+                  onPressed: _busy
+                      ? null
+                      : () async {
+                          await widget.repository.withdrawContent(c.str('id')!);
+                          if (context.mounted) Navigator.of(context).pop();
+                        },
+                  child: Text(s.inWithdraw),
+                ),
             ],
-          ),
-          NSectionTitle(s.inIntensity),
-          Wrap(
-            spacing: NSpace.xs,
-            children: <Widget>[for (int i = 1; i <= 5; i++) ChoiceChip(label: Text('$i'), selected: _intensity == i, onSelected: editable ? (_) => setState(() => _intensity = i) : null)],
-          ),
-          SwitchListTile(
-            contentPadding: EdgeInsets.zero,
-            title: Text(s.inProposePregnancy),
-            subtitle: Text(s.inReviewerDecides),
-            value: _pregnancy ?? false,
-            onChanged: editable ? (bool v) => setState(() => _pregnancy = v) : null,
-          ),
-          CheckboxListTile(contentPadding: EdgeInsets.zero, title: Text(s.inRights), value: _rights, onChanged: editable ? (bool? v) => setState(() => _rights = v ?? false) : null),
-          if (c != null) Text(s.inStatsLong(c.obj('stats').integer('plays'), c.obj('stats').integer('completions')), style: NType.caption.copyWith(color: NColors.inkSecondary)),
-          if (c != null && !c.flag('hasVideo')) Text(s.inVideoNotInApp, style: NType.caption.copyWith(color: NColors.inkMuted)),
-          const SizedBox(height: NSpace.lg),
-          if (editable) NSecondaryButton(label: s.drSaveDraft, onPressed: _busy ? null : () => _run(() => widget.repository.saveContent(c?.str('id'), _input), s.drSaved)),
-          if (c != null && (c.str('status') == 'draft' || c.str('status') == 'returned')) ...<Widget>[
-            const SizedBox(height: NSpace.xs),
-            NPrimaryButton(label: s.inSubmit, loading: _busy, onPressed: () => _run(() => widget.repository.submitContent(c.str('id')!), s.inSubmitted)),
-          ],
-          if (c != null && c.str('status') == 'published')
-            TextButton(
-              onPressed: _busy
-                  ? null
-                  : () async {
-                      await widget.repository.withdrawContent(c.str('id')!);
-                      if (context.mounted) Navigator.of(context).pop();
-                    },
-              child: Text(s.inWithdraw),
-            ),
-        ],
+          );
+        },
       ),
     );
   }
@@ -796,20 +1543,15 @@ class InstructorMorePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final S s = S.of(context);
-    Widget row(IconData icon, String label, String path) => Padding(
-      padding: const EdgeInsets.only(bottom: NSpace.xs),
-      child: NCard(
-        onTap: () => context.push(path),
-        semanticsLabel: label,
-        child: Row(
-          children: <Widget>[
-            Icon(icon, color: NColors.inkSecondary),
-            const SizedBox(width: NSpace.sm),
-            Expanded(
-              child: Text(label, style: NType.body.copyWith(fontWeight: FontWeight.w600)),
-            ),
-            const Icon(Icons.chevron_right_rounded),
-          ],
+    Widget row(IconData icon, String label, String path, int i) => CEntrance(
+      delayMs: 50 * i,
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: NSpace.xs),
+        child: Semantics(
+          label: label,
+          button: true,
+          excludeSemantics: true,
+          child: CHubTile(icon: icon, title: label, onTap: () => context.push(path)),
         ),
       ),
     );
@@ -817,13 +1559,20 @@ class InstructorMorePage extends StatelessWidget {
       index: 4,
       title: s.pvShellMore,
       body: ListView(
-        padding: const EdgeInsets.all(NSpace.lg),
+        padding: const EdgeInsets.fromLTRB(NSpace.md, NSpace.xs, NSpace.md, NSpace.xl),
         children: <Widget>[
-          row(Icons.account_balance_wallet_outlined, s.earnTitle, '/instructor/earnings'),
-          row(Icons.person_outline_rounded, s.profileTitle, '/instructor/profile'),
-          row(Icons.notifications_none_rounded, s.notifTitle, RouteConstants.notificationSettings),
+          CHero(eyebrow: s.pvShellMore, title: s.inMoreTitle),
           const SizedBox(height: NSpace.md),
-          OutlinedButton.icon(onPressed: () => providerSignOut(context), icon: const Icon(Icons.logout_rounded), label: Text(s.pvSignOut)),
+          row(Icons.account_balance_wallet_outlined, s.earnTitle, '/instructor/earnings', 0),
+          row(Icons.person_outline_rounded, s.profileTitle, '/instructor/profile', 1),
+          row(Icons.notifications_none_rounded, s.notifTitle, RouteConstants.notificationSettings, 2),
+          const SizedBox(height: NSpace.md),
+          OutlinedButton.icon(
+            style: OutlinedButton.styleFrom(foregroundColor: NColors.inkSecondary, minimumSize: const Size.fromHeight(NLayout.minTapTarget)),
+            onPressed: () => providerSignOut(context),
+            icon: const Icon(Icons.logout_rounded),
+            label: Text(s.pvSignOut),
+          ),
         ],
       ),
     );
@@ -861,7 +1610,7 @@ class _InstructorProfilePageState extends State<InstructorProfilePage> {
   @override
   Widget build(BuildContext context) {
     final S s = S.of(context);
-    return AreaScaffold(
+    return _InstructorPage(
       title: s.profileTitle,
       body: AsyncBody<Json>(
         future: _p,
@@ -873,25 +1622,67 @@ class _InstructorProfilePageState extends State<InstructorProfilePage> {
             _languages.text = p.strs('languages').join(', ');
             _types.text = p.strs('practiceTypes').join(', ');
           }
+          final Json rating = p.obj('rating');
+          final double? avg = rating.number('average');
           return ListView(
-            padding: const EdgeInsets.all(NSpace.lg),
+            padding: const EdgeInsets.fromLTRB(NSpace.md, NSpace.xs, NSpace.md, NSpace.xl),
             children: <Widget>[
-              Text(p.str('name') ?? '', style: NType.h3),
-              Text(s.drApproval(p.str('approvalStatus') ?? ''), style: NType.bodySm.copyWith(color: NColors.inkSecondary)),
-              TextField(
-                controller: _bio,
-                minLines: 3,
-                maxLines: 6,
-                maxLength: 1000,
-                decoration: InputDecoration(labelText: s.drBio),
+              CHero(
+                eyebrow: s.inWorkspace,
+                title: p.str('name') ?? '',
+                subtitle: s.drApproval(p.str('approvalStatus') ?? ''),
+                trailing: Wrap(
+                  spacing: NSpace.xxs,
+                  runSpacing: NSpace.xxs,
+                  children: <Widget>[
+                    if (avg != null)
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: NSpace.sm, vertical: NSpace.xxs + 2),
+                        decoration: BoxDecoration(
+                          color: NColors.surfaceCard,
+                          borderRadius: BorderRadius.circular(NRadius.pill),
+                          border: Border.all(color: NColors.lineDefault),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            const Icon(Icons.star_rounded, size: 16, color: NColors.statusWarning),
+                            const SizedBox(width: 4),
+                            Text(
+                              s.inRatingLine(avg.toStringAsFixed(1), rating.integer('count')),
+                              style: NType.caption.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w700, letterSpacing: 0),
+                            ),
+                          ],
+                        ),
+                      ),
+                    for (final String t in p.strs('practiceTypes')) CPill(t, tone: CTone.sage),
+                  ],
+                ),
               ),
-              TextField(
-                controller: _languages,
-                decoration: InputDecoration(labelText: s.drLanguages, helperText: s.drCommaSeparated),
-              ),
-              TextField(
-                controller: _types,
-                decoration: InputDecoration(labelText: s.inPracticeTypes, helperText: s.drCommaSeparated),
+              const SizedBox(height: NSpace.md),
+              CPanel(
+                title: s.drAboutYou,
+                icon: Icons.person_outline_rounded,
+                child: Column(
+                  children: <Widget>[
+                    TextField(
+                      controller: _bio,
+                      minLines: 3,
+                      maxLines: 6,
+                      maxLength: 1000,
+                      decoration: InputDecoration(labelText: s.drBio),
+                    ),
+                    TextField(
+                      controller: _languages,
+                      decoration: InputDecoration(labelText: s.drLanguages, helperText: s.drCommaSeparated),
+                    ),
+                    const SizedBox(height: NSpace.sm),
+                    TextField(
+                      controller: _types,
+                      decoration: InputDecoration(labelText: s.inPracticeTypes, helperText: s.drCommaSeparated),
+                    ),
+                  ],
+                ),
               ),
               const SizedBox(height: NSpace.md),
               NPrimaryButton(

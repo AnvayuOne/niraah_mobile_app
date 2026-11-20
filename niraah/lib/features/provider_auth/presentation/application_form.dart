@@ -145,7 +145,7 @@ class _ApplicationFormState extends State<ApplicationForm> {
     final S s = S.of(context);
     if (_error != null) return EmptyNote(text: failureText(_error!, s.commonLoadError));
     final Json? app = _app;
-    if (app == null) return LoadingView(label: s.loading);
+    if (app == null) return LoadingView(label: s.loadCare, kind: NLoaderKind.care);
 
     final bool editable = app.flag('editable');
     final String status = app.str('status') ?? '';

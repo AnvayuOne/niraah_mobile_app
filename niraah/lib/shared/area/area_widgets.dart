@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../../design_system/tokens/tokens.dart';
@@ -161,9 +162,12 @@ void showNote(BuildContext context, String text) {
     ..showSnackBar(SnackBar(content: Text(text)));
 }
 
-/// "15 Nov 2026" from an ISO date or time, in her locale.
+/// "Sun, Nov 15" from an ISO date or time, in her locale; with the year ("Nov 15, 2025") when it is not this
+/// year, so an old lab report or consent is never mistaken for a recent one.
 String shortDate(BuildContext context, String iso) {
-  final DateTime? d = DateTime.tryParse(iso);
-  if (d == null) return iso;
-  return MaterialLocalizations.of(context).formatMediumDate(d.toLocal());
+  final DateTime? parsed = DateTime.tryParse(iso);
+  if (parsed == null) return iso;
+  final DateTime d = parsed.toLocal();
+  if (d.year == DateTime.now().year) return MaterialLocalizations.of(context).formatMediumDate(d);
+  return DateFormat.yMMMd(Localizations.localeOf(context).toString()).format(d);
 }
