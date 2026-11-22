@@ -40,6 +40,20 @@ class _DietPlanPageState extends State<DietPlanPage> {
     _state = _repo.open();
   });
 
+  /// After the food profile is saved the server cooks a new week, which can take up to a minute:
+  /// show the cooking animation the whole time so she never sees the old form or a blank page.
+  void _cookAfterSave() {
+    final Future<DietPlanState> next = _repo.open();
+    setState(() {
+      _editing = false;
+      _cooking = true;
+      _state = next;
+    });
+    next.whenComplete(() {
+      if (mounted) setState(() => _cooking = false);
+    }).ignore();
+  }
+
   Future<void> _run(Future<DietPlanState> Function() f) async {
     setState(() => _busy = true);
     try {
@@ -66,20 +80,21 @@ class _DietPlanPageState extends State<DietPlanPage> {
       appBar: AppBar(
         title: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[Text(s.dietTitle), const SizedBox(width: NSpace.sm), const NPremiumBadge()]),
         backgroundColor: NColors.surfacePage,
-        actions: <Widget>[if (!_editing) IconButton(tooltip: s.dietEditPreferences, onPressed: () => setState(() => _editing = true), icon: const Icon(Icons.tune_rounded))],
+        actions: <Widget>[if (!_editing && !_cooking) IconButton(tooltip: s.dietEditPreferences, onPressed: () => setState(() => _editing = true), icon: const Icon(Icons.tune_rounded))],
       ),
       body: SafeArea(
         child: FutureBuilder<DietPlanState>(
           future: _state,
           builder: (BuildContext context, AsyncSnapshot<DietPlanState> snap) {
+            if (_cooking) return const DietCookingView();
             if (snap.hasError) {
               final Object e = snap.error!;
               return ErrorView(message: e is ApiException ? e.message : s.notConnectedYet, retryLabel: s.tryAgain, onRetry: _reload);
             }
-            if (!snap.hasData || _cooking) return const DietCookingView();
+            if (!snap.hasData) return const DietCookingView();
             final DietPlanState st = snap.data!;
             if (_editing || st is DietNeedsProfile) {
-              return _ProfileForm(repo: _repo, onSaved: _reload, firstTime: st is DietNeedsProfile);
+              return _ProfileForm(repo: _repo, onSaved: _cookAfterSave, firstTime: st is DietNeedsProfile);
             }
             return switch (st) {
               DietLocked(:final List<String> plans) => _Message(
@@ -402,10 +417,13 @@ class _ProfileForm extends StatefulWidget {
 }
 
 class _ProfileFormState extends State<_ProfileForm> {
-  String? _choice;
+  /// The food she eats; several picks are saved as the widest one (see [foodChoiceFor]).
+  final Set<String> _choices = <String>{};
   final Set<String> _allergens = <String>{};
   bool _noAllergies = false;
-  String _cuisine = 'pan_indian';
+
+  /// Regions she likes; several, or none, mean pan-Indian.
+  final Set<String> _cuisines = <String>{};
   final Set<int> _fasting = <int>{};
   final Set<String> _avoided = <String>{};
   List<DietOption> _foods = const <DietOption>[];
@@ -424,10 +442,10 @@ class _ProfileFormState extends State<_ProfileForm> {
         setState(() {
           _foods = foods;
           if (p != null) {
-            _choice = p.foodChoice;
+            _choices.add(p.foodChoice);
             _allergens.addAll(p.allergens);
             _noAllergies = p.noAllergies;
-            _cuisine = p.cuisine;
+            if (p.cuisine != 'pan_indian') _cuisines.add(p.cuisine);
             _fasting.addAll(p.fastingDays);
             _avoided.addAll(p.avoidedFoodIds);
           }
@@ -439,9 +457,10 @@ class _ProfileFormState extends State<_ProfileForm> {
     }();
   }
 
-  bool get _ready => _choice != null && (_noAllergies || _allergens.isNotEmpty);
+  bool get _ready => _choices.isNotEmpty && (_noAllergies || _allergens.isNotEmpty);
 
   Future<void> _save() async {
+    if (_saving) return;
     setState(() {
       _saving = true;
       _error = null;
@@ -449,17 +468,17 @@ class _ProfileFormState extends State<_ProfileForm> {
     try {
       await widget.repo.saveProfile(
         FoodProfile(
-          foodChoice: _choice!,
+          foodChoice: foodChoiceFor(_choices),
           allergens: _noAllergies ? <String>[] : _allergens.toList(),
           noAllergies: _noAllergies,
           avoidedFoodIds: _avoided.toList(),
-          cuisine: _cuisine,
+          cuisine: _cuisines.length == 1 ? _cuisines.first : 'pan_indian',
           fastingDays: _fasting.toList()..sort(),
         ),
       );
       widget.onSaved();
     } on ApiException catch (e) {
-      setState(() => _error = e.message);
+      if (mounted) setState(() => _error = e.message);
     } finally {
       if (mounted) setState(() => _saving = false);
     }
@@ -469,6 +488,8 @@ class _ProfileFormState extends State<_ProfileForm> {
   Widget build(BuildContext context) {
     final S s = S.of(context);
     if (_loading) return const DietCookingView(preparing: true);
+    // Saving leads straight into cooking the week: show the cooking animation from the first tap.
+    if (_saving) return const DietCookingView();
     Widget title(String t) => Padding(
       padding: const EdgeInsets.only(top: NSpace.lg, bottom: NSpace.xs),
       child: Text(t, style: NType.h4.copyWith(color: NColors.inkPrimary)),
@@ -485,7 +506,7 @@ class _ProfileFormState extends State<_ProfileForm> {
         Wrap(
           spacing: NSpace.xs,
           runSpacing: NSpace.xs,
-          children: <Widget>[for (final String c in FoodProfile.foodChoices) chip(dietChoiceName(s, c), _choice == c, () => setState(() => _choice = c))],
+          children: <Widget>[for (final String c in FoodProfile.foodChoices) chip(dietChoiceName(s, c), _choices.contains(c), () => setState(() => _choices.contains(c) ? _choices.remove(c) : _choices.add(c)))],
         ),
         title(s.dietAllergies),
         Wrap(
@@ -515,7 +536,7 @@ class _ProfileFormState extends State<_ProfileForm> {
         Wrap(
           spacing: NSpace.xs,
           runSpacing: NSpace.xs,
-          children: <Widget>[for (final String c in FoodProfile.cuisines) chip(dietCuisineName(s, c), _cuisine == c, () => setState(() => _cuisine = c))],
+          children: <Widget>[for (final String c in FoodProfile.cuisines) chip(dietCuisineName(s, c), c == 'pan_indian' ? _cuisines.isEmpty : _cuisines.contains(c), () => setState(() => c == 'pan_indian' ? _cuisines.clear() : (_cuisines.contains(c) ? _cuisines.remove(c) : _cuisines.add(c))))],
         ),
         title(s.dietFastingDays),
         Wrap(
@@ -579,6 +600,16 @@ class _ProfileFormState extends State<_ProfileForm> {
         ..addAll(picked),
     );
   }
+}
+
+/// The server keeps one food choice: several picks become the widest, so every food she eats can appear.
+/// Vegan and Jain together become vegetarian, the closest choice that covers both.
+String foodChoiceFor(Set<String> picks) {
+  for (final String c in <String>['non_vegetarian', 'eggetarian', 'vegetarian']) {
+    if (picks.contains(c)) return c;
+  }
+  if (picks.contains('vegan') && picks.contains('jain')) return 'vegetarian';
+  return picks.isEmpty ? 'vegetarian' : picks.first;
 }
 
 String dietChoiceName(S s, String c) => switch (c) {

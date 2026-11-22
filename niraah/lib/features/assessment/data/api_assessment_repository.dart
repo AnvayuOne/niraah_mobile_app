@@ -18,7 +18,9 @@ class ApiAssessmentRepository implements AssessmentRepository {
   @override
   Future<Result<AssessmentSession>> startOrResume() async {
     final ApiResult<Map<String, dynamic>> r = await _api.post('/assessment/start', <String, dynamic>{});
-    if (r is ApiFail<Map<String, dynamic>>) return FailureResult<AssessmentSession>(r.error.message);
+    if (r is ApiFail<Map<String, dynamic>>) {
+      return FailureResult<AssessmentSession>(r.error.field == 'consent' ? kConsentRequired : r.error.message);
+    }
     final Map<String, dynamic> data = (r as ApiOk<Map<String, dynamic>>).data;
     final QuestionnaireDocument doc = QuestionnaireParser.parse(Map<String, dynamic>.from(data['document'] as Map));
     final Map<String, dynamic> raw = Map<String, dynamic>.from((data['answers'] as Map?) ?? <String, dynamic>{});

@@ -9,7 +9,7 @@ import '../domain/display_conditions.dart';
 import '../domain/prescore.dart';
 import '../domain/questionnaire.dart';
 
-enum AssessmentStatus { initial, loading, ready, saving, minimumAge, submitting, done, failure }
+enum AssessmentStatus { initial, loading, needsConsent, ready, saving, minimumAge, submitting, done, failure }
 
 class AssessmentState extends Equatable {
   const AssessmentState({
@@ -83,15 +83,18 @@ class AssessmentCubit extends Cubit<AssessmentState> {
         final Question first = vis.firstWhere((Question q) => !data.answers.containsKey(q.key), orElse: () => vis.last);
         emit(AssessmentState(status: AssessmentStatus.ready, session: data, answers: data.answers, currentKey: first.key));
       case FailureResult<AssessmentSession>(:final String message):
-        emit(state.copyWith(status: AssessmentStatus.failure, failure: message));
+        // No consent yet: show the consent form; the assessment starts once she agrees.
+        emit(state.copyWith(status: message == kConsentRequired ? AssessmentStatus.needsConsent : AssessmentStatus.failure, failure: message));
     }
   }
 
+  /// Records consent, then starts the assessment if it wasn't started yet (spec 007 AC1).
   Future<bool> recordConsent({required bool healthData, required bool doctorReview}) async {
-    final AssessmentSession? s = state.session;
-    if (s == null) return false;
-    final Result<void> r = await _repo.recordConsent(healthData: healthData, doctorReview: doctorReview, textVersion: s.consentTextVersion);
-    return r is Success<void>;
+    final String version = state.session?.consentTextVersion ?? kConsentTextVersion;
+    final Result<void> r = await _repo.recordConsent(healthData: healthData, doctorReview: doctorReview, textVersion: version);
+    if (r is! Success<void>) return false;
+    if (state.session == null) await load();
+    return state.session != null;
   }
 
   /// Sets an answer. A changed answer that hides later questions discards

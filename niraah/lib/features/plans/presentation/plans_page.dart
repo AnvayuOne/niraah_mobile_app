@@ -62,7 +62,18 @@ class _PlansPageState extends State<PlansPage> {
     final S s = S.of(context);
     return Scaffold(
       backgroundColor: NColors.surfacePage,
-      appBar: context.canPop() ? AppBar(backgroundColor: NColors.surfacePage) : null,
+      // Skip choosing a plan for now: she stays on the free plan and goes home.
+      appBar: AppBar(
+        backgroundColor: NColors.surfacePage,
+        elevation: 0,
+        actions: <Widget>[
+          TextButton(
+            key: const Key('plans-skip'),
+            onPressed: () => context.go(RouteConstants.home),
+            child: Text(s.skip, style: NType.body.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w600)),
+          ),
+        ],
+      ),
       body: SafeArea(
         child: FutureBuilder<Result<PlansOffer>>(
           future: _offer,
@@ -91,6 +102,14 @@ class _PlansPageState extends State<PlansPage> {
                 // The free plan's own card offers "Continue free" when it is listed.
                 if (!offer.plans.any((Plan p) => p.isFree))
                   NSecondaryButton(label: s.plansContinueFree, onPressed: () => context.go(RouteConstants.home)),
+                const SizedBox(height: NSpace.sm),
+                Center(
+                  child: TextButton(
+                    onPressed: () => context.go(RouteConstants.home),
+                    child: Text('${s.skip} for now',
+                        style: NType.body.copyWith(color: NColors.inkSecondary, decoration: TextDecoration.underline)),
+                  ),
+                ),
               ],
             );
           },
