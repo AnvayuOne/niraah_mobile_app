@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 
 import '../auth/session_store.dart';
 import '../errors/api_exception.dart';
@@ -70,6 +71,10 @@ class NiraahApi {
   final Dio _dio;
   final SessionStore store;
 
+  /// True once the server refuses her session and it cannot be refreshed (for example after a local
+  /// server restart). The router listens and sends her to sign in instead of retrying forever.
+  static final ValueNotifier<bool> sessionLost = ValueNotifier<bool>(false);
+
   Future<ApiResult<Map<String, dynamic>>> get(String path) => _call('GET', path, null);
 
   Future<ApiResult<Map<String, dynamic>>> post(String path, [Map<String, dynamic>? body]) => _call('POST', path, body ?? <String, dynamic>{});
@@ -116,6 +121,7 @@ class NiraahApi {
       if (status == 401 && !retried && tokens != null && !path.startsWith('/auth/refresh') && await _refresh(tokens.refreshToken)) {
         return _call(method, path, body, retried: true);
       }
+      if (status == 401 && !path.startsWith('/auth/')) sessionLost.value = true;
       return ApiFail<Map<String, dynamic>>(ApiError.from(e), status: status);
     }
   }
@@ -136,6 +142,7 @@ class NiraahApi {
     if (data is Map && data['tokens'] is Map) {
       final Map<dynamic, dynamic> t = data['tokens'] as Map<dynamic, dynamic>;
       await store.write(SessionTokens(accessToken: '${t['accessToken']}', refreshToken: '${t['refreshToken']}'));
+      sessionLost.value = false;
     }
   }
 

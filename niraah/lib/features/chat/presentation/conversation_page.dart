@@ -258,6 +258,77 @@ class _MemberBubble extends StatelessWidget {
   }
 }
 
+/// The answer's light formatting without its marks, for screen readers and copies: `**bold**` and list
+/// markers are dropped.
+String plainChatText(String t) =>
+    t.replaceAll('**', '').replaceAll('__', '').replaceAllMapped(RegExp(r'(^|\n)\s*(?:[-*•]|\d+[.)])\s+'), (Match m) => m[1]!);
+
+/// Shows an answer's sentences as paragraphs and bullet points, with `**bold**` in bold, so no stars or
+/// dashes appear on screen. Plain sentences run on in one paragraph; a sentence starting with `- `, `* `,
+/// `•` or `1.` starts its own bullet line.
+class ChatFormattedText extends StatelessWidget {
+  const ChatFormattedText({super.key, required this.lines, required this.style});
+
+  final List<String> lines;
+  final TextStyle style;
+
+  static final RegExp _bullet = RegExp(r'^\s*(?:[-*•]|\d+[.)])\s+');
+  static final RegExp _heading = RegExp(r'^\s*#{1,6}\s+');
+
+  @override
+  Widget build(BuildContext context) {
+    // Split any multi-line sentence, then group: bullets alone, plain text joined into paragraphs.
+    final List<({bool bullet, String text})> blocks = <({bool bullet, String text})>[];
+    for (final String sentence in lines) {
+      for (final String raw in sentence.split('\n')) {
+        final String line = raw.replaceFirst(_heading, '').trimRight();
+        if (line.trim().isEmpty) continue;
+        if (_bullet.hasMatch(line)) {
+          blocks.add((bullet: true, text: line.replaceFirst(_bullet, '').trim()));
+        } else if (blocks.isNotEmpty && !blocks.last.bullet) {
+          blocks[blocks.length - 1] = (bullet: false, text: '${blocks.last.text} ${line.trim()}');
+        } else {
+          blocks.add((bullet: false, text: line.trim()));
+        }
+      }
+    }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        for (int i = 0; i < blocks.length; i++)
+          Padding(
+            padding: EdgeInsets.only(top: i == 0 ? 0 : (blocks[i].bullet && blocks[i - 1].bullet ? NSpace.xxs : NSpace.sm)),
+            child: blocks[i].bullet
+                ? Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Padding(padding: const EdgeInsets.symmetric(horizontal: NSpace.xs), child: Text('•', style: style)),
+                      Expanded(child: Text.rich(TextSpan(children: _spans(blocks[i].text)), style: style)),
+                    ],
+                  )
+                : Text.rich(TextSpan(children: _spans(blocks[i].text)), style: style),
+          ),
+      ],
+    );
+  }
+
+  /// `**bold**` (or `__bold__`) becomes bold; any stray single stars are removed.
+  List<InlineSpan> _spans(String text) {
+    final List<InlineSpan> out = <InlineSpan>[];
+    final RegExp bold = RegExp(r'\*\*(.+?)\*\*|__(.+?)__');
+    int at = 0;
+    for (final Match m in bold.allMatches(text)) {
+      if (m.start > at) out.add(TextSpan(text: _clean(text.substring(at, m.start))));
+      out.add(TextSpan(text: _clean(m[1] ?? m[2]!), style: const TextStyle(fontWeight: FontWeight.w700)));
+      at = m.end;
+    }
+    if (at < text.length) out.add(TextSpan(text: _clean(text.substring(at))));
+    return out;
+  }
+
+  static String _clean(String s) => s.replaceAll('**', '').replaceAllMapped(RegExp(r'(^|\s)\*(\S[^*]*?)\*(?=\s|$|[.,;:!?])'), (Match m) => '${m[1]}${m[2]}');
+}
+
 class _AnswerBubble extends StatelessWidget {
   const _AnswerBubble({required this.answer, required this.footer, required this.stopped, required this.onRetry});
 
@@ -272,7 +343,7 @@ class _AnswerBubble extends StatelessWidget {
     final List<CitedSentence> body = answer.sentences.where((CitedSentence x) => x.text != footer).toList();
     final bool hasFooter = answer.sentences.isNotEmpty && answer.sentences.last.text == footer;
     final bool finished = !answer.streaming && !stopped;
-    final String spoken = '${s.chatAssistant}: ${answer.sentences.map((CitedSentence x) => x.text).join(' ')}';
+    final String spoken = '${s.chatAssistant}: ${plainChatText(answer.sentences.map((CitedSentence x) => x.text).join(' '))}';
     return Align(
       alignment: Alignment.centerLeft,
       child: Container(
@@ -293,7 +364,7 @@ class _AnswerBubble extends StatelessWidget {
               liveRegion: finished,
               label: finished ? spoken : s.chatThinking,
               excludeSemantics: true,
-              child: Text(body.map((CitedSentence x) => x.text).join(' '), style: NType.body.copyWith(color: NColors.inkPrimary)),
+              child: ChatFormattedText(lines: body.map((CitedSentence x) => x.text).toList(), style: NType.body.copyWith(color: NColors.inkPrimary)),
             ),
             if (hasFooter) ...<Widget>[
               const SizedBox(height: NSpace.xs),

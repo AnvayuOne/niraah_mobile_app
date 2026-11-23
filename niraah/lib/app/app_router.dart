@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../core/di/service_locator.dart';
+import '../core/network/niraah_api.dart';
 import '../features/assessment/presentation/pages/assessment_start_page.dart';
 import '../features/assessment/presentation/pages/minimum_age_page.dart';
 import '../features/assessment/presentation/pages/prescore_page.dart';
@@ -63,8 +64,14 @@ import '../shared/widgets/coming_soon_page.dart';
 class AppRouter {
   const AppRouter._();
 
+  /// Screens she can see without a session; anywhere else a lost session sends her to sign in.
+  static bool _public(String loc) =>
+      loc == RouteConstants.splash || <String>[RouteConstants.landing, RouteConstants.intro, RouteConstants.welcome, RouteConstants.signIn].any(loc.startsWith);
+
   static GoRouter create({String initialLocation = RouteConstants.splash}) => GoRouter(
         initialLocation: initialLocation,
+        refreshListenable: NiraahApi.sessionLost,
+        redirect: (_, GoRouterState st) => NiraahApi.sessionLost.value && !_public(st.matchedLocation) ? RouteConstants.signIn : null,
         routes: <RouteBase>[
           GoRoute(path: RouteConstants.splash, builder: (_, _) => const SplashPage()),
           GoRoute(path: RouteConstants.landing, builder: (_, _) => const LandingPage()),
