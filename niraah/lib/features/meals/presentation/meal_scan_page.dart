@@ -81,17 +81,17 @@ class _MealScanPageState extends State<MealScanPage> {
       if (!mounted) return;
       setState(() {
         switch (r) {
-          case ScanOk(:final List<ScanItem> items, :final List<String> tags):
+          case ScanOk(:List<ScanItem> items, :List<String> tags):
             _lines = <_Line>[
-              for (final ScanItem i in items)
+              for (ScanItem i in items)
                 switch (i) {
-                  MatchedItem(:final FoodRef food, :final Nutrients nutrients) => _Line(food: food, count: i.count, unit: i.unit, nutrients: nutrients),
-                  NotSureItem(:final String label) => _Line(label: label, count: i.count, unit: i.unit),
+                  MatchedItem(:FoodRef food, :Nutrients nutrients) => _Line(food: food, count: i.count, unit: i.unit, nutrients: nutrients),
+                  NotSureItem(:String label) => _Line(label: label, count: i.count, unit: i.unit),
                 },
             ];
             _tags = tags;
             _step = _Step.review;
-          case ScanNoFood(:final String message):
+          case ScanNoFood(:String message):
             _message = message;
             _step = _Step.message;
           case ScanLimit():
@@ -191,7 +191,7 @@ class _MealScanPageState extends State<MealScanPage> {
       Container(
         padding: const EdgeInsets.all(NSpace.lg),
         decoration: BoxDecoration(
-          gradient: const LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: <Color>[NColors.brandApricotLight, NColors.brandBlushLight]),
+          gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: <Color>[NColors.brandApricotLight, NColors.brandBlushLight]),
           borderRadius: BorderRadius.circular(NRadius.xl),
         ),
         child: Column(
@@ -249,7 +249,7 @@ class _MealScanPageState extends State<MealScanPage> {
         const SizedBox(height: NSpace.xs),
         Wrap(
           spacing: NSpace.xs,
-          children: <Widget>[for (final MealSlot m in MealSlot.values) ChoiceChip(label: Text(slotName(s, m)), selected: _slot == m, onSelected: (_) => setState(() => _slot = m))],
+          children: <Widget>[for (MealSlot m in MealSlot.values) ChoiceChip(label: Text(slotName(s, m)), selected: _slot == m, onSelected: (_) => setState(() => _slot = m))],
         ),
         const SizedBox(height: NSpace.lg),
         NPrimaryButton(label: s.mealsSave, inactiveHint: s.mealsSaveInactive, loading: _step == _Step.saving, onPressed: ready ? _save : null),
@@ -283,7 +283,7 @@ class _MealScanPageState extends State<MealScanPage> {
               ),
               IconButton(
                 tooltip: s.mealsRemove,
-                icon: const Icon(Icons.close_rounded, color: NColors.inkMuted),
+                icon: Icon(Icons.close_rounded, color: NColors.inkMuted),
                 onPressed: () => setState(() => _lines.remove(l)),
               ),
             ],
@@ -316,7 +316,7 @@ class _MealScanPageState extends State<MealScanPage> {
               DropdownButton<String>(
                 value: portionUnits.contains(l.unit) ? l.unit : 'serving',
                 underline: const SizedBox.shrink(),
-                items: <DropdownMenuItem<String>>[for (final String u in portionUnits) DropdownMenuItem<String>(value: u, child: Text(u))],
+                items: <DropdownMenuItem<String>>[for (String u in portionUnits) DropdownMenuItem<String>(value: u, child: Text(u))],
                 onChanged: (String? u) {
                   if (u != null) {
                     setState(
@@ -344,7 +344,7 @@ class _MealScanPageState extends State<MealScanPage> {
           color: NColors.brandSageLight,
           child: Row(
             children: <Widget>[
-              const Icon(Icons.check_circle_rounded, color: NColors.statusSuccess, size: 32),
+              Icon(Icons.check_circle_rounded, color: NColors.statusSuccess, size: 32),
               const SizedBox(width: NSpace.sm),
               Expanded(
                 child: Text('${s.mealsSaved} · ${slotName(s, m.slot)}', style: NType.h4.copyWith(color: NColors.inkPrimary)),
@@ -357,7 +357,7 @@ class _MealScanPageState extends State<MealScanPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              for (final LoggedItem i in m.items)
+              for (LoggedItem i in m.items)
                 Padding(
                   padding: const EdgeInsets.only(bottom: NSpace.xs),
                   child: Text('${i.name} · ${i.portion ?? '${formatNumber(i.grams)} g'}', style: NType.body.copyWith(color: NColors.inkPrimary)),
@@ -456,7 +456,7 @@ class _FoodSearchSheetState extends State<_FoodSearchSheet> {
                   ? Text(s.mealsSearchNone, style: NType.body.copyWith(color: NColors.inkSecondary))
                   : ListView(
                       children: <Widget>[
-                        for (final FoodOption f in _results)
+                        for (FoodOption f in _results)
                           ListTile(title: Text(f.name), subtitle: f.regionalNames.isEmpty ? null : Text(f.regionalNames.take(3).join(', ')), onTap: () => Navigator.of(context).pop(f)),
                       ],
                     ),

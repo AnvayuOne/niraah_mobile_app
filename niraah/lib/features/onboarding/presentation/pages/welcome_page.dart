@@ -23,7 +23,7 @@ class WelcomePage extends StatelessWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: nStagger(<Widget>[
-          const SizedBox(height: NSpace.md),
+          SizedBox(height: NSpace.md),
           Center(
             child: SizedBox(
               height: NSpace.xl3 * 4 + NSpace.xl,
@@ -31,7 +31,7 @@ class WelcomePage extends StatelessWidget {
                 alignment: Alignment.center,
                 clipBehavior: Clip.none,
                 children: <Widget>[
-                  const NHalo(
+                  NHalo(
                     size: NSpace.xl3 * 5,
                     child: NLottie(path: NLotties.celebrate, size: NSpace.xl3 * 4),
                   ),
@@ -60,7 +60,7 @@ class WelcomePage extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                const NSquircleIcon(icon: Icons.spa_outlined, size: 36, tint: NColors.surfaceCard),
+                NSquircleIcon(icon: Icons.spa_outlined, size: 36, tint: NColors.surfaceCard),
                 const SizedBox(width: NSpace.sm),
                 Expanded(
                   child: Text(s.welcomeWellness, style: NType.bodySm.copyWith(color: NColors.inkPrimary)),

@@ -129,7 +129,7 @@ ChatOutcome answerMessage(String message, {required int remaining, required bool
   sentences.add(CitedSentence(text: sampleChatFooter));
 
   final List<ChatSource> sources = <ChatSource>[];
-  for (final CitedSentence s in sentences) {
+  for (CitedSentence s in sentences) {
     final Passage? p = s.passageId == null ? null : _passages[s.passageId];
     if (p != null && !sources.any((ChatSource x) => x.id == p.documentId)) {
       sources.add(ChatSource(id: p.documentId, title: p.title, publisher: p.publisher));

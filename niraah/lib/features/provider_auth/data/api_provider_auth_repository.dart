@@ -108,10 +108,10 @@ class ApiProviderAuthRepository implements ProviderAuthRepository {
   Future<PasswordRejection?> setPassword(String token, String password) async {
     final ApiResult<Map<String, dynamic>> r = await _api.post('/auth/setup/password', <String, dynamic>{'token': token, 'password': password});
     switch (r) {
-      case ApiOk<Map<String, dynamic>>(:final Map<String, dynamic> data):
+      case ApiOk<Map<String, dynamic>>(:Map<String, dynamic> data):
         _setupId = '${data['setupId']}';
         return null;
-      case ApiFail<Map<String, dynamic>>(:final ApiError error):
+      case ApiFail<Map<String, dynamic>>(:ApiError error):
         return error.message.toLowerCase().contains('breach') ? PasswordRejection.breached : PasswordRejection.tooShort;
     }
   }

@@ -152,7 +152,7 @@ class _PrivacyPageState extends State<PrivacyPage> {
             children: <Widget>[
               NSectionTitle(s.privacyWhoCanSee),
               if (p.consents.isEmpty) EmptyNote(text: s.privacyNoConsents),
-              for (final Consent c in p.consents) ...<Widget>[
+              for (Consent c in p.consents) ...<Widget>[
                 NCard(
                   child: Row(
                     children: <Widget>[
@@ -174,7 +174,7 @@ class _PrivacyPageState extends State<PrivacyPage> {
               ],
               NSectionTitle(s.privacyStaffAccess),
               if (p.staffAccess.isEmpty) EmptyNote(text: s.privacyNoStaffAccess),
-              for (final StaffAccess a in p.staffAccess)
+              for (StaffAccess a in p.staffAccess)
                 Padding(
                   padding: const EdgeInsets.only(bottom: NSpace.xs),
                   child: Text('${shortDate(context, a.on)} · ${a.reason}', style: NType.body.copyWith(color: NColors.inkPrimary)),
@@ -199,7 +199,7 @@ class _PrivacyPageState extends State<PrivacyPage> {
               else ...<Widget>[
                 Text(s.privacyExportBody, style: NType.bodySm.copyWith(color: NColors.inkSecondary)),
                 const SizedBox(height: NSpace.sm),
-                for (final DataExport e in d.exports) ...<Widget>[
+                for (DataExport e in d.exports) ...<Widget>[
                   NCard(
                     child: Row(
                       children: <Widget>[

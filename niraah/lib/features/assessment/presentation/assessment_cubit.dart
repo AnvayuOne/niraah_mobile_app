@@ -78,11 +78,11 @@ class AssessmentCubit extends Cubit<AssessmentState> {
     emit(state.copyWith(status: AssessmentStatus.loading));
     final Result<AssessmentSession> r = await _repo.startOrResume();
     switch (r) {
-      case Success<AssessmentSession>(:final AssessmentSession data):
-        final List<Question> vis = DisplayConditions.visible(data.document, data.answers);
+      case Success<AssessmentSession>(:AssessmentSession data):
+        List<Question> vis = DisplayConditions.visible(data.document, data.answers);
         final Question first = vis.firstWhere((Question q) => !data.answers.containsKey(q.key), orElse: () => vis.last);
         emit(AssessmentState(status: AssessmentStatus.ready, session: data, answers: data.answers, currentKey: first.key));
-      case FailureResult<AssessmentSession>(:final String message):
+      case FailureResult<AssessmentSession>(:String message):
         // No consent yet: show the consent form; the assessment starts once she agrees.
         emit(state.copyWith(status: message == kConsentRequired ? AssessmentStatus.needsConsent : AssessmentStatus.failure, failure: message));
     }
@@ -122,7 +122,7 @@ class AssessmentCubit extends Cubit<AssessmentState> {
     if (a != null) {
       emit(state.copyWith(status: AssessmentStatus.saving));
       final Result<SaveOutcome> r = await _repo.saveAnswer(s.assessmentId, q.key, a);
-      if (r case FailureResult<SaveOutcome>(:final String message)) {
+      if (r case FailureResult<SaveOutcome>(:String message)) {
         emit(state.copyWith(status: AssessmentStatus.ready, failure: message));
         return Advance.failed;
       }
@@ -157,7 +157,7 @@ class AssessmentCubit extends Cubit<AssessmentState> {
     if (s == null) return false;
     emit(state.copyWith(status: AssessmentStatus.submitting));
     final Result<PreScore> r = await _repo.submit(s.assessmentId, state.answers);
-    if (r case FailureResult<PreScore>(:final String message)) {
+    if (r case FailureResult<PreScore>(:String message)) {
       emit(state.copyWith(status: AssessmentStatus.failure, failure: message));
       return false;
     }
@@ -165,7 +165,7 @@ class AssessmentCubit extends Cubit<AssessmentState> {
     final DateTime until = DateTime.now().add(summaryWait);
     while (DateTime.now().isBefore(until)) {
       final Result<List<String>?> ai = await _repo.aiObservations(p.id);
-      if (ai case Success<List<String>?>(:final List<String>? data) when data != null && data.isNotEmpty) {
+      if (ai case Success<List<String>?>(:List<String>? data) when data != null && data.isNotEmpty) {
         p = p.withObservations(data, ObservationSource.ai);
         break;
       }

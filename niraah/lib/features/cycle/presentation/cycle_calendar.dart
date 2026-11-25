@@ -61,15 +61,15 @@ class CycleCalendar extends StatelessWidget {
                 child: Text(DateFormat.yMMMM(locale).format(DateTime(year, month)), style: NType.h4.copyWith(color: NColors.inkPrimary)),
               ),
             ),
-            IconButton(tooltip: s.cyclePrevMonth, onPressed: onPrevious, icon: const Icon(Icons.chevron_left_rounded, color: NColors.inkSecondary)),
-            IconButton(tooltip: s.cycleNextMonth, onPressed: onNext, icon: const Icon(Icons.chevron_right_rounded, color: NColors.inkSecondary)),
+            IconButton(tooltip: s.cyclePrevMonth, onPressed: onPrevious, icon: Icon(Icons.chevron_left_rounded, color: NColors.inkSecondary)),
+            IconButton(tooltip: s.cycleNextMonth, onPressed: onNext, icon: Icon(Icons.chevron_right_rounded, color: NColors.inkSecondary)),
           ],
         ),
         const SizedBox(height: NSpace.xs),
         ExcludeSemantics(
           child: Row(
             children: <Widget>[
-              for (final String w in weekdays)
+              for (String w in weekdays)
                 Expanded(child: Text(w, textAlign: TextAlign.center, style: NType.label.copyWith(color: NColors.inkMuted))),
             ],
           ),
@@ -78,7 +78,7 @@ class CycleCalendar extends StatelessWidget {
         for (int r = 0; r < cells.length ~/ 7; r++)
           Row(
             children: <Widget>[
-              for (final DayCell c in cells.sublist(r * 7, r * 7 + 7))
+              for (DayCell c in cells.sublist(r * 7, r * 7 + 7))
                 Expanded(child: _DayButton(cell: c, label: dayLabel(s, locale, c), onTap: c.future ? null : () => onDay(c.date))),
             ],
           ),
@@ -136,7 +136,7 @@ class _DayButton extends StatelessWidget {
                         child: Container(
                           width: NSpace.xxs,
                           height: NSpace.xxs,
-                          decoration: const BoxDecoration(color: NColors.brandTerracotta, shape: BoxShape.circle),
+                          decoration: BoxDecoration(color: NColors.brandTerracotta, shape: BoxShape.circle),
                         ),
                       ),
                   ],

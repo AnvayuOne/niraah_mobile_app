@@ -119,7 +119,7 @@ class QuestionnaireDocument extends Equatable {
   final List<Question> questions;
 
   Question? question(String key) {
-    for (final Question q in questions) {
+    for (Question q in questions) {
       if (q.key == key) return q;
     }
     return null;

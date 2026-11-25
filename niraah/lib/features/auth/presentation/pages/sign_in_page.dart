@@ -58,7 +58,7 @@ class _SignInPageState extends State<SignInPage> {
     switch (input) {
       case UnrecognisedInput():
         setState(() => _message = s.signInUnrecognised);
-      case EmailInput(:final String email):
+      case EmailInput(:String email):
         context.push(RouteConstants.signInPassword, extra: email);
       case final PhoneInput phone:
         if (!phone.isValid) {
@@ -72,7 +72,7 @@ class _SignInPageState extends State<SignInPage> {
         switch (r) {
           case Success<void>():
             context.push(RouteConstants.signInCode, extra: phone);
-          case FailureResult<void>(:final String message):
+          case FailureResult<void>(:String message):
             // Limits and send failures come back as words to show (spec 003 "Limits" 3).
             setState(() => _message = message == 'not_connected' ? s.notConnectedYet : message);
         }
@@ -107,7 +107,7 @@ class _SignInPageState extends State<SignInPage> {
               spacing: NSpace.xs,
               runSpacing: NSpace.xs,
               children: <Widget>[
-                for (final SignInAs k in SignInAs.values)
+                for (SignInAs k in SignInAs.values)
                   ChoiceChip(
                     label: Text(labels[k]!),
                     selected: _as == k,
@@ -132,7 +132,7 @@ class _SignInPageState extends State<SignInPage> {
               decoration: InputDecoration(
                 labelText: member ? s.signInNumberLabel : s.signInEmailLabel,
                 prefixIcon: !member
-                    ? const Icon(Icons.mail_outline_rounded, color: NColors.inkMuted)
+                    ? Icon(Icons.mail_outline_rounded, color: NColors.inkMuted)
                     : Padding(
                         padding: const EdgeInsets.only(left: NSpace.md, right: NSpace.xs),
                         child: Align(

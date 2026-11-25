@@ -86,7 +86,7 @@ class PreScoreView extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      for (final String m in urgent.map((RaisedFlag f) => f.careMessage!).toSet())
+                      for (String m in urgent.map((RaisedFlag f) => f.careMessage!).toSet())
                         Text(m, style: NType.body.copyWith(color: NColors.statusAttention, fontWeight: FontWeight.w700)),
                       if (p.reviewState == ReviewState.notRequired) ...<Widget>[
                         const SizedBox(height: NSpace.xxs),
@@ -114,7 +114,7 @@ class PreScoreView extends StatelessWidget {
             const SizedBox(height: NSpace.lg),
             Text(s.prescoreNoticed, style: NType.h4.copyWith(color: NColors.inkPrimary)),
             const SizedBox(height: NSpace.xs),
-            for (final String o in p.observations.take(4))
+            for (String o in p.observations.take(4))
               Container(
                 margin: const EdgeInsets.only(bottom: NSpace.xs),
                 padding: const EdgeInsets.all(NSpace.md),
@@ -122,7 +122,7 @@ class PreScoreView extends StatelessWidget {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    const ExcludeSemantics(child: Icon(Icons.auto_awesome_rounded, color: NColors.brandRosewood, size: NSpace.lg - NSpace.xxs)),
+                    ExcludeSemantics(child: Icon(Icons.auto_awesome_rounded, color: NColors.brandRosewood, size: NSpace.lg - NSpace.xxs)),
                     const SizedBox(width: NSpace.sm),
                     Expanded(child: Text(o, style: NType.bodySm.copyWith(color: NColors.inkPrimary))),
                   ],
@@ -134,7 +134,7 @@ class PreScoreView extends StatelessWidget {
             Wrap(
               spacing: NSpace.xs,
               runSpacing: NSpace.xs,
-              children: <Widget>[for (final DimensionLevel d in p.dimensions) LevelChip(name: d.name, level: d.level)],
+              children: <Widget>[for (DimensionLevel d in p.dimensions) LevelChip(name: d.name, level: d.level)],
             ),
             const SizedBox(height: NSpace.lg),
             _clinician(s),

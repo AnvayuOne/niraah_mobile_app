@@ -10,6 +10,7 @@ import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:niraah/core/di/service_locator.dart';
 import 'package:niraah/design_system/theme/app_theme.dart';
+import 'package:niraah/design_system/tokens/tokens.dart';
 import 'package:niraah/features/auth/domain/auth_repository.dart';
 import 'package:niraah/features/auth/presentation/pages/account_details_page.dart';
 import 'package:niraah/features/auth/presentation/pages/code_page.dart';
@@ -114,12 +115,12 @@ class _Messages implements MessagingRepository {
 Future<void> _loadFonts() async {
   Future<ByteData> font(String file) async => ByteData.sublistView(File('assets/fonts/$file').readAsBytesSync());
   final FontLoader sans = FontLoader('PlusJakartaSans');
-  for (final String w in <String>['400', '500', '600', '700', '800']) {
+  for (String w in <String>['400', '500', '600', '700', '800']) {
     sans.addFont(font('PlusJakartaSans-$w.ttf'));
   }
   await sans.load();
   final FontLoader display = FontLoader('CormorantGaramond');
-  for (final String w in <String>['500', '600', '700']) {
+  for (String w in <String>['500', '600', '700']) {
     display.addFont(font('CormorantGaramond-$w.ttf'));
   }
   await display.load();
@@ -133,7 +134,7 @@ Widget _frame(Widget child) => RepaintBoundary(
       key: _boundary,
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
-        theme: AppTheme.lightTheme,
+        theme: AppTheme.current,
         localizationsDelegates: S.localizationsDelegates,
         supportedLocales: S.supportedLocales,
         routerConfig: GoRouter(routes: <RouteBase>[GoRoute(path: '/', builder: (_, _) => child)]),
@@ -154,6 +155,7 @@ Future<void> _shot(WidgetTester tester, String name) async {
 }
 
 void main() {
+  NColors.dark = Platform.environment['SCREENSHOT_DARK'] == '1';
   setUpAll(() async {
     await _loadFonts();
     if (!getIt.isRegistered<AuthRepository>()) getIt.registerSingleton<AuthRepository>(SampleAuthRepository());
@@ -178,7 +180,7 @@ void main() {
     'm16-messages': () => ThreadsPage(repository: _Messages()),
   };
 
-  for (final MapEntry<String, Widget Function()> e in screens.entries) {
+  for (MapEntry<String, Widget Function()> e in screens.entries) {
     testWidgets(e.key, (WidgetTester tester) async {
       tester.view.physicalSize = const Size(1170, 2532);
       tester.view.devicePixelRatio = 3;

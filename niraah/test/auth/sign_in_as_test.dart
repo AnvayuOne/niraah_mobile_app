@@ -10,7 +10,7 @@ import '../helpers/pump_app.dart';
 void main() {
   testWidgets('offers member, doctor, dietitian and trainer; admin is not offered in the app (AC2)', (WidgetTester tester) async {
     await tester.pumpApp(const SignInPage());
-    for (final String label in <String>['Member', 'Doctor', 'Dietitian', 'Trainer']) {
+    for (String label in <String>['Member', 'Doctor', 'Dietitian', 'Trainer']) {
       expect(find.widgetWithText(ChoiceChip, label), findsOneWidget);
     }
     expect(find.widgetWithText(ChoiceChip, 'Admin'), findsNothing);

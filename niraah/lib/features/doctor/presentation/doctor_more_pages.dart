@@ -4,6 +4,7 @@ import 'package:material_ui/material_ui.dart';
 import '../../../core/di/service_locator.dart';
 import '../../../design_system/tokens/tokens.dart';
 import '../../../design_system/widgets/clinician_ui.dart';
+import '../../../design_system/widgets/n_appearance.dart';
 import '../../../design_system/widgets/n_button.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../shared/area/area_access.dart';
@@ -89,6 +90,8 @@ class _DoctorMorePageState extends State<DoctorMorePage> {
                 DrStagger(children: work),
                 CLabel(s.drMoreYou),
                 DrStagger(children: you),
+                const SizedBox(height: NSpace.md),
+                const NAppearanceCard(),
                 const SizedBox(height: NSpace.md),
                 OutlinedButton.icon(onPressed: () => providerSignOut(context), icon: const Icon(Icons.logout_rounded), label: Text(s.pvSignOut)),
               ],
@@ -185,7 +188,7 @@ class _AlertsPageState extends State<AlertsPage> {
                       children: <Widget>[
                         DrStagger(
                           children: <Widget>[
-                            for (final Json a in rows) _alertRow(s, a),
+                            for (Json a in rows) _alertRow(s, a),
                           ],
                         ),
                       ],
@@ -349,7 +352,7 @@ class _LabResultsPageState extends State<LabResultsPage> {
                 children: <Widget>[
                   DrStagger(
                     children: <Widget>[
-                      for (final Json r in rows)
+                      for (Json r in rows)
                         DrListCard(
                           name: r.obj('member').str('name') ?? s.drUnnamed,
                           semanticsLabel: r.obj('member').str('name'),
@@ -467,7 +470,7 @@ class _LabReportReviewPageState extends State<LabReportReviewPage> {
                   title: s.drFlagged,
                   icon: Icons.flag_outlined,
                   action: CPill(s.drFlaggedCount(flagged.length), tone: CTone.red),
-                  child: Column(children: <Widget>[for (final Json x in flagged) _Marker(x: x)]),
+                  child: Column(children: <Widget>[for (Json x in flagged) _Marker(x: x)]),
                 ),
               ],
               if (rest.isNotEmpty) ...<Widget>[
@@ -475,7 +478,7 @@ class _LabReportReviewPageState extends State<LabReportReviewPage> {
                 CPanel(
                   title: s.labsResults,
                   icon: Icons.science_outlined,
-                  child: Column(children: <Widget>[for (final Json x in rest) _Marker(x: x)]),
+                  child: Column(children: <Widget>[for (Json x in rest) _Marker(x: x)]),
                 ),
               ],
               const SizedBox(height: NSpace.md),
@@ -719,7 +722,7 @@ class _DoctorProfilePageState extends State<DoctorProfilePage> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-                                  const Icon(Icons.star_rounded, size: 18, color: NColors.brandApricot),
+                                  Icon(Icons.star_rounded, size: 18, color: NColors.brandApricot),
                                   Text(s.drRatingCount(rating.integer('count')), style: NType.caption.copyWith(color: NColors.inkSecondary, letterSpacing: 0)),
                                 ],
                               ),
@@ -866,7 +869,7 @@ class _ReviewerTasksPageState extends State<ReviewerTasksPage> {
                         delayMs: 50 * i,
                         child: Container(
                           padding: const EdgeInsets.symmetric(vertical: NSpace.sm),
-                          decoration: BoxDecoration(border: i == 0 ? null : const Border(top: BorderSide(color: NColors.lineDefault))),
+                          decoration: BoxDecoration(border: i == 0 ? null : Border(top: BorderSide(color: NColors.lineDefault))),
                           child: Row(
                             children: <Widget>[
                               Expanded(child: Text(tasks[i].str('label') ?? '', style: NType.body.copyWith(color: NColors.inkPrimary))),

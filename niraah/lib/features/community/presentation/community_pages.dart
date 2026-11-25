@@ -63,7 +63,7 @@ class _CommunityPageState extends State<CommunityPage> {
             ],
             NSectionTitle(s.communityCircles),
             if (c.circles.isEmpty) EmptyNote(text: s.communityNoCircles),
-            for (final Circle circle in c.circles) ...<Widget>[
+            for (Circle circle in c.circles) ...<Widget>[
               NCard(
                 onTap: () => Navigator.of(context).push(MaterialPageRoute<void>(
                   builder: (_) => CirclePage(repository: _repo, circle: circle, canPost: c.rules?.accepted ?? true, reminder: c.composeReminder),
@@ -167,7 +167,7 @@ class _CirclePageState extends State<CirclePage> {
             children: <Widget>[
               if (!widget.canPost) ...<Widget>[Text(s.communityAcceptFirst, style: NType.bodySm.copyWith(color: NColors.inkSecondary)), const SizedBox(height: NSpace.sm)],
               if (posts.isEmpty) EmptyNote(text: s.communityFeedEmpty),
-              for (final Post p in posts) ...<Widget>[
+              for (Post p in posts) ...<Widget>[
                 NCard(
                   semanticsLabel: '${authorLine(s, p.author)}: ${p.body}',
                   onTap: () async {
@@ -199,7 +199,7 @@ class _PostBody extends StatelessWidget {
       children: <Widget>[
         Row(
           children: <Widget>[
-            if (post.author.expert) const Padding(padding: EdgeInsets.only(right: NSpace.xxs), child: Icon(Icons.verified_outlined, size: 16, color: NColors.roleDoctor)),
+            if (post.author.expert) Padding(padding: EdgeInsets.only(right: NSpace.xxs), child: Icon(Icons.verified_outlined, size: 16, color: NColors.roleDoctor)),
             Expanded(child: Text(authorLine(s, post.author), style: NType.caption.copyWith(color: NColors.inkSecondary, fontWeight: FontWeight.w600))),
             Text(shortDate(context, post.createdAt), style: NType.caption.copyWith(color: NColors.inkMuted)),
           ],
@@ -263,11 +263,11 @@ class _ThreadPageState extends State<ThreadPage> {
     final S s = S.of(context);
     switch (a) {
       case _Action.report:
-        final String? reason = await showDialog<String>(
+        String? reason = await showDialog<String>(
           context: context,
           builder: (BuildContext c) => SimpleDialog(
             title: Text(s.communityReportTitle),
-            children: <Widget>[for (final String r in reportReasons) SimpleDialogOption(onPressed: () => Navigator.of(c).pop(r), child: Text(_reason(s, r)))],
+            children: <Widget>[for (String r in reportReasons) SimpleDialogOption(onPressed: () => Navigator.of(c).pop(r), child: Text(_reason(s, r)))],
           ),
         );
         if (reason == null) return;
@@ -355,7 +355,7 @@ class _ThreadPageState extends State<ThreadPage> {
               ),
             ),
             NSectionTitle(s.communityReplies(t.comments.length)),
-            for (final Comment c in t.comments) ...<Widget>[
+            for (Comment c in t.comments) ...<Widget>[
               NCard(
                 color: NColors.surfaceWarm,
                 child: Row(

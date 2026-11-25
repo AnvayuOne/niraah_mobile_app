@@ -4,9 +4,11 @@ import 'package:material_ui/material_ui.dart';
 
 import '../../core/di/service_locator.dart';
 import '../../design_system/generated/niraah_assets.dart';
+import '../../design_system/theme/theme_controller.dart';
 import '../../design_system/tokens/tokens.dart';
 import '../../design_system/widgets/bottom_nav.dart';
 import '../../design_system/widgets/clinician_ui.dart';
+import '../../design_system/widgets/n_appearance.dart';
 import '../../design_system/widgets/n_button.dart';
 import '../../l10n/app_localizations.dart';
 import '../../shared/area/area_access.dart';
@@ -34,7 +36,7 @@ class InstructorShell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final S s = S.of(context);
-    CRole.fallback = const CRole.instructor(child: SizedBox.shrink());
+    CRole.fallback = CRole.instructor(child: SizedBox.shrink());
     return Scaffold(
       backgroundColor: NColors.surfacePage,
       appBar: AppBar(
@@ -48,7 +50,7 @@ class InstructorShell extends StatelessWidget {
               width: 32,
               height: 32,
               padding: const EdgeInsets.all(4),
-              decoration: const BoxDecoration(color: NColors.brandPlum, shape: BoxShape.circle),
+              decoration: BoxDecoration(color: NColors.brandPlum, shape: BoxShape.circle),
               child: Image.asset(NImages.niraahLogo.path, fit: BoxFit.contain, excludeFromSemantics: true),
             ),
             const SizedBox(width: NSpace.sm),
@@ -62,10 +64,11 @@ class InstructorShell extends StatelessWidget {
           ],
         ),
         actions: <Widget>[
+          if (NThemeController.darkModeEnabled) ...<Widget>[const Center(child: NThemeToggle()), const SizedBox(width: NSpace.xs)],
           IconButton(
             tooltip: s.pvSignOut,
             onPressed: () => providerSignOut(context),
-            icon: const Icon(Icons.logout_rounded, color: NColors.inkSecondary),
+            icon: Icon(Icons.logout_rounded, color: NColors.inkSecondary),
           ),
           const SizedBox(width: NSpace.xs),
         ],
@@ -317,7 +320,7 @@ class _InstructorHomePageState extends State<InstructorHomePage> {
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
-                              const Icon(Icons.self_improvement_rounded, size: 16, color: NColors.roleInstructor),
+                              Icon(Icons.self_improvement_rounded, size: 16, color: NColors.roleInstructor),
                               const SizedBox(width: 6),
                               Flexible(
                                 child: Text(
@@ -509,7 +512,7 @@ class _ClassPageState extends State<ClassPage> {
       builder: (BuildContext d) => SimpleDialog(
         title: Text(s.inCancelWhy),
         children: <Widget>[
-          for (final String r in <String>[s.inReasonUnwell, s.inReasonEmergency, s.inReasonTechnical, s.inReasonOther]) SimpleDialogOption(onPressed: () => Navigator.of(d).pop(r), child: Text(r)),
+          for (String r in <String>[s.inReasonUnwell, s.inReasonEmergency, s.inReasonTechnical, s.inReasonOther]) SimpleDialogOption(onPressed: () => Navigator.of(d).pop(r), child: Text(r)),
         ],
       ),
     );
@@ -630,7 +633,7 @@ class _ClassPageState extends State<ClassPage> {
                           padding: const EdgeInsets.only(top: NSpace.xs),
                           child: Row(
                             children: <Widget>[
-                              const Icon(Icons.desktop_windows_outlined, size: 16, color: NColors.inkMuted),
+                              Icon(Icons.desktop_windows_outlined, size: 16, color: NColors.inkMuted),
                               const SizedBox(width: NSpace.xs),
                               Expanded(
                                 child: Text(s.inStartOnWeb, style: NType.caption.copyWith(color: NColors.inkMuted, letterSpacing: 0)),
@@ -728,7 +731,7 @@ class _BookingRow extends StatelessWidget {
                   if (unseen)
                     IconButton(
                       tooltip: s.inMarkSeen,
-                      icon: const Icon(Icons.done_rounded, color: NColors.brandRosewood),
+                      icon: Icon(Icons.done_rounded, color: NColors.brandRosewood),
                       onPressed: onSeen,
                     ),
                 ],
@@ -746,7 +749,7 @@ Widget _chips(BuildContext context, List<String> values, bool Function(String) s
   spacing: NSpace.xs,
   runSpacing: NSpace.xs,
   children: <Widget>[
-    for (final String p in values)
+    for (String p in values)
       FilterChip(
         label: Text(p),
         selected: selected(p),
@@ -789,7 +792,7 @@ class _ClassEditorPageState extends State<ClassEditorPage> {
 
   @override
   void dispose() {
-    for (final TextEditingController c in <TextEditingController>[_title, _description, _minutes, _capacity]) {
+    for (TextEditingController c in <TextEditingController>[_title, _description, _minutes, _capacity]) {
       c.dispose();
     }
     super.dispose();
@@ -926,7 +929,7 @@ class _ClassEditorPageState extends State<ClassEditorPage> {
                       initialValue: _level,
                       isExpanded: true,
                       decoration: InputDecoration(labelText: s.inLevel),
-                      items: <DropdownMenuItem<String?>>[for (final String l in _levels) DropdownMenuItem<String?>(value: l, child: Text(l))],
+                      items: <DropdownMenuItem<String?>>[for (String l in _levels) DropdownMenuItem<String?>(value: l, child: Text(l))],
                       onChanged: (String? v) => setState(() => _level = v),
                     ),
                   ],
@@ -974,7 +977,7 @@ class _ClassEditorPageState extends State<ClassEditorPage> {
             const SizedBox(height: NSpace.md),
             Row(
               children: <Widget>[
-                const Icon(Icons.info_outline_rounded, size: 16, color: NColors.inkMuted),
+                Icon(Icons.info_outline_rounded, size: 16, color: NColors.inkMuted),
                 const SizedBox(width: NSpace.xs),
                 Expanded(
                   child: Text(s.inFeeNote, style: NType.caption.copyWith(color: NColors.inkMuted, letterSpacing: 0)),
@@ -1015,7 +1018,7 @@ class _StudentsPageState extends State<StudentsPage> {
         title: Text(s.inRecommend),
         children: <Widget>[
           if (mine.isEmpty) Padding(padding: const EdgeInsets.all(NSpace.lg), child: Text(s.inNoPublished)),
-          for (final Json c in mine) SimpleDialogOption(onPressed: () => Navigator.of(d).pop(c), child: Text(c.str('title') ?? '')),
+          for (Json c in mine) SimpleDialogOption(onPressed: () => Navigator.of(d).pop(c), child: Text(c.str('title') ?? '')),
         ],
       ),
     );
@@ -1279,13 +1282,13 @@ class _ContentCard extends StatelessWidget {
                         ],
                       ),
                     ),
-                    const Icon(Icons.chevron_right_rounded, color: NColors.inkMuted),
+                    Icon(Icons.chevron_right_rounded, color: NColors.inkMuted),
                   ],
                 ),
                 const SizedBox(height: NSpace.xs),
                 Row(
                   children: <Widget>[
-                    const Icon(Icons.bar_chart_rounded, size: 16, color: NColors.inkMuted),
+                    Icon(Icons.bar_chart_rounded, size: 16, color: NColors.inkMuted),
                     const SizedBox(width: NSpace.xxs),
                     Expanded(
                       child: Text(s.inStats(c.obj('stats').integer('plays'), c.obj('stats').integer('completions')), style: NType.caption.copyWith(color: NColors.inkSecondary, letterSpacing: 0)),
@@ -1397,7 +1400,7 @@ class _ContentEditorPageState extends State<ContentEditorPage> {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      const Icon(Icons.rate_review_outlined, size: 18, color: NColors.statusWarningText),
+                      Icon(Icons.rate_review_outlined, size: 18, color: NColors.statusWarningText),
                       const SizedBox(width: NSpace.xs),
                       Expanded(
                         child: Text(c.str('reviewNote')!, style: NType.bodySm.copyWith(color: NColors.inkPrimary)),
@@ -1503,7 +1506,7 @@ class _ContentEditorPageState extends State<ContentEditorPage> {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    const Icon(Icons.info_outline_rounded, size: 16, color: NColors.inkMuted),
+                    Icon(Icons.info_outline_rounded, size: 16, color: NColors.inkMuted),
                     const SizedBox(width: NSpace.xs),
                     Expanded(
                       child: Text(s.inVideoNotInApp, style: NType.caption.copyWith(color: NColors.inkMuted, letterSpacing: 0)),
@@ -1566,6 +1569,8 @@ class InstructorMorePage extends StatelessWidget {
           row(Icons.account_balance_wallet_outlined, s.earnTitle, '/instructor/earnings', 0),
           row(Icons.person_outline_rounded, s.profileTitle, '/instructor/profile', 1),
           row(Icons.notifications_none_rounded, s.notifTitle, RouteConstants.notificationSettings, 2),
+          const SizedBox(height: NSpace.md),
+          const NAppearanceCard(),
           const SizedBox(height: NSpace.md),
           OutlinedButton.icon(
             style: OutlinedButton.styleFrom(foregroundColor: NColors.inkSecondary, minimumSize: const Size.fromHeight(NLayout.minTapTarget)),
@@ -1646,7 +1651,7 @@ class _InstructorProfilePageState extends State<InstructorProfilePage> {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
-                            const Icon(Icons.star_rounded, size: 16, color: NColors.statusWarning),
+                            Icon(Icons.star_rounded, size: 16, color: NColors.statusWarning),
                             const SizedBox(width: 4),
                             Text(
                               s.inRatingLine(avg.toStringAsFixed(1), rating.integer('count')),
@@ -1655,7 +1660,7 @@ class _InstructorProfilePageState extends State<InstructorProfilePage> {
                           ],
                         ),
                       ),
-                    for (final String t in p.strs('practiceTypes')) CPill(t, tone: CTone.sage),
+                    for (String t in p.strs('practiceTypes')) CPill(t, tone: CTone.sage),
                   ],
                 ),
               ),

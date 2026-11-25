@@ -24,10 +24,10 @@ class ApiDoctorRepository implements DoctorRepository {
   Future<ClaimResult> claim(String id) async {
     final ApiResult<Map<String, dynamic>> r = await _api.post('/doctor/reviews/${_id(id)}/claim');
     return switch (r) {
-      ApiOk<Map<String, dynamic>>(:final Map<String, dynamic> data) => ClaimResult.ok(DoctorParser.review(data, _clock())),
+      ApiOk<Map<String, dynamic>>(:Map<String, dynamic> data) => ClaimResult.ok(DoctorParser.review(data, _clock())),
       ApiFail<Map<String, dynamic>>(status: 409) => const ClaimResult.failed(ClaimFailure.holdingAnother),
       ApiFail<Map<String, dynamic>>(status: 410) || ApiFail<Map<String, dynamic>>(status: 404) => const ClaimResult.failed(ClaimFailure.gone),
-      ApiFail<Map<String, dynamic>>(:final ApiError error, :final int status) => throw ApiException(message: error.message, statusCode: status),
+      ApiFail<Map<String, dynamic>>(:ApiError error, :final int status) => throw ApiException(message: error.message, statusCode: status),
     };
   }
 
@@ -48,9 +48,9 @@ class ApiDoctorRepository implements DoctorRepository {
       if (next) 'next': true,
     });
     return switch (r) {
-      ApiOk<Map<String, dynamic>>(:final Map<String, dynamic> data) => CompleteResult.ok(data['next'] as String?),
-      ApiFail<Map<String, dynamic>>(:final ApiError error) when error.field == 'note' => const CompleteResult.noteRequired(),
-      ApiFail<Map<String, dynamic>>(:final ApiError error, :final int status) => throw ApiException(message: error.message, statusCode: status),
+      ApiOk<Map<String, dynamic>>(:Map<String, dynamic> data) => CompleteResult.ok(data['next'] as String?),
+      ApiFail<Map<String, dynamic>>(:ApiError error) when error.field == 'note' => const CompleteResult.noteRequired(),
+      ApiFail<Map<String, dynamic>>(:ApiError error, :final int status) => throw ApiException(message: error.message, statusCode: status),
     };
   }
 

@@ -72,7 +72,7 @@ void main() {
     expect(consent, isA<Success<void>>());
     final Result<AssessmentSession> s = await a.startOrResume();
     final AssessmentSession session = (s as Success<AssessmentSession>).data;
-    for (final Question q in session.document.questions) {
+    for (Question q in session.document.questions) {
       if (q.displayCondition != null) continue;
       final Answer ans = switch (q.type) {
         QuestionType.date => const Answer.text('1995-01-01'),

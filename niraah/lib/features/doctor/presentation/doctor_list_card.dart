@@ -68,7 +68,7 @@ class DrListCard extends StatelessWidget {
                               ),
                             ),
                             if (trailing != null) ...<Widget>[const SizedBox(width: NSpace.xs), trailing!],
-                            if (onTap != null) const Padding(padding: EdgeInsets.only(top: 8), child: Icon(Icons.chevron_right_rounded, color: NColors.inkMuted)),
+                            if (onTap != null) Padding(padding: EdgeInsets.only(top: 8), child: Icon(Icons.chevron_right_rounded, color: NColors.inkMuted)),
                           ],
                         ),
                       ),
@@ -109,7 +109,7 @@ class DrStickyBar extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(NSpace.md, NSpace.sm, NSpace.md, NSpace.sm),
         decoration: BoxDecoration(
           color: NColors.surfaceCard,
-          border: const Border(top: BorderSide(color: NColors.lineDefault)),
+          border: Border(top: BorderSide(color: NColors.lineDefault)),
           boxShadow: <BoxShadow>[BoxShadow(color: NColors.brandPlum.withValues(alpha: 0.06), blurRadius: 16, offset: const Offset(0, -4))],
         ),
         child: SafeArea(top: false, child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.stretch, children: children)),
@@ -118,7 +118,7 @@ class DrStickyBar extends StatelessWidget {
 
 /// A soft labelled box inside a panel (the AI's text, her version, a note).
 class DrTextBox extends StatelessWidget {
-  const DrTextBox({required this.label, required this.text, super.key, this.color = NColors.surfacePage, this.labelColor = NColors.inkMuted, this.icon, this.textColor = NColors.inkPrimary});
+  DrTextBox({required this.label, required this.text, super.key, Color? color, Color? labelColor, this.icon, Color? textColor}) : color = color ?? NColors.surfacePage, labelColor = labelColor ?? NColors.inkMuted, textColor = textColor ?? NColors.inkPrimary;
 
   final String label;
   final String text;

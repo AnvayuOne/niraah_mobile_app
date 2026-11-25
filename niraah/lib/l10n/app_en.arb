@@ -2349,19 +2349,61 @@
   "dtMealsLabel": "Meals logged",
   "schedNothingThisDay": "Nothing booked this day.",
   "dtDashWaiting": "{count, plural, =0{Nothing is waiting for you} =1{1 thing is waiting for you} other{{count} things are waiting for you}}",
-  "@dtDashWaiting": {"placeholders": {"count": {"type": "int"}}},
+  "@dtDashWaiting": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "dtClientsCount": "{count, plural, =0{No clients} =1{1 client} other{{count} clients}}",
-  "@dtClientsCount": {"placeholders": {"count": {"type": "int"}}},
+  "@dtClientsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "dtUnreadCount": "{count, plural, =0{No unread check-ins} =1{1 unread check-in} other{{count} unread check-ins}}",
-  "@dtUnreadCount": {"placeholders": {"count": {"type": "int"}}},
+  "@dtUnreadCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "dtPlansCount": "{count, plural, =0{No meal plans yet} =1{1 meal plan} other{{count} meal plans}}",
-  "@dtPlansCount": {"placeholders": {"count": {"type": "int"}}},
+  "@dtPlansCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "dtWaitingCount": "{count, plural, =0{Nobody is waiting for a plan} =1{1 client waiting for a plan} other{{count} clients waiting for a plan}}",
-  "@dtWaitingCount": {"placeholders": {"count": {"type": "int"}}},
+  "@dtWaitingCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "dtQueueCount": "{count, plural, =0{Nothing to review} =1{1 day to review} other{{count} days to review}}",
-  "@dtQueueCount": {"placeholders": {"count": {"type": "int"}}},
+  "@dtQueueCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "schedAppointmentsCount": "{count, plural, =0{No appointments} =1{1 appointment} other{{count} appointments}}",
-  "@schedAppointmentsCount": {"placeholders": {"count": {"type": "int"}}},
+  "@schedAppointmentsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "inSessions": "Sessions",
   "inStudents": "Students",
   "inLibrary": "Library",
@@ -2921,5 +2963,10 @@
     }
   },
   "inMoreTitle": "Your studio",
-  "inClassActions": "What you can do"
+  "inClassActions": "What you can do",
+  "appearanceTitle": "Appearance",
+  "appearanceSystem": "Match phone",
+  "appearanceLight": "Light",
+  "appearanceDark": "Dark",
+  "appearanceHint": "Dark mode is easier on the eyes at night."
 }

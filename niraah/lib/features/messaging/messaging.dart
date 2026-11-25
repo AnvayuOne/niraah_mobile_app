@@ -168,7 +168,7 @@ class _ThreadsPageState extends State<ThreadsPage> {
             children: <Widget>[
               if (!widget.clinician && !d.flag('messagingOnPlan')) EmptyNote(text: s.msgNotOnPlan),
               if (d.objs('threads').isEmpty && (widget.clinician || d.flag('messagingOnPlan'))) EmptyNote(text: s.msgNoThreads),
-              for (final Json t in d.objs('threads')) ...<Widget>[
+              for (Json t in d.objs('threads')) ...<Widget>[
                 NCard(
                   onTap: () => _openThread(t.str('id')!),
                   semanticsLabel: '${t.obj('with').str('name') ?? ''}${t.integer('unread') > 0 ? ', ${s.msgUnread(t.integer('unread'))}' : ''}',
@@ -197,7 +197,7 @@ class _ThreadsPageState extends State<ThreadsPage> {
               ],
               if (d.objs('canStart').isNotEmpty) ...<Widget>[
                 NSectionTitle(s.msgStart),
-                for (final Json c in d.objs('canStart'))
+                for (Json c in d.objs('canStart'))
                   ListTile(
                     contentPadding: EdgeInsets.zero,
                     title: Text(c.str('name') ?? ''),
@@ -319,7 +319,7 @@ class _ThreadPageState extends State<ThreadPage> {
                 child: ListView(
                   padding: const EdgeInsets.all(NSpace.lg),
                   children: <Widget>[
-                    for (final Json m in t.objs('messages'))
+                    for (Json m in t.objs('messages'))
                       Align(
                         alignment: m.flag('mine') ? Alignment.centerRight : Alignment.centerLeft,
                         child: Container(

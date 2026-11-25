@@ -90,7 +90,7 @@ class SampleScorer {
     final int totalMax = scoring['totalMaximum'] as int;
 
     String levelFor(double pct) {
-      for (final Map<String, dynamic> l in levels) {
+      for (Map<String, dynamic> l in levels) {
         if (pct >= (l['from'] as num)) return l['label'] as String;
       }
       return levels.last['label'] as String;
@@ -98,15 +98,15 @@ class SampleScorer {
 
     double weighted = 0;
     final List<ScoredDimension> scored = <ScoredDimension>[];
-    for (final Map<String, dynamic> d in dims) {
+    for (Map<String, dynamic> d in dims) {
       final String key = d['key'] as String;
       double max = (d['maximum'] as num).toDouble();
-      for (final Question q in hidden) {
+      for (Question q in hidden) {
         max -= _highestContribution(q, key);
       }
       double raw = 0;
       kept.forEach((String qKey, Answer a) {
-        for (final String v in a.values) {
+        for (String v in a.values) {
           raw += _w(qKey, v, key);
         }
       });
@@ -126,7 +126,7 @@ class SampleScorer {
     final List<String> flagKeys = <String>[];
     kept.forEach((String qKey, Answer a) {
       final Map<String, dynamic>? byOption = raised[qKey] as Map<String, dynamic>?;
-      for (final String v in a.values) {
+      for (String v in a.values) {
         for (final dynamic f in (byOption?[v] as List<dynamic>?) ?? const <dynamic>[]) {
           if (!flagKeys.contains(f)) flagKeys.add(f as String);
         }
@@ -134,7 +134,7 @@ class SampleScorer {
     });
     final List<RaisedFlag> flags = <RaisedFlag>[];
     final List<String> flagObs = <String>[];
-    for (final String k in flagKeys) {
+    for (String k in flagKeys) {
       final Map<String, dynamic> f = catalogue[k] as Map<String, dynamic>;
       flags.add(RaisedFlag(key: k, severity: severityFrom(f['severity'] as String), careMessage: f['careMessage'] as String?));
       if (f['fallbackObservation'] != null) flagObs.add(f['fallbackObservation'] as String);

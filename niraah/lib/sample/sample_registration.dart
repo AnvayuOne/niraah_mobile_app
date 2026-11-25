@@ -8,6 +8,8 @@ import '../features/auth/domain/auth_repository.dart';
 import '../features/care/domain/care.dart';
 import '../features/chat/domain/chat.dart';
 import '../features/community/domain/community.dart';
+import '../features/consults/data/sample_consults_repository.dart';
+import '../features/consults/domain/consults.dart';
 import '../features/cycle/domain/cycle.dart';
 import '../features/diet_plan/data/unavailable_diet_plan_repository.dart';
 import '../features/diet_plan/domain/diet_plan.dart';
@@ -59,6 +61,7 @@ void registerSampleRepositories(GetIt getIt) {
     ..registerLazySingleton<MealsRepository>(() => const UnavailableMealsRepository())
     ..registerLazySingleton<DietPlanRepository>(() => const UnavailableDietPlanRepository())
     ..registerLazySingleton<PracticeRepository>(UnavailablePracticeRepository.new)
+    ..registerLazySingleton<ConsultsRepository>(SampleConsultsRepository.new)
     ..registerLazySingleton<MeRepository>(UnavailableMeRepository.new)
     ..registerLazySingleton<CareRepository>(UnavailableCareRepository.new)
     ..registerLazySingleton<LabsRepository>(UnavailableLabsRepository.new)

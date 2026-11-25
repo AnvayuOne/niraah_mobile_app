@@ -56,7 +56,7 @@ class DateOfBirthInput extends StatelessWidget {
             ),
             child: Row(
               children: <Widget>[
-                const Icon(Icons.calendar_today_rounded, color: NColors.actionLink),
+                Icon(Icons.calendar_today_rounded, color: NColors.actionLink),
                 const SizedBox(width: NSpace.sm),
                 Expanded(
                   child: Text(

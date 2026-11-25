@@ -205,7 +205,7 @@ class _QueueCard extends StatelessWidget {
                               children: <Widget>[CPill(due, tone: overdue ? CTone.apricot : CTone.quiet)],
                             ),
                           ],
-                          const Icon(Icons.chevron_right_rounded, color: NColors.inkMuted),
+                          Icon(Icons.chevron_right_rounded, color: NColors.inkMuted),
                         ],
                       ),
                     ),

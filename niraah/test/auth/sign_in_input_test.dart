@@ -3,7 +3,7 @@ import 'package:niraah/features/auth/domain/auth_repository.dart';
 
 void main() {
   test('digits with +91, spaces or dashes are a mobile number', () {
-    for (final String raw in <String>['9876543210', '+91 98765 43210', '98765-43210', '919876543210']) {
+    for (String raw in <String>['9876543210', '+91 98765 43210', '98765-43210', '919876543210']) {
       final SignInInput i = SignInInput.parse(raw);
       expect(i, isA<PhoneInput>(), reason: raw);
       expect((i as PhoneInput).e164, '+919876543210', reason: raw);

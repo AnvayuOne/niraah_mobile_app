@@ -22,7 +22,7 @@ class ApiMealsRepository implements MealsRepository {
       case 'no_food':
         return ScanNoFood(r['message'] as String);
       case 'limit':
-        final Map<String, dynamic> refusal = r['refusal'] as Map<String, dynamic>;
+        Map<String, dynamic> refusal = r['refusal'] as Map<String, dynamic>;
         return ScanLimit(limit: (refusal['limit'] as num?)?.toInt() ?? 0, refillsAt: refusal['refillsAt'] as String?);
       default:
         return const ScanUnavailable();
@@ -45,7 +45,7 @@ class ApiMealsRepository implements MealsRepository {
       'slot': slot.name,
       'source': fromScan ? 'scan' : 'manual',
       'items': <Map<String, dynamic>>[
-        for (final MealItemInput i in items) <String, dynamic>{'foodId': i.foodId, 'count': i.count, 'unit': i.unit},
+        for (MealItemInput i in items) <String, dynamic>{'foodId': i.foodId, 'count': i.count, 'unit': i.unit},
       ],
     })).orThrow();
     return _meal(r);

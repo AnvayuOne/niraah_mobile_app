@@ -45,7 +45,7 @@ class _AdviceDraftsPageState extends State<AdviceDraftsPage> {
                 children: <Widget>[
                   DrStagger(
                     children: <Widget>[
-                      for (final Json d in rows)
+                      for (Json d in rows)
                         DrListCard(
                           name: d.str('memberName') ?? '',
                           semanticsLabel: d.str('memberName'),
@@ -132,7 +132,7 @@ class _AdviceEditorPageState extends State<AdviceEditorPage> {
 
   @override
   void dispose() {
-    for (final TextEditingController c in <TextEditingController>[_assessment, _advice, _seeDoctor, _tests]) {
+    for (TextEditingController c in <TextEditingController>[_assessment, _advice, _seeDoctor, _tests]) {
       c.dispose();
     }
     super.dispose();
@@ -146,7 +146,7 @@ class _AdviceEditorPageState extends State<AdviceEditorPage> {
     _tests.text = d.strs('testsAdvised').join(', ');
     _followUp = d.str('followUpOn');
     _lines = <_Line>[
-      for (final Json l in d.objs('lines'))
+      for (Json l in d.objs('lines'))
         _Line(
           supplementId: l.str('supplementId')!,
           label: <String>[?l.str('supplement'), ?l.str('form'), ?l.str('strength')].join(' · '),
@@ -199,7 +199,7 @@ class _AdviceEditorPageState extends State<AdviceEditorPage> {
         title: Text(s.drChooseSupplement),
         children: <Widget>[
           if (catalogue.isEmpty) Padding(padding: const EdgeInsets.all(NSpace.lg), child: Text(s.drNoSupplements)),
-          for (final Json c in catalogue) SimpleDialogOption(onPressed: () => Navigator.of(d).pop(c), child: Text(<String>[?c.str('name'), ?c.str('form'), ?c.str('strength')].join(' · '))),
+          for (Json c in catalogue) SimpleDialogOption(onPressed: () => Navigator.of(d).pop(c), child: Text(<String>[?c.str('name'), ?c.str('form'), ?c.str('strength')].join(' · '))),
         ],
       ),
     );
@@ -330,7 +330,7 @@ class _AdviceEditorPageState extends State<AdviceEditorPage> {
                     if (d.str('memberName') != null) s.drAdviceSignedOn(shortDate(context, d.str('signedAt') ?? '')),
                     if (d.str('verificationCode') != null) s.drVerificationCode(d.str('verificationCode')!),
                   ].join('\n'),
-                  trailing: const CircleAvatar(radius: 20, backgroundColor: NColors.brandApricot, child: Icon(Icons.verified_rounded, color: NColors.brandPlum)),
+                  trailing: CircleAvatar(radius: 20, backgroundColor: NColors.brandApricot, child: Icon(Icons.verified_rounded, color: NColors.brandPlum)),
                 ),
                 const SizedBox(height: NSpace.md),
                 CPanel(
@@ -343,7 +343,7 @@ class _AdviceEditorPageState extends State<AdviceEditorPage> {
                       if (lines.isNotEmpty) ...<Widget>[
                         Text(s.drSupplements.toUpperCase(), style: NType.label.copyWith(color: NColors.inkMuted, letterSpacing: 1, fontWeight: FontWeight.w700)),
                         const SizedBox(height: 4),
-                        for (final Json l in lines)
+                        for (Json l in lines)
                           Padding(
                             padding: const EdgeInsets.only(bottom: NSpace.xs),
                             child: Text('• ${l.str('supplement')} ${l.str('strength') ?? ''} · ${l.str('dosePattern')} · ${_timing(s, l.str('timing'))} · ${l.str('duration') ?? ''}', style: NType.body.copyWith(color: NColors.inkPrimary)),
@@ -409,7 +409,7 @@ class _AdviceEditorPageState extends State<AdviceEditorPage> {
                                 onTap: () async {
                                   if (await _editLine(l)) setState(() {});
                                 },
-                                trailing: IconButton(tooltip: s.drRemoveLine, icon: const Icon(Icons.close_rounded, size: 20, color: NColors.inkMuted), onPressed: () => setState(() => _lines.remove(l))),
+                                trailing: IconButton(tooltip: s.drRemoveLine, icon: Icon(Icons.close_rounded, size: 20, color: NColors.inkMuted), onPressed: () => setState(() => _lines.remove(l))),
                               ),
                             ),
                           Align(
@@ -452,7 +452,7 @@ class _AdviceEditorPageState extends State<AdviceEditorPage> {
                             decoration: BoxDecoration(color: NColors.surfacePage, borderRadius: BorderRadius.circular(NRadius.md)),
                             child: Row(
                               children: <Widget>[
-                                const Icon(Icons.event_outlined, size: 18, color: NColors.brandRosewood),
+                                Icon(Icons.event_outlined, size: 18, color: NColors.brandRosewood),
                                 const SizedBox(width: NSpace.xs),
                                 Expanded(child: Text(_followUp == null ? s.drNoFollowUp : s.drFollowUpOn(shortDate(context, _followUp!)), style: NType.bodySm.copyWith(color: NColors.inkPrimary))),
                                 TextButton(
@@ -471,7 +471,7 @@ class _AdviceEditorPageState extends State<AdviceEditorPage> {
                         ],
                       ),
                     ),
-                    for (final Json w in wording)
+                    for (Json w in wording)
                       if (!w.flag('confirmed'))
                         Padding(
                           padding: const EdgeInsets.only(top: NSpace.md),
@@ -484,7 +484,7 @@ class _AdviceEditorPageState extends State<AdviceEditorPage> {
                                 Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                    const Icon(Icons.warning_amber_rounded, size: 18, color: NColors.statusWarningText),
+                                    Icon(Icons.warning_amber_rounded, size: 18, color: NColors.statusWarningText),
                                     const SizedBox(width: NSpace.xs),
                                     Expanded(child: Text(s.drWordingCheck(w.str('label') ?? ''), style: NType.bodySm.copyWith(color: NColors.inkPrimary))),
                                   ],
@@ -498,7 +498,7 @@ class _AdviceEditorPageState extends State<AdviceEditorPage> {
                           ),
                         ),
                     const SizedBox(height: NSpace.sm),
-                    Center(child: TextButton(onPressed: _busy ? null : _discard, child: Text(s.drDiscard, style: const TextStyle(color: NColors.statusClinicalRedFlag)))),
+                    Center(child: TextButton(onPressed: _busy ? null : _discard, child: Text(s.drDiscard, style: TextStyle(color: NColors.statusClinicalRedFlag)))),
                   ],
                 ),
               ),

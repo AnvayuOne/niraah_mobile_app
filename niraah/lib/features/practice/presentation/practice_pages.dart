@@ -78,7 +78,7 @@ class _PracticeSessionPageState extends State<PracticeSessionPage> {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      const Icon(Icons.info_outline_rounded, color: NColors.statusWarningText),
+                      Icon(Icons.info_outline_rounded, color: NColors.statusWarningText),
                       const SizedBox(width: NSpace.sm),
                       Expanded(child: Text(p.caution!, style: NType.body.copyWith(color: NColors.inkPrimary))),
                     ],
@@ -148,7 +148,7 @@ class _PracticeLibraryPageState extends State<PracticeLibraryPage> {
               children: <Widget>[
                 for (final int m in const <int>[10, 20, 30])
                   FilterChip(label: Text(s.practiceUpTo(m)), selected: _maxMinutes == m, onSelected: (bool on) => _set(() => _maxMinutes = on ? m : null)),
-                for (final Phase p in Phase.values)
+                for (Phase p in Phase.values)
                   FilterChip(label: Text(s.phaseName(p)), selected: _phase == p, onSelected: (bool on) => _set(() => _phase = on ? p : null)),
               ],
             ),
@@ -201,7 +201,7 @@ class _PracticeHistoryPageState extends State<PracticeHistoryPage> {
           return ListView(
             padding: const EdgeInsets.all(NSpace.lg),
             children: <Widget>[
-              for (final PracticeWeek w in shown) ...<Widget>[
+              for (PracticeWeek w in shown) ...<Widget>[
                 NSectionTitle(s.practiceWeekOf(shortDate(context, w.weekOf))),
                 NCard(
                   child: Column(
@@ -209,7 +209,7 @@ class _PracticeHistoryPageState extends State<PracticeHistoryPage> {
                     children: <Widget>[
                       Text(s.practiceWeekSummary(w.sessions.length, w.sessions.fold<int>(0, (int a, PracticeDone d) => a + d.minutes)), style: NType.body.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w600)),
                       const SizedBox(height: NSpace.xs),
-                      for (final PracticeDone d in w.sessions)
+                      for (PracticeDone d in w.sessions)
                         Padding(
                           padding: const EdgeInsets.only(top: NSpace.xxs),
                           child: Text('${shortDate(context, d.date)} · ${d.title ?? s.practiceTitle} · ${s.practiceMinutes(d.minutes)}', style: NType.bodySm.copyWith(color: NColors.inkSecondary)),

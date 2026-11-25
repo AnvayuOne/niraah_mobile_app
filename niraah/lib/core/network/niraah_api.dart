@@ -43,8 +43,8 @@ sealed class ApiResult<T> {
   /// The data, or an [ApiException] carrying the server's words, for screens whose cubits show a
   /// failure state on any exception.
   T orThrow() => switch (this) {
-        ApiOk<T>(:final T data) => data,
-        ApiFail<T>(:final ApiError error, :final int status) => throw ApiException(message: error.message, statusCode: status),
+        ApiOk<T>(:T data) => data,
+        ApiFail<T>(:ApiError error, :final int status) => throw ApiException(message: error.message, statusCode: status),
       };
 }
 

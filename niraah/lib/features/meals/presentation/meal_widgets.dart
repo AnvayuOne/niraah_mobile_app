@@ -34,7 +34,7 @@ String? tagName(S s, String tag) => switch (tag) {
 };
 
 class MealCard extends StatelessWidget {
-  const MealCard({required this.child, this.color = NColors.surfaceCard, super.key});
+  MealCard({required this.child, Color? color, super.key}) : color = color ?? NColors.surfaceCard;
 
   final Widget child;
   final Color color;
@@ -72,7 +72,7 @@ class NutrientRow extends StatelessWidget {
       spacing: NSpace.xs,
       runSpacing: NSpace.xxs,
       children: <Widget>[
-        for (final String p in parts)
+        for (String p in parts)
           Container(
             padding: const EdgeInsets.symmetric(horizontal: NSpace.sm, vertical: NSpace.xxs),
             decoration: BoxDecoration(color: NColors.surfacePage, borderRadius: BorderRadius.circular(NRadius.pill)),
@@ -91,13 +91,13 @@ class TagChips extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final S s = S.of(context);
-    final List<String> names = <String>[for (final String t in tags) ?tagName(s, t)];
+    final List<String> names = <String>[for (String t in tags) ?tagName(s, t)];
     if (names.isEmpty) return const SizedBox.shrink();
     return Wrap(
       spacing: NSpace.xs,
       runSpacing: NSpace.xxs,
       children: <Widget>[
-        for (final String n in names)
+        for (String n in names)
           Container(
             padding: const EdgeInsets.symmetric(horizontal: NSpace.sm, vertical: NSpace.xxs),
             decoration: BoxDecoration(color: NColors.brandSageLight, borderRadius: BorderRadius.circular(NRadius.pill)),

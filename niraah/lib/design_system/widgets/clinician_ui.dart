@@ -11,9 +11,9 @@ import '../tokens/tokens.dart';
 class CRole extends InheritedWidget {
   const CRole({required this.accent, required this.light, required this.illustration, required super.child, super.key});
 
-  const CRole.doctor({required Widget child, Key? key}) : this(accent: NColors.roleDoctor, light: NColors.brandLavenderLight, illustration: 'assets/images/03_female_gynecologist_clipboard.webp', child: child, key: key);
-  const CRole.dietitian({required Widget child, Key? key}) : this(accent: NColors.roleDietitian, light: NColors.brandApricotLight, illustration: 'assets/images/05_female_clinical_dietitian_bowl.webp', child: child, key: key);
-  const CRole.instructor({required Widget child, Key? key}) : this(accent: NColors.roleInstructor, light: NColors.brandSageLight, illustration: 'assets/images/02_yoga_padmasana_breath_woman.webp', child: child, key: key);
+  CRole.doctor({required Widget child, Key? key}) : this(accent: NColors.roleDoctor, light: NColors.brandLavenderLight, illustration: 'assets/images/03_female_gynecologist_clipboard.webp', child: child, key: key);
+  CRole.dietitian({required Widget child, Key? key}) : this(accent: NColors.roleDietitian, light: NColors.brandApricotLight, illustration: 'assets/images/05_female_clinical_dietitian_bowl.webp', child: child, key: key);
+  CRole.instructor({required Widget child, Key? key}) : this(accent: NColors.roleInstructor, light: NColors.brandSageLight, illustration: 'assets/images/02_yoga_padmasana_breath_woman.webp', child: child, key: key);
 
   /// The role's strong colour (icons, active chips, numbers that need attention).
   final Color accent;
@@ -25,7 +25,7 @@ class CRole extends InheritedWidget {
   final String illustration;
 
   /// The last workspace shell shown, for pages pushed above it (full-screen details).
-  static CRole fallback = const CRole.doctor(child: SizedBox.shrink());
+  static CRole fallback = CRole.doctor(child: SizedBox.shrink());
 
   static CRole of(BuildContext context) => context.dependOnInheritedWidgetOfExactType<CRole>() ?? fallback;
 
@@ -167,7 +167,7 @@ class CHeroStat extends StatelessWidget {
                       child: Icon(icon, size: 16, color: c),
                     ),
                     const Spacer(),
-                    if (alert) Container(width: 8, height: 8, decoration: const BoxDecoration(color: NColors.statusAttention, shape: BoxShape.circle)),
+                    if (alert) Container(width: 8, height: 8, decoration: BoxDecoration(color: NColors.statusAttention, shape: BoxShape.circle)),
                   ],
                 ),
                 const SizedBox(height: NSpace.xs),
@@ -195,7 +195,7 @@ class CStatGrid extends StatelessWidget {
         builder: (BuildContext context, BoxConstraints c) {
           final int cols = c.maxWidth > 560 ? 4 : (c.maxWidth > 300 ? 3 : 2);
           final double w = (c.maxWidth - NSpace.xs * (cols - 1)) / cols;
-          return Wrap(spacing: NSpace.xs, runSpacing: NSpace.xs, children: <Widget>[for (final Widget t in children) SizedBox(width: w, child: t)]);
+          return Wrap(spacing: NSpace.xs, runSpacing: NSpace.xs, children: <Widget>[for (Widget t in children) SizedBox(width: w, child: t)]);
         },
       );
 }
@@ -285,7 +285,7 @@ class CAvatar extends StatelessWidget {
   final String? name;
   final double size;
 
-  static const List<Color> _tints = <Color>[NColors.brandBlush, NColors.brandApricot, NColors.brandLavender, NColors.brandSage, NColors.brandBlushLight];
+  static List<Color> get _tints => <Color>[NColors.brandBlush, NColors.brandApricot, NColors.brandLavender, NColors.brandSage, NColors.brandBlushLight];
 
   @override
   Widget build(BuildContext context) {
@@ -323,7 +323,7 @@ class CEmpty extends StatelessWidget {
             Container(
               width: 48,
               height: 48,
-              decoration: const BoxDecoration(color: NColors.brandBlushLight, shape: BoxShape.circle),
+              decoration: BoxDecoration(color: NColors.brandBlushLight, shape: BoxShape.circle),
               child: Icon(icon, color: NColors.brandRosewood),
             ),
             const SizedBox(height: NSpace.xs),
@@ -373,7 +373,7 @@ class CRow extends StatelessWidget {
                   ),
                 ),
                 if (trailing != null) ...<Widget>[const SizedBox(width: NSpace.xs), trailing!],
-                if (onTap != null) const Icon(Icons.chevron_right_rounded, color: NColors.inkMuted),
+                if (onTap != null) Icon(Icons.chevron_right_rounded, color: NColors.inkMuted),
               ],
             ),
           ),
@@ -428,7 +428,7 @@ class CEntrance extends StatelessWidget {
 
 /// A horizontal progress bar in a brand colour.
 class CBar extends StatelessWidget {
-  const CBar({required this.value, super.key, this.color = NColors.brandRosewood, this.height = 8});
+  CBar({required this.value, super.key, Color? color, this.height = 8}) : color = color ?? NColors.brandRosewood;
 
   final double value;
   final Color color;

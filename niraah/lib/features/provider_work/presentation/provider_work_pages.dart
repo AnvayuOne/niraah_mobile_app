@@ -32,7 +32,7 @@ class _SplitBar extends StatelessWidget {
         child: SizedBox(
           height: 12,
           child: total <= 0
-              ? const ColoredBox(color: NColors.surfaceBackdrop, child: SizedBox.expand())
+              ? ColoredBox(color: NColors.surfaceBackdrop, child: SizedBox.expand())
               : Row(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
@@ -85,7 +85,7 @@ class _Notice extends StatelessWidget {
     child: Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        const Icon(Icons.info_outline_rounded, size: 20, color: NColors.statusWarningText),
+        Icon(Icons.info_outline_rounded, size: 20, color: NColors.statusWarningText),
         const SizedBox(width: NSpace.xs),
         Expanded(child: Text(text, style: NType.bodySm.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w600))),
       ],
@@ -184,7 +184,7 @@ class _EarningsPageState extends State<EarningsPage> {
                     ? CEmpty(icon: Icons.receipt_long_outlined, title: s.earnNoLines)
                     : Column(
                         children: <Widget>[
-                          for (final Json l in e.objs('lines'))
+                          for (Json l in e.objs('lines'))
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: NSpace.xxs + 2),
                               child: Row(
@@ -235,7 +235,7 @@ class _EarningsPageState extends State<EarningsPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    for (final Json r in e.objs('rules'))
+                    for (Json r in e.objs('rules'))
                       Padding(
                         padding: const EdgeInsets.only(bottom: NSpace.xxs + 2),
                         child: Row(
@@ -268,7 +268,7 @@ class _EarningsPageState extends State<EarningsPage> {
                     ? CEmpty(icon: Icons.account_balance_outlined, title: s.earnNoPayouts)
                     : Column(
                         children: <Widget>[
-                          for (final Json p in payouts)
+                          for (Json p in payouts)
                             Container(
                               width: double.infinity,
                               margin: const EdgeInsets.only(bottom: NSpace.xs),
@@ -414,18 +414,18 @@ class _SchedulePageState extends State<SchedulePage> {
           final DateTime from = DateTime(now.year, now.month, now.day);
           final List<DateTime> days = <DateTime>[for (int i = 0; i < 14; i++) DateTime(from.year, from.month, from.day + i)];
           final Map<DateTime, List<Json>> byDay = <DateTime, List<Json>>{};
-          for (final Json a in sched.objs('appointments')) {
+          for (Json a in sched.objs('appointments')) {
             final DateTime t = DateTime.parse(a.str('startsAt')!).toLocal();
             (byDay[DateTime(t.year, t.month, t.day)] ??= <Json>[]).add(a);
           }
-          for (final List<Json> l in byDay.values) {
+          for (List<Json> l in byDay.values) {
             l.sort((Json a, Json b) => a.str('startsAt')!.compareTo(b.str('startsAt')!));
           }
           final DateTime sel = _selected ?? days.firstWhere(byDay.containsKey, orElse: () => days.first);
           final List<Json> dayAppts = byDay[sel] ?? const <Json>[];
           final List<Json> consultHours = avail.objs('hours').where((Json h) => h.str('kind') == 'consults').toList();
           final Map<int, List<Json>> hoursByDay = <int, List<Json>>{};
-          for (final Json h in avail.objs('hours')) {
+          for (Json h in avail.objs('hours')) {
             (hoursByDay[h.integer('weekday')] ??= <Json>[]).add(h);
           }
           final List<int> weekdays = hoursByDay.keys.toList()..sort((int a, int b) => ((a + 6) % 7).compareTo((b + 6) % 7));
@@ -522,7 +522,7 @@ class _SchedulePageState extends State<SchedulePage> {
                                       spacing: NSpace.xxs,
                                       runSpacing: NSpace.xxs,
                                       children: <Widget>[
-                                        for (final Json h in hoursByDay[wd]!)
+                                        for (Json h in hoursByDay[wd]!)
                                           Semantics(
                                             label: '${_weekday(locale, wd)} ${_hm(h.str('start'))}–${_hm(h.str('end'))} · ${h.str('kind') == 'consults' ? s.schedConsults : s.schedReviewsOnCall}',
                                             excludeSemantics: true,
@@ -547,7 +547,7 @@ class _SchedulePageState extends State<SchedulePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
-                    for (final Json x in avail.objs('exceptions'))
+                    for (Json x in avail.objs('exceptions'))
                       Container(
                         margin: const EdgeInsets.only(bottom: NSpace.xs),
                         padding: const EdgeInsets.only(left: NSpace.sm),
@@ -568,7 +568,7 @@ class _SchedulePageState extends State<SchedulePage> {
                                 ],
                               ),
                             ),
-                            IconButton(tooltip: s.schedRemove, icon: const Icon(Icons.delete_outline_rounded, color: NColors.inkSecondary), onPressed: () => _removeException(x.str('id')!)),
+                            IconButton(tooltip: s.schedRemove, icon: Icon(Icons.delete_outline_rounded, color: NColors.inkSecondary), onPressed: () => _removeException(x.str('id')!)),
                           ],
                         ),
                       ),

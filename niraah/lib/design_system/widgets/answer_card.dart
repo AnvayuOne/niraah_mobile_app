@@ -87,8 +87,9 @@ extension on AnswerCard {
             child: Image.asset(icon!.path, fit: BoxFit.contain, excludeFromSemantics: true),
           )
         : Icon(fallbackIcon ?? Icons.circle_outlined, size: 28, color: selected ? NColors.actionPrimary : NColors.brandRosewood);
-    if (imagePath == null || !NOptionImages.has(imagePath!)) return fallback;
-    return Image.asset(imagePath!, fit: BoxFit.cover, excludeFromSemantics: true, errorBuilder: (_, _, _) => fallback);
+    final String? path = imagePath == null ? null : NOptionImages.resolve(imagePath!);
+    if (path == null) return fallback;
+    return Image.asset(path, fit: BoxFit.cover, excludeFromSemantics: true, errorBuilder: (_, _, _) => fallback);
   }
 }
 
@@ -112,7 +113,7 @@ class _Indicator extends StatelessWidget {
         borderRadius: multiple ? BorderRadius.circular(NRadius.sm - NSpace.xxs) : null,
         border: Border.all(color: selected ? NColors.actionPrimary : NColors.lineStrong, width: 2),
       ),
-      child: selected ? const Icon(Icons.check_rounded, size: NSpace.md, color: NColors.actionOnPrimary) : null,
+      child: selected ? Icon(Icons.check_rounded, size: NSpace.md, color: NColors.actionOnPrimary) : null,
     );
   }
 }
@@ -121,12 +122,21 @@ class _Indicator extends StatelessWidget {
 abstract final class NOptionImages {
   static Set<String> _paths = <String>{};
 
-  static bool has(String path) => _paths.contains(path);
+  static bool has(String path) => resolve(path) != null;
+
+  /// The picture to show: in dark mode its dark version (assets/images/options_dark/…) when bundled.
+  static String? resolve(String path) {
+    if (NColors.dark) {
+      final String dark = path.replaceFirst('/options/', '/options_dark/');
+      if (_paths.contains(dark)) return dark;
+    }
+    return _paths.contains(path) ? path : null;
+  }
 
   static Future<void> load() async {
     try {
       final AssetManifest m = await AssetManifest.loadFromAssetBundle(rootBundle);
-      _paths = m.listAssets().where((String a) => a.startsWith('assets/images/options/')).toSet();
+      _paths = m.listAssets().where((String a) => a.startsWith('assets/images/options/') || a.startsWith('assets/images/options_dark/')).toSet();
     } on Object {
       _paths = <String>{};
     }

@@ -2,9 +2,11 @@ import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../../../design_system/generated/niraah_assets.dart';
+import '../../../design_system/theme/theme_controller.dart';
 import '../../../design_system/tokens/tokens.dart';
 import '../../../design_system/widgets/bottom_nav.dart';
 import '../../../design_system/widgets/clinician_ui.dart';
+import '../../../design_system/widgets/n_appearance.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../provider_auth/presentation/provider_pages.dart';
 
@@ -22,7 +24,7 @@ class DoctorShell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final S s = S.of(context);
-    CRole.fallback = const CRole.doctor(child: SizedBox.shrink());
+    CRole.fallback = CRole.doctor(child: SizedBox.shrink());
     return Scaffold(
       backgroundColor: NColors.surfacePage,
       appBar: AppBar(
@@ -36,7 +38,7 @@ class DoctorShell extends StatelessWidget {
               width: 32,
               height: 32,
               padding: const EdgeInsets.all(4),
-              decoration: const BoxDecoration(color: NColors.brandPlum, shape: BoxShape.circle),
+              decoration: BoxDecoration(color: NColors.brandPlum, shape: BoxShape.circle),
               child: Image.asset(NImages.niraahLogo.path, fit: BoxFit.contain, excludeFromSemantics: true),
             ),
             const SizedBox(width: NSpace.sm),
@@ -44,10 +46,11 @@ class DoctorShell extends StatelessWidget {
           ],
         ),
         actions: <Widget>[
+          if (NThemeController.darkModeEnabled) ...<Widget>[const Center(child: NThemeToggle()), const SizedBox(width: NSpace.xs)],
           IconButton(
             tooltip: s.pvSignOut,
             onPressed: () => providerSignOut(context),
-            icon: const Icon(Icons.logout_rounded, color: NColors.inkSecondary),
+            icon: Icon(Icons.logout_rounded, color: NColors.inkSecondary),
           ),
           const SizedBox(width: NSpace.xs),
         ],

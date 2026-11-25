@@ -72,7 +72,7 @@ class PlanCard extends StatelessWidget {
           Text(priceText, style: NType.h2.copyWith(color: ink)),
           Text(priceNote, style: NType.label.copyWith(color: ink, letterSpacing: 0)),
           const SizedBox(height: NSpace.md),
-          for (final String line in lines)
+          for (String line in lines)
             Padding(
               padding: const EdgeInsets.only(bottom: NSpace.xs),
               child: Row(

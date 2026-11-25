@@ -133,11 +133,11 @@ class _PatientsPageState extends State<PatientsPage> {
                     fillColor: NColors.surfaceCard,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(NRadius.pill),
-                      borderSide: const BorderSide(color: NColors.lineDefault),
+                      borderSide: BorderSide(color: NColors.lineDefault),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(NRadius.pill),
-                      borderSide: const BorderSide(color: NColors.lineDefault),
+                      borderSide: BorderSide(color: NColors.lineDefault),
                     ),
                   ),
                 ),
@@ -148,7 +148,7 @@ class _PatientsPageState extends State<PatientsPage> {
                 child: Row(
                   children: <Widget>[
                     _chip(s.drPast, _past, (bool v) => _past = v),
-                    for (final String k in const <String>['dedicated', 'consult', 'review']) _chip(relationshipName(s, k), _kind == k, (bool v) => _kind = v ? k : null),
+                    for (String k in const <String>['dedicated', 'consult', 'review']) _chip(relationshipName(s, k), _kind == k, (bool v) => _kind = v ? k : null),
                     _chip(s.drOpenAlert, _openAlert, (bool v) => _openAlert = v),
                     _chip(s.drPlanAwaiting, _planAwaiting, (bool v) => _planAwaiting = v),
                   ],
@@ -156,7 +156,7 @@ class _PatientsPageState extends State<PatientsPage> {
               ),
               SizedBox(
                 height: NSpace.sm,
-                child: loading ? const LinearProgressIndicator(minHeight: 2, color: NColors.brandRosewood, backgroundColor: Colors.transparent) : null,
+                child: loading ? LinearProgressIndicator(minHeight: 2, color: NColors.brandRosewood, backgroundColor: Colors.transparent) : null,
               ),
               if (rows.isEmpty)
                 CEmpty(icon: Icons.people_outline_rounded, title: _past ? s.drNoPastPatients : s.drNoPatients)
@@ -239,7 +239,7 @@ class _PatientsPageState extends State<PatientsPage> {
                     ],
                   ),
                 ),
-                const Icon(Icons.chevron_right_rounded, color: NColors.inkMuted),
+                Icon(Icons.chevron_right_rounded, color: NColors.inkMuted),
               ],
             ),
           ),
@@ -349,7 +349,7 @@ class _PatientPageState extends State<PatientPage> {
                         padding: const EdgeInsets.symmetric(horizontal: NSpace.xs),
                         tabs: <Widget>[
                           Tab(text: s.drSecSummary),
-                          for (final String k in sections) Tab(text: _sectionName(s, k)),
+                          for (String k in sections) Tab(text: _sectionName(s, k)),
                         ],
                       ),
                     ),
@@ -359,7 +359,7 @@ class _PatientPageState extends State<PatientPage> {
               body: TabBarView(
                 children: <Widget>[
                   _Summary(header: h, repo: _repo),
-                  for (final String k in sections) _Section(memberId: widget.memberId, section: k, repo: _repo, past: h.flag('past')),
+                  for (String k in sections) _Section(memberId: widget.memberId, section: k, repo: _repo, past: h.flag('past')),
                 ],
               ),
             ),
@@ -441,7 +441,7 @@ class _PatientHeader extends StatelessWidget {
               if (h.str('relationship') != null) _GlassPill(text: relationshipName(s, h.str('relationship')), strong: true),
               if (h.str('plan') != null) _GlassPill(text: h.str('plan')!),
               if (h.flag('past')) _GlassPill(text: s.drPastPatient),
-              for (final Json f in h.objs('flags'))
+              for (Json f in h.objs('flags'))
                 Semantics(
                   label: '${s.drFlags}: ${f.str('name')} · ${f.str('severity')}',
                   excludeSemantics: true,
@@ -460,7 +460,7 @@ class _PatientHeader extends StatelessWidget {
               spacing: NSpace.xxs,
               runSpacing: NSpace.xxs,
               children: <Widget>[
-                for (final Json c in consent)
+                for (Json c in consent)
                   Semantics(
                     label: '${_category(s, c.str('category') ?? '')}: ${c.flag('shared') ? s.drConsentView : s.drConsentNone}',
                     excludeSemantics: true,
@@ -554,7 +554,7 @@ class _SummaryState extends State<_Summary> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             if (b.str('label') != null) CPill(b.str('label')!, tone: CTone.lavender),
-                            for (final Json p in b.objs('points'))
+                            for (Json p in b.objs('points'))
                               Padding(
                                 padding: const EdgeInsets.only(top: NSpace.xs),
                                 child: Row(
@@ -564,7 +564,7 @@ class _SummaryState extends State<_Summary> {
                                       margin: const EdgeInsets.only(top: 7, right: NSpace.xs),
                                       width: 6,
                                       height: 6,
-                                      decoration: const BoxDecoration(color: NColors.brandRosewood, shape: BoxShape.circle),
+                                      decoration: BoxDecoration(color: NColors.brandRosewood, shape: BoxShape.circle),
                                     ),
                                     Expanded(
                                       child: Text('${p.str('text')} (${humanise(p.str('section') ?? '')})', style: NType.bodySm.copyWith(color: NColors.inkPrimary)),
@@ -610,7 +610,7 @@ class _SummaryState extends State<_Summary> {
                     label: Text(_sectionName(s, sections[i])),
                     labelStyle: NType.bodySm.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w600),
                     backgroundColor: NColors.surfacePage,
-                    side: const BorderSide(color: NColors.lineDefault),
+                    side: BorderSide(color: NColors.lineDefault),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(NRadius.pill)),
                     onPressed: () => DefaultTabController.of(context).animateTo(i + 1),
                   ),
@@ -669,7 +669,7 @@ class _SectionState extends State<_Section> with AutomaticKeepAliveClientMixin<_
             child: ListView(
               shrinkWrap: true,
               children: <Widget>[
-                for (final Json t in tests)
+                for (Json t in tests)
                   CheckboxListTile(
                     value: chosen.contains(t.str('id')),
                     onChanged: (bool? v) => set(() => (v ?? false) ? chosen.add(t.str('id')!) : chosen.remove(t.str('id'))),
@@ -732,7 +732,7 @@ class _SectionState extends State<_Section> with AutomaticKeepAliveClientMixin<_
             if (widget.section == 'notes' && !widget.past) ...<Widget>[NSecondaryButton(label: s.drAddNote, onPressed: _addNote), const SizedBox(height: NSpace.sm)],
             if (widget.section == 'labs') ...<Widget>[NSecondaryButton(label: s.drRecommendTests, onPressed: _recommend), const SizedBox(height: NSpace.sm)],
             if (widget.section == 'care_plan')
-              for (final Json p in d.objs('plans'))
+              for (Json p in d.objs('plans'))
                 if (p.str('status') == 'in_review')
                   Padding(
                     padding: const EdgeInsets.only(bottom: NSpace.xs),
@@ -754,7 +754,7 @@ class _SectionState extends State<_Section> with AutomaticKeepAliveClientMixin<_
   /// The record holding a score: the section itself or its first nested record with `total`.
   Json? _scored(Json d, Set<String> used) {
     if (d['total'] is num) return d;
-    for (final MapEntry<String, dynamic> e in d.entries) {
+    for (MapEntry<String, dynamic> e in d.entries) {
       if (e.value is Map && (e.value as Map<dynamic, dynamic>)['total'] is num) {
         used.add(e.key);
         return d.obj(e.key);
@@ -797,7 +797,7 @@ class _SectionState extends State<_Section> with AutomaticKeepAliveClientMixin<_
           if (dims.isNotEmpty) ...<Widget>[
             const SizedBox(height: NSpace.md),
             CLabel(s.drADimensions),
-            for (final Json x in dims) DimensionBar(name: x.str('name') ?? '', points: x.number('points') ?? 0, max: x.number('max') ?? 1, level: x.str('level')),
+            for (Json x in dims) DimensionBar(name: x.str('name') ?? '', points: x.number('points') ?? 0, max: x.number('max') ?? 1, level: x.str('level')),
           ],
         ],
       ),
@@ -806,7 +806,7 @@ class _SectionState extends State<_Section> with AutomaticKeepAliveClientMixin<_
 
   Widget? _cycles(S s, Json d, Set<String> used) {
     final List<(String, double)> lengths = <(String, double)>[];
-    for (final MapEntry<String, dynamic> e in d.entries) {
+    for (MapEntry<String, dynamic> e in d.entries) {
       final Object? v = e.value;
       if (v is! List || v.isEmpty) continue;
       if (e.key.toLowerCase().contains('length') && v.every((Object? x) => x is num)) {
@@ -818,7 +818,7 @@ class _SectionState extends State<_Section> with AutomaticKeepAliveClientMixin<_
       }
       if (e.key == 'cycles' && v.every((Object? x) => x is Map)) {
         used.add(e.key);
-        for (final Json c in d.objs('cycles')) {
+        for (Json c in d.objs('cycles')) {
           final double? n = c.number('length') ?? c.number('lengthDays') ?? c.number('days');
           final String? start = c.str('start') ?? c.str('startedOn') ?? c.str('startDate');
           if (n != null) lengths.add((start == null ? '${lengths.length + 1}' : shortDate(context, start), n));
@@ -886,7 +886,7 @@ class _SectionState extends State<_Section> with AutomaticKeepAliveClientMixin<_
       child: Wrap(
         spacing: NSpace.xs,
         runSpacing: NSpace.xs,
-        children: <Widget>[for (final Json x in list) CPill(x.str('severity') == null ? x.str('name')! : '${x.str('name')} · ${x.str('severity')}', tone: tone(x.str('severity')))],
+        children: <Widget>[for (Json x in list) CPill(x.str('severity') == null ? x.str('name')! : '${x.str('name')} · ${x.str('severity')}', tone: tone(x.str('severity')))],
       ),
     );
   }

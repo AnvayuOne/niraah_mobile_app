@@ -1,8 +1,30 @@
+import 'package:flutter/services.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../generated/niraah_assets.dart';
 import '../motion/motion.dart';
 import '../tokens/tokens.dart';
+
+/// Dark-mode versions of the illustrations: `assets/images/dark/<same file name>`. When the app is dark and a
+/// dark version is bundled it is shown; otherwise the light picture is used. Loaded once from the asset manifest.
+abstract final class NDarkImages {
+  static Set<String> _paths = <String>{};
+
+  static String resolve(String path) {
+    if (!NColors.dark) return path;
+    final String dark = 'assets/images/dark/${path.split('/').last}';
+    return _paths.contains(dark) ? dark : path;
+  }
+
+  static Future<void> load() async {
+    try {
+      final AssetManifest m = await AssetManifest.loadFromAssetBundle(rootBundle);
+      _paths = m.listAssets().where((String a) => a.startsWith('assets/images/dark/')).toSet();
+    } on Object {
+      _paths = <String>{};
+    }
+  }
+}
 
 /// How an illustration enters. Entrances last [NMotion.slow] at most and
 /// play once: continuous loops would break the 220 to 760 ms motion rule.
@@ -11,18 +33,21 @@ enum NEntrance { breathe, float, sway, none }
 /// A generated image asset. Decorative images (no semantic label) are
 /// excluded from screen readers.
 class NIllustration extends StatelessWidget {
-  const NIllustration({required this.asset, super.key, this.height, this.entrance = NEntrance.none});
+  const NIllustration({required this.asset, super.key, this.height, this.entrance = NEntrance.none, this.darkVersion = true});
 
   final NImageAsset asset;
   final double? height;
   final NEntrance entrance;
+
+  /// False keeps the light picture in dark mode too (the animation spots, which keep their original look).
+  final bool darkVersion;
 
   @override
   Widget build(BuildContext context) {
     final double h = height ?? asset.height;
     final double w = asset.width * (h / asset.height);
     final Widget image = Image.asset(
-      asset.path,
+      (darkVersion ? NDarkImages.resolve(asset.path) : asset.path),
       width: w,
       height: h,
       fit: BoxFit.contain,
@@ -31,7 +56,7 @@ class NIllustration extends StatelessWidget {
     );
     if (entrance == NEntrance.none || NMotionRules.reduced(context)) return image;
     return TweenAnimationBuilder<double>(
-      key: ValueKey<String>(asset.path),
+      key: ValueKey<String>((darkVersion ? NDarkImages.resolve(asset.path) : asset.path)),
       tween: Tween<double>(begin: 0, end: 1),
       duration: NMotion.slow,
       curve: NMotionRules.curve,
@@ -73,6 +98,7 @@ class NLottie extends StatelessWidget {
   @override
   Widget build(BuildContext context) => SizedBox.square(
         dimension: size,
-        child: FittedBox(child: NIllustration(asset: imageFor(path), height: size, entrance: NEntrance.breathe)),
+        // The original light pictures in both themes: the dark redraws did not suit these spots.
+        child: FittedBox(child: NIllustration(asset: imageFor(path), height: size, entrance: NEntrance.breathe, darkVersion: false)),
       );
 }

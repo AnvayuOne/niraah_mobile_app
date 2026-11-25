@@ -115,7 +115,7 @@ class _FoodLogQueuePageState extends State<FoodLogQueuePage> {
               ],
             ),
           ),
-          const Icon(Icons.chevron_right_rounded, color: NColors.inkMuted),
+          Icon(Icons.chevron_right_rounded, color: NColors.inkMuted),
         ],
       ),
     );
@@ -187,7 +187,7 @@ class _FoodLogDayPageState extends State<FoodLogDayPage> {
                 child: DropdownButton<String>(
                   value: unit,
                   isExpanded: true,
-                  items: <DropdownMenuItem<String>>[for (final String x in planUnits) DropdownMenuItem<String>(value: x, child: Text(x))],
+                  items: <DropdownMenuItem<String>>[for (String x in planUnits) DropdownMenuItem<String>(value: x, child: Text(x))],
                   onChanged: (String? v) => set(() => unit = v ?? unit),
                 ),
               ),
@@ -294,11 +294,11 @@ class _FoodLogDayPageState extends State<FoodLogDayPage> {
                   style: NType.body.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w700),
                 ),
               ),
-              if (done) const Icon(Icons.check_circle_rounded, color: NColors.statusSuccess),
+              if (done) Icon(Icons.check_circle_rounded, color: NColors.statusSuccess),
             ],
           ),
           const SizedBox(height: NSpace.xs),
-          for (final Json it in l.objs('items'))
+          for (Json it in l.objs('items'))
             Container(
               margin: const EdgeInsets.only(bottom: NSpace.xxs),
               padding: const EdgeInsets.only(left: NSpace.sm),
@@ -312,7 +312,7 @@ class _FoodLogDayPageState extends State<FoodLogDayPage> {
                       style: NType.bodySm.copyWith(color: NColors.inkPrimary),
                     ),
                   ),
-                  if (canWork) IconButton(tooltip: s.dtCorrect, icon: const Icon(Icons.edit_outlined, size: 18, color: NColors.inkSecondary), onPressed: () => _correct(it)),
+                  if (canWork) IconButton(tooltip: s.dtCorrect, icon: Icon(Icons.edit_outlined, size: 18, color: NColors.inkSecondary), onPressed: () => _correct(it)),
                 ],
               ),
             ),
@@ -323,7 +323,7 @@ class _FoodLogDayPageState extends State<FoodLogDayPage> {
             Semantics(
               label: l.strs('tags').join(', '),
               excludeSemantics: true,
-              child: Wrap(spacing: NSpace.xxs, runSpacing: NSpace.xxs, children: <Widget>[for (final String t in l.strs('tags')) CPill(t, tone: CTone.rose)]),
+              child: Wrap(spacing: NSpace.xxs, runSpacing: NSpace.xxs, children: <Widget>[for (String t in l.strs('tags')) CPill(t, tone: CTone.rose)]),
             ),
           ],
           if (canWork && !done)
@@ -532,7 +532,7 @@ class _RecipeEditorPageState extends State<RecipeEditorPage> {
 
   @override
   void dispose() {
-    for (final TextEditingController c in <TextEditingController>[_title, _steps, _servings, _time]) {
+    for (TextEditingController c in <TextEditingController>[_title, _steps, _servings, _time]) {
       c.dispose();
     }
     super.dispose();
@@ -613,7 +613,7 @@ class _RecipeEditorPageState extends State<RecipeEditorPage> {
       Json r = await widget.repository.saveRecipe(_id, <String, dynamic>{
         'title': _title.text.trim(),
         'ingredients': <Json>[
-          for (final Json i in _ingredients)
+          for (Json i in _ingredients)
             if (i.str('foodId') != null)
               <String, dynamic>{'foodId': i.str('foodId'), 'grams': i.number('grams')}
             else
@@ -689,7 +689,7 @@ class _RecipeEditorPageState extends State<RecipeEditorPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      for (final Json i in _ingredients)
+                      for (Json i in _ingredients)
                         Container(
                           margin: const EdgeInsets.only(bottom: NSpace.xxs),
                           padding: const EdgeInsets.only(left: NSpace.sm),
@@ -707,7 +707,7 @@ class _RecipeEditorPageState extends State<RecipeEditorPage> {
                                 ),
                               ),
                               if (editable)
-                                IconButton(tooltip: s.drRemoveLine, icon: const Icon(Icons.close_rounded, size: 18, color: NColors.inkMuted), onPressed: () => setState(() => _ingredients.remove(i))),
+                                IconButton(tooltip: s.drRemoveLine, icon: Icon(Icons.close_rounded, size: 18, color: NColors.inkMuted), onPressed: () => setState(() => _ingredients.remove(i))),
                             ],
                           ),
                         ),
@@ -737,7 +737,7 @@ class _RecipeEditorPageState extends State<RecipeEditorPage> {
                       Wrap(
                         runSpacing: NSpace.xs,
                         children: <Widget>[
-                          for (final String t in _tags)
+                          for (String t in _tags)
                             DtChip(label: t.replaceAll('_', ' '), selected: _chosen.contains(t), onSelected: editable ? (bool v) => setState(() => v ? _chosen.add(t) : _chosen.remove(t)) : null),
                         ],
                       ),

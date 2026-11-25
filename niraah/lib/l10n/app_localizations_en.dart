@@ -5214,4 +5214,19 @@ class SEn extends S {
 
   @override
   String get inClassActions => 'What you can do';
+
+  @override
+  String get appearanceTitle => 'Appearance';
+
+  @override
+  String get appearanceSystem => 'Match phone';
+
+  @override
+  String get appearanceLight => 'Light';
+
+  @override
+  String get appearanceDark => 'Dark';
+
+  @override
+  String get appearanceHint => 'Dark mode is easier on the eyes at night.';
 }

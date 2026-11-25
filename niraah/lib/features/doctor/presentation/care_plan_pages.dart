@@ -68,7 +68,7 @@ class _CarePlanQueuePageState extends State<CarePlanQueuePage> {
                 children: <Widget>[
                   DrStagger(
                     children: <Widget>[
-                      for (final Json p in rows)
+                      for (Json p in rows)
                         DrListCard(
                           name: p.str('member') ?? s.drUnnamed,
                           semanticsLabel: p.str('member'),
@@ -180,7 +180,7 @@ class _CarePlanReviewPageState extends State<CarePlanReviewPage> {
               DropdownButton<String>(
                 value: kind,
                 isExpanded: true,
-                items: <DropdownMenuItem<String>>[for (final String k in carePlanKinds) DropdownMenuItem<String>(value: k, child: Text(sectionName(s, k)))],
+                items: <DropdownMenuItem<String>>[for (String k in carePlanKinds) DropdownMenuItem<String>(value: k, child: Text(sectionName(s, k)))],
                 onChanged: (String? v) => set(() => kind = v ?? kind),
               ),
               DropdownButton<String>(
@@ -206,7 +206,7 @@ class _CarePlanReviewPageState extends State<CarePlanReviewPage> {
     title.dispose();
     if (ok != true || t.isEmpty) return;
     final List<Json> tasks = <Json>[
-      for (final Json x in plan.objs('tasks')) <String, dynamic>{'kind': x.str('kind'), 'title': x.str('title'), 'frequency': x.str('frequency')},
+      for (Json x in plan.objs('tasks')) <String, dynamic>{'kind': x.str('kind'), 'title': x.str('title'), 'frequency': x.str('frequency')},
       <String, dynamic>{'kind': kind, 'title': t, 'frequency': frequency},
     ];
     await _apply(() => _repo.setTasks(_id, tasks));
@@ -214,7 +214,7 @@ class _CarePlanReviewPageState extends State<CarePlanReviewPage> {
 
   Future<void> _removeTask(Json plan, Json task) async {
     final List<Json> tasks = <Json>[
-      for (final Json x in plan.objs('tasks'))
+      for (Json x in plan.objs('tasks'))
         if (x.str('id') != task.str('id')) <String, dynamic>{'kind': x.str('kind'), 'title': x.str('title'), 'frequency': x.str('frequency')},
     ];
     await _apply(() => _repo.setTasks(_id, tasks));
@@ -238,7 +238,7 @@ class _CarePlanReviewPageState extends State<CarePlanReviewPage> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            for (final Json sec in sections) Text('${sectionName(s, sec.str('kind') ?? '')}: ${_decision(s, sec.str('decision'))}'),
+            for (Json sec in sections) Text('${sectionName(s, sec.str('kind') ?? '')}: ${_decision(s, sec.str('decision'))}'),
             const SizedBox(height: NSpace.sm),
             Text(plan.str('wellnessStatement') ?? '', style: NType.caption.copyWith(color: NColors.inkMuted)),
           ],
@@ -312,7 +312,7 @@ class _CarePlanReviewPageState extends State<CarePlanReviewPage> {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          const Icon(Icons.warning_amber_rounded, size: 18, color: NColors.statusWarningText),
+                          Icon(Icons.warning_amber_rounded, size: 18, color: NColors.statusWarningText),
                           const SizedBox(width: NSpace.xs),
                           Expanded(child: Text(s.drDoseWarning, style: NType.bodySm.copyWith(color: NColors.inkPrimary))),
                         ],
@@ -412,7 +412,7 @@ class _CarePlanReviewPageState extends State<CarePlanReviewPage> {
                                 for (int i = 0; i < tasks.length; i++)
                                   Container(
                                     padding: const EdgeInsets.symmetric(vertical: NSpace.xs),
-                                    decoration: BoxDecoration(border: i == 0 ? null : const Border(top: BorderSide(color: NColors.lineDefault))),
+                                    decoration: BoxDecoration(border: i == 0 ? null : Border(top: BorderSide(color: NColors.lineDefault))),
                                     child: Row(
                                       children: <Widget>[
                                         Container(
@@ -434,7 +434,7 @@ class _CarePlanReviewPageState extends State<CarePlanReviewPage> {
                                             ],
                                           ),
                                         ),
-                                        if (editable) IconButton(tooltip: s.drRemoveTask, icon: const Icon(Icons.close_rounded, size: 20, color: NColors.inkMuted), onPressed: _busy ? null : () => _removeTask(p, tasks[i])),
+                                        if (editable) IconButton(tooltip: s.drRemoveTask, icon: Icon(Icons.close_rounded, size: 20, color: NColors.inkMuted), onPressed: _busy ? null : () => _removeTask(p, tasks[i])),
                                       ],
                                     ),
                                   ),

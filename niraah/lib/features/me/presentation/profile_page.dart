@@ -99,7 +99,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 spacing: NSpace.xs,
                 runSpacing: NSpace.xs,
                 children: <Widget>[
-                  for (final String g in _goals) InputChip(label: Text(g), onDeleted: () => setState(() => _goals.remove(g)), deleteButtonTooltipMessage: s.profileRemoveGoal(g)),
+                  for (String g in _goals) InputChip(label: Text(g), onDeleted: () => setState(() => _goals.remove(g)), deleteButtonTooltipMessage: s.profileRemoveGoal(g)),
                 ],
               ),
               const SizedBox(height: NSpace.xs),

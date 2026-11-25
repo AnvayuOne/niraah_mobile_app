@@ -25,7 +25,7 @@ class ApiAuthRepository implements AuthRepository, SecondCheckRepository {
     return switch (r) {
       ApiOk<Map<String, dynamic>>() => const Success<void>(null),
       // The human check is not yet available in the app; the message tells her to wait (plan 003).
-      ApiFail<Map<String, dynamic>>(:final ApiError error) => FailureResult<void>(error.message),
+      ApiFail<Map<String, dynamic>>(:ApiError error) => FailureResult<void>(error.message),
     };
   }
 
@@ -34,10 +34,10 @@ class ApiAuthRepository implements AuthRepository, SecondCheckRepository {
     final ApiResult<Map<String, dynamic>> r =
         await _api.post('/auth/code/verify', <String, dynamic>{'phone': phoneE164, 'code': code, 'device': await _api.device()});
     switch (r) {
-      case ApiOk<Map<String, dynamic>>(:final Map<String, dynamic> data):
+      case ApiOk<Map<String, dynamic>>(:Map<String, dynamic> data):
         await _api.saveTokens(data);
         return Success<CodeOutcome>(outcomeFor('${(data['user'] as Map?)?['workspace']}'));
-      case ApiFail<Map<String, dynamic>>(:final ApiError error):
+      case ApiFail<Map<String, dynamic>>(:ApiError error):
         return FailureResult<CodeOutcome>(error.message);
     }
   }
@@ -64,7 +64,7 @@ class ApiAuthRepository implements AuthRepository, SecondCheckRepository {
     });
     return switch (r) {
       ApiOk<Map<String, dynamic>>() => const Success<void>(null),
-      ApiFail<Map<String, dynamic>>(:final ApiError error) => FailureResult<void>(error.message),
+      ApiFail<Map<String, dynamic>>(:ApiError error) => FailureResult<void>(error.message),
     };
   }
 
@@ -101,7 +101,7 @@ class ApiAuthRepository implements AuthRepository, SecondCheckRepository {
     final ApiResult<Map<String, dynamic>> r = await _api.post('/auth/second-check/answer', <String, dynamic>{'method': key, 'answer': value});
     return switch (r) {
       ApiOk<Map<String, dynamic>>() => const SecondCheckPassed(),
-      ApiFail<Map<String, dynamic>>(:final ApiError error) => SecondCheckWrong(error.message, ended: error.code == 'rate_limited'),
+      ApiFail<Map<String, dynamic>>(:ApiError error) => SecondCheckWrong(error.message, ended: error.code == 'rate_limited'),
     };
   }
 

@@ -97,15 +97,15 @@ class _DietPlanPageState extends State<DietPlanPage> {
               return _ProfileForm(repo: _repo, onSaved: _cookAfterSave, firstTime: st is DietNeedsProfile);
             }
             return switch (st) {
-              DietLocked(:final List<String> plans) => _Message(
+              DietLocked(:List<String> plans) => _Message(
                 icon: Icons.lock_outline_rounded,
                 title: s.dietLockedTitle,
                 body: plans.isEmpty ? s.dietLockedBody : s.dietLockedPlans(plans.join(', ')),
                 action: NPrimaryButton(label: s.dietSeePlans, onPressed: () => context.push(RouteConstants.plans)),
               ),
-              DietNeedsDietitian(:final String message) => _Message(icon: Icons.health_and_safety_outlined, title: s.dietNeedsDietitianTitle, body: message),
+              DietNeedsDietitian(:String message) => _Message(icon: Icons.health_and_safety_outlined, title: s.dietNeedsDietitianTitle, body: message),
               DietDietitianPlan() => _Message(icon: Icons.restaurant_menu_rounded, title: s.dietDietitianPlanTitle, body: s.dietDietitianPlanBody),
-              DietUnavailable(:final String message) => _Message(
+              DietUnavailable(:String message) => _Message(
                 icon: Icons.cloud_off_rounded,
                 title: s.dietUnavailableTitle,
                 body: message,
@@ -137,7 +137,7 @@ class _DietPlanPageState extends State<DietPlanPage> {
             children: <Widget>[
               Row(
                 children: <Widget>[
-                  const Icon(Icons.info_outline_rounded, size: 18, color: NColors.statusWarningText),
+                  Icon(Icons.info_outline_rounded, size: 18, color: NColors.statusWarningText),
                   const SizedBox(width: NSpace.xs),
                   Expanded(
                     child: Text(
@@ -148,7 +148,7 @@ class _DietPlanPageState extends State<DietPlanPage> {
                 ],
               ),
               const SizedBox(height: NSpace.xs),
-              for (final String c in p.cautions)
+              for (String c in p.cautions)
                 Padding(
                   padding: const EdgeInsets.only(top: NSpace.xxs),
                   child: Text('• $c', style: NType.bodySm.copyWith(color: NColors.inkPrimary)),
@@ -201,7 +201,7 @@ class _DietPlanPageState extends State<DietPlanPage> {
         const SizedBox(height: NSpace.sm),
         Text(p.shortCaution, style: NType.caption.copyWith(color: NColors.inkMuted, letterSpacing: 0.4)),
         const SizedBox(height: NSpace.sm),
-        for (final DietMeal m in d.meals) ...<Widget>[
+        for (DietMeal m in d.meals) ...<Widget>[
           _MealCard(meal: m, busy: _busy, onSwap: (DietItem item, String? foodId) => _run(() => _repo.swap(item.id, foodId))),
           const SizedBox(height: NSpace.sm),
         ],
@@ -233,7 +233,7 @@ class _MealCard extends StatelessWidget {
   final bool busy;
   final void Function(DietItem item, String? foodId) onSwap;
 
-  static const Map<String, Color> _tints = <String, Color>{
+  static Map<String, Color> get _tints => <String, Color>{
     'breakfast': NColors.brandApricotLight,
     'mid_morning': NColors.brandSageLight,
     'lunch': NColors.brandBlushLight,
@@ -265,7 +265,7 @@ class _MealCard extends StatelessWidget {
           ),
           if (meal.reason != null) ...<Widget>[const SizedBox(height: NSpace.xs), Text(meal.reason!, style: NType.bodySm.copyWith(color: NColors.inkSecondary))],
           const SizedBox(height: NSpace.xs),
-          for (final DietItem i in meal.items)
+          for (DietItem i in meal.items)
             Padding(
               padding: const EdgeInsets.only(top: NSpace.xxs),
               child: Row(
@@ -302,19 +302,19 @@ class _MealCard extends StatelessWidget {
       showDragHandle: true,
       builder: (BuildContext context) => SafeArea(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(NSpace.lg, 0, NSpace.lg, NSpace.lg),
+          padding: EdgeInsets.fromLTRB(NSpace.lg, 0, NSpace.lg, NSpace.lg),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(s.dietSwapTitle(i.food.name), style: NType.h3.copyWith(color: NColors.inkPrimary)),
-              const SizedBox(height: NSpace.xs),
+              SizedBox(height: NSpace.xs),
               Text(s.dietSwapBody, style: NType.bodySm.copyWith(color: NColors.inkSecondary)),
-              const SizedBox(height: NSpace.md),
-              for (final DietOption o in i.swaps)
+              SizedBox(height: NSpace.md),
+              for (DietOption o in i.swaps)
                 ListTile(
                   contentPadding: EdgeInsets.zero,
-                  leading: const NSquircleIcon(icon: Icons.restaurant_menu_rounded, size: 40),
+                  leading: NSquircleIcon(icon: Icons.restaurant_menu_rounded, size: 40),
                   title: Text(o.name, style: NType.body.copyWith(color: NColors.inkPrimary)),
                   trailing: const Icon(Icons.chevron_right_rounded),
                   onTap: () => Navigator.of(context).pop(o),
@@ -506,7 +506,7 @@ class _ProfileFormState extends State<_ProfileForm> {
         Wrap(
           spacing: NSpace.xs,
           runSpacing: NSpace.xs,
-          children: <Widget>[for (final String c in FoodProfile.foodChoices) chip(dietChoiceName(s, c), _choices.contains(c), () => setState(() => _choices.contains(c) ? _choices.remove(c) : _choices.add(c)))],
+          children: <Widget>[for (String c in FoodProfile.foodChoices) chip(dietChoiceName(s, c), _choices.contains(c), () => setState(() => _choices.contains(c) ? _choices.remove(c) : _choices.add(c)))],
         ),
         title(s.dietAllergies),
         Wrap(
@@ -521,7 +521,7 @@ class _ProfileFormState extends State<_ProfileForm> {
                 if (_noAllergies) _allergens.clear();
               }),
             ),
-            for (final String a in FoodProfile.allAllergens)
+            for (String a in FoodProfile.allAllergens)
               chip(
                 dietAllergenName(s, a),
                 _allergens.contains(a),
@@ -536,7 +536,7 @@ class _ProfileFormState extends State<_ProfileForm> {
         Wrap(
           spacing: NSpace.xs,
           runSpacing: NSpace.xs,
-          children: <Widget>[for (final String c in FoodProfile.cuisines) chip(dietCuisineName(s, c), c == 'pan_indian' ? _cuisines.isEmpty : _cuisines.contains(c), () => setState(() => c == 'pan_indian' ? _cuisines.clear() : (_cuisines.contains(c) ? _cuisines.remove(c) : _cuisines.add(c))))],
+          children: <Widget>[for (String c in FoodProfile.cuisines) chip(dietCuisineName(s, c), c == 'pan_indian' ? _cuisines.isEmpty : _cuisines.contains(c), () => setState(() => c == 'pan_indian' ? _cuisines.clear() : (_cuisines.contains(c) ? _cuisines.remove(c) : _cuisines.add(c))))],
         ),
         title(s.dietFastingDays),
         Wrap(
@@ -579,7 +579,7 @@ class _ProfileFormState extends State<_ProfileForm> {
                 Expanded(
                   child: ListView(
                     children: <Widget>[
-                      for (final DietOption f in _foods)
+                      for (DietOption f in _foods)
                         CheckboxListTile(value: picked.contains(f.id), title: Text(f.name), onChanged: (bool? v) => set(() => v == true ? picked.add(f.id) : picked.remove(f.id))),
                     ],
                   ),
@@ -605,7 +605,7 @@ class _ProfileFormState extends State<_ProfileForm> {
 /// The server keeps one food choice: several picks become the widest, so every food she eats can appear.
 /// Vegan and Jain together become vegetarian, the closest choice that covers both.
 String foodChoiceFor(Set<String> picks) {
-  for (final String c in <String>['non_vegetarian', 'eggetarian', 'vegetarian']) {
+  for (String c in <String>['non_vegetarian', 'eggetarian', 'vegetarian']) {
     if (picks.contains(c)) return c;
   }
   if (picks.contains('vegan') && picks.contains('jain')) return 'vegetarian';

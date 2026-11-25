@@ -36,7 +36,7 @@ class NPage extends StatelessWidget {
                         tooltip: backLabel,
                         onPressed: onBack,
                         style: IconButton.styleFrom(backgroundColor: NColors.surfaceCard),
-                        icon: const Icon(Icons.arrow_back_rounded, color: NColors.inkPrimary),
+                        icon: Icon(Icons.arrow_back_rounded, color: NColors.inkPrimary),
                       ),
                     ),
                   ),

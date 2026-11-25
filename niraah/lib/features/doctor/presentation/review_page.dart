@@ -190,7 +190,7 @@ class _ReviewPageState extends State<ReviewPage> {
                   spacing: NSpace.xxs,
                   runSpacing: NSpace.xxs,
                   children: <Widget>[
-                    for (final String c in r.consentCategories)
+                    for (String c in r.consentCategories)
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: NSpace.xs + 2, vertical: 4),
                         decoration: BoxDecoration(
@@ -230,7 +230,7 @@ class _ReviewPageState extends State<ReviewPage> {
                   children: <Widget>[
                     Row(
                       children: <Widget>[
-                        const Icon(Icons.auto_awesome_outlined, size: 18, color: NColors.statusInfo),
+                        Icon(Icons.auto_awesome_outlined, size: 18, color: NColors.statusInfo),
                         const SizedBox(width: NSpace.xs),
                         Expanded(
                           child: Semantics(
@@ -258,7 +258,7 @@ class _ReviewPageState extends State<ReviewPage> {
                 : Wrap(
                     spacing: NSpace.xs,
                     runSpacing: NSpace.xs,
-                    children: <Widget>[for (final QueueFlag f in r.flags) FlagBadge(flag: f)],
+                    children: <Widget>[for (QueueFlag f in r.flags) FlagBadge(flag: f)],
                   ),
           ),
           const SizedBox(height: NSpace.md),
@@ -283,7 +283,7 @@ class _ReviewPageState extends State<ReviewPage> {
                           const SizedBox(height: NSpace.xxs),
                           Row(
                             children: <Widget>[
-                              const Icon(Icons.lock_outline_rounded, size: 14, color: NColors.inkMuted),
+                              Icon(Icons.lock_outline_rounded, size: 14, color: NColors.inkMuted),
                               const SizedBox(width: 4),
                               Expanded(
                                 child: Text(s.pvReviewScoreLocked, style: NType.caption.copyWith(color: NColors.inkMuted, letterSpacing: 0)),
@@ -298,7 +298,7 @@ class _ReviewPageState extends State<ReviewPage> {
                 if (r.dimensions.isNotEmpty) ...<Widget>[
                   const SizedBox(height: NSpace.sm),
                   CLabel(s.drADimensions),
-                  for (final DimensionPoints d in r.dimensions) DimensionBar(name: d.name, points: d.points, max: d.max, level: d.level),
+                  for (DimensionPoints d in r.dimensions) DimensionBar(name: d.name, points: d.points, max: d.max, level: d.level),
                 ],
                 Align(
                   alignment: Alignment.centerLeft,
@@ -333,7 +333,7 @@ class _ReviewPageState extends State<ReviewPage> {
                   Container(
                     padding: const EdgeInsets.symmetric(vertical: NSpace.xs),
                     decoration: BoxDecoration(
-                      border: i == 0 ? null : const Border(top: BorderSide(color: NColors.lineDefault)),
+                      border: i == 0 ? null : Border(top: BorderSide(color: NColors.lineDefault)),
                     ),
                     child: MergeSemantics(
                       child: Column(
@@ -357,7 +357,7 @@ class _ReviewPageState extends State<ReviewPage> {
       bottomNavigationBar: SafeArea(
         child: Container(
           padding: const EdgeInsets.fromLTRB(NSpace.md, NSpace.sm, NSpace.md, NSpace.sm),
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             color: NColors.surfaceCard,
             border: Border(top: BorderSide(color: NColors.lineDefault)),
           ),

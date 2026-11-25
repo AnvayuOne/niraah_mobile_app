@@ -10,6 +10,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:niraah/design_system/theme/app_theme.dart';
+import 'package:niraah/design_system/tokens/tokens.dart';
 import 'package:niraah/features/doctor/domain/doctor_work.dart';
 import 'package:niraah/features/doctor/presentation/care_plan_pages.dart';
 import 'package:niraah/features/doctor/presentation/doctor_more_pages.dart';
@@ -24,12 +25,12 @@ const GlobalObjectKey<State<StatefulWidget>> _boundary = GlobalObjectKey<State<S
 Future<void> _loadFonts() async {
   Future<ByteData> font(String file) async => ByteData.sublistView(File('assets/fonts/$file').readAsBytesSync());
   final FontLoader sans = FontLoader('PlusJakartaSans');
-  for (final String w in <String>['400', '500', '600', '700', '800']) {
+  for (String w in <String>['400', '500', '600', '700', '800']) {
     sans.addFont(font('PlusJakartaSans-$w.ttf'));
   }
   await sans.load();
   final FontLoader display = FontLoader('CormorantGaramond');
-  for (final String w in <String>['500', '600', '700', 'Italic-500']) {
+  for (String w in <String>['500', '600', '700', 'Italic-500']) {
     display.addFont(font('CormorantGaramond-$w.ttf'));
   }
   await display.load();
@@ -45,7 +46,7 @@ Widget _frame(Widget child) => RepaintBoundary(
       key: _boundary,
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
-        theme: AppTheme.lightTheme,
+        theme: AppTheme.current,
         localizationsDelegates: S.localizationsDelegates,
         supportedLocales: S.supportedLocales,
         routerConfig: GoRouter(routes: <RouteBase>[GoRoute(path: '/', builder: (_, _) => child)]),
@@ -179,6 +180,7 @@ class _FakeWork implements ProviderWorkRepository {
 }
 
 void main() {
+  NColors.dark = Platform.environment['SCREENSHOT_DARK'] == '1';
   setUpAll(_loadFonts);
 
   void phone(WidgetTester tester, {double height = 844}) {
@@ -201,7 +203,7 @@ void main() {
     'b09-advice-drafts': (844, () => AdviceDraftsPage(repository: repo)),
     'b10-advice-editor': (1750, () => AdviceEditorPage(adviceId: 'd1', repository: repo, providerWork: _FakeWork())),
   };
-  for (final MapEntry<String, (double, Widget Function())> e in screens.entries) {
+  for (MapEntry<String, (double, Widget Function())> e in screens.entries) {
     testWidgets(e.key, (WidgetTester tester) async {
       phone(tester, height: e.value.$1);
       await tester.pumpWidget(_frame(e.value.$2()));

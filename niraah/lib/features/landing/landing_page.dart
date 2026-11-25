@@ -275,7 +275,7 @@ class _Tick extends StatelessWidget {
   Widget build(BuildContext context) => Row(
     mainAxisSize: MainAxisSize.min,
     children: <Widget>[
-      const Icon(Icons.check_circle_rounded, size: 18, color: NColors.statusSuccess),
+      Icon(Icons.check_circle_rounded, size: 18, color: NColors.statusSuccess),
       const SizedBox(width: NSpace.xxs + 2),
       Text(text, style: NType.bodySm.copyWith(color: NColors.inkSecondary)),
     ],
@@ -368,14 +368,14 @@ class _Grid extends StatelessWidget {
       return Wrap(
         spacing: NSpace.md,
         runSpacing: NSpace.md,
-        children: nStagger(<Widget>[for (final Widget ch in children) SizedBox(width: w, child: ch)]),
+        children: nStagger(<Widget>[for (Widget ch in children) SizedBox(width: w, child: ch)]),
       );
     },
   );
 }
 
 class _Card extends StatelessWidget {
-  const _Card({required this.child, this.color = NColors.surfaceCard});
+  _Card({required this.child, Color? color}) : color = color ?? NColors.surfaceCard;
   final Widget child;
   final Color color;
 
@@ -531,7 +531,7 @@ class _Safety extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            const NSquircleIcon(icon: Icons.shield_outlined, tint: NColors.surfaceCard, color: NColors.statusSuccess),
+            NSquircleIcon(icon: Icons.shield_outlined, tint: NColors.surfaceCard, color: NColors.statusSuccess),
             const SizedBox(width: NSpace.md),
             Expanded(
               child: Column(
@@ -586,7 +586,7 @@ class _CtaBand extends StatelessWidget {
         padding: const EdgeInsets.all(NSpace.xl),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(NRadius.xl + 4),
-          gradient: const LinearGradient(colors: <Color>[NColors.brandPlum, NColors.brandRosewood]),
+          gradient: LinearGradient(colors: <Color>[NColors.brandPlum, NColors.brandRosewood]),
         ),
         child: wide
             ? Row(
@@ -615,7 +615,7 @@ class _Footer extends StatelessWidget {
   Widget build(BuildContext context) {
     final S s = S.of(context);
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         border: Border(top: BorderSide(color: NColors.lineDefault)),
       ),
       child: _Wrap(

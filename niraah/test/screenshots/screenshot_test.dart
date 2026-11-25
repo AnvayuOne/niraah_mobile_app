@@ -12,6 +12,7 @@ import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:niraah/design_system/theme/app_theme.dart';
+import 'package:niraah/design_system/tokens/tokens.dart';
 import 'package:niraah/design_system/widgets/answer_card.dart';
 import 'package:niraah/features/assessment/domain/assessment_repository.dart';
 import 'package:niraah/features/assessment/domain/prescore.dart';
@@ -59,12 +60,12 @@ Answer v(String value) => Answer.values(<String>[value]);
 Future<void> _loadFonts() async {
   Future<ByteData> font(String file) async => ByteData.sublistView(File('assets/fonts/$file').readAsBytesSync());
   final FontLoader sans = FontLoader('PlusJakartaSans');
-  for (final String w in <String>['400', '500', '600', '700', '800']) {
+  for (String w in <String>['400', '500', '600', '700', '800']) {
     sans.addFont(font('PlusJakartaSans-$w.ttf'));
   }
   await sans.load();
   final FontLoader display = FontLoader('CormorantGaramond');
-  for (final String w in <String>['500', '600', '700', 'Italic-500']) {
+  for (String w in <String>['500', '600', '700', 'Italic-500']) {
     display.addFont(font('CormorantGaramond-$w.ttf'));
   }
   await display.load();
@@ -83,7 +84,7 @@ Widget _frame(Widget child, AssessmentCubit cubit) => RepaintBoundary(
         // A one-route router so pages that ask GoRouter (canPop, go) build as they do in the app.
         child: MaterialApp.router(
           debugShowCheckedModeBanner: false,
-          theme: AppTheme.lightTheme,
+          theme: AppTheme.current,
           localizationsDelegates: S.localizationsDelegates,
           supportedLocales: S.supportedLocales,
           routerConfig: GoRouter(routes: <RouteBase>[GoRoute(path: '/', builder: (_, _) => child)]),
@@ -93,7 +94,7 @@ Widget _frame(Widget child, AssessmentCubit cubit) => RepaintBoundary(
 
 Future<void> _shot(WidgetTester tester, String name) async {
   await tester.runAsync(() async {
-    for (final Element e in find.byType(Image).evaluate()) {
+    for (Element e in find.byType(Image).evaluate()) {
       await precacheImage((e.widget as Image).image, e);
     }
   });
@@ -108,6 +109,7 @@ Future<void> _shot(WidgetTester tester, String name) async {
 }
 
 void main() {
+  NColors.dark = Platform.environment['SCREENSHOT_DARK'] == '1';
   setUpAll(() async {
     await _loadFonts();
     final SampleBackend backend = SampleBackend();
@@ -368,7 +370,7 @@ void main() {
     final String id = (await repo.createConversation()).id;
     final ConversationCubit cubit = ConversationCubit(repo, id);
     await tester.runAsync(() async {
-      for (final String m in messages) {
+      for (String m in messages) {
         await repo.send(id, m).drain<void>();
       }
     });

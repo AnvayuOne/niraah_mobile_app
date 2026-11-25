@@ -69,7 +69,7 @@ class _ChatHomeView extends StatelessWidget {
                         spacing: NSpace.xs,
                         runSpacing: NSpace.xs,
                         children: <Widget>[
-                          for (final String p in home.starters)
+                          for (String p in home.starters)
                             ActionChip(
                               label: Text(p),
                               labelStyle: NType.bodySm.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w500),
@@ -87,7 +87,7 @@ class _ChatHomeView extends StatelessWidget {
                       if (home.conversations.isEmpty)
                         Text(s.chatNoConversations, style: NType.bodySm.copyWith(color: NColors.inkMuted))
                       else
-                        for (final ConversationSummary c in home.conversations)
+                        for (ConversationSummary c in home.conversations)
                           Padding(
                             padding: const EdgeInsets.only(bottom: NSpace.xs),
                             child: Material(
@@ -95,9 +95,9 @@ class _ChatHomeView extends StatelessWidget {
                               borderRadius: BorderRadius.circular(NRadius.lg),
                               child: ListTile(
                                 minTileHeight: NLayout.minTapTarget + NSpace.sm,
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(NRadius.lg), side: const BorderSide(color: NColors.lineDefault)),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(NRadius.lg), side: BorderSide(color: NColors.lineDefault)),
                                 title: Text(c.title, maxLines: 1, overflow: TextOverflow.ellipsis, style: NType.body.copyWith(color: NColors.inkPrimary)),
-                                trailing: const Icon(Icons.chevron_right_rounded, color: NColors.inkMuted),
+                                trailing: Icon(Icons.chevron_right_rounded, color: NColors.inkMuted),
                                 onTap: () async {
                                   await context.push('${RouteConstants.chat}/${c.id}');
                                   if (context.mounted) await context.read<ChatHomeCubit>().load();
@@ -111,7 +111,7 @@ class _ChatHomeView extends StatelessWidget {
           backgroundColor: NColors.surfacePage,
           body: SafeArea(child: body),
           bottomNavigationBar: NBottomNav(
-            labels: <String>[for (final Area a in Area.values) s.areaName(a)],
+            labels: <String>[for (Area a in Area.values) s.areaName(a)],
             index: 2,
             onSelected: (int i) {
               if (i != 2) goToArea(context, Area.values[i]);

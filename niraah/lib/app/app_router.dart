@@ -19,6 +19,11 @@ import '../features/care/presentation/care_pages.dart';
 import '../features/chat/presentation/chat_home_page.dart';
 import '../features/chat/presentation/conversation_page.dart';
 import '../features/community/presentation/community_pages.dart';
+import '../features/consults/domain/consults.dart';
+import '../features/consults/presentation/appointments_page.dart';
+import '../features/consults/presentation/confirm_page.dart';
+import '../features/consults/presentation/specialist_page.dart';
+import '../features/consults/presentation/specialists_page.dart';
 import '../features/cycle/presentation/cycle_page.dart';
 import '../features/diet_plan/presentation/diet_plan_page.dart';
 import '../features/dietitian/dietitian_pages.dart';
@@ -133,7 +138,16 @@ class AppRouter {
           GoRoute(path: RouteConstants.labs, builder: (_, _) => const LabsPage()),
           GoRoute(path: RouteConstants.community, builder: (_, _) => const CommunityPage()),
           GoRoute(path: RouteConstants.messages, builder: (_, _) => const ThreadsPage()),
-          GoRoute(path: RouteConstants.bookDoctor, builder: (_, _) => const ComingSoonPage()),
+          GoRoute(path: RouteConstants.bookDoctor, builder: (_, _) => const SpecialistsPage()),
+          GoRoute(path: '${RouteConstants.bookDoctor}/:id', builder: (_, GoRouterState st) => SpecialistPage(id: st.pathParameters['id']!)),
+          GoRoute(path: RouteConstants.appointments, builder: (_, _) => const AppointmentsPage()),
+          GoRoute(
+            path: '${RouteConstants.appointments}/:id/confirm',
+            builder: (_, GoRouterState st) {
+              final Map<String, Object>? extra = st.extra is Map<String, Object> ? st.extra! as Map<String, Object> : null;
+              return ConfirmConsultPage(id: st.pathParameters['id']!, held: extra?['appointment'] as Appointment?, specialist: extra?['specialist'] as Specialist?);
+            },
+          ),
           GoRoute(path: RouteConstants.support, builder: (_, _) => const ComingSoonPage()),
 
           // Provider sign-in and set-up (spec 003).

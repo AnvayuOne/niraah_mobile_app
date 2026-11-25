@@ -81,7 +81,7 @@ class _SecondCheckPageState extends State<SecondCheckPage> {
     switch (r) {
       case SecondCheckPassed():
         context.go(RouteConstants.home);
-      case SecondCheckWrong(:final String message, :final bool ended):
+      case SecondCheckWrong(:String message, :final bool ended):
         if (ended) {
           await _repo.signOut();
           if (mounted) context.go(RouteConstants.signIn);
@@ -159,7 +159,7 @@ class _SecondCheckPageState extends State<SecondCheckPage> {
             Text(s.scEmailSent, style: NType.bodySm.copyWith(color: NColors.inkMuted)),
           ],
           const SizedBox(height: NSpace.md),
-          for (final SecondCheckMethod m in o.methods.where((SecondCheckMethod m) => m != _method))
+          for (SecondCheckMethod m in o.methods.where((SecondCheckMethod m) => m != _method))
             TextButton(
               onPressed: () => setState(() {
                 _method = m;

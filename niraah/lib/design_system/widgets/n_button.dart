@@ -39,7 +39,7 @@ class NPrimaryButton extends StatelessWidget {
         child: loading
             ? Semantics(
                 label: label,
-                child: const SizedBox.square(
+                child: SizedBox.square(
                   dimension: NSpace.lg,
                   child: CircularProgressIndicator(strokeWidth: 2, color: NColors.actionOnDisabled),
                 ),

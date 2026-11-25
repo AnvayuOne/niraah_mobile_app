@@ -5,6 +5,7 @@ import '../../../app/area_navigation.dart';
 import '../../../core/di/service_locator.dart';
 import '../../../design_system/tokens/tokens.dart';
 import '../../../design_system/widgets/bottom_nav.dart';
+import '../../../design_system/widgets/n_appearance.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../shared/area/area_access.dart';
 import '../../../shared/area/area_widgets.dart';
@@ -129,6 +130,8 @@ class _MePageState extends State<MePage> {
                   _Row(icon: Icons.shield_outlined, text: s.privacyTitle, onTap: () => context.push(RouteConstants.privacy)),
                   const SizedBox(height: NSpace.xs),
                   _Row(icon: Icons.notifications_none_rounded, text: s.notifTitle, onTap: () => context.push(RouteConstants.notificationSettings)),
+                  const SizedBox(height: NSpace.xs),
+                  const NAppearanceCard(),
                   const SizedBox(height: NSpace.lg),
                   OutlinedButton.icon(onPressed: _signOut, icon: const Icon(Icons.logout_rounded), label: Text(s.pvSignOut)),
                   const SizedBox(height: NSpace.lg),
@@ -140,7 +143,7 @@ class _MePageState extends State<MePage> {
         ),
       ),
       bottomNavigationBar: NBottomNav(
-        labels: <String>[for (final Area a in Area.values) s.areaName(a)],
+        labels: <String>[for (Area a in Area.values) s.areaName(a)],
         index: 4,
         onSelected: (int i) {
           if (i != 4) goToArea(context, Area.values[i]);
@@ -199,7 +202,7 @@ class _PlanCard extends StatelessWidget {
               ],
             ),
           ),
-          const Icon(Icons.chevron_right_rounded, color: NColors.inkMuted),
+          Icon(Icons.chevron_right_rounded, color: NColors.inkMuted),
         ],
       ),
     );
@@ -224,9 +227,9 @@ class _Row extends StatelessWidget {
             Icon(icon, color: NColors.inkSecondary),
             const SizedBox(width: NSpace.sm),
             Expanded(child: Text(text, style: NType.body.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w600))),
-            if (locked) const Icon(Icons.lock_outline_rounded, size: 18, color: NColors.inkMuted),
+            if (locked) Icon(Icons.lock_outline_rounded, size: 18, color: NColors.inkMuted),
             const SizedBox(width: NSpace.xxs),
-            const Icon(Icons.chevron_right_rounded, color: NColors.inkMuted),
+            Icon(Icons.chevron_right_rounded, color: NColors.inkMuted),
           ],
         ),
       );

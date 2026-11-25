@@ -75,7 +75,7 @@ class ApiChatRepository implements ChatRepository {
   /// Parses server-sent event text, which may arrive split anywhere, into each event's data.
   static Stream<Map<String, dynamic>> events(Stream<String> text) async* {
     String buffer = '';
-    await for (final String chunk in text) {
+    await for (String chunk in text) {
       buffer += chunk;
       int cut;
       while ((cut = buffer.indexOf('\n\n')) >= 0) {
@@ -172,7 +172,7 @@ class ApiChatRepository implements ChatRepository {
         return;
       }
       String released = '';
-      await for (final Map<String, dynamic> e in events((r as ApiOk<Stream<String>>).data)) {
+      await for (Map<String, dynamic> e in events((r as ApiOk<Stream<String>>).data)) {
         switch (e['type']) {
           case 'accepted':
             _optimistic.remove(conversationId);

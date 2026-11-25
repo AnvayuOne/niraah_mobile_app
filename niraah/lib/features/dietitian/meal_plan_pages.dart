@@ -43,9 +43,9 @@ class MacroSplit extends StatelessWidget {
   final Json nutrients;
   final bool compact;
 
-  static const Color protein = NColors.brandSage;
-  static const Color carbs = NColors.brandApricot;
-  static const Color fat = NColors.brandBlush;
+  static Color get protein => NColors.brandSage;
+  static Color get carbs => NColors.brandApricot;
+  static Color get fat => NColors.brandBlush;
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +81,7 @@ class MacroSplit extends StatelessWidget {
             child: SizedBox(
               height: compact ? 6 : 10,
               child: total <= 0
-                  ? const ColoredBox(color: NColors.surfaceBackdrop, child: SizedBox.expand())
+                  ? ColoredBox(color: NColors.surfaceBackdrop, child: SizedBox.expand())
                   : Row(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
@@ -170,7 +170,7 @@ class _MealPlansPageState extends State<MealPlansPage> {
                     ? CEmpty(icon: Icons.check_rounded, title: s.dtNobodyWaiting)
                     : Column(
                         children: <Widget>[
-                          for (final Json c in waiting)
+                          for (Json c in waiting)
                             Padding(
                               padding: const EdgeInsets.only(bottom: NSpace.xs),
                               child: Row(
@@ -304,7 +304,7 @@ class _MealPlanBuilderPageState extends State<MealPlanBuilderPage> {
                 child: DropdownButton<String>(
                   value: u,
                   isExpanded: true,
-                  items: <DropdownMenuItem<String>>[for (final String x in planUnits) DropdownMenuItem<String>(value: x, child: Text(x))],
+                  items: <DropdownMenuItem<String>>[for (String x in planUnits) DropdownMenuItem<String>(value: x, child: Text(x))],
                   onChanged: (String? v) => set(() => u = v ?? u),
                 ),
               ),
@@ -327,7 +327,7 @@ class _MealPlanBuilderPageState extends State<MealPlanBuilderPage> {
     final S s = S.of(context);
     final Json t = plan.obj('targets');
     final Map<String, (TextEditingController, TextEditingController)> f = <String, (TextEditingController, TextEditingController)>{
-      for (final String k in const <String>['energyKcal', 'proteinG', 'carbohydrateG', 'fatG', 'fibreG'])
+      for (String k in const <String>['energyKcal', 'proteinG', 'carbohydrateG', 'fatG', 'fibreG'])
         k: (TextEditingController(text: t.obj(k).number('min')?.toStringAsFixed(0) ?? ''), TextEditingController(text: t.obj(k).number('max')?.toStringAsFixed(0) ?? '')),
     };
     final Map<String, String> label = <String, String>{'energyKcal': s.dtEnergy, 'proteinG': s.dtProtein, 'carbohydrateG': s.dtCarbs, 'fatG': s.dtFat, 'fibreG': s.dtFibre};
@@ -339,7 +339,7 @@ class _MealPlanBuilderPageState extends State<MealPlanBuilderPage> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              for (final MapEntry<String, (TextEditingController, TextEditingController)> e in f.entries)
+              for (MapEntry<String, (TextEditingController, TextEditingController)> e in f.entries)
                 Row(
                   children: <Widget>[
                     Expanded(flex: 2, child: Text(label[e.key]!)),
@@ -370,7 +370,7 @@ class _MealPlanBuilderPageState extends State<MealPlanBuilderPage> {
       ),
     );
     final Json targets = <String, dynamic>{
-      for (final MapEntry<String, (TextEditingController, TextEditingController)> e in f.entries)
+      for (MapEntry<String, (TextEditingController, TextEditingController)> e in f.entries)
         if (double.tryParse(e.value.$1.text) != null || double.tryParse(e.value.$2.text) != null)
           e.key: <String, dynamic>{'min': double.tryParse(e.value.$1.text), 'max': double.tryParse(e.value.$2.text)},
     };
@@ -454,7 +454,7 @@ class _MealPlanBuilderPageState extends State<MealPlanBuilderPage> {
           if (_day >= days.length) _day = 0;
           final Json day = days.isEmpty ? <String, dynamic>{} : days[_day];
           final Json warnings = p.obj('warnings');
-          final Map<String, List<String>> conflicts = <String, List<String>>{for (final Json c in p.objs('needsConfirmation')) c.str('itemId')!: c.strs('conflicts')};
+          final Map<String, List<String>> conflicts = <String, List<String>>{for (Json c in p.objs('needsConfirmation')) c.str('itemId')!: c.strs('conflicts')};
           final CRole role = CRole.of(context);
           return ListView(
             padding: dtPagePadding,
@@ -503,7 +503,7 @@ class _MealPlanBuilderPageState extends State<MealPlanBuilderPage> {
                         spacing: NSpace.xxs,
                         runSpacing: NSpace.xxs,
                         children: <Widget>[
-                          for (final MapEntry<String, dynamic> e in day.obj('againstTargets').entries)
+                          for (MapEntry<String, dynamic> e in day.obj('againstTargets').entries)
                             CPill('${_target(s, e.key)}: ${_against(s, '${e.value}')}', tone: '${e.value}' == 'within' ? CTone.sage : CTone.apricot),
                         ],
                       ),
@@ -511,7 +511,7 @@ class _MealPlanBuilderPageState extends State<MealPlanBuilderPage> {
                   ],
                 ),
               ),
-              for (final Json slot in day.objs('slots')) ...<Widget>[
+              for (Json slot in day.objs('slots')) ...<Widget>[
                 const SizedBox(height: NSpace.sm),
                 CEntrance(child: _slotCard(s, slot, draft, conflicts)),
               ],
@@ -611,8 +611,8 @@ class _MealPlanBuilderPageState extends State<MealPlanBuilderPage> {
               const SizedBox(width: NSpace.xs),
             ],
           ),
-          for (final Json it in items) ...<Widget>[
-            const Divider(height: NSpace.md, color: NColors.lineDefault),
+          for (Json it in items) ...<Widget>[
+            Divider(height: NSpace.md, color: NColors.lineDefault),
             _itemRow(s, it, draft, conflicts),
           ],
           if (draft)
@@ -651,7 +651,7 @@ class _MealPlanBuilderPageState extends State<MealPlanBuilderPage> {
             if (draft)
               PopupMenuButton<String>(
                 tooltip: s.communityMore,
-                icon: const Icon(Icons.more_vert_rounded, color: NColors.inkMuted),
+                icon: Icon(Icons.more_vert_rounded, color: NColors.inkMuted),
                 onSelected: (String a) async {
                   if (a == 'portion') {
                     final (double, String)? x = await _portion(it.obj('portion').str('unit') ?? 'serving', it.obj('portion').number('count') ?? 1);
@@ -737,8 +737,8 @@ class _DishPickerState extends State<DishPicker> {
     final List<Json> foods = await widget.repository.searchFoods(q);
     final List<Json> recipes = widget.foodsOnly ? <Json>[] : await widget.repository.recipes(search: q);
     return <Json>[
-      for (final Json r in recipes.where((Json r) => r.str('status') == 'published')) <String, dynamic>{'kind': 'recipe', 'id': r.str('id'), 'name': r.str('title'), 'sub': recipeLabel},
-      for (final Json f in foods) <String, dynamic>{'kind': 'food', 'id': f.str('id'), 'name': f.str('name'), 'sub': f.strs('regionalNames').join(', ')},
+      for (Json r in recipes.where((Json r) => r.str('status') == 'published')) <String, dynamic>{'kind': 'recipe', 'id': r.str('id'), 'name': r.str('title'), 'sub': recipeLabel},
+      for (Json f in foods) <String, dynamic>{'kind': 'food', 'id': f.str('id'), 'name': f.str('name'), 'sub': f.strs('regionalNames').join(', ')},
     ];
   }
 
@@ -769,7 +769,7 @@ class _DishPickerState extends State<DishPicker> {
                         final List<Json> rows = snap.data!;
                         return ListView(
                           children: <Widget>[
-                            for (final Json r in rows)
+                            for (Json r in rows)
                               ListTile(
                                 leading: DtIconChip(icon: r.str('kind') == 'recipe' ? Icons.menu_book_outlined : Icons.eco_outlined, size: 36),
                                 title: Text(r.str('name') ?? '', style: NType.body.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w600)),

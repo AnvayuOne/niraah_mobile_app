@@ -54,12 +54,12 @@ const GlobalObjectKey<State<StatefulWidget>> _shotKey = GlobalObjectKey<State<St
 Future<void> _loadFonts() async {
   Future<ByteData> font(String file) async => ByteData.sublistView(File('assets/fonts/$file').readAsBytesSync());
   final FontLoader sans = FontLoader('PlusJakartaSans');
-  for (final String w in <String>['400', '500', '600', '700', '800']) {
+  for (String w in <String>['400', '500', '600', '700', '800']) {
     sans.addFont(font('PlusJakartaSans-$w.ttf'));
   }
   await sans.load();
   final FontLoader display = FontLoader('CormorantGaramond');
-  for (final String w in <String>['500', '600', '700', 'Italic-500']) {
+  for (String w in <String>['500', '600', '700', 'Italic-500']) {
     display.addFont(font('CormorantGaramond-$w.ttf'));
   }
   await display.load();
@@ -90,7 +90,7 @@ void main() {
   tearDownAll(() {
     if (!_on) return;
     stdout.writeln('\nRESPONSIVE AUDIT: ${problems.length} problem(s)');
-    for (final String p in problems) {
+    for (String p in problems) {
       stdout.writeln('  $p');
     }
   });
@@ -114,7 +114,7 @@ void main() {
         if (ex != null) errs.add(ex.toString().split('\n').first);
         if (_out != null) {
           await tester.runAsync(() async {
-            for (final Element e in find.byType(Image).evaluate()) {
+            for (Element e in find.byType(Image).evaluate()) {
               await precacheImage((e.widget as Image).image, e);
             }
           });
@@ -132,7 +132,7 @@ void main() {
       } finally {
         FlutterError.onError = old;
       }
-      for (final String e in errs.toSet()) {
+      for (String e in errs.toSet()) {
         problems.add('$route @ $name ${size.width.toInt()}x${size.height.toInt()}: $e');
       }
     }
@@ -140,11 +140,11 @@ void main() {
     tester.platformDispatcher.clearTextScaleFactorTestValue();
   }
 
-  for (final String r in memberRoutes) {
+  for (String r in memberRoutes) {
     testWidgets('member $r', (WidgetTester t) => audit(t, r, null), skip: !_on || (_only != null && !r.contains(_only!)));
   }
   providerRoutes.forEach((String role, List<String> routes) {
-    for (final String r in routes) {
+    for (String r in routes) {
       testWidgets('$role $r', (WidgetTester t) => audit(t, r, role), skip: !_on || (_only != null && !r.contains(_only!)));
     }
   });

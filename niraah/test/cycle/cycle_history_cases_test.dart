@@ -26,7 +26,7 @@ void main() {
       );
       final Map<String, Object?> got = <String, Object?>{
         'history': <Map<String, Object?>>[
-          for (final CycleHistoryRow h in r.history) <String, Object?>{'start': h.start, 'cycleLength': h.cycleLength, 'periodLength': h.periodLength},
+          for (CycleHistoryRow h in r.history) <String, Object?>{'start': h.start, 'cycleLength': h.cycleLength, 'periodLength': h.periodLength},
         ],
         'average': r.average,
         'range': r.range == null ? null : <int>[r.range!.$1, r.range!.$2],

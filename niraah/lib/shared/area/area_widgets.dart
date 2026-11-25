@@ -12,7 +12,7 @@ import 'area_access.dart';
 
 /// A plain card on the page surface, used across the member areas.
 class NCard extends StatelessWidget {
-  const NCard({required this.child, super.key, this.color = NColors.surfaceCard, this.onTap, this.semanticsLabel});
+  NCard({required this.child, super.key, Color? color, this.onTap, this.semanticsLabel}) : color = color ?? NColors.surfaceCard;
 
   final Widget child;
   final Color color;
@@ -87,7 +87,7 @@ class AreaLockedView extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.all(NSpace.lg),
       children: <Widget>[
-        const Icon(Icons.lock_outline_rounded, color: NColors.inkMuted, size: NSpace.xl),
+        Icon(Icons.lock_outline_rounded, color: NColors.inkMuted, size: NSpace.xl),
         const SizedBox(height: NSpace.sm),
         Semantics(header: true, child: Text(refusal.message, style: NType.h3.copyWith(color: NColors.inkPrimary))),
         if (refusal.description != null) ...<Widget>[
@@ -147,12 +147,38 @@ class AreaScaffold extends StatelessWidget {
   final List<Widget>? actions;
 
   @override
-  Widget build(BuildContext context) => Scaffold(
+  Widget build(BuildContext context) {
+    final bool canPop = Navigator.of(context).canPop() || GoRouter.maybeOf(context)?.canPop() == true;
+    return Scaffold(
+      backgroundColor: NColors.surfacePage,
+      appBar: AppBar(
         backgroundColor: NColors.surfacePage,
-        appBar: AppBar(title: Text(title), backgroundColor: NColors.surfacePage, actions: actions),
-        floatingActionButton: floatingActionButton,
-        body: SafeArea(child: body),
-      );
+        surfaceTintColor: Colors.transparent,
+        scrolledUnderElevation: 0,
+        toolbarHeight: 68,
+        titleSpacing: canPop ? 4 : NSpace.lg,
+        automaticallyImplyLeading: false,
+        leading: canPop
+            ? Padding(
+                padding: const EdgeInsets.only(left: NSpace.sm),
+                child: Center(
+                  child: IconButton(
+                    tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+                    onPressed: () => Navigator.of(context).maybePop(),
+                    style: IconButton.styleFrom(backgroundColor: NColors.surfaceCard, side: BorderSide(color: NColors.lineDefault)),
+                    icon: Icon(Icons.arrow_back_rounded, color: NColors.inkPrimary),
+                  ),
+                ),
+              )
+            : null,
+        leadingWidth: canPop ? 64 : null,
+        title: Text(title, style: NType.screenTitle.copyWith(color: NColors.inkPrimary)),
+        actions: actions,
+      ),
+      floatingActionButton: floatingActionButton,
+      body: SafeArea(top: false, child: body),
+    );
+  }
 }
 
 /// Shows a quiet confirmation or the server's words after an action.

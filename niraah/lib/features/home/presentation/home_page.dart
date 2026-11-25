@@ -52,8 +52,8 @@ class _HomeView extends StatelessWidget {
         final HomeDocument? doc = st.document;
         final Widget body = switch ((st.status, doc)) {
           (HomeStatus.failure, _) => ErrorView(message: s.notConnectedYet, retryLabel: s.tryAgain, onRetry: context.read<HomeCubit>().load),
-          (_, final HomeGate g) => _Gate(minutes: g.estimatedMinutes),
-          (_, final HomeContent c) => _Content(home: c),
+          (_, HomeGate g) => _Gate(minutes: g.estimatedMinutes),
+          (_, HomeContent c) => _Content(home: c),
           _ => LoadingView(label: s.loadHome),
         };
         return Scaffold(
@@ -61,7 +61,7 @@ class _HomeView extends StatelessWidget {
           body: SafeArea(child: body),
           bottomNavigationBar: doc is HomeContent
               ? NBottomNav(
-                  labels: <String>[for (final Area a in Area.values) s.areaName(a)],
+                  labels: <String>[for (Area a in Area.values) s.areaName(a)],
                   index: 0,
                   onSelected: (int i) {
                     if (i != 0) goToArea(context, Area.values[i]);
@@ -150,7 +150,7 @@ class _Content extends StatelessWidget {
 }
 
 class _Card extends StatelessWidget {
-  const _Card({required this.child, this.color = NColors.surfaceCard});
+  _Card({required this.child, Color? color}) : color = color ?? NColors.surfaceCard;
 
   final Widget child;
   final Color color;
@@ -209,7 +209,7 @@ class _CycleCardState extends State<_CycleCard> {
             const SizedBox(height: NSpace.sm),
             OutlinedButton.icon(
               onPressed: _pick,
-              icon: const Icon(Icons.calendar_today_rounded, color: NColors.actionLink),
+              icon: Icon(Icons.calendar_today_rounded, color: NColors.actionLink),
               label: Text(_start == null ? s.homeInvitationLabel : DateFormat('d MMMM yyyy', Localizations.localeOf(context).toString()).format(_start!)),
             ),
             const SizedBox(height: NSpace.sm),
@@ -284,7 +284,7 @@ class _MealsCard extends StatelessWidget {
         children: <Widget>[
           Row(
             children: <Widget>[
-              const Icon(Icons.restaurant_rounded, color: NColors.brandTerracotta),
+              Icon(Icons.restaurant_rounded, color: NColors.brandTerracotta),
               const SizedBox(width: NSpace.xs),
               Expanded(child: Text(s.mealsHomeTitle, style: NType.h4.copyWith(color: NColors.inkPrimary))),
             ],
@@ -332,7 +332,7 @@ class _LogChip extends StatelessWidget {
                   Text(label, style: NType.label.copyWith(color: NColors.inkMuted)),
                   Row(
                     children: <Widget>[
-                      if (!logged) const Icon(Icons.add_rounded, size: NSpace.md, color: NColors.actionLink),
+                      if (!logged) Icon(Icons.add_rounded, size: NSpace.md, color: NColors.actionLink),
                       if (!logged) const SizedBox(width: NSpace.xxs),
                       Flexible(
                         child: Text(
@@ -468,7 +468,7 @@ class _TasksCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(s.careTodayTasks, style: NType.h4.copyWith(color: NColors.inkPrimary)),
-            for (final HomeTask t in tasks)
+            for (HomeTask t in tasks)
               CheckboxListTile(
                 contentPadding: EdgeInsets.zero,
                 value: t.done,

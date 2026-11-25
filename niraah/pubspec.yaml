@@ -45,6 +45,9 @@ flutter:
   assets:
     - assets/images/
     - assets/images/options/
+    - assets/images/options_dark/
+    - assets/images/experts_dark/
+    - assets/images/dark/
     - assets/svg/
 
   # Design Story typefaces, SIL Open Font License (assets/fonts/OFL-*.txt).

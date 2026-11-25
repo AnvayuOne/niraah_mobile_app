@@ -9038,6 +9038,36 @@ abstract class S {
   /// In en, this message translates to:
   /// **'What you can do'**
   String get inClassActions;
+
+  /// No description provided for @appearanceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Appearance'**
+  String get appearanceTitle;
+
+  /// No description provided for @appearanceSystem.
+  ///
+  /// In en, this message translates to:
+  /// **'Match phone'**
+  String get appearanceSystem;
+
+  /// No description provided for @appearanceLight.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get appearanceLight;
+
+  /// No description provided for @appearanceDark.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get appearanceDark;
+
+  /// No description provided for @appearanceHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark mode is easier on the eyes at night.'**
+  String get appearanceHint;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

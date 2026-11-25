@@ -13,7 +13,7 @@ void main() {
 
   Map<String, Object?> asMap(CycleSummary s) => switch (s) {
         CycleNoData() => <String, Object?>{'state': 'noData'},
-        CycleOff(:final CycleMarker reason) => <String, Object?>{
+        CycleOff(:CycleMarker reason) => <String, Object?>{
             'state': 'off',
             'reason': switch (reason) {
               CycleMarker.pregnant => 'pregnant',
@@ -22,7 +22,7 @@ void main() {
               CycleMarker.noPeriods => 'no_periods',
             },
           },
-        final CycleEstimate e => <String, Object?>{
+        CycleEstimate e => <String, Object?>{
             'state': 'estimate',
             'basis': e.basis.name,
             'dayOfCycle': e.dayOfCycle,

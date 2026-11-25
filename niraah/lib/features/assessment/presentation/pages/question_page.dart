@@ -78,7 +78,7 @@ class QuestionPage extends StatelessWidget {
                           IconButton(
                             tooltip: s.back,
                             onPressed: () => _back(context),
-                            icon: const Icon(Icons.arrow_back_rounded, color: NColors.inkPrimary),
+                            icon: Icon(Icons.arrow_back_rounded, color: NColors.inkPrimary),
                           ),
                           Expanded(
                             child: StepProgress(
@@ -179,7 +179,7 @@ class _AnswerInput extends StatelessWidget {
         final bool multi = q.type == QuestionType.multipleChoice;
         return Column(
           children: <Widget>[
-            for (final AnswerOption o in q.options)
+            for (AnswerOption o in q.options)
               Padding(
                 padding: const EdgeInsets.only(bottom: NSpace.sm),
                 child: AnswerCard(
@@ -200,7 +200,7 @@ class _AnswerInput extends StatelessWidget {
         );
       case QuestionType.scale:
         return ScaleSelector(
-          steps: <ScaleStep>[for (final AnswerOption o in q.options) ScaleStep(value: o.value, label: o.label)],
+          steps: <ScaleStep>[for (AnswerOption o in q.options) ScaleStep(value: o.value, label: o.label)],
           selected: chosen.firstOrNull,
           selectedLabelBuilder: s.assessmentScaleSelected,
           onSelected: (String v) => cubit.answer(q.key, Answer.values(<String>[v])),

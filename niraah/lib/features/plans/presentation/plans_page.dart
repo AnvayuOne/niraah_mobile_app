@@ -95,7 +95,7 @@ class _PlansPageState extends State<PlansPage> {
                 const SizedBox(height: NSpace.xs),
                 Text(s.plansBody, style: NType.body.copyWith(color: NColors.inkSecondary)),
                 const SizedBox(height: NSpace.lg),
-                for (final Plan p in offer.plans) ...<Widget>[
+                for (Plan p in offer.plans) ...<Widget>[
                   _card(s, offer, p),
                   const SizedBox(height: NSpace.md),
                 ],
@@ -130,7 +130,7 @@ class _PlansPageState extends State<PlansPage> {
                 : s.plansFor(price.validityCount, _unit(s, price.validityUnit, price.validityCount)),
           );
     final bool trial = price != null && price.renews && offer.trialDays > 0;
-    final List<String> lines = <String>[for (final PlanFeature f in p.features) _line(s, f), ...p.extraLines];
+    final List<String> lines = <String>[for (PlanFeature f in p.features) _line(s, f), ...p.extraLines];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[

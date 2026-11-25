@@ -16,7 +16,7 @@ class ApiLabsRepository implements LabsRepository {
   Future<LabReport> addReport({required String testDate, required List<ResultInput> results}) async => _report((await _api.post('/me/labs/reports', <String, dynamic>{
         'testDate': testDate,
         'results': <Map<String, dynamic>>[
-          for (final ResultInput r in results) <String, dynamic>{'name': r.name, 'value': r.value, 'unit': r.unit, 'referenceLow': r.low, 'referenceHigh': r.high},
+          for (ResultInput r in results) <String, dynamic>{'name': r.name, 'value': r.value, 'unit': r.unit, 'referenceLow': r.low, 'referenceHigh': r.high},
         ],
       }))
           .orArea());

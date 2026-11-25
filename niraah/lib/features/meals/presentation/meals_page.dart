@@ -63,7 +63,7 @@ class _MealsPageState extends State<MealsPage> {
                       child: Ink(
                         padding: const EdgeInsets.all(NSpace.lg),
                         decoration: BoxDecoration(
-                          gradient: const LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: <Color>[NColors.brandPlum, NColors.brandRosewood]),
+                          gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: <Color>[NColors.brandPlum, NColors.brandRosewood]),
                           borderRadius: BorderRadius.circular(NRadius.xl),
                         ),
                         child: Row(
@@ -84,7 +84,7 @@ class _MealsPageState extends State<MealsPage> {
                                         s.dietOpenCta,
                                         style: NType.label.copyWith(color: NColors.brandApricotLight, fontWeight: FontWeight.w700),
                                       ),
-                                      const Icon(Icons.arrow_forward_rounded, size: 16, color: NColors.brandApricotLight),
+                                      Icon(Icons.arrow_forward_rounded, size: 16, color: NColors.brandApricotLight),
                                     ],
                                   ),
                                 ],
@@ -117,7 +117,7 @@ class _MealsPageState extends State<MealsPage> {
                       ),
                     ),
                     const SizedBox(height: NSpace.md),
-                    for (final Meal m in day.meals) ...<Widget>[
+                    for (Meal m in day.meals) ...<Widget>[
                       MealCard(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -127,7 +127,7 @@ class _MealsPageState extends State<MealsPage> {
                                 Expanded(
                                   child: Text(slotName(s, m.slot), style: NType.h4.copyWith(color: NColors.inkPrimary)),
                                 ),
-                                if (m.source == 'scan') const Icon(Icons.photo_camera_rounded, size: 18, color: NColors.inkMuted),
+                                if (m.source == 'scan') Icon(Icons.photo_camera_rounded, size: 18, color: NColors.inkMuted),
                                 const SizedBox(width: NSpace.xxs),
                                 Text(DateFormat.jm(locale).format(m.eatenAt), style: NType.caption.copyWith(color: NColors.inkMuted)),
                               ],

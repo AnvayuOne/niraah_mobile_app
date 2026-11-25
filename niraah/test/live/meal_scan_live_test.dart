@@ -29,7 +29,7 @@ void main() {
       eatenAt: DateTime.now(),
       slot: MealSlot.lunch,
       fromScan: true,
-      items: <MealItemInput>[for (final MatchedItem m in matched) MealItemInput(foodId: m.food.id, count: m.count, unit: m.unit)],
+      items: <MealItemInput>[for (MatchedItem m in matched) MealItemInput(foodId: m.food.id, count: m.count, unit: m.unit)],
     );
     expect(meal.items, hasLength(matched.length));
     // ignore: avoid_print

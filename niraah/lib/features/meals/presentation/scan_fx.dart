@@ -108,7 +108,7 @@ class _Pill extends StatelessWidget {
     child: Row(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        const SizedBox(width: 14, height: 14, child: CircularProgressIndicator(strokeWidth: 2, color: NColors.brandTerracotta)),
+        SizedBox(width: 14, height: 14, child: CircularProgressIndicator(strokeWidth: 2, color: NColors.brandTerracotta)),
         const SizedBox(width: NSpace.sm),
         Flexible(
           child: Text(
@@ -217,7 +217,7 @@ class NutrientSummary extends StatelessWidget {
       builder: (BuildContext context, double t, _) => Container(
         padding: const EdgeInsets.all(NSpace.lg),
         decoration: BoxDecoration(
-          gradient: const LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: <Color>[NColors.brandApricotLight, NColors.surfaceCard]),
+          gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: <Color>[NColors.brandApricotLight, NColors.surfaceCard]),
           borderRadius: BorderRadius.circular(NRadius.xl),
           border: Border.all(color: NColors.lineDefault),
         ),

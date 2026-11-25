@@ -205,7 +205,7 @@ class _ConsultRow extends StatelessWidget {
                 ],
               ),
             ),
-            Tooltip(message: joinNote, child: a.joinable ? CPill(joinLabel, tone: CTone.sage) : const Icon(Icons.videocam_off_outlined, size: 20, color: NColors.inkMuted)),
+            Tooltip(message: joinNote, child: a.joinable ? CPill(joinLabel, tone: CTone.sage) : Icon(Icons.videocam_off_outlined, size: 20, color: NColors.inkMuted)),
           ],
         ),
       );

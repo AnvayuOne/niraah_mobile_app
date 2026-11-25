@@ -72,7 +72,7 @@ class _CycleViewState extends State<_CycleView> {
           backgroundColor: NColors.surfacePage,
           body: SafeArea(child: body),
           bottomNavigationBar: NBottomNav(
-            labels: <String>[for (final Area a in Area.values) s.areaName(a)],
+            labels: <String>[for (Area a in Area.values) s.areaName(a)],
             index: 1,
             onSelected: (int i) {
               if (i != 1) goToArea(context, Area.values[i]);
@@ -106,7 +106,7 @@ class _CycleViewState extends State<_CycleView> {
         const SizedBox(height: NSpace.xxs),
         Text(doc.wellness, style: NType.bodySm.copyWith(color: NColors.inkMuted)),
         const SizedBox(height: NSpace.lg),
-        for (final AdviceCard a in doc.advice) ...<Widget>[AdviceCardView(card: a), const SizedBox(height: NSpace.md)],
+        for (AdviceCard a in doc.advice) ...<Widget>[AdviceCardView(card: a), const SizedBox(height: NSpace.md)],
 
         Container(
           padding: const EdgeInsets.all(NSpace.lg),
@@ -172,7 +172,7 @@ class _CycleViewState extends State<_CycleView> {
           Text(s.cycleHistoryEmpty, style: NType.bodySm.copyWith(color: NColors.inkMuted))
         else ...<Widget>[
           if (latest != null) _HistoryRow(left: short(latest.start), right: s.cycleCurrentCycle, current: true),
-          for (final CycleHistoryRow h in doc.history.reversed)
+          for (CycleHistoryRow h in doc.history.reversed)
             _HistoryRow(left: short(h.start), right: h.periodLength == null ? s.cycleHistoryRow(h.cycleLength) : '${s.cycleHistoryRow(h.cycleLength)} · ${s.cyclePeriodDays(h.periodLength!)}'),
         ],
         const SizedBox(height: NSpace.lg),
@@ -266,7 +266,7 @@ class _PhaseStrip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final S s = S.of(context);
-    const List<(Phase, IconData, Color)> phases = <(Phase, IconData, Color)>[
+    final List<(Phase, IconData, Color)> phases = <(Phase, IconData, Color)>[
       (Phase.menstrual, Icons.water_drop_rounded, NColors.brandRosewood),
       (Phase.follicular, Icons.eco_rounded, NColors.brandSage),
       (Phase.ovulatory, Icons.wb_sunny_rounded, NColors.brandApricot),

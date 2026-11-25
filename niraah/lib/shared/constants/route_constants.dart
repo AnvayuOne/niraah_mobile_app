@@ -24,6 +24,7 @@ class RouteConstants {
   static const String plans = '/plans';
   static const String home = '/home';
   static const String bookDoctor = '/specialists';
+  static const String appointments = '/appointments';
   static const String support = '/support';
   static const String symptoms = '/symptoms';
   static const String cycle = '/cycle';

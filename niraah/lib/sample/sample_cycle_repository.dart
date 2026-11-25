@@ -55,7 +55,7 @@ class SampleCycleRepository implements CycleRepository {
       markers: markers,
       regularity: regularity,
       dailyFlow: <IsoDate, String>{
-        for (final DailyLog l in _store.dailyLogs.values)
+        for (DailyLog l in _store.dailyLogs.values)
           if (l.flow != null) l.date: flowKey(l.flow!),
       },
     );

@@ -9,6 +9,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:niraah/design_system/theme/app_theme.dart';
+import 'package:niraah/design_system/tokens/tokens.dart';
 import 'package:niraah/features/meals/domain/meals.dart';
 import 'package:niraah/features/meals/presentation/meal_scan_page.dart';
 import 'package:niraah/l10n/app_localizations.dart';
@@ -39,12 +40,12 @@ const Nutrients _roti = Nutrients(energyKcal: 240, proteinG: 7.8, carbohydrateG:
 Future<void> _loadFonts() async {
   Future<ByteData> font(String file) async => ByteData.sublistView(File('assets/fonts/$file').readAsBytesSync());
   final FontLoader sans = FontLoader('PlusJakartaSans');
-  for (final String w in <String>['400', '500', '600', '700', '800']) {
+  for (String w in <String>['400', '500', '600', '700', '800']) {
     sans.addFont(font('PlusJakartaSans-$w.ttf'));
   }
   await sans.load();
   final FontLoader display = FontLoader('CormorantGaramond');
-  for (final String w in <String>['500', '600', '700']) {
+  for (String w in <String>['500', '600', '700']) {
     display.addFont(font('CormorantGaramond-$w.ttf'));
   }
   await display.load();
@@ -56,7 +57,7 @@ Future<void> _loadFonts() async {
 
 Future<void> _shot(WidgetTester tester, String name, {bool settle = true}) async {
   await tester.runAsync(() async {
-    for (final Element e in find.byType(Image).evaluate()) {
+    for (Element e in find.byType(Image).evaluate()) {
       await precacheImage((e.widget as Image).image, e);
     }
   });
@@ -74,6 +75,7 @@ Future<void> _shot(WidgetTester tester, String name, {bool settle = true}) async
 }
 
 void main() {
+  NColors.dark = Platform.environment['SCREENSHOT_DARK'] == '1';
   testWidgets('meal scan', (WidgetTester tester) async {
     await _loadFonts();
     tester.view.physicalSize = const Size(780, 1688);
@@ -83,7 +85,7 @@ void main() {
       key: _boundary,
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        theme: AppTheme.lightTheme,
+        theme: AppTheme.current,
         localizationsDelegates: S.localizationsDelegates,
         supportedLocales: S.supportedLocales,
         home: MealScanPage(repository: repo, picker: _Picker()),

@@ -159,7 +159,7 @@ class _NTiltState extends State<NTilt> {
 
 /// A soft radial glow placed behind art or a heading. Static.
 class NHalo extends StatelessWidget {
-  const NHalo({required this.child, super.key, this.color = NColors.brandBlush, this.size = 280});
+  NHalo({required this.child, super.key, Color? color, this.size = 280}) : color = color ?? NColors.brandBlush;
 
   final Widget child;
   final Color color;
@@ -188,7 +188,7 @@ class NHalo extends StatelessWidget {
 /// Page backdrop with two faint brand washes (blush top right, lavender
 /// bottom left), as on the Niraah website.
 class NBackdrop extends StatelessWidget {
-  const NBackdrop({required this.child, super.key, this.base = NColors.surfacePage});
+  NBackdrop({required this.child, super.key, Color? base}) : base = base ?? NColors.surfacePage;
 
   final Widget child;
   final Color base;
@@ -198,8 +198,8 @@ class NBackdrop extends StatelessWidget {
     decoration: BoxDecoration(color: base),
     child: Stack(
       children: <Widget>[
-        const Positioned(top: -120, right: -100, child: _Wash(color: NColors.brandBlushLight, size: 340)),
-        const Positioned(bottom: -140, left: -120, child: _Wash(color: NColors.brandLavenderLight, size: 380)),
+        Positioned(top: -120, right: -100, child: _Wash(color: NColors.brandBlushLight, size: 340)),
+        Positioned(bottom: -140, left: -120, child: _Wash(color: NColors.brandLavenderLight, size: 380)),
         Positioned.fill(child: child),
       ],
     ),
@@ -227,13 +227,13 @@ class _Wash extends StatelessWidget {
 /// Rounded-square ("squircle") icon tile in a brand tint, used for quick
 /// actions and feature lists.
 class NSquircleIcon extends StatelessWidget {
-  const NSquircleIcon({
+  NSquircleIcon({
     required this.icon,
     super.key,
-    this.tint = NColors.brandBlushLight,
-    this.color = NColors.brandRosewood,
+    Color? tint,
+    Color? color,
     this.size = 48,
-  });
+  }) : tint = tint ?? NColors.brandBlushLight, color = color ?? NColors.brandRosewood;
 
   final IconData icon;
   final Color tint;

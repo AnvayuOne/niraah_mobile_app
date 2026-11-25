@@ -25,7 +25,7 @@ class _MobileLandingState extends State<MobileLanding> {
   final PageController _pages = PageController();
   int _index = 0;
 
-  static const List<(Color, Color)> _stages = <(Color, Color)>[
+  static List<(Color, Color)> get _stages => <(Color, Color)>[
     (NColors.brandBlushLight, NColors.brandLavenderLight),
     (NColors.brandApricotLight, NColors.brandBlushLight),
     (NColors.brandSageLight, NColors.brandApricotLight),
@@ -124,7 +124,7 @@ class _MobileLandingState extends State<MobileLanding> {
                           tooltip: s.next,
                           onPressed: last ? null : _next,
                           style: IconButton.styleFrom(backgroundColor: NColors.brandBlushLight, fixedSize: const Size.square(48)),
-                          icon: const Icon(Icons.arrow_forward_rounded, color: NColors.inkPrimary),
+                          icon: Icon(Icons.arrow_forward_rounded, color: NColors.inkPrimary),
                         ),
                       ),
                     ),
@@ -267,7 +267,7 @@ class _WelcomeArt extends StatelessWidget {
         alignment: Alignment.center,
         clipBehavior: Clip.none,
         children: <Widget>[
-          const NHalo(
+          NHalo(
             size: 340,
             color: NColors.surfaceCard,
             child: NIllustration(asset: NImages.i01OnboardingSanctuaryWoman, height: 300, entrance: NEntrance.float),
@@ -368,7 +368,7 @@ class _DailyArt extends StatelessWidget {
               ],
             ),
           ),
-          const Icon(Icons.check_circle_rounded, color: NColors.statusSuccess, size: 20),
+          Icon(Icons.check_circle_rounded, color: NColors.statusSuccess, size: 20),
         ],
       ),
     );
@@ -376,7 +376,7 @@ class _DailyArt extends StatelessWidget {
       child: Stack(
         clipBehavior: Clip.none,
         children: <Widget>[
-          const Positioned(
+          Positioned(
             right: -6,
             top: 0,
             child: NHalo(
@@ -441,7 +441,7 @@ class _TeamArt extends StatelessWidget {
       child: Stack(
         alignment: Alignment.center,
         children: <Widget>[
-          const NHalo(
+          NHalo(
             size: 220,
             color: NColors.surfaceCard,
             child: NIllustration(asset: NImages.i04FemaleAiCompanionOrb, height: 150),

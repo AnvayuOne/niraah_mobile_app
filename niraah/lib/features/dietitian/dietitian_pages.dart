@@ -6,9 +6,11 @@ import 'package:material_ui/material_ui.dart';
 
 import '../../core/di/service_locator.dart';
 import '../../design_system/generated/niraah_assets.dart';
+import '../../design_system/theme/theme_controller.dart';
 import '../../design_system/tokens/tokens.dart';
 import '../../design_system/widgets/bottom_nav.dart';
 import '../../design_system/widgets/clinician_ui.dart';
+import '../../design_system/widgets/n_appearance.dart';
 import '../../design_system/widgets/n_button.dart';
 import '../../l10n/app_localizations.dart';
 import '../../shared/area/area_access.dart';
@@ -35,7 +37,7 @@ class DietitianShell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final S s = S.of(context);
-    CRole.fallback = const CRole.dietitian(child: SizedBox.shrink());
+    CRole.fallback = CRole.dietitian(child: SizedBox.shrink());
     return Scaffold(
       backgroundColor: NColors.surfacePage,
       appBar: AppBar(
@@ -49,7 +51,7 @@ class DietitianShell extends StatelessWidget {
               width: 32,
               height: 32,
               padding: const EdgeInsets.all(4),
-              decoration: const BoxDecoration(color: NColors.roleDietitian, shape: BoxShape.circle),
+              decoration: BoxDecoration(color: NColors.roleDietitian, shape: BoxShape.circle),
               child: Image.asset(NImages.niraahLogo.path, fit: BoxFit.contain, excludeFromSemantics: true),
             ),
             const SizedBox(width: NSpace.sm),
@@ -57,10 +59,11 @@ class DietitianShell extends StatelessWidget {
           ],
         ),
         actions: <Widget>[
+          if (NThemeController.darkModeEnabled) ...<Widget>[const Center(child: NThemeToggle()), const SizedBox(width: NSpace.xs)],
           IconButton(
             tooltip: s.pvSignOut,
             onPressed: () => providerSignOut(context),
-            icon: const Icon(Icons.logout_rounded, color: NColors.inkSecondary),
+            icon: Icon(Icons.logout_rounded, color: NColors.inkSecondary),
           ),
           const SizedBox(width: NSpace.xs),
         ],
@@ -91,7 +94,7 @@ class DtSearchField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final OutlineInputBorder border = OutlineInputBorder(borderRadius: BorderRadius.circular(NRadius.pill), borderSide: const BorderSide(color: NColors.lineDefault));
+    final OutlineInputBorder border = OutlineInputBorder(borderRadius: BorderRadius.circular(NRadius.pill), borderSide: BorderSide(color: NColors.lineDefault));
     return TextField(
       controller: controller,
       textInputAction: TextInputAction.search,
@@ -361,7 +364,7 @@ class _TodayRow extends StatelessWidget {
             ),
             Tooltip(
               message: a.flag('joinable') ? s.pvDashJoinOnWeb : s.pvDashJoinSoon,
-              child: a.flag('joinable') ? CPill(s.pvDashJoin, tone: CTone.sage) : const Icon(Icons.videocam_off_outlined, size: 20, color: NColors.inkMuted),
+              child: a.flag('joinable') ? CPill(s.pvDashJoin, tone: CTone.sage) : Icon(Icons.videocam_off_outlined, size: 20, color: NColors.inkMuted),
             ),
           ],
         ),
@@ -529,7 +532,7 @@ class _ClientsPageState extends State<ClientsPage> {
               ],
             ),
           ),
-          const Icon(Icons.chevron_right_rounded, color: NColors.inkMuted),
+          Icon(Icons.chevron_right_rounded, color: NColors.inkMuted),
         ],
       ),
     );
@@ -621,7 +624,7 @@ class _ClientPageState extends State<ClientPage> {
                       padding: const EdgeInsets.symmetric(horizontal: NSpace.xs),
                       tabs: <Widget>[
                         Tab(text: s.drSecSummary),
-                        for (final String k in sections) Tab(text: _sectionName(s, k)),
+                        for (String k in sections) Tab(text: _sectionName(s, k)),
                       ],
                     ),
                   ),
@@ -630,7 +633,7 @@ class _ClientPageState extends State<ClientPage> {
               body: TabBarView(
                 children: <Widget>[
                   _ClientSummary(header: h, repo: _repo),
-                  for (final String k in sections)
+                  for (String k in sections)
                     k == 'progress' ? ProgressView(memberId: widget.memberId, repository: _repo) : _ClientSection(memberId: widget.memberId, section: k, repo: _repo, past: h.flag('past')),
                 ],
               ),
@@ -690,7 +693,7 @@ class _ClientHeader extends StatelessWidget {
               runSpacing: NSpace.xxs,
               children: <Widget>[
                 if (h.str('dedicatedDoctor') != null) _SoftPill(text: s.dtDoctor(h.str('dedicatedDoctor')!), icon: Icons.medical_services_outlined),
-                for (final Json f in h.objs('flags'))
+                for (Json f in h.objs('flags'))
                   Semantics(label: '${s.drFlags}: ${f.str('name')}', excludeSemantics: true, child: CPill(f.str('name') ?? '', tone: CTone.red)),
               ],
             ),
@@ -702,7 +705,7 @@ class _ClientHeader extends StatelessWidget {
               spacing: NSpace.xxs,
               runSpacing: NSpace.xxs,
               children: <Widget>[
-                for (final Json c in consent)
+                for (Json c in consent)
                   Semantics(
                     label: '${humanise(c.str('category') ?? '')}: ${c.flag('shared') ? s.drConsentView : s.drConsentNone}',
                     excludeSemantics: true,
@@ -818,7 +821,7 @@ class _ClientSummaryState extends State<_ClientSummary> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             if (b.str('label') != null) CPill(b.str('label')!, tone: CTone.apricot),
-                            for (final Json p in b.objs('points'))
+                            for (Json p in b.objs('points'))
                               Padding(
                                 padding: const EdgeInsets.only(top: NSpace.xs),
                                 child: Row(
@@ -917,7 +920,7 @@ class _ClientSectionState extends State<_ClientSection> with AutomaticKeepAliveC
             ],
             if (days.isNotEmpty) ...<Widget>[_MealsLogged(days: days), const SizedBox(height: NSpace.md)],
             if (widget.section == 'meal_plan')
-              for (final Json p in d.objs('plans'))
+              for (Json p in d.objs('plans'))
                 if (p.flag('mine'))
                   Padding(
                     padding: const EdgeInsets.only(bottom: NSpace.xs),
@@ -957,7 +960,7 @@ class _MealsLogged extends StatelessWidget {
       icon: Icons.bar_chart_rounded,
       child: Column(
         children: <Widget>[
-          for (final Json d in days.take(7))
+          for (Json d in days.take(7))
             Padding(
               padding: const EdgeInsets.only(bottom: NSpace.sm),
               child: Column(
@@ -1019,7 +1022,7 @@ class _ProgressViewState extends State<ProgressView> {
         title: Text(s.dtAssign),
         children: <Widget>[
           if (qs.isEmpty) Padding(padding: const EdgeInsets.all(NSpace.lg), child: Text(s.dtNoQuestionnaires)),
-          for (final Json x in qs) SimpleDialogOption(onPressed: () => Navigator.of(d).pop(x), child: Text(x.str('name') ?? '')),
+          for (Json x in qs) SimpleDialogOption(onPressed: () => Navigator.of(d).pop(x), child: Text(x.str('name') ?? '')),
         ],
       ),
     );
@@ -1068,13 +1071,13 @@ class _ProgressViewState extends State<ProgressView> {
               ),
             if (d.objs('missed').isNotEmpty) ...<Widget>[
               CLabel(s.dtMissed),
-              for (final Json w in d.objs('missed'))
+              for (Json w in d.objs('missed'))
                 Padding(
                   padding: const EdgeInsets.only(bottom: NSpace.xs),
                   child: DtCard(
                     child: Row(
                       children: <Widget>[
-                        const Icon(Icons.event_busy_outlined, color: NColors.inkMuted, size: 20),
+                        Icon(Icons.event_busy_outlined, color: NColors.inkMuted, size: 20),
                         const SizedBox(width: NSpace.sm),
                         Expanded(
                           child: Text(s.checkInsThisWeek(shortDate(context, w.str('week') ?? '')), style: NType.bodySm.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w600)),
@@ -1124,7 +1127,7 @@ class _ProgressViewState extends State<ProgressView> {
             Semantics(
               label: metrics.join(' · '),
               excludeSemantics: true,
-              child: Wrap(spacing: NSpace.xxs, runSpacing: NSpace.xxs, children: <Widget>[for (final String m in metrics) CPill(m)]),
+              child: Wrap(spacing: NSpace.xxs, runSpacing: NSpace.xxs, children: <Widget>[for (String m in metrics) CPill(m)]),
             ),
           ],
           if (c.str('note') != null) ...<Widget>[
@@ -1194,7 +1197,7 @@ class _Trend extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
-                for (final Json w in weeks)
+                for (Json w in weeks)
                   Expanded(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
@@ -1309,6 +1312,8 @@ class DietitianMorePage extends StatelessWidget {
           tile(Icons.account_balance_wallet_outlined, s.earnTitle, '/dietitian/earnings'),
           tile(Icons.person_outline_rounded, s.profileTitle, '/dietitian/profile'),
           tile(Icons.notifications_none_rounded, s.notifTitle, RouteConstants.notificationSettings),
+          const SizedBox(height: NSpace.md),
+          const NAppearanceCard(),
           const SizedBox(height: NSpace.md),
           OutlinedButton.icon(onPressed: () => providerSignOut(context), icon: const Icon(Icons.logout_rounded), label: Text(s.pvSignOut)),
         ],
@@ -1484,7 +1489,7 @@ class _DietitianProfilePageState extends State<DietitianProfilePage> {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
-                            const Icon(Icons.star_rounded, size: 16, color: NColors.brandTerracotta),
+                            Icon(Icons.star_rounded, size: 16, color: NColors.brandTerracotta),
                             const SizedBox(width: 4),
                             Flexible(
                               child: Text(

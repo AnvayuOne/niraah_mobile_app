@@ -53,14 +53,14 @@ class _NotificationSettingsPageState extends State<NotificationSettingsPage> {
         builder: (BuildContext context, NotificationSettings n) => ListView(
           padding: const EdgeInsets.all(NSpace.lg),
           children: <Widget>[
-            for (final NotificationCategory c in n.categories) ...<Widget>[
+            for (NotificationCategory c in n.categories) ...<Widget>[
               NCard(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(c.name, style: NType.body.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w600)),
                     if (c.locked) Text(s.notifAlwaysOn(c.lockedReason ?? ''), style: NType.bodySm.copyWith(color: NColors.inkSecondary)),
-                    for (final ChannelSwitch ch in c.channels)
+                    for (ChannelSwitch ch in c.channels)
                       SwitchListTile(
                         contentPadding: EdgeInsets.zero,
                         dense: true,

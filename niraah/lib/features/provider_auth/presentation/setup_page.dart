@@ -196,7 +196,7 @@ class _SetupPageState extends State<SetupPage> {
               spacing: NSpace.lg,
               runSpacing: NSpace.xs,
               children: <Widget>[
-                for (final String c in _codes) SelectableText(c, style: NType.body.copyWith(color: NColors.inkPrimary, fontFeatures: const <FontFeature>[FontFeature.tabularFigures()])),
+                for (String c in _codes) SelectableText(c, style: NType.body.copyWith(color: NColors.inkPrimary, fontFeatures: const <FontFeature>[FontFeature.tabularFigures()])),
               ],
             ),
           ),

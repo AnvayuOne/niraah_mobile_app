@@ -52,14 +52,14 @@ void main() {
     await t.pump(const Duration(milliseconds: 100));
 
     // Several food choices and cuisines at once.
-    for (final String label in <String>['Vegan', 'Jain', 'North Indian', 'South Indian', 'No allergies']) {
+    for (String label in <String>['Vegan', 'Jain', 'North Indian', 'South Indian', 'No allergies']) {
       final Finder f = find.widgetWithText(FilterChip, label);
       await t.scrollUntilVisible(f, 80, scrollable: find.byType(Scrollable).first);
       await t.pump();
       await t.tap(f, warnIfMissed: true);
       await t.pump();
     }
-    for (final String label in <String>['North Indian', 'South Indian']) {
+    for (String label in <String>['North Indian', 'South Indian']) {
       expect(t.widget<FilterChip>(find.widgetWithText(FilterChip, label)).selected, isTrue, reason: label);
     }
 

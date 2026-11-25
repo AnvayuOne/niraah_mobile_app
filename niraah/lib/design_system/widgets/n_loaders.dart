@@ -65,7 +65,7 @@ class _KadhaiPainter extends CustomPainter {
 
   final double t;
 
-  static const List<Color> _veg = <Color>[NColors.brandSage, NColors.brandApricot, NColors.brandTerracotta, Color(0xFFE9C46A)];
+  static List<Color> get _veg => <Color>[NColors.brandSage, NColors.brandApricot, NColors.brandTerracotta, Color(0xFFE9C46A)];
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -304,7 +304,7 @@ class _NTypingBubbleState extends State<NTypingBubble> with SingleTickerProvider
 
 /// A short label followed by three dots that fade in turn.
 class NFadingDots extends StatefulWidget {
-  const NFadingDots({required this.label, super.key, this.color = NColors.inkMuted});
+  NFadingDots({required this.label, super.key, Color? color}) : color = color ?? NColors.inkMuted;
 
   final String label;
   final Color color;
@@ -407,7 +407,7 @@ class _ThemedPainter extends CustomPainter {
         // A thali fills katori by katori.
         canvas.drawCircle(c, s * 0.34, fill(const Color(0xFFE7E1DA)));
         canvas.drawCircle(c, s * 0.3, fill(Colors.white));
-        const List<Color> foods = <Color>[Color(0xFFE9B44C), NColors.brandSage, Color(0xFFD9774B), NColors.brandApricot];
+        List<Color> foods = <Color>[Color(0xFFE9B44C), NColors.brandSage, Color(0xFFD9774B), NColors.brandApricot];
         for (int i = 0; i < 4; i++) {
           final double a = -math.pi / 2 + i * math.pi / 2;
           final double p = ((t * 4 - i) % 4 + 4) % 4;
@@ -443,7 +443,7 @@ class _ThemedPainter extends CustomPainter {
           Offset(s * 0.66, c.dy),
           Offset(s * 0.88, c.dy),
         ];
-        for (final Offset p in pts) {
+        for (Offset p in pts) {
           ecg.lineTo(p.dx, p.dy);
         }
         canvas.drawPath(ecg, stroke(NColors.lineDefault, s * 0.03));
@@ -454,7 +454,7 @@ class _ThemedPainter extends CustomPainter {
         if (tip != null) canvas.drawCircle(tip.position, s * 0.03, fill(NColors.brandTerracotta));
       case NLoaderKind.plans:
         // Three plan cards lift in turn.
-        const List<Color> tiers = <Color>[NColors.brandSageLight, NColors.brandApricot, NColors.brandRosewood];
+        List<Color> tiers = <Color>[NColors.brandSageLight, NColors.brandApricot, NColors.brandRosewood];
         for (int i = 0; i < 3; i++) {
           final double p = math.max(0, math.sin((t - i / 3) * 2 * math.pi));
           final Rect r = Rect.fromCenter(center: Offset(s * (0.3 + i * 0.2), s * 0.55 - p * s * 0.08), width: s * 0.22, height: s * 0.34);
@@ -605,9 +605,9 @@ class _NScoringAnimationState extends State<NScoringAnimation> with SingleTicker
                       AnimatedSwitcher(
                         duration: NMotion.medium,
                         child: i < _done
-                            ? const Icon(Icons.check_circle_rounded, key: ValueKey<String>('done'), size: 20, color: NColors.statusSuccess)
+                            ? Icon(Icons.check_circle_rounded, key: ValueKey<String>('done'), size: 20, color: NColors.statusSuccess)
                             : i == _done
-                            ? const SizedBox(
+                            ? SizedBox(
                                 key: ValueKey<String>('now'),
                                 width: 20,
                                 height: 20,
@@ -616,7 +616,7 @@ class _NScoringAnimationState extends State<NScoringAnimation> with SingleTicker
                                   child: CircularProgressIndicator(strokeWidth: 2.4, color: NColors.brandRosewood),
                                 ),
                               )
-                            : const Icon(Icons.radio_button_unchecked_rounded, key: ValueKey<String>('todo'), size: 20, color: NColors.lineStrong),
+                            : Icon(Icons.radio_button_unchecked_rounded, key: ValueKey<String>('todo'), size: 20, color: NColors.lineStrong),
                       ),
                       const SizedBox(width: NSpace.sm),
                       Text(
@@ -671,7 +671,7 @@ class _ScoringPainter extends CustomPainter {
         ..shader = SweepGradient(
           startAngle: start,
           endAngle: start + sweep,
-          colors: const <Color>[NColors.brandApricot, NColors.brandTerracotta, NColors.brandRosewood],
+          colors: <Color>[NColors.brandApricot, NColors.brandTerracotta, NColors.brandRosewood],
           transform: const GradientRotation(0),
         ).createShader(arc)
         ..style = PaintingStyle.stroke
@@ -681,7 +681,7 @@ class _ScoringPainter extends CustomPainter {
     final double shimmer = start + sweep * fillTo * t;
     canvas.drawCircle(c + Offset(math.cos(shimmer), math.sin(shimmer)) * r, s * 0.022, Paint()..color = Colors.white.withValues(alpha: 0.9));
     // Four area orbs light up in turn.
-    const List<Color> areaColors = <Color>[NColors.brandBlush, NColors.brandApricot, NColors.brandLavender, NColors.brandSage];
+    List<Color> areaColors = <Color>[NColors.brandBlush, NColors.brandApricot, NColors.brandLavender, NColors.brandSage];
     for (int i = 0; i < 4; i++) {
       final double a = start + sweep * (0.08 + i * 0.28);
       final double lit = math.max(0, math.sin((t - i / 4) * 2 * math.pi));
