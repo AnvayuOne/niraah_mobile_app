@@ -1,5 +1,8 @@
 import '../../core/network/niraah_api.dart';
+import '../../core/video/channel_token.dart';
 import '../provider_work/domain/provider_work.dart';
+
+export '../../core/video/channel_token.dart' show ChannelToken, ClassRoomAccess, ClassRoomReady, ClassRoomShut;
 
 /// The instructor workspace (spec 013) on `/api/v1/instructor/*`, plus spec 014's attendance correction. Member
 /// facts in every response are the four the spec allows (AC1); the screens read them as [Json].
@@ -22,12 +25,46 @@ abstract class InstructorRepository {
   Future<void> withdrawContent(String id);
   Future<Json> profile();
   Future<Json> updateProfile({String? bio, List<String>? languages, List<String>? practiceTypes});
+
+  // The class room (spec 014 §8; spec 013 §4).
+
+  /// `POST /classes/{id}/room-token`: she publishes on the main channel.
+  Future<ClassRoomAccess> classRoomToken(String classId);
+
+  /// `POST /classes/{id}/start`, inside the join window.
+  Future<void> startClass(String classId);
+
+  /// `POST /classes/{id}/end`: attendance from the room record, then the earnings (AC46).
+  Future<void> endClass(String classId);
+
+  /// `GET /classes/{id}/console`: status, present count, first names of those who joined, and a count by phase only
+  /// with 5 or more present (spec 013 AC5).
+  Future<Json> console(String classId);
+
+  /// `GET /classes/{id}/camera-tokens`: a token to watch each student who turned her camera on (AC43).
+  Future<List<ChannelToken>> cameraTokens(String classId, {required String appId});
 }
 
 class ApiInstructorRepository implements InstructorRepository {
   ApiInstructorRepository(this._api);
 
   final NiraahApi _api;
+
+  @override
+  Future<ClassRoomAccess> classRoomToken(String classId) async => ClassRoomAccess.from(await _api.post('/classes/${_e(classId)}/room-token'));
+
+  @override
+  Future<void> startClass(String classId) async => (await _api.post('/classes/${_e(classId)}/start')).orThrow();
+
+  @override
+  Future<void> endClass(String classId) async => (await _api.post('/classes/${_e(classId)}/end')).orThrow();
+
+  @override
+  Future<Json> console(String classId) async => (await _api.get('/classes/${_e(classId)}/console')).orThrow();
+
+  @override
+  Future<List<ChannelToken>> cameraTokens(String classId, {required String appId}) async =>
+      <ChannelToken>[for (final Json c in (await _api.get('/classes/${_e(classId)}/camera-tokens')).orThrow().objs('cameras')) ChannelToken.parse(c, appId: appId)];
 
   static String _e(String id) => Uri.encodeComponent(id);
 

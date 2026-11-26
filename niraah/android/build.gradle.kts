@@ -1,3 +1,7 @@
+// agora_rtc_engine reads `compileSdkVersion` from the root project and otherwise compiles against android-31,
+// which the AndroidX libraries it pulls in refuse (they need 33 or later).
+extra["compileSdkVersion"] = 36
+
 allprojects {
     repositories {
         google()

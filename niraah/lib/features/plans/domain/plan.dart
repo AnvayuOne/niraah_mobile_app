@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../core/payments/payment_checkout.dart';
 import '../../../shared/helpers/result.dart';
 
 /// A published plan as members see it (spec 004, "Public API behaviour").
@@ -100,7 +101,41 @@ abstract interface class PlansRepository {
   /// her onboarding assessment is complete.
   Future<Result<PlansOffer>> offer();
 
-  /// Choose a plan (spec 008 §1). True: the plan is in force now (locally, with payment skipped for testing).
-  /// False: payment through the gateway is not open in the app yet.
-  Future<Result<bool>> choose(String priceId);
+  /// Choose a plan (spec 008 §1): the server makes a `pending` subscription and the gateway's checkout for it.
+  Future<Result<PlanChoice>> choose(String priceId);
+
+  /// `GET /me/subscription/{id}`: whether the gateway's verified webhook has confirmed it (spec 008 AC2).
+  Future<SubscriptionCheck> subscriptionStatus(String subscriptionId);
+}
+
+/// What choosing a plan led to.
+sealed class PlanChoice {
+  const PlanChoice();
+}
+
+/// In force now: locally, with payment skipped for testing (plan 008).
+class PlanActive extends PlanChoice {
+  const PlanActive();
+}
+
+/// Pay on the gateway's checkout; the plan starts when the server confirms it.
+class PlanCheckout extends PlanChoice {
+  const PlanCheckout(this.checkout);
+  final Checkout checkout;
+}
+
+/// No payment can be taken here (the sample build).
+class PlanPaymentUnavailable extends PlanChoice {
+  const PlanPaymentUnavailable();
+}
+
+class SubscriptionCheck extends Equatable {
+  const SubscriptionCheck({required this.status, required this.confirmed});
+
+  /// `pending`, `trialing`, `active`, `past_due` or `ended`.
+  final String status;
+  final bool confirmed;
+
+  @override
+  List<Object?> get props => <Object?>[status, confirmed];
 }

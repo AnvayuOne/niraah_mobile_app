@@ -1,3 +1,4 @@
+import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../../../core/di/service_locator.dart';
@@ -6,6 +7,7 @@ import '../../../design_system/widgets/n_button.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../shared/area/area_access.dart';
 import '../../../shared/area/area_widgets.dart';
+import '../../../shared/constants/route_constants.dart';
 import '../domain/me.dart';
 
 /// Profile (spec 010 §13 "Profile"): display name, height and goals she can change; date of birth read-only
@@ -68,6 +70,11 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
+  Future<void> _change(String route, [String? extra]) async {
+    await context.push(route, extra: extra);
+    if (mounted) setState(() => _profile = _repo.profile());
+  }
+
   void _addGoal() {
     final String g = _goal.text.trim();
     if (g.isEmpty || g.length > 60 || _goals.length >= 10 || _goals.contains(g)) return;
@@ -111,8 +118,11 @@ class _ProfilePageState extends State<ProfilePage> {
               const SizedBox(height: NSpace.md),
               NPrimaryButton(label: s.profileSave, loading: _saving, onPressed: _save),
               NSectionTitle(s.profileAccount),
+              // Changed through spec 003's flows, each behind a fresh code (spec 010 §13 "Profile" 2).
               _Fact(label: s.profilePhone, value: p.phone ?? s.profileNotSet),
+              _ChangeLink(label: s.acctChangeNumber, onTap: () => _change(RouteConstants.changeNumber)),
               _Fact(label: s.profileRecoveryEmail, value: p.recoveryEmail ?? s.profileNotSet),
+              _ChangeLink(label: p.recoveryEmail == null ? s.acctEmailAdd : s.acctEmailChange, onTap: () => _change(RouteConstants.recoveryEmail, p.recoveryEmail)),
               _Fact(label: s.profileDob, value: p.dateOfBirth == null ? s.profileNotSet : shortDate(context, p.dateOfBirth!), note: p.dateOfBirth == null ? null : s.profileDobNote),
               _Fact(label: s.profileLanguage, value: p.language),
               _Fact(label: s.profileTimeZone, value: p.timeZone),
@@ -122,6 +132,19 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
     );
   }
+}
+
+class _ChangeLink extends StatelessWidget {
+  const _ChangeLink({required this.label, required this.onTap});
+
+  final String label;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) => Align(
+        alignment: Alignment.centerLeft,
+        child: Padding(padding: const EdgeInsets.only(bottom: NSpace.xs), child: TextButton(onPressed: onTap, child: Text(label))),
+      );
 }
 
 class _Fact extends StatelessWidget {

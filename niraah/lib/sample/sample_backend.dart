@@ -189,9 +189,12 @@ class SamplePlansRepository implements PlansRepository {
     return Success<PlansOffer>(_backend.plansOffer());
   }
 
-  /// The sample has no billing: choosing a plan says payment comes later.
+  /// The sample has no billing: choosing a plan says payment comes later, and nothing is ever shown as paid.
   @override
-  Future<Result<bool>> choose(String priceId) async => const Success<bool>(false);
+  Future<Result<PlanChoice>> choose(String priceId) async => const Success<PlanChoice>(PlanPaymentUnavailable());
+
+  @override
+  Future<SubscriptionCheck> subscriptionStatus(String subscriptionId) async => const SubscriptionCheck(status: 'pending', confirmed: false);
 }
 
 class SampleAuthRepository implements AuthRepository {

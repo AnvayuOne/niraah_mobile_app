@@ -9,5 +9,8 @@ class UnavailablePlansRepository implements PlansRepository {
   Future<Result<PlansOffer>> offer() async => const FailureResult<PlansOffer>('not_connected');
 
   @override
-  Future<Result<bool>> choose(String priceId) async => const Success<bool>(false);
+  Future<Result<PlanChoice>> choose(String priceId) async => const Success<PlanChoice>(PlanPaymentUnavailable());
+
+  @override
+  Future<SubscriptionCheck> subscriptionStatus(String subscriptionId) async => const SubscriptionCheck(status: 'pending', confirmed: false);
 }

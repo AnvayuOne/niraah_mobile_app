@@ -1,4 +1,5 @@
 import '../../../core/network/niraah_api.dart';
+import '../../../shared/area/area_access.dart';
 import '../domain/meals.dart';
 
 /// The meal scanner and log on `/api/v1` (spec 010 §6; spec 009 "Meal scan"): `POST /me/meals/scan`,
@@ -63,6 +64,70 @@ class ApiMealsRepository implements MealsRepository {
       totals: _nutrients(r['totals'] as Map<String, dynamic>),
       caloriesHidden: r['caloriesHidden'] as bool,
       privacyNote: r['privacyNote'] as String?,
+    );
+  }
+
+  @override
+  Future<List<MealHistoryDay>> history() async => <MealHistoryDay>[
+        for (final dynamic d in (await _api.get('/me/meals/history')).orArea()['days'] as List<dynamic>)
+          MealHistoryDay(day: '${(d as Map<String, dynamic>)['day']}', meals: (d['meals'] as num).toInt()),
+      ];
+
+  /// `GET /me/meal-plan`: the dietitian's active plan only (spec 012 AC12), or `{plan: null}`.
+  @override
+  Future<MealPlan?> mealPlan() async {
+    final Map<String, dynamic>? p = (await _api.get('/me/meal-plan')).orArea()['plan'] as Map<String, dynamic>?;
+    if (p == null) return null;
+    return MealPlan(
+      id: '${p['id']}',
+      title: p['title'] as String?,
+      startDate: '${p['startDate']}',
+      endDate: p['endDate'] as String?,
+      dietitian: p['dietitian'] as String?,
+      days: <MealPlanDay>[
+        for (final dynamic d in (p['days'] as List<dynamic>?) ?? const <dynamic>[])
+          MealPlanDay(
+            dayIndex: ((d as Map<String, dynamic>)['dayIndex'] as num).toInt(),
+            date: '${d['date']}',
+            note: d['note'] as String?,
+            totals: _planNutrients(d['totals']),
+            slots: <MealPlanSlot>[
+              for (final dynamic s in (d['slots'] as List<dynamic>?) ?? const <dynamic>[])
+                MealPlanSlot(
+                  slot: '${(s as Map<String, dynamic>)['slot']}',
+                  totals: _planNutrients(s['totals']),
+                  items: <MealPlanItem>[
+                    for (final dynamic i in (s['items'] as List<dynamic>?) ?? const <dynamic>[])
+                      MealPlanItem(
+                        name: '${(i as Map<String, dynamic>)['name']}',
+                        count: (((i['portion'] as Map<String, dynamic>?)?['count']) as num? ?? 1).toDouble(),
+                        unit: '${(i['portion'] as Map<String, dynamic>?)?['unit'] ?? ''}',
+                        nutrients: _planNutrients(i['nutrients']),
+                        notes: i['notes'] as String?,
+                        alternatives: <String>[
+                          for (final dynamic a in (i['alternatives'] as List<dynamic>?) ?? const <dynamic>[])
+                            if (a is String) a else if (a is Map && a['name'] is String) a['name'] as String,
+                        ],
+                      ),
+                  ],
+                ),
+            ],
+          ),
+      ],
+    );
+  }
+
+  /// Plan nutrients: energy is left out when calorie content is suppressed for her (spec 012 AC16).
+  static Nutrients _planNutrients(Object? raw) {
+    final Map<String, dynamic> n = raw is Map ? Map<String, dynamic>.from(raw) : <String, dynamic>{};
+    double v(String k) => (n[k] as num?)?.toDouble() ?? 0;
+    return Nutrients(
+      energyKcal: (n['energyKcal'] as num?)?.toDouble(),
+      proteinG: v('proteinG'),
+      carbohydrateG: v('carbohydrateG'),
+      fatG: v('fatG'),
+      fibreG: v('fibreG'),
+      glycaemicIndex: (n['glycaemicIndex'] as num?)?.toInt(),
     );
   }
 

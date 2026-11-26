@@ -17,4 +17,10 @@ class UnavailableMealsRepository implements MealsRepository {
 
   @override
   Future<MealDay> today() async => throw const HomeNotConnected();
+
+  @override
+  Future<List<MealHistoryDay>> history() async => throw const HomeNotConnected();
+
+  @override
+  Future<MealPlan?> mealPlan() async => throw const HomeNotConnected();
 }

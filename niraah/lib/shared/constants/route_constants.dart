@@ -39,6 +39,9 @@ class RouteConstants {
   static const String practiceHistory = '/practice/history';
   static const String practiceSession = '/practice/session';
 
+  /// A live class room: `/classes/<class id>/room` (spec 014 §8).
+  static const String classes = '/classes';
+
   // Me tab and the areas reached from it (spec 010 §9-§13).
   static const String me = '/me';
   static const String profile = '/me/profile';
@@ -50,4 +53,21 @@ class RouteConstants {
   static const String labs = '/labs';
   static const String community = '/community';
   static const String messages = '/messages';
+
+  // Consults (spec 014; spec 010 §9). `bookDoctor` is "Find a specialist"; `/specialists/<id>` is a profile.
+  static const String bookPooled = '/consults/book';
+  static const String appointments = '/appointments';
+
+  /// Camera, microphone and connection check (spec 014 §4.4).
+  static const String deviceCheck = '/device-check';
+  static const String wellnessAdvice = '/wellness-advice';
+
+  // Manage plan and invoices (spec 008 §4, §8; spec 010 §5.6).
+  static const String managePlan = '/me/plan';
+  static const String invoices = '/me/invoices';
+
+  // Sign-in settings (spec 003 "Sessions", "Changing a mobile number", "Recovery").
+  static const String signedInDevices = '/me/devices';
+  static const String changeNumber = '/me/number';
+  static const String recoveryEmail = '/me/recovery-email';
 }

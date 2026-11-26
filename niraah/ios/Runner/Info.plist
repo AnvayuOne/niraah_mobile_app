@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Niraah uses your camera only during a video consult or live class, so your clinician or instructor can see you. You can turn it off at any time.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Niraah uses your microphone only during a video consult, so your clinician can hear you. You can mute it at any time.</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>

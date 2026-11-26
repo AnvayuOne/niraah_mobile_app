@@ -223,6 +223,9 @@ class _PrivacyPageState extends State<PrivacyPage> {
                 ],
                 NSecondaryButton(label: s.privacyExportRequest, onPressed: _busy ? null : () => _requestExport(d)),
               ],
+              // Sign-out of other devices (spec 010 §13 "Privacy" 7; spec 003 "Sessions" 7, 8).
+              NSectionTitle(s.acctDevicesTitle),
+              NSecondaryButton(label: s.acctDevicesOpen, onPressed: () => context.push(RouteConstants.signedInDevices)),
               NSectionTitle(s.privacyDeleteTitle),
               Text(s.privacyDeleteSummary, style: NType.bodySm.copyWith(color: NColors.inkSecondary)),
               const SizedBox(height: NSpace.sm),

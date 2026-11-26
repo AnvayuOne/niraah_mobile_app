@@ -3,6 +3,11 @@
 /// Sessions unsuitable for pregnancy are already removed by the server when her flags say so (AC28).
 library;
 
+import '../../../core/payments/payment_checkout.dart';
+import '../../../core/video/channel_token.dart';
+
+export '../../../core/video/channel_token.dart' show ChannelToken, ClassRoomAccess, ClassRoomReady, ClassRoomShut;
+
 class PracticeSession {
   const PracticeSession({
     required this.id,
@@ -76,8 +81,38 @@ class LiveClasses {
   final List<LiveClass> classes;
 }
 
-/// The outcome of booking a place (spec 014): booked, or a fee to pay first.
-enum BookingOutcome { booked, paymentNeeded }
+/// The outcome of booking a place (spec 014 §8 "Booking" 2, 4): booked against her allowance (or free), or held while
+/// she pays the class fee the server set.
+sealed class BookingOutcome {
+  const BookingOutcome();
+}
+
+class ClassBooked extends BookingOutcome {
+  const ClassBooked();
+}
+
+class ClassPaymentNeeded extends BookingOutcome {
+  const ClassPaymentNeeded({required this.bookingId, required this.amountPaise, this.checkout});
+  final String bookingId;
+  final int amountPaise;
+  final Checkout? checkout;
+}
+
+/// One of her class bookings (`GET /me/class-bookings`).
+class ClassBooking {
+  const ClassBooking({required this.id, required this.classId, required this.status, required this.title, required this.startsAt, required this.endsAt});
+
+  final String id;
+  final String classId;
+
+  /// `held`, `booked` or `cancelled`.
+  final String status;
+  final String title;
+  final DateTime startsAt;
+  final DateTime endsAt;
+
+  bool get booked => status == 'booked';
+}
 
 class PracticeFilters {
   const PracticeFilters({this.maxMinutes, this.focus, this.phase});
@@ -101,5 +136,18 @@ abstract class PracticeRepository {
 
   Future<LiveClasses> liveClasses();
 
+  /// The server takes a `yoga.live_classes` unit when she has one, or holds the place and opens an order for the fee
+  /// (AC42). With neither, it refuses.
   Future<BookingOutcome> book(String classId);
+
+  Future<List<ClassBooking>> classBookings();
+
+  /// A held place is released; a booked one is refunded or the unit returned before the cut-off (§8 "Booking" 6).
+  Future<String> cancelBooking(String bookingId);
+
+  /// `POST /classes/{id}/room-token`: audience on the main channel (AC43).
+  Future<ClassRoomAccess> roomToken(String classId);
+
+  /// `POST /classes/{id}/camera-token`: her private camera channel to the instructor (AC43).
+  Future<ChannelToken> cameraToken(String classId);
 }

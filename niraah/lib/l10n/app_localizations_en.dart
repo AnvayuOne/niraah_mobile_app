@@ -1871,10 +1871,6 @@ class SEn extends S {
   String get practiceBooked => 'Your place is booked';
 
   @override
-  String get practicePayOnWeb =>
-      'This class needs a payment, which the app can\'t take yet.';
-
-  @override
   String get meYourPlan => 'Your plan';
 
   @override
@@ -3870,10 +3866,6 @@ class SEn extends S {
   }
 
   @override
-  String get inStartOnWeb =>
-      'Starting and running a class isn\'t in the app yet.';
-
-  @override
   String get inRequests => 'Student requests waiting';
 
   @override
@@ -4281,4 +4273,1205 @@ class SEn extends S {
 
   @override
   String get signInEnterEmail => 'Enter your email';
+
+  @override
+  String get csTypeDoctor => 'Doctor';
+
+  @override
+  String get csTypeDietitian => 'Dietitian';
+
+  @override
+  String get csStatusHeld => 'Being booked';
+
+  @override
+  String get csStatusConfirmed => 'Booked';
+
+  @override
+  String get csStatusInProgress => 'In progress';
+
+  @override
+  String get csStatusCompleted => 'Done';
+
+  @override
+  String get csStatusCancelled => 'Cancelled';
+
+  @override
+  String get csStatusNoShow => 'Didn\'t take place';
+
+  @override
+  String get csStatusExpired => 'Not completed';
+
+  @override
+  String get csCatHealth => 'My health information';
+
+  @override
+  String get csCatAssessment => 'My assessment and pre-score';
+
+  @override
+  String get csCatCycle => 'My cycle and symptoms';
+
+  @override
+  String get csCatMeals => 'My meals';
+
+  @override
+  String get csCatLabs => 'My lab reports';
+
+  @override
+  String get csCatMessages => 'My messages';
+
+  @override
+  String get csEarlier => 'Earlier';
+
+  @override
+  String get csLater => 'Later';
+
+  @override
+  String get csNoTimesThisWeek => 'No free times in these days.';
+
+  @override
+  String csChooseTime(String time) {
+    return 'Choose $time';
+  }
+
+  @override
+  String get csWellness =>
+      'A consult is how you reach a doctor or dietitian through Niraah. Niraah supports your wellbeing and does not replace your own doctor. For anything urgent, seek care near you.';
+
+  @override
+  String get csFindTitle => 'Find a specialist';
+
+  @override
+  String get csAppointmentsTitle => 'Appointments';
+
+  @override
+  String get csNoneBookable =>
+      'No specialist has free time right now. Please look again later.';
+
+  @override
+  String get csNoneFound => 'No specialist matches these filters.';
+
+  @override
+  String get csClearFilters => 'Clear filters';
+
+  @override
+  String get csGuideTitle => 'Not sure who to see?';
+
+  @override
+  String get csGuideBody =>
+      'Tell us what\'s on your mind and we\'ll suggest a kind of specialist.';
+
+  @override
+  String csIncludedUnlimited(String type) {
+    return '$type consults are included in your plan';
+  }
+
+  @override
+  String csIncludedLeft(String type, int count) {
+    return '$type consults included: $count left';
+  }
+
+  @override
+  String csIncludedPooled(String type) {
+    return 'Choose a time and you\'ll see an available $type.';
+  }
+
+  @override
+  String get csChooseATime => 'Choose a time';
+
+  @override
+  String get csIncludedUsedUp =>
+      'You\'ve used this period\'s included consults. You can still book a consult with a fee.';
+
+  @override
+  String csIncludedRefills(String date) {
+    return 'You\'ve used this period\'s included consults. They refill on $date.';
+  }
+
+  @override
+  String get csFilterAll => 'All';
+
+  @override
+  String get csFilterDoctors => 'Doctors';
+
+  @override
+  String get csFilterDietitians => 'Dietitians';
+
+  @override
+  String get csMoreFilters => 'More filters';
+
+  @override
+  String csMoreFiltersOn(int count) {
+    return 'More filters ($count)';
+  }
+
+  @override
+  String get csFilterSpeciality => 'Speciality';
+
+  @override
+  String get csFilterLanguage => 'Language';
+
+  @override
+  String get csFilterDay => 'Any day';
+
+  @override
+  String csFilterDayOn(String date) {
+    return 'Free on $date';
+  }
+
+  @override
+  String get csApplyFilters => 'Show specialists';
+
+  @override
+  String csYears(int years) {
+    return '$years years\' experience';
+  }
+
+  @override
+  String csSpeaks(String languages) {
+    return 'Speaks $languages';
+  }
+
+  @override
+  String csNextFree(String time) {
+    return 'Next free: $time';
+  }
+
+  @override
+  String csFee(String amount) {
+    return '$amount incl. GST';
+  }
+
+  @override
+  String csRating(String average, int count) {
+    return 'Rated $average by $count members';
+  }
+
+  @override
+  String get csGuideIntro =>
+      'Describe your concern in a few words. We suggest a kind of specialist; we never name a person or a diagnosis.';
+
+  @override
+  String get csGuideConcern => 'What would you like help with?';
+
+  @override
+  String get csGuideAsk => 'Suggest a specialist';
+
+  @override
+  String get csGuideAnswer => 'You could see';
+
+  @override
+  String get csGuideNone =>
+      'We couldn\'t suggest a kind of specialist for this. A doctor is a good place to start.';
+
+  @override
+  String get csGuideByAi =>
+      'Suggested by AI. AI insights do not replace medical advice.';
+
+  @override
+  String get csProfileTitle => 'Specialist';
+
+  @override
+  String get csTimes => 'Free times';
+
+  @override
+  String get csNoTimes => 'No times available right now.';
+
+  @override
+  String get csIncludedThis => 'Included in your plan';
+
+  @override
+  String get csSeeOtherClinicians => 'See other times';
+
+  @override
+  String csRegistration(String number, String council) {
+    return 'Registration $number, $council';
+  }
+
+  @override
+  String csPooledTitle(String type) {
+    return '$type consult';
+  }
+
+  @override
+  String csPooledNote(String type) {
+    return 'Choose a time. You\'ll see which $type you\'re seeing as soon as you confirm.';
+  }
+
+  @override
+  String get csIncludedNone =>
+      'This consult isn\'t included in your plan right now.';
+
+  @override
+  String get csBooked => 'Your consult is booked.';
+
+  @override
+  String csAssignedOnConfirm(String type) {
+    return 'An available $type, named when you confirm';
+  }
+
+  @override
+  String get csYourClinician => 'Your clinician';
+
+  @override
+  String get csConfirmTitle => 'Confirm your consult';
+
+  @override
+  String get csHoldExpired => 'Your hold has ended. Choose a time again.';
+
+  @override
+  String csHoldLeft(String time) {
+    return 'This time is held for you for $time.';
+  }
+
+  @override
+  String get csConsentTitle => 'What may your clinician see?';
+
+  @override
+  String get csConsentBody =>
+      'Choose what this clinician may see for this consult. You can change it until the consult starts.';
+
+  @override
+  String get csConsentNone =>
+      'If you share nothing, your clinician has only what you tell them in the call.';
+
+  @override
+  String get csReasonTitle => 'Reason for the visit';
+
+  @override
+  String get csReasonLabel => 'In a few words (optional)';
+
+  @override
+  String get csReasonHelp => 'Only your clinician sees this.';
+
+  @override
+  String get csChooseAnotherTime => 'Choose another time';
+
+  @override
+  String get csConfirm => 'Confirm consult';
+
+  @override
+  String get csRelease => 'Give this time back';
+
+  @override
+  String get csBookAction => 'Book a consult';
+
+  @override
+  String get csUpcoming => 'Upcoming';
+
+  @override
+  String get csNoUpcoming =>
+      'No consults coming up. When you book one, it appears here.';
+
+  @override
+  String get csPast => 'Past';
+
+  @override
+  String get csAppointmentTitle => 'Consult';
+
+  @override
+  String get csOutcomeReleased => 'The time is free again.';
+
+  @override
+  String get csOutcomeRefunded =>
+      'Cancelled. Your payment is being refunded in full.';
+
+  @override
+  String get csOutcomeUnitReturned =>
+      'Cancelled. The consult is back in your plan.';
+
+  @override
+  String get csOutcomeKept =>
+      'Cancelled. As it was close to the start, the fee or included consult is used.';
+
+  @override
+  String get csOutcomeMoved => 'Your consult has a new time.';
+
+  @override
+  String get csOutcomeRated => 'Thank you for your rating.';
+
+  @override
+  String get csOutcomeDone => 'Done.';
+
+  @override
+  String get csFailureWaiting =>
+      'Thank you. Our team will look at what happened and let you know.';
+
+  @override
+  String get csFailureChoice =>
+      'The call didn\'t work. You can take another time or get your money or consult back.';
+
+  @override
+  String get csKeep => 'Keep it';
+
+  @override
+  String get csRescheduleTitle => 'Move your consult';
+
+  @override
+  String csRescheduleNote(int count) {
+    return 'No charge. You can move it $count more times.';
+  }
+
+  @override
+  String get csRebookTitle => 'Choose another time';
+
+  @override
+  String get csRebookNote =>
+      'What you paid or used carries over to the new time.';
+
+  @override
+  String get csReleaseBody => 'This time will be free for others again.';
+
+  @override
+  String get csCancelBodyIncluded =>
+      'If you cancel well ahead, the consult goes back to your plan; close to the start it counts as used. You\'ll see which straight away.';
+
+  @override
+  String get csCancelBodyPaid =>
+      'If you cancel well ahead, you get a full refund; close to the start there\'s no refund. You\'ll see which straight away.';
+
+  @override
+  String get csCancelTitle => 'Cancel this consult?';
+
+  @override
+  String get csCancelAction => 'Cancel consult';
+
+  @override
+  String get csProposalTitle => 'Accept the new time?';
+
+  @override
+  String get csProposalBody =>
+      'Your consult moves to the time your clinician suggested.';
+
+  @override
+  String get csProposalAccept => 'Accept';
+
+  @override
+  String get csProposalLink => 'My clinician suggested another time';
+
+  @override
+  String get csDeclineTitle => 'Get your money or consult back?';
+
+  @override
+  String get csDeclineBody =>
+      'We\'ll refund what you paid, or return the consult to your plan.';
+
+  @override
+  String get csDeclineAction => 'Get my money or consult back';
+
+  @override
+  String get csReportTitle => 'The call didn\'t work?';
+
+  @override
+  String get csReportBody =>
+      'Tell us and we\'ll look at what happened in the room.';
+
+  @override
+  String get csReportAction => 'The call didn\'t work';
+
+  @override
+  String get csPaidIncluded => 'Included in your plan';
+
+  @override
+  String csPaidFee(String amount) {
+    return 'Fee $amount incl. GST';
+  }
+
+  @override
+  String get csRecordingOn => 'This consult is recorded, as you agreed.';
+
+  @override
+  String get csFinishBooking => 'Finish booking';
+
+  @override
+  String csRoomOpensAt(String time) {
+    return 'The room opens at $time.';
+  }
+
+  @override
+  String get csJoin => 'Join the consult';
+
+  @override
+  String get csReschedule => 'Move to another time';
+
+  @override
+  String get csNoShowOffer =>
+      'Your clinician didn\'t join. Take another time, or get your money or consult back.';
+
+  @override
+  String get csRebook => 'Choose another time';
+
+  @override
+  String get csRate => 'Rate this consult';
+
+  @override
+  String get csBookAgain => 'Book again';
+
+  @override
+  String get csRateTitle => 'Rate your consult';
+
+  @override
+  String get csRateBody =>
+      'How was your consult? Your name is never shown with your rating.';
+
+  @override
+  String csRateStars(int count) {
+    return '$count out of 5';
+  }
+
+  @override
+  String get csRateComment => 'Anything you\'d like to add (optional)';
+
+  @override
+  String get csRateSend => 'Send rating';
+
+  @override
+  String get csRateChoose => 'Choose a rating to continue';
+
+  @override
+  String get csRecordingStopped =>
+      'Recording stopped. What was recorded is kept as partial.';
+
+  @override
+  String get csRoomTitle => 'Consult room';
+
+  @override
+  String get csRecordingMark => 'Recording';
+
+  @override
+  String get csRecordingBody =>
+      'This consult is being recorded as you agreed. You can stop it at any time.';
+
+  @override
+  String get csRecordingStop => 'Stop recording';
+
+  @override
+  String get csRoomNotOpen => 'The room isn\'t open yet';
+
+  @override
+  String get csRoomCheckAgain => 'Check again';
+
+  @override
+  String get billTitle => 'Manage plan';
+
+  @override
+  String get billStatusTrial => 'Free trial';
+
+  @override
+  String get billStatusActive => 'Active';
+
+  @override
+  String get billStatusPastDue => 'Payment didn\'t go through';
+
+  @override
+  String get billStatusPending => 'Waiting for payment';
+
+  @override
+  String get billCancelTitle => 'Cancel your plan?';
+
+  @override
+  String billCancelBody(String plan, String date) {
+    return 'You keep $plan until $date. No further charge is made, and there\'s no refund for the current period. You can undo this until then.';
+  }
+
+  @override
+  String billCancelBodyNoDate(String plan) {
+    return 'You keep $plan until the end of the current period. No further charge is made, and there\'s no refund for the current period.';
+  }
+
+  @override
+  String get billKeep => 'Keep my plan';
+
+  @override
+  String get billCancelAction => 'Cancel plan';
+
+  @override
+  String billCancelled(String date) {
+    return 'Your plan ends on $date. No further charge will be made.';
+  }
+
+  @override
+  String get billUndone => 'Your plan continues.';
+
+  @override
+  String billChangeLater(String date) {
+    return 'Your new plan starts on $date. Until then you keep your current plan.';
+  }
+
+  @override
+  String get billChangeDone => 'Your new plan is in force.';
+
+  @override
+  String billEndsOn(String date) {
+    return 'Ends on $date';
+  }
+
+  @override
+  String billRenewsOn(String date) {
+    return 'Renews on $date';
+  }
+
+  @override
+  String billValidUntil(String date) {
+    return 'Valid until $date';
+  }
+
+  @override
+  String get billNoSubscription => 'You don\'t have a paid plan.';
+
+  @override
+  String get billChange => 'Change plan';
+
+  @override
+  String get billUndo => 'Keep my plan after all';
+
+  @override
+  String get billInvoices => 'Invoices';
+
+  @override
+  String get billInvoicesOpen => 'Invoices and credit notes';
+
+  @override
+  String get billChangeNote =>
+      'A plan that costs more starts when its payment goes through. One that costs less starts when your current period ends.';
+
+  @override
+  String get billNoOtherPlans => 'There are no other plans to move to.';
+
+  @override
+  String billPriceLine(String amount) {
+    return '$amount incl. GST';
+  }
+
+  @override
+  String get billNoInvoices =>
+      'No invoices yet. Each payment\'s invoice appears here.';
+
+  @override
+  String get billCreditNote => 'Credit note';
+
+  @override
+  String get billInvoice => 'Invoice';
+
+  @override
+  String get billFrom => 'From';
+
+  @override
+  String billGstin(String number) {
+    return 'GSTIN $number';
+  }
+
+  @override
+  String get billTo => 'To';
+
+  @override
+  String get billLines => 'Details';
+
+  @override
+  String get billBeforeTax => 'Before tax';
+
+  @override
+  String billTax(String rate) {
+    return 'GST at $rate%';
+  }
+
+  @override
+  String get billLineTotal => 'Total';
+
+  @override
+  String get billTotalTax => 'Total GST';
+
+  @override
+  String get billTotal => 'Amount paid';
+
+  @override
+  String get waTitle => 'Wellness advice from your doctor';
+
+  @override
+  String get waEmpty =>
+      'Wellness advice from a doctor after a consult appears here.';
+
+  @override
+  String get waReplaced => 'A newer advice replaces this one.';
+
+  @override
+  String get waAssessment => 'Assessment';
+
+  @override
+  String get waSupplements => 'Supplements';
+
+  @override
+  String get waAdvice => 'Advice';
+
+  @override
+  String get waSeeDoctor => 'See a doctor in person';
+
+  @override
+  String get waFollowUp => 'Follow-up';
+
+  @override
+  String get waTests => 'Tests advised';
+
+  @override
+  String waCode(String code) {
+    return 'Verification code $code';
+  }
+
+  @override
+  String get waOpenDocument => 'Open the document';
+
+  @override
+  String get acctDevicesTitle => 'Signed-in devices';
+
+  @override
+  String get acctDevicesBody =>
+      'Where your account is signed in. End any you don\'t recognise.';
+
+  @override
+  String get acctDevicesOpen => 'See signed-in devices';
+
+  @override
+  String get acctThisDevice => 'This device';
+
+  @override
+  String acctLastActive(String time) {
+    return 'Last active $time';
+  }
+
+  @override
+  String get acctEnd => 'Sign out';
+
+  @override
+  String get acctEnded => 'That device is signed out.';
+
+  @override
+  String get acctEndAll => 'Sign out everywhere';
+
+  @override
+  String get acctEndAllTitle => 'Sign out everywhere?';
+
+  @override
+  String get acctEndAllBody =>
+      'Every device, this one included, is signed out. You\'ll sign in again with a code.';
+
+  @override
+  String get acctChangeNumber => 'Change mobile number';
+
+  @override
+  String get acctNumberTitle => 'Mobile number';
+
+  @override
+  String get acctNumberBody =>
+      'First we check it\'s you with a code to your current number. Then enter your new number and the code we send to it.';
+
+  @override
+  String get acctNewNumber => 'New mobile number';
+
+  @override
+  String get acctSendCode => 'Send a code to the new number';
+
+  @override
+  String get acctCodeSent => 'Enter the code we sent to your new number.';
+
+  @override
+  String get acctConfirmNumber => 'Change number';
+
+  @override
+  String get acctNumberChanged =>
+      'Your number is changed. Other devices are signed out.';
+
+  @override
+  String acctPendingChange(String ending, String date) {
+    return 'A change to a number ending $ending takes effect on $date.';
+  }
+
+  @override
+  String get acctCancelChange => 'This wasn\'t me: cancel it';
+
+  @override
+  String get acctChangeCancelled => 'The change is cancelled.';
+
+  @override
+  String get acctEmailBody =>
+      'A recovery email helps you get back into your account if you lose your number. It counts once you open the link we send to it. It can\'t be used to sign in.';
+
+  @override
+  String acctEmailNow(String email) {
+    return 'Now: $email';
+  }
+
+  @override
+  String get acctEmailAdd => 'Add a recovery email';
+
+  @override
+  String get acctEmailNew => 'New recovery email';
+
+  @override
+  String get acctEmailChange => 'Change recovery email';
+
+  @override
+  String get acctEmailSave => 'Send the link';
+
+  @override
+  String get acctEmailSent => 'We sent a link. Open it to finish.';
+
+  @override
+  String get acctEmailRemove => 'Remove recovery email';
+
+  @override
+  String get acctEmailRemoved => 'Recovery email removed.';
+
+  @override
+  String get mealsHistoryTitle => 'Meal history';
+
+  @override
+  String get mealsHistoryEmpty => 'The days you log meals appear here.';
+
+  @override
+  String mealsHistoryCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count meals',
+      one: '1 meal',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mealPlanTitle => 'My meal plan';
+
+  @override
+  String get mealPlanNone =>
+      'When your dietitian shares a meal plan with you, it appears here.';
+
+  @override
+  String mealPlanBy(String name) {
+    return 'From $name';
+  }
+
+  @override
+  String get mealPlanPrevDay => 'Previous day';
+
+  @override
+  String get mealPlanNextDay => 'Next day';
+
+  @override
+  String mealPlanDay(int day, String date) {
+    return 'Day $day · $date';
+  }
+
+  @override
+  String mealPlanOr(String options) {
+    return 'Or: $options';
+  }
+
+  @override
+  String get mealPlanSlotEarly => 'Early morning';
+
+  @override
+  String get mealPlanSlotMidMorning => 'Mid-morning';
+
+  @override
+  String get mealPlanSlotEvening => 'Evening snack';
+
+  @override
+  String get mealPlanSlotBedtime => 'Bedtime';
+
+  @override
+  String get rmPermissionTitle => 'Camera and microphone';
+
+  @override
+  String get rmPermissionWhy =>
+      'To see and hear each other, the app will ask to use your camera and microphone. They\'re used only during this call, and you can turn either off at any time.';
+
+  @override
+  String get rmAllow => 'Allow camera and microphone';
+
+  @override
+  String get rmAudioOnlyPermission =>
+      'We could use your microphone but not your camera. You can still join by voice.';
+
+  @override
+  String get rmDenied =>
+      'The camera and microphone are blocked for Niraah. Allow them in your phone\'s settings, then try again.';
+
+  @override
+  String get rmOpenSettings => 'Open settings';
+
+  @override
+  String get rmCameraOff => 'Camera off';
+
+  @override
+  String get rmJoinNow => 'Join now';
+
+  @override
+  String get rmJoining => 'Joining…';
+
+  @override
+  String rmWithClinician(String name) {
+    return 'Your consult with $name';
+  }
+
+  @override
+  String get rmYourClinician => 'your clinician';
+
+  @override
+  String rmWaitingFor(String name) {
+    return 'Waiting for $name…';
+  }
+
+  @override
+  String get rmWaitingNote =>
+      'They know you\'re here. You can stay on this screen.';
+
+  @override
+  String rmStartsAt(String time) {
+    return 'Starts at $time';
+  }
+
+  @override
+  String get rmReconnecting => 'Reconnecting…';
+
+  @override
+  String get rmReconnectingNote =>
+      'Your connection dropped. We\'re getting you back in; you don\'t need to do anything.';
+
+  @override
+  String get rmDropped => 'You\'re no longer connected.';
+
+  @override
+  String get rmRejoin => 'Rejoin';
+
+  @override
+  String get rmWeak =>
+      'Your connection is weak. Switching to audio only can keep the call clear.';
+
+  @override
+  String get rmSwitchAudioOnly => 'Switch to audio only';
+
+  @override
+  String get rmAudioOnlyOn =>
+      'Audio only is on: your camera is off and incoming video is paused.';
+
+  @override
+  String get rmVideoBack => 'Turn video back on';
+
+  @override
+  String get rmMicMute => 'Mute microphone';
+
+  @override
+  String get rmMicUnmute => 'Unmute microphone';
+
+  @override
+  String get rmCameraTurnOff => 'Turn camera off';
+
+  @override
+  String get rmCameraTurnOn => 'Turn camera on';
+
+  @override
+  String get rmSwitchCamera => 'Switch camera';
+
+  @override
+  String get rmLeave => 'Leave';
+
+  @override
+  String get rmLeaveConfirm =>
+      'Leave the room? You can come back while the room is open.';
+
+  @override
+  String get rmStay => 'Stay';
+
+  @override
+  String get rmLeft => 'You\'ve left the room.';
+
+  @override
+  String get rmClosed => 'The room has closed.';
+
+  @override
+  String get rmGoBackIn => 'Go back in';
+
+  @override
+  String rmRemaining(String time) {
+    return '$time left';
+  }
+
+  @override
+  String rmTimeUp(String time) {
+    return 'Time is up · room closes in $time';
+  }
+
+  @override
+  String get rmJoinFailed =>
+      'We couldn\'t connect you to the room. Check your connection and try again.';
+
+  @override
+  String get rmLoadError =>
+      'We couldn\'t open this room. Try again in a moment.';
+
+  @override
+  String get rmYou => 'You';
+
+  @override
+  String get dcLink => 'Check camera and microphone';
+
+  @override
+  String get dcTitle => 'Device check';
+
+  @override
+  String get dcBody =>
+      'Check that your camera, microphone and connection work before your consult.';
+
+  @override
+  String get dcStart => 'Start the check';
+
+  @override
+  String get dcCamera => 'Camera';
+
+  @override
+  String get dcCameraOk => 'Your camera works if you can see yourself above.';
+
+  @override
+  String get dcBlocked =>
+      'Not allowed. You can allow it in your phone\'s settings.';
+
+  @override
+  String get dcMicrophone => 'Microphone';
+
+  @override
+  String get dcMicSpeak =>
+      'Say something: the bar moves when your microphone hears you.';
+
+  @override
+  String get dcConnection => 'Connection';
+
+  @override
+  String get dcTesting => 'Testing…';
+
+  @override
+  String get dcGood => 'Good for video';
+
+  @override
+  String get dcPoor => 'Weak: video may look soft, but voice should work';
+
+  @override
+  String get dcDown => 'Not connected';
+
+  @override
+  String get dcAllowedOnly =>
+      'Your camera and microphone are allowed. The preview and connection test run in the room before you join.';
+
+  @override
+  String get dcFailed => 'The check couldn\'t start. Try again in a moment.';
+
+  @override
+  String get clRoomTitle => 'Live class';
+
+  @override
+  String get clPrivacy =>
+      'You join with your camera and microphone off. Other members can\'t see or hear you, or see your name.';
+
+  @override
+  String get clWaitingInstructor => 'Waiting for your instructor…';
+
+  @override
+  String get clCameraOn => 'Show my camera to the instructor';
+
+  @override
+  String get clCameraOff => 'Turn my camera off';
+
+  @override
+  String get clCameraNote =>
+      'Only your instructor sees your camera, so she can help with your posture.';
+
+  @override
+  String get clCameraSharing => 'Your instructor can see your camera.';
+
+  @override
+  String get clYourClasses => 'Your classes';
+
+  @override
+  String get clJoin => 'Join class';
+
+  @override
+  String get icOpenRoom => 'Open class room';
+
+  @override
+  String get icCheckBody =>
+      'Check your camera and microphone, then start the class when the room opens.';
+
+  @override
+  String get icStart => 'Start class';
+
+  @override
+  String get icEnd => 'End class';
+
+  @override
+  String get icEndConfirm => 'End the class for everyone?';
+
+  @override
+  String get icEnded => 'Class ended.';
+
+  @override
+  String icPresent(int count) {
+    return '$count present';
+  }
+
+  @override
+  String icJoined(String names) {
+    return 'Joined: $names';
+  }
+
+  @override
+  String get icNoneJoined => 'No one has joined yet.';
+
+  @override
+  String icPhaseCount(String phase, int count) {
+    return '$phase: $count';
+  }
+
+  @override
+  String get icStudentCameras => 'Students\' cameras';
+
+  @override
+  String get payConfirming => 'Confirming your payment…';
+
+  @override
+  String get payConfirmingNote => 'This can take a few seconds.';
+
+  @override
+  String get payPending =>
+      'Your payment is being confirmed. We\'ll let you know as soon as it is.';
+
+  @override
+  String get payCancelled => 'Payment not completed.';
+
+  @override
+  String get payFailed => 'The payment didn\'t go through. You can try again.';
+
+  @override
+  String get payLapsed =>
+      'Your held time ran out before the payment arrived. It will be refunded to you in full.';
+
+  @override
+  String get payDescConsult => 'Consult';
+
+  @override
+  String get payDescClass => 'Live class';
+
+  @override
+  String csPayAndConfirm(String amount) {
+    return 'Confirm and pay $amount';
+  }
+
+  @override
+  String get csPayHoldNote =>
+      'Your time stays held while you pay. The fee shown is the fee charged.';
+
+  @override
+  String get csPaidBooked => 'Paid. Your consult is booked.';
+
+  @override
+  String get practicePayTitle => 'Pay for this class?';
+
+  @override
+  String practicePayBody(String amount) {
+    return 'This class is $amount incl. GST. Your place is held while you pay.';
+  }
+
+  @override
+  String practicePay(String amount) {
+    return 'Pay $amount';
+  }
+
+  @override
+  String get practiceNotNow => 'Not now';
+
+  @override
+  String get practicePaidBooked => 'Paid. Your place is booked.';
+
+  @override
+  String get billPayTitle => 'Pay for the change?';
+
+  @override
+  String billPayBody(String amount) {
+    return 'Your new plan costs $amount now, after credit for the unused days of your current plan. It starts when the payment is confirmed. A paid period isn\'t refunded once it has started.';
+  }
+
+  @override
+  String billPay(String amount) {
+    return 'Pay $amount';
+  }
+
+  @override
+  String plansActive(String plan) {
+    return '$plan is now your plan.';
+  }
+
+  @override
+  String plansTrialStarted(String plan) {
+    return 'Your free trial of $plan has started. Doctor, dietitian and live-class features begin with your first payment.';
+  }
+
+  @override
+  String get plansNoRefund =>
+      'A paid period isn\'t refunded once it has started.';
+
+  @override
+  String get csTranscriptConsentTitle => 'A written transcript of this consult';
+
+  @override
+  String get csTranscriptDraft => 'Draft wording, pending legal review';
+
+  @override
+  String get csTranscriptConsentBody =>
+      'If you agree, the audio of this consult is sent to Sarvam AI to be written up as text, and the audio is then deleted. You, this specialist, your doctor or dietitian caring for you now, and a Niraah super admin (only for a complaint, dispute or legal request) can read the transcript. It is kept for up to 3 years. You can still have your consult if you say no.';
+
+  @override
+  String get csTranscriptConsentYes => 'Yes, make a transcript of this consult';
+
+  @override
+  String get csTranscriptTitle => 'Consult transcript';
+
+  @override
+  String get csTranscriptRead => 'Read the transcript';
+
+  @override
+  String get csTranscriptPending =>
+      'The transcript is being written up. Check back a little later.';
+
+  @override
+  String get csTranscriptFailed =>
+      'We could not make a transcript of this consult.';
+
+  @override
+  String get csTranscriptNone => 'There is no transcript for this consult.';
+
+  @override
+  String get csTranscriptUnverified =>
+      'Machine-made transcript, not checked by a person. It may contain errors, especially in mixed-language speech.';
+
+  @override
+  String get csTranscriptPartial =>
+      'The recording was stopped part-way, so this covers only the start of the consult.';
+
+  @override
+  String get csTranscriptWhoReads =>
+      'You, this specialist and your doctor or dietitian caring for you now can read it.';
+
+  @override
+  String get csTranscriptYou => 'You';
+
+  @override
+  String get csTranscriptMember => 'Member';
+
+  @override
+  String get csTranscriptDoctor => 'Doctor';
+
+  @override
+  String get csTranscriptDietitian => 'Dietitian';
+
+  @override
+  String csTranscriptMissing(String who) {
+    return 'The $who\'s voice could not be transcribed.';
+  }
 }

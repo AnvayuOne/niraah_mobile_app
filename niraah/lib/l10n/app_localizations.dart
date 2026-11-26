@@ -3201,12 +3201,6 @@ abstract class S {
   /// **'Your place is booked'**
   String get practiceBooked;
 
-  /// No description provided for @practicePayOnWeb.
-  ///
-  /// In en, this message translates to:
-  /// **'This class needs a payment, which the app can\'t take yet.'**
-  String get practicePayOnWeb;
-
   /// No description provided for @meYourPlan.
   ///
   /// In en, this message translates to:
@@ -6771,12 +6765,6 @@ abstract class S {
   /// **'{booked} of {capacity} booked'**
   String inBooked(int booked, int capacity);
 
-  /// No description provided for @inStartOnWeb.
-  ///
-  /// In en, this message translates to:
-  /// **'Starting and running a class isn\'t in the app yet.'**
-  String get inStartOnWeb;
-
   /// No description provided for @inRequests.
   ///
   /// In en, this message translates to:
@@ -7520,6 +7508,2052 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Enter your email'**
   String get signInEnterEmail;
+
+  /// No description provided for @csTypeDoctor.
+  ///
+  /// In en, this message translates to:
+  /// **'Doctor'**
+  String get csTypeDoctor;
+
+  /// No description provided for @csTypeDietitian.
+  ///
+  /// In en, this message translates to:
+  /// **'Dietitian'**
+  String get csTypeDietitian;
+
+  /// No description provided for @csStatusHeld.
+  ///
+  /// In en, this message translates to:
+  /// **'Being booked'**
+  String get csStatusHeld;
+
+  /// No description provided for @csStatusConfirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Booked'**
+  String get csStatusConfirmed;
+
+  /// No description provided for @csStatusInProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'In progress'**
+  String get csStatusInProgress;
+
+  /// No description provided for @csStatusCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get csStatusCompleted;
+
+  /// No description provided for @csStatusCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get csStatusCancelled;
+
+  /// No description provided for @csStatusNoShow.
+  ///
+  /// In en, this message translates to:
+  /// **'Didn\'t take place'**
+  String get csStatusNoShow;
+
+  /// No description provided for @csStatusExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Not completed'**
+  String get csStatusExpired;
+
+  /// No description provided for @csCatHealth.
+  ///
+  /// In en, this message translates to:
+  /// **'My health information'**
+  String get csCatHealth;
+
+  /// No description provided for @csCatAssessment.
+  ///
+  /// In en, this message translates to:
+  /// **'My assessment and pre-score'**
+  String get csCatAssessment;
+
+  /// No description provided for @csCatCycle.
+  ///
+  /// In en, this message translates to:
+  /// **'My cycle and symptoms'**
+  String get csCatCycle;
+
+  /// No description provided for @csCatMeals.
+  ///
+  /// In en, this message translates to:
+  /// **'My meals'**
+  String get csCatMeals;
+
+  /// No description provided for @csCatLabs.
+  ///
+  /// In en, this message translates to:
+  /// **'My lab reports'**
+  String get csCatLabs;
+
+  /// No description provided for @csCatMessages.
+  ///
+  /// In en, this message translates to:
+  /// **'My messages'**
+  String get csCatMessages;
+
+  /// No description provided for @csEarlier.
+  ///
+  /// In en, this message translates to:
+  /// **'Earlier'**
+  String get csEarlier;
+
+  /// No description provided for @csLater.
+  ///
+  /// In en, this message translates to:
+  /// **'Later'**
+  String get csLater;
+
+  /// No description provided for @csNoTimesThisWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'No free times in these days.'**
+  String get csNoTimesThisWeek;
+
+  /// No description provided for @csChooseTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose {time}'**
+  String csChooseTime(String time);
+
+  /// No description provided for @csWellness.
+  ///
+  /// In en, this message translates to:
+  /// **'A consult is how you reach a doctor or dietitian through Niraah. Niraah supports your wellbeing and does not replace your own doctor. For anything urgent, seek care near you.'**
+  String get csWellness;
+
+  /// No description provided for @csFindTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Find a specialist'**
+  String get csFindTitle;
+
+  /// No description provided for @csAppointmentsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Appointments'**
+  String get csAppointmentsTitle;
+
+  /// No description provided for @csNoneBookable.
+  ///
+  /// In en, this message translates to:
+  /// **'No specialist has free time right now. Please look again later.'**
+  String get csNoneBookable;
+
+  /// No description provided for @csNoneFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No specialist matches these filters.'**
+  String get csNoneFound;
+
+  /// No description provided for @csClearFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear filters'**
+  String get csClearFilters;
+
+  /// No description provided for @csGuideTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Not sure who to see?'**
+  String get csGuideTitle;
+
+  /// No description provided for @csGuideBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Tell us what\'s on your mind and we\'ll suggest a kind of specialist.'**
+  String get csGuideBody;
+
+  /// No description provided for @csIncludedUnlimited.
+  ///
+  /// In en, this message translates to:
+  /// **'{type} consults are included in your plan'**
+  String csIncludedUnlimited(String type);
+
+  /// No description provided for @csIncludedLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'{type} consults included: {count} left'**
+  String csIncludedLeft(String type, int count);
+
+  /// No description provided for @csIncludedPooled.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a time and you\'ll see an available {type}.'**
+  String csIncludedPooled(String type);
+
+  /// No description provided for @csChooseATime.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a time'**
+  String get csChooseATime;
+
+  /// No description provided for @csIncludedUsedUp.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ve used this period\'s included consults. You can still book a consult with a fee.'**
+  String get csIncludedUsedUp;
+
+  /// No description provided for @csIncludedRefills.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ve used this period\'s included consults. They refill on {date}.'**
+  String csIncludedRefills(String date);
+
+  /// No description provided for @csFilterAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get csFilterAll;
+
+  /// No description provided for @csFilterDoctors.
+  ///
+  /// In en, this message translates to:
+  /// **'Doctors'**
+  String get csFilterDoctors;
+
+  /// No description provided for @csFilterDietitians.
+  ///
+  /// In en, this message translates to:
+  /// **'Dietitians'**
+  String get csFilterDietitians;
+
+  /// No description provided for @csMoreFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'More filters'**
+  String get csMoreFilters;
+
+  /// No description provided for @csMoreFiltersOn.
+  ///
+  /// In en, this message translates to:
+  /// **'More filters ({count})'**
+  String csMoreFiltersOn(int count);
+
+  /// No description provided for @csFilterSpeciality.
+  ///
+  /// In en, this message translates to:
+  /// **'Speciality'**
+  String get csFilterSpeciality;
+
+  /// No description provided for @csFilterLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get csFilterLanguage;
+
+  /// No description provided for @csFilterDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Any day'**
+  String get csFilterDay;
+
+  /// No description provided for @csFilterDayOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Free on {date}'**
+  String csFilterDayOn(String date);
+
+  /// No description provided for @csApplyFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Show specialists'**
+  String get csApplyFilters;
+
+  /// No description provided for @csYears.
+  ///
+  /// In en, this message translates to:
+  /// **'{years} years\' experience'**
+  String csYears(int years);
+
+  /// No description provided for @csSpeaks.
+  ///
+  /// In en, this message translates to:
+  /// **'Speaks {languages}'**
+  String csSpeaks(String languages);
+
+  /// No description provided for @csNextFree.
+  ///
+  /// In en, this message translates to:
+  /// **'Next free: {time}'**
+  String csNextFree(String time);
+
+  /// No description provided for @csFee.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} incl. GST'**
+  String csFee(String amount);
+
+  /// No description provided for @csRating.
+  ///
+  /// In en, this message translates to:
+  /// **'Rated {average} by {count} members'**
+  String csRating(String average, int count);
+
+  /// No description provided for @csGuideIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe your concern in a few words. We suggest a kind of specialist; we never name a person or a diagnosis.'**
+  String get csGuideIntro;
+
+  /// No description provided for @csGuideConcern.
+  ///
+  /// In en, this message translates to:
+  /// **'What would you like help with?'**
+  String get csGuideConcern;
+
+  /// No description provided for @csGuideAsk.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggest a specialist'**
+  String get csGuideAsk;
+
+  /// No description provided for @csGuideAnswer.
+  ///
+  /// In en, this message translates to:
+  /// **'You could see'**
+  String get csGuideAnswer;
+
+  /// No description provided for @csGuideNone.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t suggest a kind of specialist for this. A doctor is a good place to start.'**
+  String get csGuideNone;
+
+  /// No description provided for @csGuideByAi.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggested by AI. AI insights do not replace medical advice.'**
+  String get csGuideByAi;
+
+  /// No description provided for @csProfileTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Specialist'**
+  String get csProfileTitle;
+
+  /// No description provided for @csTimes.
+  ///
+  /// In en, this message translates to:
+  /// **'Free times'**
+  String get csTimes;
+
+  /// No description provided for @csNoTimes.
+  ///
+  /// In en, this message translates to:
+  /// **'No times available right now.'**
+  String get csNoTimes;
+
+  /// No description provided for @csIncludedThis.
+  ///
+  /// In en, this message translates to:
+  /// **'Included in your plan'**
+  String get csIncludedThis;
+
+  /// No description provided for @csSeeOtherClinicians.
+  ///
+  /// In en, this message translates to:
+  /// **'See other times'**
+  String get csSeeOtherClinicians;
+
+  /// No description provided for @csRegistration.
+  ///
+  /// In en, this message translates to:
+  /// **'Registration {number}, {council}'**
+  String csRegistration(String number, String council);
+
+  /// No description provided for @csPooledTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{type} consult'**
+  String csPooledTitle(String type);
+
+  /// No description provided for @csPooledNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a time. You\'ll see which {type} you\'re seeing as soon as you confirm.'**
+  String csPooledNote(String type);
+
+  /// No description provided for @csIncludedNone.
+  ///
+  /// In en, this message translates to:
+  /// **'This consult isn\'t included in your plan right now.'**
+  String get csIncludedNone;
+
+  /// No description provided for @csBooked.
+  ///
+  /// In en, this message translates to:
+  /// **'Your consult is booked.'**
+  String get csBooked;
+
+  /// No description provided for @csAssignedOnConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'An available {type}, named when you confirm'**
+  String csAssignedOnConfirm(String type);
+
+  /// No description provided for @csYourClinician.
+  ///
+  /// In en, this message translates to:
+  /// **'Your clinician'**
+  String get csYourClinician;
+
+  /// No description provided for @csConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm your consult'**
+  String get csConfirmTitle;
+
+  /// No description provided for @csHoldExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Your hold has ended. Choose a time again.'**
+  String get csHoldExpired;
+
+  /// No description provided for @csHoldLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'This time is held for you for {time}.'**
+  String csHoldLeft(String time);
+
+  /// No description provided for @csConsentTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What may your clinician see?'**
+  String get csConsentTitle;
+
+  /// No description provided for @csConsentBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose what this clinician may see for this consult. You can change it until the consult starts.'**
+  String get csConsentBody;
+
+  /// No description provided for @csConsentNone.
+  ///
+  /// In en, this message translates to:
+  /// **'If you share nothing, your clinician has only what you tell them in the call.'**
+  String get csConsentNone;
+
+  /// No description provided for @csReasonTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason for the visit'**
+  String get csReasonTitle;
+
+  /// No description provided for @csReasonLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'In a few words (optional)'**
+  String get csReasonLabel;
+
+  /// No description provided for @csReasonHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Only your clinician sees this.'**
+  String get csReasonHelp;
+
+  /// No description provided for @csChooseAnotherTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose another time'**
+  String get csChooseAnotherTime;
+
+  /// No description provided for @csConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm consult'**
+  String get csConfirm;
+
+  /// No description provided for @csRelease.
+  ///
+  /// In en, this message translates to:
+  /// **'Give this time back'**
+  String get csRelease;
+
+  /// No description provided for @csBookAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Book a consult'**
+  String get csBookAction;
+
+  /// No description provided for @csUpcoming.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming'**
+  String get csUpcoming;
+
+  /// No description provided for @csNoUpcoming.
+  ///
+  /// In en, this message translates to:
+  /// **'No consults coming up. When you book one, it appears here.'**
+  String get csNoUpcoming;
+
+  /// No description provided for @csPast.
+  ///
+  /// In en, this message translates to:
+  /// **'Past'**
+  String get csPast;
+
+  /// No description provided for @csAppointmentTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Consult'**
+  String get csAppointmentTitle;
+
+  /// No description provided for @csOutcomeReleased.
+  ///
+  /// In en, this message translates to:
+  /// **'The time is free again.'**
+  String get csOutcomeReleased;
+
+  /// No description provided for @csOutcomeRefunded.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled. Your payment is being refunded in full.'**
+  String get csOutcomeRefunded;
+
+  /// No description provided for @csOutcomeUnitReturned.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled. The consult is back in your plan.'**
+  String get csOutcomeUnitReturned;
+
+  /// No description provided for @csOutcomeKept.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled. As it was close to the start, the fee or included consult is used.'**
+  String get csOutcomeKept;
+
+  /// No description provided for @csOutcomeMoved.
+  ///
+  /// In en, this message translates to:
+  /// **'Your consult has a new time.'**
+  String get csOutcomeMoved;
+
+  /// No description provided for @csOutcomeRated.
+  ///
+  /// In en, this message translates to:
+  /// **'Thank you for your rating.'**
+  String get csOutcomeRated;
+
+  /// No description provided for @csOutcomeDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Done.'**
+  String get csOutcomeDone;
+
+  /// No description provided for @csFailureWaiting.
+  ///
+  /// In en, this message translates to:
+  /// **'Thank you. Our team will look at what happened and let you know.'**
+  String get csFailureWaiting;
+
+  /// No description provided for @csFailureChoice.
+  ///
+  /// In en, this message translates to:
+  /// **'The call didn\'t work. You can take another time or get your money or consult back.'**
+  String get csFailureChoice;
+
+  /// No description provided for @csKeep.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep it'**
+  String get csKeep;
+
+  /// No description provided for @csRescheduleTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Move your consult'**
+  String get csRescheduleTitle;
+
+  /// No description provided for @csRescheduleNote.
+  ///
+  /// In en, this message translates to:
+  /// **'No charge. You can move it {count} more times.'**
+  String csRescheduleNote(int count);
+
+  /// No description provided for @csRebookTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose another time'**
+  String get csRebookTitle;
+
+  /// No description provided for @csRebookNote.
+  ///
+  /// In en, this message translates to:
+  /// **'What you paid or used carries over to the new time.'**
+  String get csRebookNote;
+
+  /// No description provided for @csReleaseBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This time will be free for others again.'**
+  String get csReleaseBody;
+
+  /// No description provided for @csCancelBodyIncluded.
+  ///
+  /// In en, this message translates to:
+  /// **'If you cancel well ahead, the consult goes back to your plan; close to the start it counts as used. You\'ll see which straight away.'**
+  String get csCancelBodyIncluded;
+
+  /// No description provided for @csCancelBodyPaid.
+  ///
+  /// In en, this message translates to:
+  /// **'If you cancel well ahead, you get a full refund; close to the start there\'s no refund. You\'ll see which straight away.'**
+  String get csCancelBodyPaid;
+
+  /// No description provided for @csCancelTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel this consult?'**
+  String get csCancelTitle;
+
+  /// No description provided for @csCancelAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel consult'**
+  String get csCancelAction;
+
+  /// No description provided for @csProposalTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept the new time?'**
+  String get csProposalTitle;
+
+  /// No description provided for @csProposalBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your consult moves to the time your clinician suggested.'**
+  String get csProposalBody;
+
+  /// No description provided for @csProposalAccept.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept'**
+  String get csProposalAccept;
+
+  /// No description provided for @csProposalLink.
+  ///
+  /// In en, this message translates to:
+  /// **'My clinician suggested another time'**
+  String get csProposalLink;
+
+  /// No description provided for @csDeclineTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Get your money or consult back?'**
+  String get csDeclineTitle;
+
+  /// No description provided for @csDeclineBody.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'ll refund what you paid, or return the consult to your plan.'**
+  String get csDeclineBody;
+
+  /// No description provided for @csDeclineAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Get my money or consult back'**
+  String get csDeclineAction;
+
+  /// No description provided for @csReportTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The call didn\'t work?'**
+  String get csReportTitle;
+
+  /// No description provided for @csReportBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Tell us and we\'ll look at what happened in the room.'**
+  String get csReportBody;
+
+  /// No description provided for @csReportAction.
+  ///
+  /// In en, this message translates to:
+  /// **'The call didn\'t work'**
+  String get csReportAction;
+
+  /// No description provided for @csPaidIncluded.
+  ///
+  /// In en, this message translates to:
+  /// **'Included in your plan'**
+  String get csPaidIncluded;
+
+  /// No description provided for @csPaidFee.
+  ///
+  /// In en, this message translates to:
+  /// **'Fee {amount} incl. GST'**
+  String csPaidFee(String amount);
+
+  /// No description provided for @csRecordingOn.
+  ///
+  /// In en, this message translates to:
+  /// **'This consult is recorded, as you agreed.'**
+  String get csRecordingOn;
+
+  /// No description provided for @csFinishBooking.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish booking'**
+  String get csFinishBooking;
+
+  /// No description provided for @csRoomOpensAt.
+  ///
+  /// In en, this message translates to:
+  /// **'The room opens at {time}.'**
+  String csRoomOpensAt(String time);
+
+  /// No description provided for @csJoin.
+  ///
+  /// In en, this message translates to:
+  /// **'Join the consult'**
+  String get csJoin;
+
+  /// No description provided for @csReschedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Move to another time'**
+  String get csReschedule;
+
+  /// No description provided for @csNoShowOffer.
+  ///
+  /// In en, this message translates to:
+  /// **'Your clinician didn\'t join. Take another time, or get your money or consult back.'**
+  String get csNoShowOffer;
+
+  /// No description provided for @csRebook.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose another time'**
+  String get csRebook;
+
+  /// No description provided for @csRate.
+  ///
+  /// In en, this message translates to:
+  /// **'Rate this consult'**
+  String get csRate;
+
+  /// No description provided for @csBookAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Book again'**
+  String get csBookAgain;
+
+  /// No description provided for @csRateTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Rate your consult'**
+  String get csRateTitle;
+
+  /// No description provided for @csRateBody.
+  ///
+  /// In en, this message translates to:
+  /// **'How was your consult? Your name is never shown with your rating.'**
+  String get csRateBody;
+
+  /// No description provided for @csRateStars.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} out of 5'**
+  String csRateStars(int count);
+
+  /// No description provided for @csRateComment.
+  ///
+  /// In en, this message translates to:
+  /// **'Anything you\'d like to add (optional)'**
+  String get csRateComment;
+
+  /// No description provided for @csRateSend.
+  ///
+  /// In en, this message translates to:
+  /// **'Send rating'**
+  String get csRateSend;
+
+  /// No description provided for @csRateChoose.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a rating to continue'**
+  String get csRateChoose;
+
+  /// No description provided for @csRecordingStopped.
+  ///
+  /// In en, this message translates to:
+  /// **'Recording stopped. What was recorded is kept as partial.'**
+  String get csRecordingStopped;
+
+  /// No description provided for @csRoomTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Consult room'**
+  String get csRoomTitle;
+
+  /// No description provided for @csRecordingMark.
+  ///
+  /// In en, this message translates to:
+  /// **'Recording'**
+  String get csRecordingMark;
+
+  /// No description provided for @csRecordingBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This consult is being recorded as you agreed. You can stop it at any time.'**
+  String get csRecordingBody;
+
+  /// No description provided for @csRecordingStop.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop recording'**
+  String get csRecordingStop;
+
+  /// No description provided for @csRoomNotOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'The room isn\'t open yet'**
+  String get csRoomNotOpen;
+
+  /// No description provided for @csRoomCheckAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Check again'**
+  String get csRoomCheckAgain;
+
+  /// No description provided for @billTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage plan'**
+  String get billTitle;
+
+  /// No description provided for @billStatusTrial.
+  ///
+  /// In en, this message translates to:
+  /// **'Free trial'**
+  String get billStatusTrial;
+
+  /// No description provided for @billStatusActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get billStatusActive;
+
+  /// No description provided for @billStatusPastDue.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment didn\'t go through'**
+  String get billStatusPastDue;
+
+  /// No description provided for @billStatusPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for payment'**
+  String get billStatusPending;
+
+  /// No description provided for @billCancelTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel your plan?'**
+  String get billCancelTitle;
+
+  /// No description provided for @billCancelBody.
+  ///
+  /// In en, this message translates to:
+  /// **'You keep {plan} until {date}. No further charge is made, and there\'s no refund for the current period. You can undo this until then.'**
+  String billCancelBody(String plan, String date);
+
+  /// No description provided for @billCancelBodyNoDate.
+  ///
+  /// In en, this message translates to:
+  /// **'You keep {plan} until the end of the current period. No further charge is made, and there\'s no refund for the current period.'**
+  String billCancelBodyNoDate(String plan);
+
+  /// No description provided for @billKeep.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep my plan'**
+  String get billKeep;
+
+  /// No description provided for @billCancelAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel plan'**
+  String get billCancelAction;
+
+  /// No description provided for @billCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Your plan ends on {date}. No further charge will be made.'**
+  String billCancelled(String date);
+
+  /// No description provided for @billUndone.
+  ///
+  /// In en, this message translates to:
+  /// **'Your plan continues.'**
+  String get billUndone;
+
+  /// No description provided for @billChangeLater.
+  ///
+  /// In en, this message translates to:
+  /// **'Your new plan starts on {date}. Until then you keep your current plan.'**
+  String billChangeLater(String date);
+
+  /// No description provided for @billChangeDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Your new plan is in force.'**
+  String get billChangeDone;
+
+  /// No description provided for @billEndsOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Ends on {date}'**
+  String billEndsOn(String date);
+
+  /// No description provided for @billRenewsOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Renews on {date}'**
+  String billRenewsOn(String date);
+
+  /// No description provided for @billValidUntil.
+  ///
+  /// In en, this message translates to:
+  /// **'Valid until {date}'**
+  String billValidUntil(String date);
+
+  /// No description provided for @billNoSubscription.
+  ///
+  /// In en, this message translates to:
+  /// **'You don\'t have a paid plan.'**
+  String get billNoSubscription;
+
+  /// No description provided for @billChange.
+  ///
+  /// In en, this message translates to:
+  /// **'Change plan'**
+  String get billChange;
+
+  /// No description provided for @billUndo.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep my plan after all'**
+  String get billUndo;
+
+  /// No description provided for @billInvoices.
+  ///
+  /// In en, this message translates to:
+  /// **'Invoices'**
+  String get billInvoices;
+
+  /// No description provided for @billInvoicesOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Invoices and credit notes'**
+  String get billInvoicesOpen;
+
+  /// No description provided for @billChangeNote.
+  ///
+  /// In en, this message translates to:
+  /// **'A plan that costs more starts when its payment goes through. One that costs less starts when your current period ends.'**
+  String get billChangeNote;
+
+  /// No description provided for @billNoOtherPlans.
+  ///
+  /// In en, this message translates to:
+  /// **'There are no other plans to move to.'**
+  String get billNoOtherPlans;
+
+  /// No description provided for @billPriceLine.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} incl. GST'**
+  String billPriceLine(String amount);
+
+  /// No description provided for @billNoInvoices.
+  ///
+  /// In en, this message translates to:
+  /// **'No invoices yet. Each payment\'s invoice appears here.'**
+  String get billNoInvoices;
+
+  /// No description provided for @billCreditNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Credit note'**
+  String get billCreditNote;
+
+  /// No description provided for @billInvoice.
+  ///
+  /// In en, this message translates to:
+  /// **'Invoice'**
+  String get billInvoice;
+
+  /// No description provided for @billFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'From'**
+  String get billFrom;
+
+  /// No description provided for @billGstin.
+  ///
+  /// In en, this message translates to:
+  /// **'GSTIN {number}'**
+  String billGstin(String number);
+
+  /// No description provided for @billTo.
+  ///
+  /// In en, this message translates to:
+  /// **'To'**
+  String get billTo;
+
+  /// No description provided for @billLines.
+  ///
+  /// In en, this message translates to:
+  /// **'Details'**
+  String get billLines;
+
+  /// No description provided for @billBeforeTax.
+  ///
+  /// In en, this message translates to:
+  /// **'Before tax'**
+  String get billBeforeTax;
+
+  /// No description provided for @billTax.
+  ///
+  /// In en, this message translates to:
+  /// **'GST at {rate}%'**
+  String billTax(String rate);
+
+  /// No description provided for @billLineTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Total'**
+  String get billLineTotal;
+
+  /// No description provided for @billTotalTax.
+  ///
+  /// In en, this message translates to:
+  /// **'Total GST'**
+  String get billTotalTax;
+
+  /// No description provided for @billTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount paid'**
+  String get billTotal;
+
+  /// No description provided for @waTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Wellness advice from your doctor'**
+  String get waTitle;
+
+  /// No description provided for @waEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Wellness advice from a doctor after a consult appears here.'**
+  String get waEmpty;
+
+  /// No description provided for @waReplaced.
+  ///
+  /// In en, this message translates to:
+  /// **'A newer advice replaces this one.'**
+  String get waReplaced;
+
+  /// No description provided for @waAssessment.
+  ///
+  /// In en, this message translates to:
+  /// **'Assessment'**
+  String get waAssessment;
+
+  /// No description provided for @waSupplements.
+  ///
+  /// In en, this message translates to:
+  /// **'Supplements'**
+  String get waSupplements;
+
+  /// No description provided for @waAdvice.
+  ///
+  /// In en, this message translates to:
+  /// **'Advice'**
+  String get waAdvice;
+
+  /// No description provided for @waSeeDoctor.
+  ///
+  /// In en, this message translates to:
+  /// **'See a doctor in person'**
+  String get waSeeDoctor;
+
+  /// No description provided for @waFollowUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow-up'**
+  String get waFollowUp;
+
+  /// No description provided for @waTests.
+  ///
+  /// In en, this message translates to:
+  /// **'Tests advised'**
+  String get waTests;
+
+  /// No description provided for @waCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Verification code {code}'**
+  String waCode(String code);
+
+  /// No description provided for @waOpenDocument.
+  ///
+  /// In en, this message translates to:
+  /// **'Open the document'**
+  String get waOpenDocument;
+
+  /// No description provided for @acctDevicesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Signed-in devices'**
+  String get acctDevicesTitle;
+
+  /// No description provided for @acctDevicesBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Where your account is signed in. End any you don\'t recognise.'**
+  String get acctDevicesBody;
+
+  /// No description provided for @acctDevicesOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'See signed-in devices'**
+  String get acctDevicesOpen;
+
+  /// No description provided for @acctThisDevice.
+  ///
+  /// In en, this message translates to:
+  /// **'This device'**
+  String get acctThisDevice;
+
+  /// No description provided for @acctLastActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Last active {time}'**
+  String acctLastActive(String time);
+
+  /// No description provided for @acctEnd.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out'**
+  String get acctEnd;
+
+  /// No description provided for @acctEnded.
+  ///
+  /// In en, this message translates to:
+  /// **'That device is signed out.'**
+  String get acctEnded;
+
+  /// No description provided for @acctEndAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out everywhere'**
+  String get acctEndAll;
+
+  /// No description provided for @acctEndAllTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out everywhere?'**
+  String get acctEndAllTitle;
+
+  /// No description provided for @acctEndAllBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Every device, this one included, is signed out. You\'ll sign in again with a code.'**
+  String get acctEndAllBody;
+
+  /// No description provided for @acctChangeNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Change mobile number'**
+  String get acctChangeNumber;
+
+  /// No description provided for @acctNumberTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Mobile number'**
+  String get acctNumberTitle;
+
+  /// No description provided for @acctNumberBody.
+  ///
+  /// In en, this message translates to:
+  /// **'First we check it\'s you with a code to your current number. Then enter your new number and the code we send to it.'**
+  String get acctNumberBody;
+
+  /// No description provided for @acctNewNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'New mobile number'**
+  String get acctNewNumber;
+
+  /// No description provided for @acctSendCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Send a code to the new number'**
+  String get acctSendCode;
+
+  /// No description provided for @acctCodeSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the code we sent to your new number.'**
+  String get acctCodeSent;
+
+  /// No description provided for @acctConfirmNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Change number'**
+  String get acctConfirmNumber;
+
+  /// No description provided for @acctNumberChanged.
+  ///
+  /// In en, this message translates to:
+  /// **'Your number is changed. Other devices are signed out.'**
+  String get acctNumberChanged;
+
+  /// No description provided for @acctPendingChange.
+  ///
+  /// In en, this message translates to:
+  /// **'A change to a number ending {ending} takes effect on {date}.'**
+  String acctPendingChange(String ending, String date);
+
+  /// No description provided for @acctCancelChange.
+  ///
+  /// In en, this message translates to:
+  /// **'This wasn\'t me: cancel it'**
+  String get acctCancelChange;
+
+  /// No description provided for @acctChangeCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'The change is cancelled.'**
+  String get acctChangeCancelled;
+
+  /// No description provided for @acctEmailBody.
+  ///
+  /// In en, this message translates to:
+  /// **'A recovery email helps you get back into your account if you lose your number. It counts once you open the link we send to it. It can\'t be used to sign in.'**
+  String get acctEmailBody;
+
+  /// No description provided for @acctEmailNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Now: {email}'**
+  String acctEmailNow(String email);
+
+  /// No description provided for @acctEmailAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a recovery email'**
+  String get acctEmailAdd;
+
+  /// No description provided for @acctEmailNew.
+  ///
+  /// In en, this message translates to:
+  /// **'New recovery email'**
+  String get acctEmailNew;
+
+  /// No description provided for @acctEmailChange.
+  ///
+  /// In en, this message translates to:
+  /// **'Change recovery email'**
+  String get acctEmailChange;
+
+  /// No description provided for @acctEmailSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Send the link'**
+  String get acctEmailSave;
+
+  /// No description provided for @acctEmailSent.
+  ///
+  /// In en, this message translates to:
+  /// **'We sent a link. Open it to finish.'**
+  String get acctEmailSent;
+
+  /// No description provided for @acctEmailRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove recovery email'**
+  String get acctEmailRemove;
+
+  /// No description provided for @acctEmailRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'Recovery email removed.'**
+  String get acctEmailRemoved;
+
+  /// No description provided for @mealsHistoryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Meal history'**
+  String get mealsHistoryTitle;
+
+  /// No description provided for @mealsHistoryEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'The days you log meals appear here.'**
+  String get mealsHistoryEmpty;
+
+  /// No description provided for @mealsHistoryCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 meal} other{{count} meals}}'**
+  String mealsHistoryCount(int count);
+
+  /// No description provided for @mealPlanTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'My meal plan'**
+  String get mealPlanTitle;
+
+  /// No description provided for @mealPlanNone.
+  ///
+  /// In en, this message translates to:
+  /// **'When your dietitian shares a meal plan with you, it appears here.'**
+  String get mealPlanNone;
+
+  /// No description provided for @mealPlanBy.
+  ///
+  /// In en, this message translates to:
+  /// **'From {name}'**
+  String mealPlanBy(String name);
+
+  /// No description provided for @mealPlanPrevDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous day'**
+  String get mealPlanPrevDay;
+
+  /// No description provided for @mealPlanNextDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Next day'**
+  String get mealPlanNextDay;
+
+  /// No description provided for @mealPlanDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Day {day} · {date}'**
+  String mealPlanDay(int day, String date);
+
+  /// No description provided for @mealPlanOr.
+  ///
+  /// In en, this message translates to:
+  /// **'Or: {options}'**
+  String mealPlanOr(String options);
+
+  /// No description provided for @mealPlanSlotEarly.
+  ///
+  /// In en, this message translates to:
+  /// **'Early morning'**
+  String get mealPlanSlotEarly;
+
+  /// No description provided for @mealPlanSlotMidMorning.
+  ///
+  /// In en, this message translates to:
+  /// **'Mid-morning'**
+  String get mealPlanSlotMidMorning;
+
+  /// No description provided for @mealPlanSlotEvening.
+  ///
+  /// In en, this message translates to:
+  /// **'Evening snack'**
+  String get mealPlanSlotEvening;
+
+  /// No description provided for @mealPlanSlotBedtime.
+  ///
+  /// In en, this message translates to:
+  /// **'Bedtime'**
+  String get mealPlanSlotBedtime;
+
+  /// No description provided for @rmPermissionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera and microphone'**
+  String get rmPermissionTitle;
+
+  /// No description provided for @rmPermissionWhy.
+  ///
+  /// In en, this message translates to:
+  /// **'To see and hear each other, the app will ask to use your camera and microphone. They\'re used only during this call, and you can turn either off at any time.'**
+  String get rmPermissionWhy;
+
+  /// No description provided for @rmAllow.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow camera and microphone'**
+  String get rmAllow;
+
+  /// No description provided for @rmAudioOnlyPermission.
+  ///
+  /// In en, this message translates to:
+  /// **'We could use your microphone but not your camera. You can still join by voice.'**
+  String get rmAudioOnlyPermission;
+
+  /// No description provided for @rmDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'The camera and microphone are blocked for Niraah. Allow them in your phone\'s settings, then try again.'**
+  String get rmDenied;
+
+  /// No description provided for @rmOpenSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Open settings'**
+  String get rmOpenSettings;
+
+  /// No description provided for @rmCameraOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera off'**
+  String get rmCameraOff;
+
+  /// No description provided for @rmJoinNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Join now'**
+  String get rmJoinNow;
+
+  /// No description provided for @rmJoining.
+  ///
+  /// In en, this message translates to:
+  /// **'Joining…'**
+  String get rmJoining;
+
+  /// No description provided for @rmWithClinician.
+  ///
+  /// In en, this message translates to:
+  /// **'Your consult with {name}'**
+  String rmWithClinician(String name);
+
+  /// No description provided for @rmYourClinician.
+  ///
+  /// In en, this message translates to:
+  /// **'your clinician'**
+  String get rmYourClinician;
+
+  /// No description provided for @rmWaitingFor.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for {name}…'**
+  String rmWaitingFor(String name);
+
+  /// No description provided for @rmWaitingNote.
+  ///
+  /// In en, this message translates to:
+  /// **'They know you\'re here. You can stay on this screen.'**
+  String get rmWaitingNote;
+
+  /// No description provided for @rmStartsAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Starts at {time}'**
+  String rmStartsAt(String time);
+
+  /// No description provided for @rmReconnecting.
+  ///
+  /// In en, this message translates to:
+  /// **'Reconnecting…'**
+  String get rmReconnecting;
+
+  /// No description provided for @rmReconnectingNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Your connection dropped. We\'re getting you back in; you don\'t need to do anything.'**
+  String get rmReconnectingNote;
+
+  /// No description provided for @rmDropped.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re no longer connected.'**
+  String get rmDropped;
+
+  /// No description provided for @rmRejoin.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejoin'**
+  String get rmRejoin;
+
+  /// No description provided for @rmWeak.
+  ///
+  /// In en, this message translates to:
+  /// **'Your connection is weak. Switching to audio only can keep the call clear.'**
+  String get rmWeak;
+
+  /// No description provided for @rmSwitchAudioOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch to audio only'**
+  String get rmSwitchAudioOnly;
+
+  /// No description provided for @rmAudioOnlyOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Audio only is on: your camera is off and incoming video is paused.'**
+  String get rmAudioOnlyOn;
+
+  /// No description provided for @rmVideoBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn video back on'**
+  String get rmVideoBack;
+
+  /// No description provided for @rmMicMute.
+  ///
+  /// In en, this message translates to:
+  /// **'Mute microphone'**
+  String get rmMicMute;
+
+  /// No description provided for @rmMicUnmute.
+  ///
+  /// In en, this message translates to:
+  /// **'Unmute microphone'**
+  String get rmMicUnmute;
+
+  /// No description provided for @rmCameraTurnOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn camera off'**
+  String get rmCameraTurnOff;
+
+  /// No description provided for @rmCameraTurnOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn camera on'**
+  String get rmCameraTurnOn;
+
+  /// No description provided for @rmSwitchCamera.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch camera'**
+  String get rmSwitchCamera;
+
+  /// No description provided for @rmLeave.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave'**
+  String get rmLeave;
+
+  /// No description provided for @rmLeaveConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave the room? You can come back while the room is open.'**
+  String get rmLeaveConfirm;
+
+  /// No description provided for @rmStay.
+  ///
+  /// In en, this message translates to:
+  /// **'Stay'**
+  String get rmStay;
+
+  /// No description provided for @rmLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ve left the room.'**
+  String get rmLeft;
+
+  /// No description provided for @rmClosed.
+  ///
+  /// In en, this message translates to:
+  /// **'The room has closed.'**
+  String get rmClosed;
+
+  /// No description provided for @rmGoBackIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Go back in'**
+  String get rmGoBackIn;
+
+  /// No description provided for @rmRemaining.
+  ///
+  /// In en, this message translates to:
+  /// **'{time} left'**
+  String rmRemaining(String time);
+
+  /// No description provided for @rmTimeUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Time is up · room closes in {time}'**
+  String rmTimeUp(String time);
+
+  /// No description provided for @rmJoinFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t connect you to the room. Check your connection and try again.'**
+  String get rmJoinFailed;
+
+  /// No description provided for @rmLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t open this room. Try again in a moment.'**
+  String get rmLoadError;
+
+  /// No description provided for @rmYou.
+  ///
+  /// In en, this message translates to:
+  /// **'You'**
+  String get rmYou;
+
+  /// No description provided for @dcLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Check camera and microphone'**
+  String get dcLink;
+
+  /// No description provided for @dcTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Device check'**
+  String get dcTitle;
+
+  /// No description provided for @dcBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Check that your camera, microphone and connection work before your consult.'**
+  String get dcBody;
+
+  /// No description provided for @dcStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Start the check'**
+  String get dcStart;
+
+  /// No description provided for @dcCamera.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera'**
+  String get dcCamera;
+
+  /// No description provided for @dcCameraOk.
+  ///
+  /// In en, this message translates to:
+  /// **'Your camera works if you can see yourself above.'**
+  String get dcCameraOk;
+
+  /// No description provided for @dcBlocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Not allowed. You can allow it in your phone\'s settings.'**
+  String get dcBlocked;
+
+  /// No description provided for @dcMicrophone.
+  ///
+  /// In en, this message translates to:
+  /// **'Microphone'**
+  String get dcMicrophone;
+
+  /// No description provided for @dcMicSpeak.
+  ///
+  /// In en, this message translates to:
+  /// **'Say something: the bar moves when your microphone hears you.'**
+  String get dcMicSpeak;
+
+  /// No description provided for @dcConnection.
+  ///
+  /// In en, this message translates to:
+  /// **'Connection'**
+  String get dcConnection;
+
+  /// No description provided for @dcTesting.
+  ///
+  /// In en, this message translates to:
+  /// **'Testing…'**
+  String get dcTesting;
+
+  /// No description provided for @dcGood.
+  ///
+  /// In en, this message translates to:
+  /// **'Good for video'**
+  String get dcGood;
+
+  /// No description provided for @dcPoor.
+  ///
+  /// In en, this message translates to:
+  /// **'Weak: video may look soft, but voice should work'**
+  String get dcPoor;
+
+  /// No description provided for @dcDown.
+  ///
+  /// In en, this message translates to:
+  /// **'Not connected'**
+  String get dcDown;
+
+  /// No description provided for @dcAllowedOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Your camera and microphone are allowed. The preview and connection test run in the room before you join.'**
+  String get dcAllowedOnly;
+
+  /// No description provided for @dcFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'The check couldn\'t start. Try again in a moment.'**
+  String get dcFailed;
+
+  /// No description provided for @clRoomTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Live class'**
+  String get clRoomTitle;
+
+  /// No description provided for @clPrivacy.
+  ///
+  /// In en, this message translates to:
+  /// **'You join with your camera and microphone off. Other members can\'t see or hear you, or see your name.'**
+  String get clPrivacy;
+
+  /// No description provided for @clWaitingInstructor.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for your instructor…'**
+  String get clWaitingInstructor;
+
+  /// No description provided for @clCameraOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Show my camera to the instructor'**
+  String get clCameraOn;
+
+  /// No description provided for @clCameraOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn my camera off'**
+  String get clCameraOff;
+
+  /// No description provided for @clCameraNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Only your instructor sees your camera, so she can help with your posture.'**
+  String get clCameraNote;
+
+  /// No description provided for @clCameraSharing.
+  ///
+  /// In en, this message translates to:
+  /// **'Your instructor can see your camera.'**
+  String get clCameraSharing;
+
+  /// No description provided for @clYourClasses.
+  ///
+  /// In en, this message translates to:
+  /// **'Your classes'**
+  String get clYourClasses;
+
+  /// No description provided for @clJoin.
+  ///
+  /// In en, this message translates to:
+  /// **'Join class'**
+  String get clJoin;
+
+  /// No description provided for @icOpenRoom.
+  ///
+  /// In en, this message translates to:
+  /// **'Open class room'**
+  String get icOpenRoom;
+
+  /// No description provided for @icCheckBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Check your camera and microphone, then start the class when the room opens.'**
+  String get icCheckBody;
+
+  /// No description provided for @icStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Start class'**
+  String get icStart;
+
+  /// No description provided for @icEnd.
+  ///
+  /// In en, this message translates to:
+  /// **'End class'**
+  String get icEnd;
+
+  /// No description provided for @icEndConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'End the class for everyone?'**
+  String get icEndConfirm;
+
+  /// No description provided for @icEnded.
+  ///
+  /// In en, this message translates to:
+  /// **'Class ended.'**
+  String get icEnded;
+
+  /// No description provided for @icPresent.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} present'**
+  String icPresent(int count);
+
+  /// No description provided for @icJoined.
+  ///
+  /// In en, this message translates to:
+  /// **'Joined: {names}'**
+  String icJoined(String names);
+
+  /// No description provided for @icNoneJoined.
+  ///
+  /// In en, this message translates to:
+  /// **'No one has joined yet.'**
+  String get icNoneJoined;
+
+  /// No description provided for @icPhaseCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{phase}: {count}'**
+  String icPhaseCount(String phase, int count);
+
+  /// No description provided for @icStudentCameras.
+  ///
+  /// In en, this message translates to:
+  /// **'Students\' cameras'**
+  String get icStudentCameras;
+
+  /// No description provided for @payConfirming.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirming your payment…'**
+  String get payConfirming;
+
+  /// No description provided for @payConfirmingNote.
+  ///
+  /// In en, this message translates to:
+  /// **'This can take a few seconds.'**
+  String get payConfirmingNote;
+
+  /// No description provided for @payPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Your payment is being confirmed. We\'ll let you know as soon as it is.'**
+  String get payPending;
+
+  /// No description provided for @payCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment not completed.'**
+  String get payCancelled;
+
+  /// No description provided for @payFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'The payment didn\'t go through. You can try again.'**
+  String get payFailed;
+
+  /// No description provided for @payLapsed.
+  ///
+  /// In en, this message translates to:
+  /// **'Your held time ran out before the payment arrived. It will be refunded to you in full.'**
+  String get payLapsed;
+
+  /// No description provided for @payDescConsult.
+  ///
+  /// In en, this message translates to:
+  /// **'Consult'**
+  String get payDescConsult;
+
+  /// No description provided for @payDescClass.
+  ///
+  /// In en, this message translates to:
+  /// **'Live class'**
+  String get payDescClass;
+
+  /// No description provided for @csPayAndConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm and pay {amount}'**
+  String csPayAndConfirm(String amount);
+
+  /// No description provided for @csPayHoldNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Your time stays held while you pay. The fee shown is the fee charged.'**
+  String get csPayHoldNote;
+
+  /// No description provided for @csPaidBooked.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid. Your consult is booked.'**
+  String get csPaidBooked;
+
+  /// No description provided for @practicePayTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay for this class?'**
+  String get practicePayTitle;
+
+  /// No description provided for @practicePayBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This class is {amount} incl. GST. Your place is held while you pay.'**
+  String practicePayBody(String amount);
+
+  /// No description provided for @practicePay.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay {amount}'**
+  String practicePay(String amount);
+
+  /// No description provided for @practiceNotNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Not now'**
+  String get practiceNotNow;
+
+  /// No description provided for @practicePaidBooked.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid. Your place is booked.'**
+  String get practicePaidBooked;
+
+  /// No description provided for @billPayTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay for the change?'**
+  String get billPayTitle;
+
+  /// No description provided for @billPayBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your new plan costs {amount} now, after credit for the unused days of your current plan. It starts when the payment is confirmed. A paid period isn\'t refunded once it has started.'**
+  String billPayBody(String amount);
+
+  /// No description provided for @billPay.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay {amount}'**
+  String billPay(String amount);
+
+  /// No description provided for @plansActive.
+  ///
+  /// In en, this message translates to:
+  /// **'{plan} is now your plan.'**
+  String plansActive(String plan);
+
+  /// No description provided for @plansTrialStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Your free trial of {plan} has started. Doctor, dietitian and live-class features begin with your first payment.'**
+  String plansTrialStarted(String plan);
+
+  /// No description provided for @plansNoRefund.
+  ///
+  /// In en, this message translates to:
+  /// **'A paid period isn\'t refunded once it has started.'**
+  String get plansNoRefund;
+
+  /// No description provided for @csTranscriptConsentTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'A written transcript of this consult'**
+  String get csTranscriptConsentTitle;
+
+  /// No description provided for @csTranscriptDraft.
+  ///
+  /// In en, this message translates to:
+  /// **'Draft wording, pending legal review'**
+  String get csTranscriptDraft;
+
+  /// No description provided for @csTranscriptConsentBody.
+  ///
+  /// In en, this message translates to:
+  /// **'If you agree, the audio of this consult is sent to Sarvam AI to be written up as text, and the audio is then deleted. You, this specialist, your doctor or dietitian caring for you now, and a Niraah super admin (only for a complaint, dispute or legal request) can read the transcript. It is kept for up to 3 years. You can still have your consult if you say no.'**
+  String get csTranscriptConsentBody;
+
+  /// No description provided for @csTranscriptConsentYes.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes, make a transcript of this consult'**
+  String get csTranscriptConsentYes;
+
+  /// No description provided for @csTranscriptTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Consult transcript'**
+  String get csTranscriptTitle;
+
+  /// No description provided for @csTranscriptRead.
+  ///
+  /// In en, this message translates to:
+  /// **'Read the transcript'**
+  String get csTranscriptRead;
+
+  /// No description provided for @csTranscriptPending.
+  ///
+  /// In en, this message translates to:
+  /// **'The transcript is being written up. Check back a little later.'**
+  String get csTranscriptPending;
+
+  /// No description provided for @csTranscriptFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'We could not make a transcript of this consult.'**
+  String get csTranscriptFailed;
+
+  /// No description provided for @csTranscriptNone.
+  ///
+  /// In en, this message translates to:
+  /// **'There is no transcript for this consult.'**
+  String get csTranscriptNone;
+
+  /// No description provided for @csTranscriptUnverified.
+  ///
+  /// In en, this message translates to:
+  /// **'Machine-made transcript, not checked by a person. It may contain errors, especially in mixed-language speech.'**
+  String get csTranscriptUnverified;
+
+  /// No description provided for @csTranscriptPartial.
+  ///
+  /// In en, this message translates to:
+  /// **'The recording was stopped part-way, so this covers only the start of the consult.'**
+  String get csTranscriptPartial;
+
+  /// No description provided for @csTranscriptWhoReads.
+  ///
+  /// In en, this message translates to:
+  /// **'You, this specialist and your doctor or dietitian caring for you now can read it.'**
+  String get csTranscriptWhoReads;
+
+  /// No description provided for @csTranscriptYou.
+  ///
+  /// In en, this message translates to:
+  /// **'You'**
+  String get csTranscriptYou;
+
+  /// No description provided for @csTranscriptMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Member'**
+  String get csTranscriptMember;
+
+  /// No description provided for @csTranscriptDoctor.
+  ///
+  /// In en, this message translates to:
+  /// **'Doctor'**
+  String get csTranscriptDoctor;
+
+  /// No description provided for @csTranscriptDietitian.
+  ///
+  /// In en, this message translates to:
+  /// **'Dietitian'**
+  String get csTranscriptDietitian;
+
+  /// No description provided for @csTranscriptMissing.
+  ///
+  /// In en, this message translates to:
+  /// **'The {who}\'s voice could not be transcribed.'**
+  String csTranscriptMissing(String who);
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

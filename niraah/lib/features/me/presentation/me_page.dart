@@ -105,6 +105,9 @@ class _MePageState extends State<MePage> {
                   if (!w.teen) ...<Widget>[
                     NSectionTitle(s.meYourPlan),
                     _PlanCard(plan: d.plan),
+                    // Manage plan: renewal, change, cancel and invoices (spec 010 §5.6; spec 008 §4, §8.6).
+                    const SizedBox(height: NSpace.xs),
+                    _Row(icon: Icons.receipt_long_outlined, text: s.billTitle, onTap: () => context.push(RouteConstants.managePlan)),
                   ],
                   NSectionTitle(s.meAreas),
                   for (final (String key, String route) in meAreas)
@@ -123,12 +126,20 @@ class _MePageState extends State<MePage> {
                     _Row(icon: Icons.forum_outlined, text: s.msgTitle, onTap: () => context.push(RouteConstants.messages)),
                     const SizedBox(height: NSpace.xs),
                   ],
+                  // Her consults, upcoming and past (spec 010 §9.3), alongside the specialist area.
+                  if (w.area('specialists') != null) ...<Widget>[
+                    _Row(icon: Icons.event_note_rounded, text: s.csAppointmentsTitle, onTap: () => context.push(RouteConstants.appointments)),
+                    const SizedBox(height: NSpace.xs),
+                  ],
                   NSectionTitle(s.meSettings),
                   _Row(icon: Icons.person_outline_rounded, text: s.profileTitle, onTap: () => context.push(RouteConstants.profile)),
                   const SizedBox(height: NSpace.xs),
                   _Row(icon: Icons.shield_outlined, text: s.privacyTitle, onTap: () => context.push(RouteConstants.privacy)),
                   const SizedBox(height: NSpace.xs),
                   _Row(icon: Icons.notifications_none_rounded, text: s.notifTitle, onTap: () => context.push(RouteConstants.notificationSettings)),
+                  const SizedBox(height: NSpace.xs),
+                  // Signed-in devices (spec 003 "Sessions" 7, 8; spec 010 §13 "Privacy" 7).
+                  _Row(icon: Icons.devices_rounded, text: s.acctDevicesTitle, onTap: () => context.push(RouteConstants.signedInDevices)),
                   const SizedBox(height: NSpace.lg),
                   OutlinedButton.icon(onPressed: _signOut, icon: const Icon(Icons.logout_rounded), label: Text(s.pvSignOut)),
                   const SizedBox(height: NSpace.lg),

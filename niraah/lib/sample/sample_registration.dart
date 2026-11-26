@@ -2,12 +2,16 @@
 
 import 'package:get_it/get_it.dart';
 
+import '../app/device_services.dart';
 import '../app/unavailable_member_areas.dart';
+import '../features/account/domain/account.dart';
 import '../features/assessment/domain/assessment_repository.dart';
 import '../features/auth/domain/auth_repository.dart';
+import '../features/billing/domain/billing.dart';
 import '../features/care/domain/care.dart';
 import '../features/chat/domain/chat.dart';
 import '../features/community/domain/community.dart';
+import '../features/consults/domain/consults.dart';
 import '../features/cycle/domain/cycle.dart';
 import '../features/dietitian/dietitian_repository.dart';
 import '../features/doctor/domain/doctor.dart';
@@ -25,6 +29,7 @@ import '../features/provider_auth/application_repository.dart';
 import '../features/provider_auth/domain/provider_auth.dart';
 import '../features/provider_work/domain/provider_work.dart';
 import '../features/symptoms/domain/symptoms.dart';
+import '../features/wellness_advice/domain/wellness_advice.dart';
 import 'sample_backend.dart';
 import 'sample_chat_repository.dart';
 import 'sample_cycle_repository.dart';
@@ -65,5 +70,12 @@ void registerSampleRepositories(GetIt getIt) {
     ..registerLazySingleton<DoctorWorkRepository>(UnavailableDoctorWorkRepository.new)
     ..registerLazySingleton<DietitianRepository>(UnavailableDietitianRepository.new)
     ..registerLazySingleton<InstructorRepository>(UnavailableInstructorRepository.new)
-    ..registerLazySingleton<ProviderApplicationRepository>(UnavailableProviderApplicationRepository.new);
+    ..registerLazySingleton<ProviderApplicationRepository>(UnavailableProviderApplicationRepository.new)
+    // Consults, wellness advice, billing and sign-in settings exist only on the real API (constitution §2 rule 6).
+    ..registerLazySingleton<ConsultsRepository>(UnavailableConsultsRepository.new)
+    ..registerLazySingleton<WellnessAdviceRepository>(UnavailableWellnessAdviceRepository.new)
+    ..registerLazySingleton<BillingRepository>(UnavailableBillingRepository.new)
+    ..registerLazySingleton<AccountRepository>(UnavailableAccountRepository.new);
+  // Video and the payment checkout: no sample reaches a room (no tokens) or takes a payment.
+  registerDeviceServices(getIt, payments: false);
 }

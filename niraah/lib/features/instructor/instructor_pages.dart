@@ -120,7 +120,11 @@ class _InstructorHomePageState extends State<InstructorHomePage> {
                           '${_when(context, c.str('startsAt'))} · ${s.inBooked(c.integer('booked'), c.integer('capacity'))} · ${classStatus(s, c.str('status'))}',
                           style: NType.caption.copyWith(color: NColors.inkSecondary),
                         ),
-                        if (c.flag('startable')) Text(s.inStartOnWeb, style: NType.caption.copyWith(color: NColors.inkMuted)),
+                        if (c.flag('startable'))
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: TextButton(onPressed: () => context.push('/instructor/sessions/${c.str('id')}/room'), child: Text(s.icOpenRoom)),
+                          ),
                       ],
                     ),
                   ),
@@ -324,10 +328,11 @@ class _ClassPageState extends State<ClassPage> {
               ],
               if (status == 'completed' && !c.flag('attendanceConfirmed') && c.flag('attendanceCorrectable'))
                 NPrimaryButton(label: s.inConfirmAttendance, onPressed: () => _act(() => _repo.confirmAttendance(widget.classId), s.inAttendanceConfirmed)),
+              // The class room and console (spec 013 §4; spec 014 §8). The server says when the room is open.
               if (status == 'scheduled' || status == 'live')
                 Padding(
                   padding: const EdgeInsets.only(top: NSpace.sm),
-                  child: Text(s.inStartOnWeb, style: NType.caption.copyWith(color: NColors.inkMuted)),
+                  child: NSecondaryButton(label: s.icOpenRoom, onPressed: () => context.push('/instructor/sessions/${widget.classId}/room')),
                 ),
             ],
           );

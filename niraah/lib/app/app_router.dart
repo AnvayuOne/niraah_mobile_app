@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../core/di/service_locator.dart';
+import '../features/account/presentation/account_pages.dart';
 import '../features/assessment/presentation/pages/assessment_start_page.dart';
 import '../features/assessment/presentation/pages/minimum_age_page.dart';
 import '../features/assessment/presentation/pages/prescore_page.dart';
@@ -14,10 +15,16 @@ import '../features/auth/presentation/pages/code_page.dart';
 import '../features/auth/presentation/pages/password_page.dart';
 import '../features/auth/presentation/pages/second_check_page.dart';
 import '../features/auth/presentation/pages/sign_in_page.dart';
+import '../features/billing/presentation/manage_plan_page.dart';
 import '../features/care/presentation/care_pages.dart';
 import '../features/chat/presentation/chat_home_page.dart';
 import '../features/chat/presentation/conversation_page.dart';
 import '../features/community/presentation/community_pages.dart';
+import '../features/consults/presentation/appointments_pages.dart';
+import '../features/consults/presentation/booking_pages.dart';
+import '../features/consults/presentation/consult_room_page.dart';
+import '../features/consults/presentation/device_check_page.dart';
+import '../features/consults/presentation/specialists_page.dart';
 import '../features/cycle/presentation/cycle_page.dart';
 import '../features/dietitian/dietitian_pages.dart';
 import '../features/dietitian/meal_plan_pages.dart';
@@ -33,6 +40,7 @@ import '../features/doctor/presentation/wellness_advice_pages.dart';
 import '../features/home/domain/home.dart';
 import '../features/home/presentation/area_coming_soon_page.dart';
 import '../features/home/presentation/home_page.dart';
+import '../features/instructor/class_console_page.dart';
 import '../features/instructor/instructor_pages.dart';
 import '../features/labs/presentation/labs_pages.dart';
 import '../features/me/presentation/me_page.dart';
@@ -46,6 +54,7 @@ import '../features/onboarding/presentation/pages/intro_page.dart';
 import '../features/onboarding/presentation/pages/splash_page.dart';
 import '../features/onboarding/presentation/pages/welcome_page.dart';
 import '../features/plans/presentation/plans_page.dart';
+import '../features/practice/presentation/class_room_page.dart';
 import '../features/practice/presentation/practice_page.dart';
 import '../features/practice/presentation/practice_pages.dart';
 import '../features/provider_auth/domain/provider_auth.dart';
@@ -55,6 +64,7 @@ import '../features/provider_auth/presentation/reenrol_page.dart';
 import '../features/provider_auth/presentation/setup_page.dart';
 import '../features/provider_work/presentation/provider_work_pages.dart';
 import '../features/symptoms/presentation/symptoms_page.dart';
+import '../features/wellness_advice/presentation/wellness_advice_pages.dart';
 import '../shared/constants/route_constants.dart';
 import '../shared/widgets/coming_soon_page.dart';
 
@@ -122,7 +132,25 @@ class AppRouter {
           GoRoute(path: RouteConstants.labs, builder: (_, _) => const LabsPage()),
           GoRoute(path: RouteConstants.community, builder: (_, _) => const CommunityPage()),
           GoRoute(path: RouteConstants.messages, builder: (_, _) => const ThreadsPage()),
-          GoRoute(path: RouteConstants.bookDoctor, builder: (_, _) => const ComingSoonPage()),
+          // Find a specialist, booking, appointments and the room (spec 014; spec 010 §9).
+          GoRoute(path: RouteConstants.bookDoctor, builder: (_, _) => const FindSpecialistPage()),
+          GoRoute(path: '${RouteConstants.bookDoctor}/:id', builder: (_, GoRouterState st) => SpecialistPage(specialistId: st.pathParameters['id']!)),
+          GoRoute(path: RouteConstants.bookPooled, builder: (_, GoRouterState st) => PooledBookingPage(type: st.uri.queryParameters['type'] == 'dietitian' ? 'dietitian' : 'doctor')),
+          GoRoute(path: RouteConstants.appointments, builder: (_, _) => const AppointmentsPage()),
+          GoRoute(path: '${RouteConstants.appointments}/:id', builder: (_, GoRouterState st) => AppointmentPage(appointmentId: st.pathParameters['id']!)),
+          GoRoute(path: '${RouteConstants.appointments}/:id/room', builder: (_, GoRouterState st) => ConsultRoomPage(appointmentId: st.pathParameters['id']!)),
+          GoRoute(path: RouteConstants.deviceCheck, builder: (_, _) => const DeviceCheckPage()),
+          // A live class room (spec 014 §8).
+          GoRoute(path: '${RouteConstants.classes}/:id/room', builder: (_, GoRouterState st) => ClassRoomPage(classId: st.pathParameters['id']!)),
+          GoRoute(path: RouteConstants.wellnessAdvice, builder: (_, _) => const WellnessAdviceListPage()),
+          // Manage plan and invoices (spec 008 §4, §8).
+          GoRoute(path: RouteConstants.managePlan, builder: (_, _) => const ManagePlanPage()),
+          GoRoute(path: RouteConstants.invoices, builder: (_, _) => const InvoicesPage()),
+          // Sign-in settings (spec 003).
+          GoRoute(path: RouteConstants.signedInDevices, builder: (_, _) => const SignedInDevicesPage()),
+          GoRoute(path: RouteConstants.changeNumber, builder: (_, _) => const ChangeNumberPage()),
+          GoRoute(path: RouteConstants.recoveryEmail, builder: (_, GoRouterState st) => RecoveryEmailPage(current: st.extra is String ? st.extra! as String : null)),
+          // No spec describes a support screen yet.
           GoRoute(path: RouteConstants.support, builder: (_, _) => const ComingSoonPage()),
 
           // Provider sign-in and set-up (spec 003).
@@ -161,6 +189,7 @@ class AppRouter {
             routes: <RouteBase>[
               GoRoute(path: 'sessions', builder: (_, _) => const SessionsPage()),
               GoRoute(path: 'sessions/:id', builder: (_, GoRouterState st) => ClassPage(classId: st.pathParameters['id']!)),
+              GoRoute(path: 'sessions/:id/room', builder: (_, GoRouterState st) => ClassConsolePage(classId: st.pathParameters['id']!)),
               GoRoute(path: 'students', builder: (_, _) => const StudentsPage()),
               GoRoute(path: 'library', builder: (_, _) => const LibraryPage()),
               GoRoute(path: 'more', builder: (_, _) => const InstructorMorePage()),

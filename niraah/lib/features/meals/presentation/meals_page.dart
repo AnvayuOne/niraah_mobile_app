@@ -10,6 +10,7 @@ import '../../../design_system/widgets/n_button.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../shared/constants/route_constants.dart';
 import '../domain/meals.dart';
+import 'meal_plan_pages.dart';
 import 'meal_widgets.dart';
 
 /// Today's meal log (spec 010 §6 rule 5): each meal with its dishes and the day's totals, all from the food table.
@@ -36,7 +37,23 @@ class _MealsPageState extends State<MealsPage> {
     final S s = S.of(context);
     return Scaffold(
       backgroundColor: NColors.surfacePage,
-      appBar: AppBar(title: Text(s.mealsTitle), backgroundColor: NColors.surfacePage),
+      appBar: AppBar(
+        title: Text(s.mealsTitle),
+        backgroundColor: NColors.surfacePage,
+        actions: <Widget>[
+          // Her dietitian's plan and her history (spec 010 §6 rule 5; spec 012 §4).
+          IconButton(
+            tooltip: s.mealPlanTitle,
+            icon: const Icon(Icons.restaurant_menu_rounded),
+            onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => MealPlanPage(repository: _repo))),
+          ),
+          IconButton(
+            tooltip: s.mealsHistoryTitle,
+            icon: const Icon(Icons.history_rounded),
+            onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => MealHistoryPage(repository: _repo))),
+          ),
+        ],
+      ),
       floatingActionButton: FloatingActionButton.extended(onPressed: _scan, icon: const Icon(Icons.photo_camera_rounded), label: Text(s.mealsScanAction)),
       body: SafeArea(
         child: FutureBuilder<MealDay>(

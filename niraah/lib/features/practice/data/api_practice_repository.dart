@@ -1,4 +1,5 @@
 import '../../../core/network/niraah_api.dart';
+import '../../../core/payments/payment_checkout.dart';
 import '../../../shared/area/area_access.dart';
 import '../domain/practice.dart';
 
@@ -77,9 +78,38 @@ class ApiPracticeRepository implements PracticeRepository {
 
   @override
   Future<BookingOutcome> book(String classId) async {
-    final Map<String, dynamic> r = (await _api.post('/classes/${Uri.encodeComponent(classId)}/book', <String, dynamic>{'payWith': 'included'})).orArea();
-    return r['status'] == 'booked' ? BookingOutcome.booked : BookingOutcome.paymentNeeded;
+    // No `payWith`: the server uses a unit when she has one, else holds the place with an order for the fee (core
+    // `Classes.book`), and refuses when there is neither.
+    final Map<String, dynamic> r = (await _api.post('/classes/${Uri.encodeComponent(classId)}/book', <String, dynamic>{})).orArea();
+    if (r['status'] == 'booked') return const ClassBooked();
+    final Checkout? checkout = Checkout.fromJson(r['checkout']);
+    return ClassPaymentNeeded(bookingId: '${r['bookingId']}', amountPaise: checkout?.amountPaise ?? 0, checkout: checkout);
   }
+
+  @override
+  Future<List<ClassBooking>> classBookings() async {
+    final Map<String, dynamic> r = (await _api.get('/me/class-bookings')).orArea();
+    return <ClassBooking>[
+      for (final dynamic b in r['bookings'] as List<dynamic>)
+        ClassBooking(
+          id: '${(b as Map<String, dynamic>)['id']}',
+          classId: '${b['classId']}',
+          status: '${b['status']}',
+          title: '${b['title']}',
+          startsAt: DateTime.parse(b['startsAt'] as String).toLocal(),
+          endsAt: DateTime.parse(b['endsAt'] as String).toLocal(),
+        ),
+    ];
+  }
+
+  @override
+  Future<String> cancelBooking(String bookingId) async => '${(await _api.post('/class-bookings/${Uri.encodeComponent(bookingId)}/cancel')).orArea()['outcome']}';
+
+  @override
+  Future<ClassRoomAccess> roomToken(String classId) async => ClassRoomAccess.from(await _api.post('/classes/${Uri.encodeComponent(classId)}/room-token'));
+
+  @override
+  Future<ChannelToken> cameraToken(String classId) async => ChannelToken.parse((await _api.post('/classes/${Uri.encodeComponent(classId)}/camera-token')).orThrow());
 
   static List<PracticeSession> _sessions(Object? list) => <PracticeSession>[for (final dynamic s in list as List<dynamic>) _session(s as Map<String, dynamic>)];
 

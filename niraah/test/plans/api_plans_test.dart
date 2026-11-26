@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:niraah/core/auth/session_store.dart';
 import 'package:niraah/core/network/niraah_api.dart';
+import 'package:niraah/core/payments/payment_checkout.dart';
 import 'package:niraah/features/plans/data/api_plans_repository.dart';
 import 'package:niraah/features/plans/domain/plan.dart';
 import 'package:niraah/shared/helpers/result.dart';
@@ -65,9 +66,11 @@ void main() {
       (200, checkout),
       (409, <String, dynamic>{'error': <String, dynamic>{'code': 'conflict', 'message': 'You already have a plan. Change plan instead.'}, 'requestId': 'r'}),
     ]);
-    expect((await repo.choose('price-1') as Success<bool>).data, isTrue);
-    expect((await repo.choose('price-1') as Success<bool>).data, isFalse);
-    expect((await repo.choose('price-1') as FailureResult<bool>).message, 'You already have a plan. Change plan instead.');
+    expect((await repo.choose('price-1') as Success<PlanChoice>).data, isA<PlanActive>());
+    final PlanChoice open = (await repo.choose('price-1') as Success<PlanChoice>).data;
+    // The checkout the app opens: the server's subscription and public key, never an amount from the app (spec 008 AC1).
+    expect((open as PlanCheckout).checkout, const Checkout(kind: 'subscription', gatewayRef: 'sub_1', keyId: 'k', amountPaise: 99900, subscriptionId: 's1', trialDays: 7));
+    expect((await repo.choose('price-1') as FailureResult<PlanChoice>).message, 'You already have a plan. Change plan instead.');
     expect(adapter.requests.first.data, <String, dynamic>{'priceId': 'price-1'});
     expect(adapter.requests.first.path, '/me/subscription');
   });

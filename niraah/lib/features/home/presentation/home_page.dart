@@ -502,7 +502,7 @@ class _NextCard extends StatelessWidget {
     final S s = S.of(context);
     final String when = DateFormat('EEE d MMM, h:mm a', Localizations.localeOf(context).toString()).format(next.startsAt);
     final String what = next.isClass ? (next.title ?? s.homeNextClass) : (next.withName == null ? s.homeNextConsult : s.homeNextConsultWith(next.withName!));
-    return _Card(
+    final Widget card = _Card(
       child: Row(
         children: <Widget>[
           Icon(next.isClass ? Icons.self_improvement_rounded : Icons.event_rounded, color: NColors.inkSecondary),
@@ -517,7 +517,18 @@ class _NextCard extends StatelessWidget {
               ],
             ),
           ),
+          if (!next.isClass) const Icon(Icons.chevron_right_rounded, color: NColors.inkMuted),
         ],
+      ),
+    );
+    if (next.isClass) return card;
+    // A consult opens her appointments (spec 010 §9.3; spec 014).
+    return Semantics(
+      button: true,
+      label: '$what, $when',
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(borderRadius: BorderRadius.circular(NRadius.xl), onTap: () => context.push(RouteConstants.appointments), child: card),
       ),
     );
   }

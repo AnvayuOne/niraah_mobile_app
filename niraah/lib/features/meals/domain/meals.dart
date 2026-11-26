@@ -163,4 +163,78 @@ abstract class MealsRepository {
   Future<Meal> save({required DateTime eatenAt, required MealSlot slot, required bool fromScan, required List<MealItemInput> items});
 
   Future<MealDay> today();
+
+  /// Days with meals logged in the last 30 days, newest first.
+  Future<List<MealHistoryDay>> history();
+
+  /// Her active meal plan from her dietitian, or null when she has none.
+  Future<MealPlan?> mealPlan();
+}
+
+/// A day with meals logged, from `GET /me/meals/history` (spec 010 §6 rule 5: "a history").
+class MealHistoryDay extends Equatable {
+  const MealHistoryDay({required this.day, required this.meals});
+
+  /// `YYYY-MM-DD` in her time zone.
+  final String day;
+  final int meals;
+
+  @override
+  List<Object?> get props => <Object?>[day, meals];
+}
+
+/// One dish on her dietitian's meal plan, in household units, with the dietitian's note and alternatives.
+class MealPlanItem extends Equatable {
+  const MealPlanItem({required this.name, required this.count, required this.unit, required this.nutrients, this.notes, this.alternatives = const <String>[]});
+
+  final String name;
+  final double count;
+  final String unit;
+  final Nutrients nutrients;
+  final String? notes;
+  final List<String> alternatives;
+
+  @override
+  List<Object?> get props => <Object?>[name, count, unit, nutrients, notes, alternatives];
+}
+
+class MealPlanSlot extends Equatable {
+  const MealPlanSlot({required this.slot, required this.items, required this.totals});
+
+  /// `early_morning`, `breakfast`, `mid_morning`, `lunch`, `evening_snack`, `dinner` or `bedtime`.
+  final String slot;
+  final List<MealPlanItem> items;
+  final Nutrients totals;
+
+  @override
+  List<Object?> get props => <Object?>[slot, items, totals];
+}
+
+class MealPlanDay extends Equatable {
+  const MealPlanDay({required this.dayIndex, required this.date, required this.note, required this.slots, required this.totals});
+
+  final int dayIndex;
+  final String date;
+  final String? note;
+  final List<MealPlanSlot> slots;
+  final Nutrients totals;
+
+  @override
+  List<Object?> get props => <Object?>[dayIndex, date, note, slots, totals];
+}
+
+/// Her active meal plan from her dietitian (spec 012 §4 "Publishing" 2, AC12; spec 010 §6 rule 5), never a draft.
+/// Energy figures are absent when calorie content is suppressed for her (spec 012 AC16).
+class MealPlan extends Equatable {
+  const MealPlan({required this.id, required this.title, required this.startDate, required this.endDate, required this.dietitian, required this.days});
+
+  final String id;
+  final String? title;
+  final String startDate;
+  final String? endDate;
+  final String? dietitian;
+  final List<MealPlanDay> days;
+
+  @override
+  List<Object?> get props => <Object?>[id, title, startDate, endDate, dietitian, days];
 }

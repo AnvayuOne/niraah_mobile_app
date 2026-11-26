@@ -1,4 +1,5 @@
 import '../../../core/network/niraah_api.dart';
+import '../../../core/payments/payment_checkout.dart';
 import '../../../shared/helpers/result.dart';
 import '../domain/plan.dart';
 
@@ -19,14 +20,25 @@ class ApiPlansRepository implements PlansRepository {
   }
 
   /// `POST /me/subscription`, matching apps/web/src/api/plans-repository.ts `choose`. Locally with payment
-  /// skipped the plan is active at once (plan 008); otherwise the answer is a gateway checkout the app does not open yet.
+  /// skipped the plan is active at once (plan 008); otherwise the answer is the gateway's checkout (contracts
+  /// `Checkout`), with the amount and the public key from the server (spec 008 AC1).
   @override
-  Future<Result<bool>> choose(String priceId) async {
+  Future<Result<PlanChoice>> choose(String priceId) async {
     final ApiResult<Map<String, dynamic>> r = await _api.post('/me/subscription', <String, dynamic>{'priceId': priceId});
-    return switch (r) {
-      ApiOk<Map<String, dynamic>>(:final Map<String, dynamic> data) => Success<bool>(data['skippedPayment'] == true),
-      ApiFail<Map<String, dynamic>>(:final ApiError error) => FailureResult<bool>(error.message),
-    };
+    switch (r) {
+      case ApiOk<Map<String, dynamic>>(:final Map<String, dynamic> data):
+        if (data['skippedPayment'] == true) return const Success<PlanChoice>(PlanActive());
+        final Checkout? c = Checkout.fromJson(data);
+        return c == null ? const Success<PlanChoice>(PlanPaymentUnavailable()) : Success<PlanChoice>(PlanCheckout(c));
+      case ApiFail<Map<String, dynamic>>(:final ApiError error):
+        return FailureResult<PlanChoice>(error.message);
+    }
+  }
+
+  @override
+  Future<SubscriptionCheck> subscriptionStatus(String subscriptionId) async {
+    final Map<String, dynamic> r = (await _api.get('/me/subscription/${Uri.encodeComponent(subscriptionId)}')).orThrow();
+    return SubscriptionCheck(status: '${r['status']}', confirmed: r['confirmed'] == true);
   }
 
   static PlansOffer parse(Map<String, dynamic> json, {String? currentPlanId}) {

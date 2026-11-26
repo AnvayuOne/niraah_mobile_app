@@ -1176,7 +1176,6 @@
   "practiceClassFull": "This class is full",
   "practiceBook": "Book a place",
   "practiceBooked": "Your place is booked",
-  "practicePayOnWeb": "This class needs a payment, which the app can't take yet.",
   "meYourPlan": "Your plan",
   "meNoPlan": "No plan yet",
   "mePlanRenews": "Renews on {date}",
@@ -2317,7 +2316,6 @@
       }
     }
   },
-  "inStartOnWeb": "Starting and running a class isn't in the app yet.",
   "inRequests": "Student requests waiting",
   "inAttendanceToConfirm": "Attendance to confirm",
   "inContentReturned": "Sessions returned by a reviewer",
@@ -2533,5 +2531,752 @@
   "signInNeedNumber": "Members sign in with a mobile number.",
   "signInNeedEmail": "Enter your email address.",
   "signInEnterNumber": "Enter your mobile number",
-  "signInEnterEmail": "Enter your email"
+  "signInEnterEmail": "Enter your email",
+  "csTypeDoctor": "Doctor",
+  "csTypeDietitian": "Dietitian",
+  "csStatusHeld": "Being booked",
+  "csStatusConfirmed": "Booked",
+  "csStatusInProgress": "In progress",
+  "csStatusCompleted": "Done",
+  "csStatusCancelled": "Cancelled",
+  "csStatusNoShow": "Didn't take place",
+  "csStatusExpired": "Not completed",
+  "csCatHealth": "My health information",
+  "csCatAssessment": "My assessment and pre-score",
+  "csCatCycle": "My cycle and symptoms",
+  "csCatMeals": "My meals",
+  "csCatLabs": "My lab reports",
+  "csCatMessages": "My messages",
+  "csEarlier": "Earlier",
+  "csLater": "Later",
+  "csNoTimesThisWeek": "No free times in these days.",
+  "csChooseTime": "Choose {time}",
+  "@csChooseTime": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "csWellness": "A consult is how you reach a doctor or dietitian through Niraah. Niraah supports your wellbeing and does not replace your own doctor. For anything urgent, seek care near you.",
+  "csFindTitle": "Find a specialist",
+  "csAppointmentsTitle": "Appointments",
+  "csNoneBookable": "No specialist has free time right now. Please look again later.",
+  "csNoneFound": "No specialist matches these filters.",
+  "csClearFilters": "Clear filters",
+  "csGuideTitle": "Not sure who to see?",
+  "csGuideBody": "Tell us what's on your mind and we'll suggest a kind of specialist.",
+  "csIncludedUnlimited": "{type} consults are included in your plan",
+  "@csIncludedUnlimited": {
+    "placeholders": {
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "csIncludedLeft": "{type} consults included: {count} left",
+  "@csIncludedLeft": {
+    "placeholders": {
+      "type": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "csIncludedPooled": "Choose a time and you'll see an available {type}.",
+  "@csIncludedPooled": {
+    "placeholders": {
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "csChooseATime": "Choose a time",
+  "csIncludedUsedUp": "You've used this period's included consults. You can still book a consult with a fee.",
+  "csIncludedRefills": "You've used this period's included consults. They refill on {date}.",
+  "@csIncludedRefills": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "csFilterAll": "All",
+  "csFilterDoctors": "Doctors",
+  "csFilterDietitians": "Dietitians",
+  "csMoreFilters": "More filters",
+  "csMoreFiltersOn": "More filters ({count})",
+  "@csMoreFiltersOn": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "csFilterSpeciality": "Speciality",
+  "csFilterLanguage": "Language",
+  "csFilterDay": "Any day",
+  "csFilterDayOn": "Free on {date}",
+  "@csFilterDayOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "csApplyFilters": "Show specialists",
+  "csYears": "{years} years' experience",
+  "@csYears": {
+    "placeholders": {
+      "years": {
+        "type": "int"
+      }
+    }
+  },
+  "csSpeaks": "Speaks {languages}",
+  "@csSpeaks": {
+    "placeholders": {
+      "languages": {
+        "type": "String"
+      }
+    }
+  },
+  "csNextFree": "Next free: {time}",
+  "@csNextFree": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "csFee": "{amount} incl. GST",
+  "@csFee": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "csRating": "Rated {average} by {count} members",
+  "@csRating": {
+    "placeholders": {
+      "average": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "csGuideIntro": "Describe your concern in a few words. We suggest a kind of specialist; we never name a person or a diagnosis.",
+  "csGuideConcern": "What would you like help with?",
+  "csGuideAsk": "Suggest a specialist",
+  "csGuideAnswer": "You could see",
+  "csGuideNone": "We couldn't suggest a kind of specialist for this. A doctor is a good place to start.",
+  "csGuideByAi": "Suggested by AI. AI insights do not replace medical advice.",
+  "csProfileTitle": "Specialist",
+  "csTimes": "Free times",
+  "csNoTimes": "No times available right now.",
+  "csIncludedThis": "Included in your plan",
+  "csSeeOtherClinicians": "See other times",
+  "csRegistration": "Registration {number}, {council}",
+  "@csRegistration": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      },
+      "council": {
+        "type": "String"
+      }
+    }
+  },
+  "csPooledTitle": "{type} consult",
+  "@csPooledTitle": {
+    "placeholders": {
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "csPooledNote": "Choose a time. You'll see which {type} you're seeing as soon as you confirm.",
+  "@csPooledNote": {
+    "placeholders": {
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "csIncludedNone": "This consult isn't included in your plan right now.",
+  "csBooked": "Your consult is booked.",
+  "csAssignedOnConfirm": "An available {type}, named when you confirm",
+  "@csAssignedOnConfirm": {
+    "placeholders": {
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "csYourClinician": "Your clinician",
+  "csConfirmTitle": "Confirm your consult",
+  "csHoldExpired": "Your hold has ended. Choose a time again.",
+  "csHoldLeft": "This time is held for you for {time}.",
+  "@csHoldLeft": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "csConsentTitle": "What may your clinician see?",
+  "csConsentBody": "Choose what this clinician may see for this consult. You can change it until the consult starts.",
+  "csConsentNone": "If you share nothing, your clinician has only what you tell them in the call.",
+  "csReasonTitle": "Reason for the visit",
+  "csReasonLabel": "In a few words (optional)",
+  "csReasonHelp": "Only your clinician sees this.",
+  "csChooseAnotherTime": "Choose another time",
+  "csConfirm": "Confirm consult",
+  "csRelease": "Give this time back",
+  "csBookAction": "Book a consult",
+  "csUpcoming": "Upcoming",
+  "csNoUpcoming": "No consults coming up. When you book one, it appears here.",
+  "csPast": "Past",
+  "csAppointmentTitle": "Consult",
+  "csOutcomeReleased": "The time is free again.",
+  "csOutcomeRefunded": "Cancelled. Your payment is being refunded in full.",
+  "csOutcomeUnitReturned": "Cancelled. The consult is back in your plan.",
+  "csOutcomeKept": "Cancelled. As it was close to the start, the fee or included consult is used.",
+  "csOutcomeMoved": "Your consult has a new time.",
+  "csOutcomeRated": "Thank you for your rating.",
+  "csOutcomeDone": "Done.",
+  "csFailureWaiting": "Thank you. Our team will look at what happened and let you know.",
+  "csFailureChoice": "The call didn't work. You can take another time or get your money or consult back.",
+  "csKeep": "Keep it",
+  "csRescheduleTitle": "Move your consult",
+  "csRescheduleNote": "No charge. You can move it {count} more times.",
+  "@csRescheduleNote": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "csRebookTitle": "Choose another time",
+  "csRebookNote": "What you paid or used carries over to the new time.",
+  "csReleaseBody": "This time will be free for others again.",
+  "csCancelBodyIncluded": "If you cancel well ahead, the consult goes back to your plan; close to the start it counts as used. You'll see which straight away.",
+  "csCancelBodyPaid": "If you cancel well ahead, you get a full refund; close to the start there's no refund. You'll see which straight away.",
+  "csCancelTitle": "Cancel this consult?",
+  "csCancelAction": "Cancel consult",
+  "csProposalTitle": "Accept the new time?",
+  "csProposalBody": "Your consult moves to the time your clinician suggested.",
+  "csProposalAccept": "Accept",
+  "csProposalLink": "My clinician suggested another time",
+  "csDeclineTitle": "Get your money or consult back?",
+  "csDeclineBody": "We'll refund what you paid, or return the consult to your plan.",
+  "csDeclineAction": "Get my money or consult back",
+  "csReportTitle": "The call didn't work?",
+  "csReportBody": "Tell us and we'll look at what happened in the room.",
+  "csReportAction": "The call didn't work",
+  "csPaidIncluded": "Included in your plan",
+  "csPaidFee": "Fee {amount} incl. GST",
+  "@csPaidFee": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "csRecordingOn": "This consult is recorded, as you agreed.",
+  "csFinishBooking": "Finish booking",
+  "csRoomOpensAt": "The room opens at {time}.",
+  "@csRoomOpensAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "csJoin": "Join the consult",
+  "csReschedule": "Move to another time",
+  "csNoShowOffer": "Your clinician didn't join. Take another time, or get your money or consult back.",
+  "csRebook": "Choose another time",
+  "csRate": "Rate this consult",
+  "csBookAgain": "Book again",
+  "csRateTitle": "Rate your consult",
+  "csRateBody": "How was your consult? Your name is never shown with your rating.",
+  "csRateStars": "{count} out of 5",
+  "@csRateStars": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "csRateComment": "Anything you'd like to add (optional)",
+  "csRateSend": "Send rating",
+  "csRateChoose": "Choose a rating to continue",
+  "csRecordingStopped": "Recording stopped. What was recorded is kept as partial.",
+  "csRoomTitle": "Consult room",
+  "csRecordingMark": "Recording",
+  "csRecordingBody": "This consult is being recorded as you agreed. You can stop it at any time.",
+  "csRecordingStop": "Stop recording",
+  "csRoomNotOpen": "The room isn't open yet",
+  "csRoomCheckAgain": "Check again",
+  "billTitle": "Manage plan",
+  "billStatusTrial": "Free trial",
+  "billStatusActive": "Active",
+  "billStatusPastDue": "Payment didn't go through",
+  "billStatusPending": "Waiting for payment",
+  "billCancelTitle": "Cancel your plan?",
+  "billCancelBody": "You keep {plan} until {date}. No further charge is made, and there's no refund for the current period. You can undo this until then.",
+  "@billCancelBody": {
+    "placeholders": {
+      "plan": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "billCancelBodyNoDate": "You keep {plan} until the end of the current period. No further charge is made, and there's no refund for the current period.",
+  "@billCancelBodyNoDate": {
+    "placeholders": {
+      "plan": {
+        "type": "String"
+      }
+    }
+  },
+  "billKeep": "Keep my plan",
+  "billCancelAction": "Cancel plan",
+  "billCancelled": "Your plan ends on {date}. No further charge will be made.",
+  "@billCancelled": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "billUndone": "Your plan continues.",
+  "billChangeLater": "Your new plan starts on {date}. Until then you keep your current plan.",
+  "@billChangeLater": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "billChangeDone": "Your new plan is in force.",
+  "billEndsOn": "Ends on {date}",
+  "@billEndsOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "billRenewsOn": "Renews on {date}",
+  "@billRenewsOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "billValidUntil": "Valid until {date}",
+  "@billValidUntil": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "billNoSubscription": "You don't have a paid plan.",
+  "billChange": "Change plan",
+  "billUndo": "Keep my plan after all",
+  "billInvoices": "Invoices",
+  "billInvoicesOpen": "Invoices and credit notes",
+  "billChangeNote": "A plan that costs more starts when its payment goes through. One that costs less starts when your current period ends.",
+  "billNoOtherPlans": "There are no other plans to move to.",
+  "billPriceLine": "{amount} incl. GST",
+  "@billPriceLine": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "billNoInvoices": "No invoices yet. Each payment's invoice appears here.",
+  "billCreditNote": "Credit note",
+  "billInvoice": "Invoice",
+  "billFrom": "From",
+  "billGstin": "GSTIN {number}",
+  "@billGstin": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "billTo": "To",
+  "billLines": "Details",
+  "billBeforeTax": "Before tax",
+  "billTax": "GST at {rate}%",
+  "@billTax": {
+    "placeholders": {
+      "rate": {
+        "type": "String"
+      }
+    }
+  },
+  "billLineTotal": "Total",
+  "billTotalTax": "Total GST",
+  "billTotal": "Amount paid",
+  "waTitle": "Wellness advice from your doctor",
+  "waEmpty": "Wellness advice from a doctor after a consult appears here.",
+  "waReplaced": "A newer advice replaces this one.",
+  "waAssessment": "Assessment",
+  "waSupplements": "Supplements",
+  "waAdvice": "Advice",
+  "waSeeDoctor": "See a doctor in person",
+  "waFollowUp": "Follow-up",
+  "waTests": "Tests advised",
+  "waCode": "Verification code {code}",
+  "@waCode": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "waOpenDocument": "Open the document",
+  "acctDevicesTitle": "Signed-in devices",
+  "acctDevicesBody": "Where your account is signed in. End any you don't recognise.",
+  "acctDevicesOpen": "See signed-in devices",
+  "acctThisDevice": "This device",
+  "acctLastActive": "Last active {time}",
+  "@acctLastActive": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "acctEnd": "Sign out",
+  "acctEnded": "That device is signed out.",
+  "acctEndAll": "Sign out everywhere",
+  "acctEndAllTitle": "Sign out everywhere?",
+  "acctEndAllBody": "Every device, this one included, is signed out. You'll sign in again with a code.",
+  "acctChangeNumber": "Change mobile number",
+  "acctNumberTitle": "Mobile number",
+  "acctNumberBody": "First we check it's you with a code to your current number. Then enter your new number and the code we send to it.",
+  "acctNewNumber": "New mobile number",
+  "acctSendCode": "Send a code to the new number",
+  "acctCodeSent": "Enter the code we sent to your new number.",
+  "acctConfirmNumber": "Change number",
+  "acctNumberChanged": "Your number is changed. Other devices are signed out.",
+  "acctPendingChange": "A change to a number ending {ending} takes effect on {date}.",
+  "@acctPendingChange": {
+    "placeholders": {
+      "ending": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "acctCancelChange": "This wasn't me: cancel it",
+  "acctChangeCancelled": "The change is cancelled.",
+  "acctEmailBody": "A recovery email helps you get back into your account if you lose your number. It counts once you open the link we send to it. It can't be used to sign in.",
+  "acctEmailNow": "Now: {email}",
+  "@acctEmailNow": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "acctEmailAdd": "Add a recovery email",
+  "acctEmailNew": "New recovery email",
+  "acctEmailChange": "Change recovery email",
+  "acctEmailSave": "Send the link",
+  "acctEmailSent": "We sent a link. Open it to finish.",
+  "acctEmailRemove": "Remove recovery email",
+  "acctEmailRemoved": "Recovery email removed.",
+  "mealsHistoryTitle": "Meal history",
+  "mealsHistoryEmpty": "The days you log meals appear here.",
+  "mealsHistoryCount": "{count, plural, =1{1 meal} other{{count} meals}}",
+  "@mealsHistoryCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "mealPlanTitle": "My meal plan",
+  "mealPlanNone": "When your dietitian shares a meal plan with you, it appears here.",
+  "mealPlanBy": "From {name}",
+  "@mealPlanBy": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "mealPlanPrevDay": "Previous day",
+  "mealPlanNextDay": "Next day",
+  "mealPlanDay": "Day {day} · {date}",
+  "@mealPlanDay": {
+    "placeholders": {
+      "day": {
+        "type": "int"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "mealPlanOr": "Or: {options}",
+  "@mealPlanOr": {
+    "placeholders": {
+      "options": {
+        "type": "String"
+      }
+    }
+  },
+  "mealPlanSlotEarly": "Early morning",
+  "mealPlanSlotMidMorning": "Mid-morning",
+  "mealPlanSlotEvening": "Evening snack",
+  "mealPlanSlotBedtime": "Bedtime",
+  "rmPermissionTitle": "Camera and microphone",
+  "rmPermissionWhy": "To see and hear each other, the app will ask to use your camera and microphone. They're used only during this call, and you can turn either off at any time.",
+  "rmAllow": "Allow camera and microphone",
+  "rmAudioOnlyPermission": "We could use your microphone but not your camera. You can still join by voice.",
+  "rmDenied": "The camera and microphone are blocked for Niraah. Allow them in your phone's settings, then try again.",
+  "rmOpenSettings": "Open settings",
+  "rmCameraOff": "Camera off",
+  "rmJoinNow": "Join now",
+  "rmJoining": "Joining…",
+  "rmWithClinician": "Your consult with {name}",
+  "@rmWithClinician": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "rmYourClinician": "your clinician",
+  "rmWaitingFor": "Waiting for {name}…",
+  "@rmWaitingFor": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "rmWaitingNote": "They know you're here. You can stay on this screen.",
+  "rmStartsAt": "Starts at {time}",
+  "@rmStartsAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "rmReconnecting": "Reconnecting…",
+  "rmReconnectingNote": "Your connection dropped. We're getting you back in; you don't need to do anything.",
+  "rmDropped": "You're no longer connected.",
+  "rmRejoin": "Rejoin",
+  "rmWeak": "Your connection is weak. Switching to audio only can keep the call clear.",
+  "rmSwitchAudioOnly": "Switch to audio only",
+  "rmAudioOnlyOn": "Audio only is on: your camera is off and incoming video is paused.",
+  "rmVideoBack": "Turn video back on",
+  "rmMicMute": "Mute microphone",
+  "rmMicUnmute": "Unmute microphone",
+  "rmCameraTurnOff": "Turn camera off",
+  "rmCameraTurnOn": "Turn camera on",
+  "rmSwitchCamera": "Switch camera",
+  "rmLeave": "Leave",
+  "rmLeaveConfirm": "Leave the room? You can come back while the room is open.",
+  "rmStay": "Stay",
+  "rmLeft": "You've left the room.",
+  "rmClosed": "The room has closed.",
+  "rmGoBackIn": "Go back in",
+  "rmRemaining": "{time} left",
+  "@rmRemaining": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "rmTimeUp": "Time is up · room closes in {time}",
+  "@rmTimeUp": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "rmJoinFailed": "We couldn't connect you to the room. Check your connection and try again.",
+  "rmLoadError": "We couldn't open this room. Try again in a moment.",
+  "rmYou": "You",
+  "dcLink": "Check camera and microphone",
+  "dcTitle": "Device check",
+  "dcBody": "Check that your camera, microphone and connection work before your consult.",
+  "dcStart": "Start the check",
+  "dcCamera": "Camera",
+  "dcCameraOk": "Your camera works if you can see yourself above.",
+  "dcBlocked": "Not allowed. You can allow it in your phone's settings.",
+  "dcMicrophone": "Microphone",
+  "dcMicSpeak": "Say something: the bar moves when your microphone hears you.",
+  "dcConnection": "Connection",
+  "dcTesting": "Testing…",
+  "dcGood": "Good for video",
+  "dcPoor": "Weak: video may look soft, but voice should work",
+  "dcDown": "Not connected",
+  "dcAllowedOnly": "Your camera and microphone are allowed. The preview and connection test run in the room before you join.",
+  "dcFailed": "The check couldn't start. Try again in a moment.",
+  "clRoomTitle": "Live class",
+  "clPrivacy": "You join with your camera and microphone off. Other members can't see or hear you, or see your name.",
+  "clWaitingInstructor": "Waiting for your instructor…",
+  "clCameraOn": "Show my camera to the instructor",
+  "clCameraOff": "Turn my camera off",
+  "clCameraNote": "Only your instructor sees your camera, so she can help with your posture.",
+  "clCameraSharing": "Your instructor can see your camera.",
+  "clYourClasses": "Your classes",
+  "clJoin": "Join class",
+  "icOpenRoom": "Open class room",
+  "icCheckBody": "Check your camera and microphone, then start the class when the room opens.",
+  "icStart": "Start class",
+  "icEnd": "End class",
+  "icEndConfirm": "End the class for everyone?",
+  "icEnded": "Class ended.",
+  "icPresent": "{count} present",
+  "@icPresent": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "icJoined": "Joined: {names}",
+  "@icJoined": {
+    "placeholders": {
+      "names": {
+        "type": "String"
+      }
+    }
+  },
+  "icNoneJoined": "No one has joined yet.",
+  "icPhaseCount": "{phase}: {count}",
+  "@icPhaseCount": {
+    "placeholders": {
+      "phase": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "icStudentCameras": "Students' cameras",
+  "payConfirming": "Confirming your payment…",
+  "payConfirmingNote": "This can take a few seconds.",
+  "payPending": "Your payment is being confirmed. We'll let you know as soon as it is.",
+  "payCancelled": "Payment not completed.",
+  "payFailed": "The payment didn't go through. You can try again.",
+  "payLapsed": "Your held time ran out before the payment arrived. It will be refunded to you in full.",
+  "payDescConsult": "Consult",
+  "payDescClass": "Live class",
+  "csPayAndConfirm": "Confirm and pay {amount}",
+  "@csPayAndConfirm": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "csPayHoldNote": "Your time stays held while you pay. The fee shown is the fee charged.",
+  "csPaidBooked": "Paid. Your consult is booked.",
+  "practicePayTitle": "Pay for this class?",
+  "practicePayBody": "This class is {amount} incl. GST. Your place is held while you pay.",
+  "@practicePayBody": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "practicePay": "Pay {amount}",
+  "@practicePay": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "practiceNotNow": "Not now",
+  "practicePaidBooked": "Paid. Your place is booked.",
+  "billPayTitle": "Pay for the change?",
+  "billPayBody": "Your new plan costs {amount} now, after credit for the unused days of your current plan. It starts when the payment is confirmed. A paid period isn't refunded once it has started.",
+  "@billPayBody": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "billPay": "Pay {amount}",
+  "@billPay": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "plansActive": "{plan} is now your plan.",
+  "@plansActive": {
+    "placeholders": {
+      "plan": {
+        "type": "String"
+      }
+    }
+  },
+  "plansTrialStarted": "Your free trial of {plan} has started. Doctor, dietitian and live-class features begin with your first payment.",
+  "@plansTrialStarted": {
+    "placeholders": {
+      "plan": {
+        "type": "String"
+      }
+    }
+  },
+  "plansNoRefund": "A paid period isn't refunded once it has started.",
+  "csTranscriptConsentTitle": "A written transcript of this consult",
+  "csTranscriptDraft": "Draft wording, pending legal review",
+  "csTranscriptConsentBody": "If you agree, the audio of this consult is sent to Sarvam AI to be written up as text, and the audio is then deleted. You, this specialist, your doctor or dietitian caring for you now, and a Niraah super admin (only for a complaint, dispute or legal request) can read the transcript. It is kept for up to 3 years. You can still have your consult if you say no.",
+  "csTranscriptConsentYes": "Yes, make a transcript of this consult",
+  "csTranscriptTitle": "Consult transcript",
+  "csTranscriptRead": "Read the transcript",
+  "csTranscriptPending": "The transcript is being written up. Check back a little later.",
+  "csTranscriptFailed": "We could not make a transcript of this consult.",
+  "csTranscriptNone": "There is no transcript for this consult.",
+  "csTranscriptUnverified": "Machine-made transcript, not checked by a person. It may contain errors, especially in mixed-language speech.",
+  "csTranscriptPartial": "The recording was stopped part-way, so this covers only the start of the consult.",
+  "csTranscriptWhoReads": "You, this specialist and your doctor or dietitian caring for you now can read it.",
+  "csTranscriptYou": "You",
+  "csTranscriptMember": "Member",
+  "csTranscriptDoctor": "Doctor",
+  "csTranscriptDietitian": "Dietitian",
+  "csTranscriptMissing": "The {who}'s voice could not be transcribed.",
+  "@csTranscriptMissing": {
+    "placeholders": {
+      "who": {
+        "type": "String"
+      }
+    }
+  }
 }

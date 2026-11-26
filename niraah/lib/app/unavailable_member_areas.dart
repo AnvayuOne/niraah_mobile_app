@@ -1,5 +1,8 @@
+import '../features/account/domain/account.dart';
+import '../features/billing/domain/billing.dart';
 import '../features/care/domain/care.dart';
 import '../features/community/domain/community.dart';
+import '../features/consults/domain/consults.dart';
 import '../features/dietitian/dietitian_repository.dart';
 import '../features/doctor/domain/doctor_work.dart';
 import '../features/home/data/unavailable_home_repository.dart';
@@ -10,6 +13,7 @@ import '../features/messaging/messaging.dart';
 import '../features/practice/domain/practice.dart';
 import '../features/provider_auth/application_repository.dart';
 import '../features/provider_work/domain/provider_work.dart';
+import '../features/wellness_advice/domain/wellness_advice.dart';
 
 /// Used by the sample build: these areas exist only on the real API, so every call fails plainly and the
 /// screens show their "Try again" state instead of invented data (constitution §2 rule 6).
@@ -39,3 +43,11 @@ class UnavailableDietitianRepository with _NotConnected implements DietitianRepo
 class UnavailableInstructorRepository with _NotConnected implements InstructorRepository {}
 
 class UnavailableProviderApplicationRepository with _NotConnected implements ProviderApplicationRepository {}
+
+class UnavailableConsultsRepository with _NotConnected implements ConsultsRepository {}
+
+class UnavailableWellnessAdviceRepository with _NotConnected implements WellnessAdviceRepository {}
+
+class UnavailableBillingRepository with _NotConnected implements BillingRepository {}
+
+class UnavailableAccountRepository with _NotConnected implements AccountRepository {}
