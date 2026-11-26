@@ -62,7 +62,7 @@ class _CommunityPageState extends State<CommunityPage> {
               const SizedBox(height: NSpace.sm),
             ],
             NSectionTitle(s.communityCircles),
-            if (c.circles.isEmpty) EmptyNote(text: s.communityNoCircles),
+            if (c.circles.isEmpty) EmptyNote(text: s.communityNoCircles, picture: EmptyArt.circles),
             for (Circle circle in c.circles) ...<Widget>[
               NCard(
                 onTap: () => Navigator.of(context).push(MaterialPageRoute<void>(
@@ -166,7 +166,7 @@ class _CirclePageState extends State<CirclePage> {
             padding: const EdgeInsets.fromLTRB(NSpace.lg, NSpace.lg, NSpace.lg, 96),
             children: <Widget>[
               if (!widget.canPost) ...<Widget>[Text(s.communityAcceptFirst, style: NType.bodySm.copyWith(color: NColors.inkSecondary)), const SizedBox(height: NSpace.sm)],
-              if (posts.isEmpty) EmptyNote(text: s.communityFeedEmpty),
+              if (posts.isEmpty) EmptyNote(text: s.communityFeedEmpty, picture: EmptyArt.circles),
               for (Post p in posts) ...<Widget>[
                 NCard(
                   semanticsLabel: '${authorLine(s, p.author)}: ${p.body}',

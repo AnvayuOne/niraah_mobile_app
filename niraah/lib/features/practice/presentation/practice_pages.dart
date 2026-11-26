@@ -158,7 +158,7 @@ class _PracticeLibraryPageState extends State<PracticeLibraryPage> {
               future: _items,
               onRetry: () => _set(() {}),
               builder: (BuildContext context, List<PracticeSession> items) => items.isEmpty
-                  ? Padding(padding: const EdgeInsets.all(NSpace.lg), child: EmptyNote(text: s.practiceLibraryEmpty))
+                  ? Padding(padding: const EdgeInsets.all(NSpace.lg), child: EmptyNote(text: s.practiceLibraryEmpty, picture: EmptyArt.library))
                   : ListView.separated(
                       padding: const EdgeInsets.all(NSpace.lg),
                       itemCount: items.length,
@@ -197,7 +197,7 @@ class _PracticeHistoryPageState extends State<PracticeHistoryPage> {
         onRetry: () => setState(() => _weeks = _repo.history()),
         builder: (BuildContext context, List<PracticeWeek> weeks) {
           final List<PracticeWeek> shown = weeks.where((PracticeWeek w) => w.sessions.isNotEmpty).toList();
-          if (shown.isEmpty) return Padding(padding: const EdgeInsets.all(NSpace.lg), child: EmptyNote(text: s.practiceHistoryEmpty));
+          if (shown.isEmpty) return Padding(padding: const EdgeInsets.all(NSpace.lg), child: EmptyNote(text: s.practiceHistoryEmpty, picture: EmptyArt.library));
           return ListView(
             padding: const EdgeInsets.all(NSpace.lg),
             children: <Widget>[

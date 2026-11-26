@@ -10,6 +10,7 @@ import '../../../design_system/widgets/n_button.dart';
 import '../../../design_system/widgets/n_living.dart';
 import '../../../design_system/widgets/n_loaders.dart';
 import '../../../design_system/widgets/n_premium_badge.dart';
+import '../../../design_system/widgets/n_shimmer.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../shared/constants/route_constants.dart';
 import '../domain/diet_plan.dart';
@@ -657,7 +658,7 @@ class DietCookingView extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            const NCookingAnimation(),
+            const NMealLoader(size: 200),
             const SizedBox(height: NSpace.md),
             Text(preparing ? s.dietPreparing : s.dietCooking, textAlign: TextAlign.center, style: NType.h3.copyWith(color: NColors.inkPrimary)),
             if (!preparing) ...<Widget>[

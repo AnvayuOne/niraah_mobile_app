@@ -63,7 +63,15 @@ class _LabsPageState extends State<LabsPage> {
     final S s = S.of(context);
     return AreaScaffold(
       title: s.labsTitle,
-      floatingActionButton: FloatingActionButton.extended(onPressed: _add, icon: const Icon(Icons.add_rounded), label: Text(s.labsAdd)),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: _add,
+        backgroundColor: NColors.brandPlum,
+        foregroundColor: NColors.inkOnBrand,
+        elevation: 2,
+        shape: const StadiumBorder(),
+        icon: const Icon(Icons.add_rounded),
+        label: Text(s.labsAdd, style: NType.button.copyWith(color: NColors.inkOnBrand)),
+      ),
       body: AsyncBody<_LabsData>(
         future: _data,
         onRetry: _reload,
@@ -71,7 +79,7 @@ class _LabsPageState extends State<LabsPage> {
           padding: const EdgeInsets.fromLTRB(NSpace.lg, NSpace.lg, NSpace.lg, 96),
           children: <Widget>[
             NSectionTitle(s.labsReports),
-            if (d.reports.isEmpty) EmptyNote(text: s.labsEmpty, actionLabel: s.labsAdd, onAction: _add),
+            if (d.reports.isEmpty) EmptyNote(text: s.labsEmpty, actionLabel: s.labsAdd, onAction: _add, picture: EmptyArt.labs),
             for (LabReport r in d.reports) ...<Widget>[
               NCard(
                 child: Column(

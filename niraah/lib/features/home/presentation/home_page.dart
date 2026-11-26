@@ -5,6 +5,7 @@ import 'package:material_ui/material_ui.dart';
 
 import '../../../app/area_navigation.dart';
 import '../../../core/di/service_locator.dart';
+import '../../../design_system/generated/niraah_assets.dart';
 import '../../../design_system/motion/motion.dart';
 import '../../../design_system/tokens/tokens.dart';
 import '../../../design_system/widgets/bottom_nav.dart';
@@ -203,8 +204,19 @@ class _CycleCardState extends State<_CycleCard> {
         children: <Widget>[
           Text(s.homeRingLabel, style: NType.h4.copyWith(color: NColors.inkPrimary)),
           const SizedBox(height: NSpace.md),
-          CycleSummaryView(summary: widget.cycle),
+          if (noData)
+            // Before her first log, a calm picture instead of an empty ring (design audit 2026-11-26).
+            Center(
+              child: Container(
+                padding: const EdgeInsets.all(NSpace.sm),
+                decoration: BoxDecoration(color: NColors.brandBlushLight, shape: BoxShape.circle),
+                child: ClipOval(child: Image.asset(_cycleStart.path, width: 176, height: 176, fit: BoxFit.cover, excludeFromSemantics: true)),
+              ),
+            )
+          else
+            CycleSummaryView(summary: widget.cycle),
           if (noData) ...<Widget>[
+            const SizedBox(height: NSpace.md),
             Text(s.homeInvitation, style: NType.body.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w600)),
             const SizedBox(height: NSpace.sm),
             OutlinedButton.icon(
@@ -224,6 +236,8 @@ class _CycleCardState extends State<_CycleCard> {
     );
   }
 }
+
+const NImageAsset _cycleStart = NImageAsset('assets/images/member_cycle_start.webp', width: 280, height: 231, semanticLabel: null);
 
 class _QuickLog extends StatelessWidget {
   const _QuickLog({required this.log});

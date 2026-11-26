@@ -166,8 +166,8 @@ class _ThreadsPageState extends State<ThreadsPage> {
           child: ListView(
             padding: const EdgeInsets.all(NSpace.lg),
             children: <Widget>[
-              if (!widget.clinician && !d.flag('messagingOnPlan')) EmptyNote(text: s.msgNotOnPlan),
-              if (d.objs('threads').isEmpty && (widget.clinician || d.flag('messagingOnPlan'))) EmptyNote(text: s.msgNoThreads),
+              if (!widget.clinician && !d.flag('messagingOnPlan')) EmptyNote(text: s.msgNotOnPlan, picture: EmptyArt.messages),
+              if (d.objs('threads').isEmpty && (widget.clinician || d.flag('messagingOnPlan'))) EmptyNote(text: s.msgNoThreads, picture: EmptyArt.messages),
               for (Json t in d.objs('threads')) ...<Widget>[
                 NCard(
                   onTap: () => _openThread(t.str('id')!),

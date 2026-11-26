@@ -2,10 +2,12 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart';
 
+import '../../design_system/generated/niraah_assets.dart';
 import '../../design_system/tokens/tokens.dart';
 import '../../design_system/widgets/error_view.dart';
-import '../../design_system/widgets/loading_view.dart';
 import '../../design_system/widgets/n_button.dart';
+import '../../design_system/widgets/n_illustration.dart';
+import '../../design_system/widgets/n_shimmer.dart';
 import '../../l10n/app_localizations.dart';
 import '../constants/route_constants.dart';
 import 'area_access.dart';
@@ -52,26 +54,65 @@ class NSectionTitle extends StatelessWidget {
 
 /// A short, kind line saying what will appear here, with one action that fills it (spec 010 "States" 2).
 class EmptyNote extends StatelessWidget {
-  const EmptyNote({required this.text, super.key, this.actionLabel, this.onAction});
+  const EmptyNote({required this.text, super.key, this.actionLabel, this.onAction, this.picture});
 
   final String text;
   final String? actionLabel;
   final VoidCallback? onAction;
 
+  /// A soft picture for an empty area (design audit 2026-11-26): the page then reads as calm, not unfinished.
+  final NImageAsset? picture;
+
   @override
-  Widget build(BuildContext context) => NCard(
+  Widget build(BuildContext context) {
+    final bool action = actionLabel != null && onAction != null;
+    if (picture == null) {
+      return NCard(
         color: NColors.surfaceWarm,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(text, style: NType.body.copyWith(color: NColors.inkSecondary)),
-            if (actionLabel != null && onAction != null) ...<Widget>[
-              const SizedBox(height: NSpace.sm),
-              TextButton(onPressed: onAction, child: Text(actionLabel!)),
-            ],
+            if (action) ...<Widget>[const SizedBox(height: NSpace.sm), TextButton(onPressed: onAction, child: Text(actionLabel!))],
           ],
         ),
       );
+    }
+    return Container(
+      padding: const EdgeInsets.fromLTRB(NSpace.lg, NSpace.lg, NSpace.lg, NSpace.lg),
+      decoration: BoxDecoration(
+        color: NColors.surfaceCard,
+        borderRadius: BorderRadius.circular(NRadius.lg),
+        border: Border.all(color: NColors.lineDefault.withValues(alpha: 0.6)),
+        boxShadow: NShadow.xs,
+      ),
+      child: Column(
+        children: <Widget>[
+          NIllustration(asset: picture!, height: 120, entrance: NEntrance.breathe),
+          const SizedBox(height: NSpace.sm),
+          Text(text, textAlign: TextAlign.center, style: NType.body.copyWith(color: NColors.inkSecondary)),
+          if (action) ...<Widget>[
+            const SizedBox(height: NSpace.md),
+            FilledButton(
+              onPressed: onAction,
+              style: FilledButton.styleFrom(minimumSize: const Size(0, NLayout.minTapTarget), shape: const StadiumBorder(), padding: const EdgeInsets.symmetric(horizontal: NSpace.lg)),
+              child: Text(actionLabel!),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+/// Pictures for empty areas, shared with the website.
+abstract final class EmptyArt {
+  static const NImageAsset carePlans = NImageAsset('assets/images/empty_care_plans.webp', width: 280, height: 323, semanticLabel: null);
+  static const NImageAsset messages = NImageAsset('assets/images/empty_messages.webp', width: 280, height: 176, semanticLabel: null);
+  static const NImageAsset labs = NImageAsset('assets/images/empty_labs.webp', width: 280, height: 247, semanticLabel: null);
+  static const NImageAsset library = NImageAsset('assets/images/empty_library.webp', width: 280, height: 168, semanticLabel: null);
+  static const NImageAsset classes = NImageAsset('assets/images/empty_classes.webp', width: 280, height: 163, semanticLabel: null);
+  static const NImageAsset circles = NImageAsset('assets/images/empty_students.webp', width: 280, height: 259, semanticLabel: null);
 }
 
 /// "Not on your plan" or "starts after the trial" (spec 010 "Limits and plans"): what the area is, which
@@ -130,7 +171,7 @@ class AsyncBody<T> extends StatelessWidget {
           if (e is AreaLocked) return AreaLockedView(refusal: e);
           return ErrorView(message: s.commonLoadError, retryLabel: s.tryAgain, onRetry: onRetry);
         }
-        if (snap.connectionState != ConnectionState.done) return LoadingView(label: s.loading);
+        if (snap.connectionState != ConnectionState.done) return NPagePlaceholder(label: s.loading);
         return builder(context, snap.data as T);
       },
     );

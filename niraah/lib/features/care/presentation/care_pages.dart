@@ -98,7 +98,7 @@ class _ProgramsPageState extends State<ProgramsPage> {
                 const SizedBox(height: NSpace.sm),
               ],
               NSectionTitle(s.programsAll),
-              if (d.programs.isEmpty) EmptyNote(text: s.programsEmpty),
+              if (d.programs.isEmpty) EmptyNote(text: s.programsEmpty, picture: EmptyArt.carePlans),
               for (Program p in d.programs) ...<Widget>[
                 NCard(
                   child: Column(
@@ -190,7 +190,7 @@ class _CarePlanPageState extends State<CarePlanPage> {
             padding: const EdgeInsets.all(NSpace.lg),
             children: <Widget>[
               if (p == null)
-                EmptyNote(text: doc.waiting ?? s.careNone)
+                EmptyNote(text: doc.waiting ?? s.careNone, picture: EmptyArt.carePlans)
               else ...<Widget>[
                 Text(s.careSignedBy(p.doctor ?? s.careYourDoctor, shortDate(context, p.signedOn)), style: NType.bodySm.copyWith(color: NColors.inkSecondary)),
                 for (CarePlanSection sec in p.sections) ...<Widget>[
@@ -312,7 +312,7 @@ class _CheckInsPageState extends State<CheckInsPage> {
             padding: const EdgeInsets.all(NSpace.lg),
             children: <Widget>[
               if (due == null)
-                EmptyNote(text: s.checkInsNoneDue)
+                EmptyNote(text: s.checkInsNoneDue, picture: EmptyArt.carePlans)
               else ...<Widget>[
                 Text(s.checkInsThisWeek(shortDate(context, due.weekStart)), style: NType.h4.copyWith(color: NColors.inkPrimary)),
                 const SizedBox(height: NSpace.sm),

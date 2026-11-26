@@ -255,7 +255,7 @@ class _LiveClassesViewState extends State<_LiveClassesView> {
               style: NType.bodySm.copyWith(color: NColors.inkSecondary),
             ),
           ),
-        if (classes.classes.isEmpty) EmptyNote(text: s.practiceClassesEmpty),
+        if (classes.classes.isEmpty) EmptyNote(text: s.practiceClassesEmpty, picture: EmptyArt.classes),
         for (LiveClass c in classes.classes) ...<Widget>[
           _LiveClassCard(
             c: c,

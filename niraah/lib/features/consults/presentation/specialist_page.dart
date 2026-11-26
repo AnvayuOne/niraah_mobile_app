@@ -310,7 +310,7 @@ class _DayStripState extends State<_DayStrip> {
               duration: NMotion.fast,
               width: _w,
               decoration: BoxDecoration(
-                color: on ? NColors.brandPlum : (off ? NColors.surfaceWarm : NColors.surfaceCard),
+                color: on ? NColors.brandPlum : (off ? NColors.surfacePage : NColors.surfaceCard),
                 borderRadius: BorderRadius.circular(NRadius.lg),
                 border: Border.all(color: on ? NColors.brandPlum : NColors.lineDefault),
                 boxShadow: on ? NShadow.md : (off ? const <BoxShadow>[] : NShadow.xs),
