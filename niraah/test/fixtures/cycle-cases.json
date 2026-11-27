@@ -1,0 +1,84 @@
+{
+  "$sample": "Shared test cases for design/sample/cycle-rules.md. Web and Flutter must both produce `expect` for each case.",
+  "cases": [
+    {
+      "name": "no period logged",
+      "today": "2026-11-14",
+      "periods": [],
+      "regularity": "regular",
+      "markers": [],
+      "expect": { "state": "noData" }
+    },
+    {
+      "name": "pregnant in assessment turns predictions off",
+      "today": "2026-11-14",
+      "periods": [{ "start": "2026-11-01", "end": "2026-11-05" }],
+      "regularity": "pregnant",
+      "markers": [],
+      "expect": { "state": "off", "reason": "pregnant" }
+    },
+    {
+      "name": "one period, regular answer: wide estimate from assessment",
+      "today": "2026-11-14",
+      "periods": [{ "start": "2026-11-01", "end": "2026-11-05" }],
+      "regularity": "regular",
+      "markers": [],
+      "expect": { "state": "estimate", "basis": "assessment", "dayOfCycle": 14, "windowStart": "2026-11-22", "windowEnd": "2026-12-06", "phase": null, "fertileStart": null, "late": false, "daysToNext": [8, 22] }
+    },
+    {
+      "name": "one period, rare answer: no window",
+      "today": "2026-11-14",
+      "periods": [{ "start": "2026-11-01" }],
+      "regularity": "rare",
+      "markers": [],
+      "expect": { "state": "estimate", "basis": "assessment", "dayOfCycle": 14, "windowStart": null, "windowEnd": null, "phase": null }
+    },
+    {
+      "name": "regular history: narrow window with phases",
+      "today": "2026-11-14",
+      "periods": [
+        { "start": "2026-08-10", "end": "2026-08-14" },
+        { "start": "2026-09-07", "end": "2026-09-11" },
+        { "start": "2026-10-06", "end": "2026-10-10" },
+        { "start": "2026-11-03", "end": "2026-11-07" }
+      ],
+      "regularity": "regular",
+      "markers": [],
+      "expect": { "state": "estimate", "basis": "logs", "dayOfCycle": 12, "meanLength": 28, "halfWidth": 2, "windowStart": "2026-11-29", "windowEnd": "2026-12-03", "fertileStart": 9, "ovulationDay": 14, "phase": "ovulatory", "late": false }
+    },
+    {
+      "name": "varying history: wider window, no fertile estimate",
+      "today": "2026-11-14",
+      "periods": [
+        { "start": "2026-07-20", "end": "2026-07-24" },
+        { "start": "2026-08-14", "end": "2026-08-18" },
+        { "start": "2026-09-21", "end": "2026-09-25" },
+        { "start": "2026-10-22", "end": "2026-10-26" }
+      ],
+      "regularity": "irregular",
+      "markers": [],
+      "expect": { "state": "estimate", "basis": "logs", "dayOfCycle": 24, "meanLength": 32, "halfWidth": 8, "windowStart": "2026-11-15", "windowEnd": "2026-12-01", "fertileStart": null, "phase": null, "late": false }
+    },
+    {
+      "name": "late period",
+      "today": "2026-12-10",
+      "periods": [
+        { "start": "2026-08-10", "end": "2026-08-14" },
+        { "start": "2026-09-07", "end": "2026-09-11" },
+        { "start": "2026-10-06", "end": "2026-10-10" },
+        { "start": "2026-11-03", "end": "2026-11-07" }
+      ],
+      "regularity": "regular",
+      "markers": [],
+      "expect": { "state": "estimate", "basis": "logs", "dayOfCycle": 38, "late": true, "daysToNext": [0, 0] }
+    },
+    {
+      "name": "hormonal contraception marker turns predictions off",
+      "today": "2026-11-14",
+      "periods": [{ "start": "2026-11-01" }],
+      "regularity": "regular",
+      "markers": ["hormonal_contraception"],
+      "expect": { "state": "off", "reason": "hormonal_contraception" }
+    }
+  ]
+}

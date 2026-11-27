@@ -14,7 +14,7 @@ class DioClient {
         baseUrl: ApiConstants.baseUrl,
         connectTimeout: ApiConstants.connectTimeout,
         receiveTimeout: ApiConstants.receiveTimeout,
-        sendTimeout: ApiConstants.connectTimeout,
+        sendTimeout: const Duration(seconds: 90),
         headers: <String, Object>{'Accept': 'application/json'},
       ),
     );
@@ -23,7 +23,7 @@ class DioClient {
       RequestIdInterceptor(),
       AuthInterceptor(tokenProvider),
       RetryInterceptor(_dio),
-      if (kDebugMode) PrettyDioLogger(requestBody: true, requestHeader: true),
+      if (kDebugMode) PrettyDioLogger(requestHeader: false, responseBody: false),
     ]);
   }
 

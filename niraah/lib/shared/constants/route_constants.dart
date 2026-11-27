@@ -1,5 +1,59 @@
 class RouteConstants {
   const RouteConstants._();
 
-  static const String home = '/';
+  static const String splash = '/';
+  static const String landing = '/landing';
+  static const String intro = '/intro';
+  static const String welcome = '/welcome';
+  static const String signIn = '/sign-in';
+  static const String signInCode = '/sign-in/code';
+  static const String signInPassword = '/sign-in/password';
+  static const String signInAuthenticator = '/sign-in/authenticator';
+  static const String signInSecondCheck = '/sign-in/second-check';
+  static const String signInNewAuthenticator = '/sign-in/authenticator/new';
+  static const String accountStatus = '/account/status';
+  static const String admin = '/admin';
+  static const String setup = '/setup';
+  static const String providerStatus = '/provider/status';
+  static const String accountDetails = '/account/details';
+  static const String assessmentStart = '/assessment/start';
+  static const String assessment = '/assessment';
+  static const String processing = '/assessment/processing';
+  static const String preScore = '/assessment/result';
+  static const String minimumAge = '/account/paused';
+  static const String plans = '/plans';
+  static const String home = '/home';
+  static const String bookDoctor = '/specialists';
+  static const String appointments = '/appointments';
+
+  /// The consult video room: `/room/<appointment id>?side=member|clinician`.
+  static const String room = '/room';
+  static const String support = '/support';
+  static const String symptoms = '/symptoms';
+  static const String cycle = '/cycle';
+  static const String chat = '/chat';
+  static const String meals = '/meals';
+  static const String mealScan = '/meals/scan';
+  static const String dietPlan = '/meals/diet-plan';
+
+  /// `/area/<name>`: an area with no screen yet.
+  static const String area = '/area';
+
+  // Practice tab (spec 010 §7).
+  static const String practice = '/practice';
+  static const String practiceLibrary = '/practice/library';
+  static const String practiceHistory = '/practice/history';
+  static const String practiceSession = '/practice/session';
+
+  // Me tab and the areas reached from it (spec 010 §9-§13).
+  static const String me = '/me';
+  static const String profile = '/me/profile';
+  static const String privacy = '/me/privacy';
+  static const String notificationSettings = '/me/notifications';
+  static const String programs = '/programs';
+  static const String carePlan = '/care-plan';
+  static const String checkIns = '/check-ins';
+  static const String labs = '/labs';
+  static const String community = '/community';
+  static const String messages = '/messages';
 }

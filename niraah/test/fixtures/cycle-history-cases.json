@@ -1,0 +1,74 @@
+{
+  "$sample": "Shared test cases for rules 12–16 in design/sample/cycle-rules.md. Web and Flutter must both produce `expect`.",
+  "cases": [
+    {
+      "name": "history, average, range and pattern for a varying history",
+      "today": "2026-11-14",
+      "periods": [
+        { "start": "2026-07-20", "end": "2026-07-24" },
+        { "start": "2026-08-14", "end": "2026-08-18" },
+        { "start": "2026-09-21" },
+        { "start": "2026-10-22", "end": "2026-10-26" }
+      ],
+      "markers": [],
+      "dailyFlow": {},
+      "expect": {
+        "history": [
+          { "start": "2026-07-20", "cycleLength": 25, "periodLength": 5 },
+          { "start": "2026-08-14", "cycleLength": 38, "periodLength": 5 },
+          { "start": "2026-09-21", "cycleLength": 31, "periodLength": null }
+        ],
+        "average": 31,
+        "range": [25, 38],
+        "pattern": { "count": 3, "min": 25, "max": 38 },
+        "advice": []
+      }
+    },
+    {
+      "name": "two cycles: average and range but no pattern",
+      "today": "2026-11-14",
+      "periods": [{ "start": "2026-09-10" }, { "start": "2026-10-08" }, { "start": "2026-11-05" }],
+      "markers": [],
+      "dailyFlow": {},
+      "expect": { "average": 28, "range": [28, 28], "pattern": null, "advice": [] }
+    },
+    {
+      "name": "no period for 90 days",
+      "today": "2026-11-14",
+      "periods": [{ "start": "2026-08-10", "end": "2026-08-14" }],
+      "markers": [],
+      "dailyFlow": {},
+      "expect": { "history": [], "average": null, "range": null, "pattern": null, "advice": ["cycle.no_period_90"] }
+    },
+    {
+      "name": "no-period advice is not raised when predictions are off",
+      "today": "2026-11-14",
+      "periods": [{ "start": "2026-08-10" }],
+      "markers": ["pregnant"],
+      "dailyFlow": {},
+      "expect": { "advice": [] }
+    },
+    {
+      "name": "ten consecutive days of flow ending today",
+      "today": "2026-11-14",
+      "periods": [{ "start": "2026-11-05" }],
+      "markers": [],
+      "dailyFlow": {
+        "2026-11-05": "medium", "2026-11-06": "heavy", "2026-11-07": "heavy", "2026-11-08": "medium", "2026-11-09": "light",
+        "2026-11-10": "light", "2026-11-11": "spotting", "2026-11-12": "light", "2026-11-13": "medium", "2026-11-14": "light"
+      },
+      "expect": { "advice": ["cycle.long_bleeding"] }
+    },
+    {
+      "name": "nine days of flow is not long bleeding",
+      "today": "2026-11-14",
+      "periods": [{ "start": "2026-11-06" }],
+      "markers": [],
+      "dailyFlow": {
+        "2026-11-06": "heavy", "2026-11-07": "heavy", "2026-11-08": "medium", "2026-11-09": "light", "2026-11-10": "light",
+        "2026-11-11": "spotting", "2026-11-12": "light", "2026-11-13": "medium", "2026-11-14": "light"
+      },
+      "expect": { "advice": [] }
+    }
+  ]
+}
