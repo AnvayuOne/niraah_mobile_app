@@ -11,9 +11,11 @@ class ApiPlansRepository implements PlansRepository {
 
   @override
   Future<Result<PlansOffer>> offer() async {
+    // Both reads go out together.
+    final Future<ApiResult<Map<String, dynamic>>> currentCall = _api.get('/me/plan');
     final ApiResult<Map<String, dynamic>> r = await _api.get('/me/plans');
+    final ApiResult<Map<String, dynamic>> current = await currentCall;
     if (r is ApiFail<Map<String, dynamic>>) return FailureResult<PlansOffer>(r.error.message);
-    final ApiResult<Map<String, dynamic>> current = await _api.get('/me/plan');
     final String? currentPlanId = current is ApiOk<Map<String, dynamic>> && current.data['subscriptionId'] != null ? '${current.data['planId']}' : null;
     return Success<PlansOffer>(parse((r as ApiOk<Map<String, dynamic>>).data, currentPlanId: currentPlanId));
   }

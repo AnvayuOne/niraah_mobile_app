@@ -20,6 +20,15 @@ enum CodeOutcome {
   paused,
   suspended,
   deletionPending,
+
+  /// Staff who signed in with a code (demo staff numbers on local and staging): their own workspace.
+  doctor,
+  dietitian,
+  instructor,
+  admin,
+
+  /// A provider whose application is not approved yet.
+  providerStatus,
 }
 
 /// Where each outcome lands (mirrors the web's homeForWorkspace).
@@ -31,6 +40,11 @@ String routeForOutcome(CodeOutcome o) => switch (o) {
       CodeOutcome.paused => '${RouteConstants.accountStatus}?state=paused',
       CodeOutcome.suspended => '${RouteConstants.accountStatus}?state=suspended',
       CodeOutcome.deletionPending => '${RouteConstants.accountStatus}?state=deletion_pending',
+      CodeOutcome.doctor => '/doctor',
+      CodeOutcome.dietitian => '/dietitian',
+      CodeOutcome.instructor => '/instructor',
+      CodeOutcome.admin => RouteConstants.admin,
+      CodeOutcome.providerStatus => RouteConstants.providerStatus,
     };
 
 /// The second check (spec 003 "Second check"). Nothing about the account is shown until it passes.

@@ -5,7 +5,9 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Niraah uses the camera to photograph your meal so it can show what is on your plate.</string>
+	<string>Niraah uses the camera to photograph your meal, and for video consults with your doctor or dietitian.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Niraah uses the microphone so you can talk during video consults.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Niraah opens your photos so you can choose a meal picture or a lab report to add.</string>
 	<key>CFBundleDisplayName</key>

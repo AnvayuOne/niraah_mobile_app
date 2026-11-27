@@ -62,6 +62,8 @@ import '../features/provider_auth/presentation/provider_pages.dart';
 import '../features/provider_auth/presentation/reenrol_page.dart';
 import '../features/provider_auth/presentation/setup_page.dart';
 import '../features/provider_work/presentation/provider_work_pages.dart';
+import '../features/room/room_page.dart';
+import '../features/room/room_repository.dart';
 import '../features/symptoms/presentation/symptoms_page.dart';
 import '../shared/constants/route_constants.dart';
 import '../shared/widgets/coming_soon_page.dart';
@@ -79,6 +81,14 @@ class AppRouter {
         redirect: (_, GoRouterState st) => NiraahApi.sessionLost.value && !_public(st.matchedLocation) ? RouteConstants.signIn : null,
         routes: <RouteBase>[
           GoRoute(path: RouteConstants.splash, builder: (_, _) => const SplashPage()),
+          // The consult video room (spec 014 §5), full screen for the member and for the doctor or dietitian.
+          GoRoute(
+            path: '${RouteConstants.room}/:id',
+            builder: (_, GoRouterState st) => RoomPage(
+              appointmentId: st.pathParameters['id']!,
+              side: st.uri.queryParameters['side'] == 'clinician' ? RoomSide.clinician : RoomSide.member,
+            ),
+          ),
           GoRoute(path: RouteConstants.landing, builder: (_, _) => const LandingPage()),
           GoRoute(path: RouteConstants.intro, builder: (_, _) => const IntroPage()),
           GoRoute(path: RouteConstants.welcome, builder: (_, _) => const WelcomePage()),

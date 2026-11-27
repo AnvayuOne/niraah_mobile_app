@@ -7707,6 +7707,36 @@ abstract class S {
   /// **'Trainer'**
   String get signInAsTrainer;
 
+  /// No description provided for @signInAnyLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Mobile number or email'**
+  String get signInAnyLabel;
+
+  /// No description provided for @signInAnyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in or create your account.'**
+  String get signInAnyBody;
+
+  /// No description provided for @signInAnyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'ll text a code to your number, or ask for your password if you use an email.'**
+  String get signInAnyHint;
+
+  /// No description provided for @signInNewHere.
+  ///
+  /// In en, this message translates to:
+  /// **'New to Niraah? Just enter your mobile number and we\'ll set you up.'**
+  String get signInNewHere;
+
+  /// No description provided for @signInEnterAny.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your mobile number or email'**
+  String get signInEnterAny;
+
   /// No description provided for @signInNumberLabel.
   ///
   /// In en, this message translates to:

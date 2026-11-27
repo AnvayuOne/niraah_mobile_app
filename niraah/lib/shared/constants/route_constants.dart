@@ -25,6 +25,9 @@ class RouteConstants {
   static const String home = '/home';
   static const String bookDoctor = '/specialists';
   static const String appointments = '/appointments';
+
+  /// The consult video room: `/room/<appointment id>?side=member|clinician`.
+  static const String room = '/room';
   static const String support = '/support';
   static const String symptoms = '/symptoms';
   static const String cycle = '/cycle';

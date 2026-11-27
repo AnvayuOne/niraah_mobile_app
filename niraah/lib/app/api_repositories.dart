@@ -43,6 +43,7 @@ import '../features/provider_auth/data/api_provider_auth_repository.dart';
 import '../features/provider_auth/domain/provider_auth.dart';
 import '../features/provider_work/data/api_provider_work_repository.dart';
 import '../features/provider_work/domain/provider_work.dart';
+import '../features/room/room_repository.dart';
 import '../features/symptoms/data/api_symptoms_repository.dart';
 import '../features/symptoms/domain/symptoms.dart';
 
@@ -68,6 +69,7 @@ void registerApiRepositories(GetIt getIt) {
     // The rest of the member workspace (spec 010 §7, §9, §10-§13).
     ..registerLazySingleton<PracticeRepository>(() => ApiPracticeRepository(getIt<NiraahApi>()))
     ..registerLazySingleton<ConsultsRepository>(() => ApiConsultsRepository(getIt<NiraahApi>()))
+    ..registerLazySingleton<RoomRepository>(() => ApiRoomRepository(getIt<NiraahApi>()))
     ..registerLazySingleton<MeRepository>(() => ApiMeRepository(getIt<NiraahApi>()))
     ..registerLazySingleton<CareRepository>(() => ApiCareRepository(getIt<NiraahApi>()))
     ..registerLazySingleton<LabsRepository>(() => ApiLabsRepository(getIt<NiraahApi>()))

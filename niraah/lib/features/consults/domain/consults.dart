@@ -93,6 +93,7 @@ class Appointment {
     this.holdExpiresAt,
     this.recording = false,
     this.canCancel = false,
+    this.roomOpensAt,
   });
 
   final String id;
@@ -109,6 +110,16 @@ class Appointment {
   /// The consult is recorded (she is asked to agree when she confirms).
   final bool recording;
   final bool canCancel;
+
+  /// When the video room opens (spec 014 §5 "Entering" 1), a few minutes before the start.
+  final DateTime? roomOpensAt;
+
+  /// Join shows while the room is open: confirmed or in progress, from [roomOpensAt] until the end. Mirrors the
+  /// website's `canJoin` (apps/web/src/features/consults/format.ts).
+  bool canJoin(DateTime now) =>
+      (status == AppointmentStatus.confirmed || status == AppointmentStatus.inProgress) &&
+      !now.isBefore(roomOpensAt ?? startsAt.subtract(const Duration(minutes: 10))) &&
+      now.isBefore(endsAt);
 
   bool get upcoming => status == AppointmentStatus.held || status == AppointmentStatus.confirmed || status == AppointmentStatus.inProgress;
 }

@@ -4463,6 +4463,23 @@ class SEn extends S {
   String get signInAsTrainer => 'Trainer';
 
   @override
+  String get signInAnyLabel => 'Mobile number or email';
+
+  @override
+  String get signInAnyBody => 'Sign in or create your account.';
+
+  @override
+  String get signInAnyHint =>
+      'We\'ll text a code to your number, or ask for your password if you use an email.';
+
+  @override
+  String get signInNewHere =>
+      'New to Niraah? Just enter your mobile number and we\'ll set you up.';
+
+  @override
+  String get signInEnterAny => 'Enter your mobile number or email';
+
+  @override
   String get signInNumberLabel => 'Mobile number';
 
   @override

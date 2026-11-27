@@ -16,6 +16,12 @@ class ApiAuthRepository implements AuthRepository, SecondCheckRepository {
         'second_check' => CodeOutcome.secondCheck,
         'paused' => CodeOutcome.paused,
         'deletion_pending' => CodeOutcome.deletionPending,
+        // Staff signing in with a code (demo staff numbers) land in their own workspace, as on the web.
+        'doctor' => CodeOutcome.doctor,
+        'dietitian' => CodeOutcome.dietitian,
+        'instructor' => CodeOutcome.instructor,
+        'admin' => CodeOutcome.admin,
+        'provider_status' => CodeOutcome.providerStatus,
         _ => CodeOutcome.suspended,
       };
 

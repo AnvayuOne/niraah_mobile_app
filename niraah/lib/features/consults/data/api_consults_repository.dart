@@ -117,6 +117,7 @@ class ApiConsultsRepository implements ConsultsRepository {
       holdExpiresAt: a['holdExpiresAt'] == null ? null : DateTime.tryParse(a['holdExpiresAt'] as String)?.toLocal(),
       recording: a['recordMode'] == 'recording',
       canCancel: cancellation?['canCancel'] == true,
+      roomOpensAt: a['roomOpensAt'] == null ? null : DateTime.tryParse(a['roomOpensAt'] as String)?.toLocal(),
     );
   }
 }

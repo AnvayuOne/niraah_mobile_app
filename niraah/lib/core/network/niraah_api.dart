@@ -102,7 +102,7 @@ class NiraahApi {
       return ApiOk<Stream<String>>(text);
     } on DioException catch (e) {
       final int status = e.response?.statusCode ?? 0;
-      if (status == 401 && !retried && tokens != null && await _refresh(tokens.refreshToken)) return postStream(path, body, retried: true);
+      if (status == 401 && !retried && tokens != null && await _renew(tokens)) return postStream(path, body, retried: true);
       return ApiFail<Stream<String>>(const ApiError(code: 'stream_refused', message: "AI Care can't answer right now. Please try again in a little while."), status: status);
     }
   }
@@ -118,12 +118,27 @@ class NiraahApi {
       return ApiOk<Map<String, dynamic>>(Map<String, dynamic>.from((res.data as Map?) ?? <String, dynamic>{}));
     } on DioException catch (e) {
       final int status = e.response?.statusCode ?? 0;
-      if (status == 401 && !retried && tokens != null && !path.startsWith('/auth/refresh') && await _refresh(tokens.refreshToken)) {
+      if (status == 401 && !retried && tokens != null && !path.startsWith('/auth/refresh') && await _renew(tokens)) {
         return _call(method, path, body, retried: true);
       }
-      if (status == 401 && !path.startsWith('/auth/')) sessionLost.value = true;
+      // Only a session the server has really ended sends her to sign in; a refresh that failed on the network
+      // keeps her tokens, and the screen shows "couldn't reach Niraah" instead.
+      if (status == 401 && !path.startsWith('/auth/') && await store.read() == null) sessionLost.value = true;
       return ApiFail<Map<String, dynamic>>(ApiError.from(e), status: status);
     }
+  }
+
+  /// The refresh in flight, shared by every request that got a 401 at the same time. Refresh tokens are single
+  /// use: several screens refreshing with the same token at once made all but one fail, which ended the session.
+  Future<bool>? _refreshing;
+
+  /// After a 401 made with [used]: if another request already refreshed, retry with the new token; otherwise
+  /// refresh once (shared) and retry.
+  Future<bool> _renew(SessionTokens used) async {
+    final SessionTokens? now = await store.read();
+    if (now == null) return false;
+    if (now.accessToken != used.accessToken) return true;
+    return _refreshing ??= _refresh(now.refreshToken).whenComplete(() => _refreshing = null);
   }
 
   Future<bool> _refresh(String refreshToken) async {
@@ -131,10 +146,23 @@ class NiraahApi {
       final Response<dynamic> res = await _dio.post<dynamic>('/auth/refresh', data: <String, dynamic>{'refreshToken': refreshToken});
       await saveTokens(res.data);
       return true;
-    } on DioException {
-      await store.clear();
+    } on DioException catch (e) {
+      // The server refused the refresh token (ended, expired or revoked): the session is over. Any other failure
+      // (no signal, timeout, server hiccup) keeps the tokens so she stays signed in.
+      final int status = e.response?.statusCode ?? 0;
+      if (status == 400 || status == 401 || status == 403) await store.clear();
       return false;
     }
+  }
+
+  /// Where a saved session should open when the app starts, or null when there is none (or it has ended).
+  /// Used by the splash screen so she is not asked to sign in again every time she opens the app.
+  Future<Map<String, dynamic>?> resumeSession() async {
+    if (await store.read() == null) return null;
+    final ApiResult<Map<String, dynamic>> r = await get('/auth/session');
+    if (r is ApiOk<Map<String, dynamic>>) return r.data;
+    // Offline, slow or refused: start at sign-in. Tokens are only wiped when the server refused them.
+    return null;
   }
 
   /// Stores the tokens from a sign-in response, if it has any.

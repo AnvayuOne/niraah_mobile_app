@@ -336,8 +336,8 @@ class _TodayRow extends StatelessWidget {
     final S s = S.of(context);
     final CRole role = CRole.of(context);
     return Semantics(
-      label: <String>[time, a.str('member') ?? '', ?a.str('reason'), if (a.flag('joinable')) s.pvDashJoinOnWeb].join(' · '),
-      excludeSemantics: true,
+      label: <String>[time, a.str('member') ?? '', ?a.str('reason')].join(' · '),
+      excludeSemantics: !a.flag('joinable'),
       child: Container(
         padding: const EdgeInsets.all(NSpace.sm),
         decoration: BoxDecoration(
@@ -362,10 +362,22 @@ class _TodayRow extends StatelessWidget {
                 ],
               ),
             ),
-            Tooltip(
-              message: a.flag('joinable') ? s.pvDashJoinOnWeb : s.pvDashJoinSoon,
-              child: a.flag('joinable') ? CPill(s.pvDashJoin, tone: CTone.sage) : Icon(Icons.videocam_off_outlined, size: 20, color: NColors.inkMuted),
-            ),
+            if (a.flag('joinable') && a.str('id') != null)
+              FilledButton.icon(
+                key: ValueKey<String>('dt-join-${a.str('id')}'),
+                onPressed: () => context.push('${RouteConstants.room}/${Uri.encodeComponent(a.str('id')!)}?side=clinician'),
+                style: FilledButton.styleFrom(
+                  backgroundColor: NColors.statusSuccess,
+                  foregroundColor: NColors.inkOnBrand,
+                  minimumSize: const Size(0, NLayout.minTapTarget),
+                  padding: const EdgeInsets.symmetric(horizontal: NSpace.md),
+                  shape: const StadiumBorder(),
+                ),
+                icon: const Icon(Icons.videocam_rounded, size: 18),
+                label: Text(s.pvDashJoin),
+              )
+            else
+              Tooltip(message: s.pvDashJoinSoon, child: Icon(Icons.videocam_off_outlined, size: 20, color: NColors.inkMuted, semanticLabel: s.pvDashJoinSoon)),
           ],
         ),
       ),

@@ -89,11 +89,17 @@ class ApiChatRepository implements ChatRepository {
 
   @override
   Future<ChatHome> getHome() async {
-    final ApiResult<Map<String, dynamic>> list = await _api.get('/me/chat/conversations');
+    // The three reads go out together instead of one after another.
+    final List<ApiResult<Map<String, dynamic>>> all = await Future.wait(<Future<ApiResult<Map<String, dynamic>>>>[
+      _api.get('/me/chat/conversations'),
+      _api.get('/me/entitlements'),
+      _api.get('/me/plans'),
+    ]);
+    final ApiResult<Map<String, dynamic>> list = all[0];
     if (list is ApiFail<Map<String, dynamic>>) throw StateError(list.error.message);
     final Map<String, dynamic> data = (list as ApiOk<Map<String, dynamic>>).data;
-    final ApiResult<Map<String, dynamic>> ents = await _api.get('/me/entitlements');
-    final ApiResult<Map<String, dynamic>> plans = await _api.get('/me/plans');
+    final ApiResult<Map<String, dynamic>> ents = all[1];
+    final ApiResult<Map<String, dynamic>> plans = all[2];
     final Map<dynamic, dynamic>? chat = ents is ApiOk<Map<String, dynamic>>
         ? (ents.data['features'] as List<dynamic>).cast<Map<dynamic, dynamic>>().where((Map<dynamic, dynamic> f) => f['key'] == 'ai_chat.messages').firstOrNull
         : null;

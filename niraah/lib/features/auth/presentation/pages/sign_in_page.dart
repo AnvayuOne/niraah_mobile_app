@@ -12,12 +12,11 @@ import '../../../../shared/helpers/result.dart';
 import '../../../provider_auth/application_repository.dart';
 import '../../domain/auth_repository.dart';
 
-/// "Sign in as" (spec 003 "The sign-in screen" 1–2a, amended 2026-11-18). The choice only picks the field; it is
-/// never sent to the server, and the workspace after sign-in follows the account's role (AC3). Admin is web only.
-enum SignInAs { member, doctor, dietitian, trainer }
-
-/// One sign-in screen for every role (spec 003): Member types a mobile number, everyone else an email.
-/// It never says whether an account exists.
+/// One sign-in for everyone (changed 2026-11-27 at the product owner's request; replaces "Sign in as"). What she types
+/// decides the path: a mobile number gets a one-time code, an email goes to password and authenticator. The server
+/// returns the account's workspace and she lands there (member home, assessment, create account, doctor, dietitian,
+/// trainer, admin notice, provider status). A new number creates a member account, so sign-up is members only;
+/// doctors and others join through the Apply link and their invites. It never says whether an account exists.
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
 
@@ -27,7 +26,6 @@ class SignInPage extends StatefulWidget {
 
 class _SignInPageState extends State<SignInPage> {
   final TextEditingController _field = TextEditingController();
-  SignInAs _as = SignInAs.member;
   String? _message;
   bool _busy = false;
 
@@ -43,18 +41,15 @@ class _SignInPageState extends State<SignInPage> {
     super.dispose();
   }
 
+  /// Digits so far (with or without +91, spaces or dashes): show the +91 prefix and treat it as a number.
+  bool get _looksLikeNumber {
+    final String t = _field.text.trim();
+    return t.isNotEmpty && RegExp(r'^\+?[\d\s-]+$').hasMatch(t);
+  }
+
   Future<void> _continue() async {
     final S s = S.of(context);
     final SignInInput input = SignInInput.parse(_field.text);
-    // What was typed must fit the choice (AC1); a mismatch is refused here, without a server call.
-    if (_as == SignInAs.member && input is! PhoneInput) {
-      setState(() => _message = s.signInNeedNumber);
-      return;
-    }
-    if (_as != SignInAs.member && input is! EmailInput) {
-      setState(() => _message = s.signInNeedEmail);
-      return;
-    }
     switch (input) {
       case UnrecognisedInput():
         setState(() => _message = s.signInUnrecognised);
@@ -82,13 +77,7 @@ class _SignInPageState extends State<SignInPage> {
   @override
   Widget build(BuildContext context) {
     final S s = S.of(context);
-    final bool member = _as == SignInAs.member;
-    final Map<SignInAs, String> labels = <SignInAs, String>{
-      SignInAs.member: s.signInAsMember,
-      SignInAs.doctor: s.signInAsDoctor,
-      SignInAs.dietitian: s.signInAsDietitian,
-      SignInAs.trainer: s.signInAsTrainer,
-    };
+    final bool number = _looksLikeNumber;
     return NPage(
       decor: true,
       onBack: () => context.go(RouteConstants.welcome),
@@ -99,48 +88,29 @@ class _SignInPageState extends State<SignInPage> {
           children: <Widget>[
             Text(s.signInTitle, style: NType.h2.copyWith(color: NColors.inkPrimary)),
             const SizedBox(height: NSpace.xs),
-            Text(member ? s.signInBody : s.signInStaffBody, style: NType.body.copyWith(color: NColors.inkSecondary)),
-            const SizedBox(height: NSpace.lg),
-            Text(s.signInAs, style: NType.label.copyWith(color: NColors.inkSecondary)),
-            const SizedBox(height: NSpace.xs),
-            Wrap(
-              spacing: NSpace.xs,
-              runSpacing: NSpace.xs,
-              children: <Widget>[
-                for (SignInAs k in SignInAs.values)
-                  ChoiceChip(
-                    label: Text(labels[k]!),
-                    selected: _as == k,
-                    onSelected: (_) => setState(() {
-                      _as = k;
-                      _field.clear();
-                      _message = null;
-                    }),
-                  ),
-              ],
-            ),
+            Text(s.signInAnyBody, style: NType.body.copyWith(color: NColors.inkSecondary)),
             const SizedBox(height: NSpace.lg),
             TextField(
-              key: ValueKey<bool>(member),
+              key: const ValueKey<String>('sign-in-field'),
               controller: _field,
-              keyboardType: member ? TextInputType.phone : TextInputType.emailAddress,
+              keyboardType: TextInputType.emailAddress,
               autocorrect: false,
               enableSuggestions: false,
               textInputAction: TextInputAction.go,
-              autofillHints: member ? const <String>[AutofillHints.telephoneNumberNational] : const <String>[AutofillHints.email],
+              autofillHints: const <String>[AutofillHints.telephoneNumberNational, AutofillHints.email],
               onSubmitted: (_) => _continue(),
               decoration: InputDecoration(
-                labelText: member ? s.signInNumberLabel : s.signInEmailLabel,
-                prefixIcon: !member
-                    ? Icon(Icons.mail_outline_rounded, color: NColors.inkMuted)
-                    : Padding(
+                labelText: s.signInAnyLabel,
+                prefixIcon: number
+                    ? Padding(
                         padding: const EdgeInsets.only(left: NSpace.md, right: NSpace.xs),
                         child: Align(
                           widthFactor: 1,
                           heightFactor: 1,
                           child: Text(s.signInCountryCode, style: NType.body.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w600)),
                         ),
-                      ),
+                      )
+                    : Icon(Icons.person_outline_rounded, color: NColors.inkMuted),
                 prefixIconConstraints: const BoxConstraints(minWidth: NLayout.minTapTarget, minHeight: NLayout.minTapTarget),
               ),
             ),
@@ -148,13 +118,28 @@ class _SignInPageState extends State<SignInPage> {
             Semantics(
               liveRegion: true,
               child: Text(
-                _message ?? (member ? s.signInNumberHint : s.signInEmailHint),
+                _message ?? s.signInAnyHint,
                 style: NType.bodySm.copyWith(color: _message != null ? NColors.statusAttention : NColors.inkMuted),
               ),
             ),
-            const SizedBox(height: NSpace.md),
-            // Spec 006 "Applying by herself": linked from sign-in. The application, with its human check, opens on
-            // the website; once her sign-in is set up she completes it here on the status page.
+            const SizedBox(height: NSpace.lg),
+            // Sign-up is for members: a new mobile number creates her account.
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(NSpace.md),
+              decoration: BoxDecoration(color: NColors.brandBlushLight, borderRadius: BorderRadius.circular(NRadius.lg)),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Icon(Icons.favorite_border_rounded, size: 20, color: NColors.brandRosewood),
+                  const SizedBox(width: NSpace.sm),
+                  Expanded(child: Text(s.signInNewHere, style: NType.bodySm.copyWith(color: NColors.inkPrimary))),
+                ],
+              ),
+            ),
+            const SizedBox(height: NSpace.sm),
+            // Spec 006 "Applying by herself": linked from sign-in. Unchanged: doctors and others apply on the website and
+            // finish set-up from their invite.
             TextButton(
               onPressed: () => launchUrl(applyPageUrl(), mode: LaunchMode.externalApplication),
               child: Text(s.pvApplyLink, textAlign: TextAlign.center),
@@ -164,7 +149,7 @@ class _SignInPageState extends State<SignInPage> {
       ),
       footer: NPrimaryButton(
         label: s.continueLabel,
-        inactiveHint: member ? s.signInEnterNumber : s.signInEnterEmail,
+        inactiveHint: s.signInEnterAny,
         loading: _busy,
         onPressed: _field.text.trim().isEmpty ? null : _continue,
       ),

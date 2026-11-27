@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart';
@@ -26,6 +28,23 @@ class AppointmentsPage extends StatefulWidget {
 class _AppointmentsPageState extends State<AppointmentsPage> {
   late final ConsultsRepository _repo = widget.repository ?? getIt<ConsultsRepository>();
   late Future<List<Appointment>> _list = _repo.appointments();
+
+  /// Re-checks every 30 s so "Join the consult" appears when the room opens, without pulling to refresh.
+  Timer? _joinCheck;
+
+  @override
+  void initState() {
+    super.initState();
+    _joinCheck = Timer.periodic(const Duration(seconds: 30), (_) {
+      if (mounted) setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    _joinCheck?.cancel();
+    super.dispose();
+  }
 
   void _reload() => setState(() {
     _list = _repo.appointments();
@@ -130,6 +149,12 @@ class _AppointmentsPageState extends State<AppointmentsPage> {
                             }
                           : null,
                       onCancel: a.canCancel ? () => _cancel(a) : null,
+                      onJoin: a.canJoin(DateTime.now())
+                          ? () async {
+                              await context.push('${RouteConstants.room}/${Uri.encodeComponent(a.id)}?side=member');
+                              _reload();
+                            }
+                          : null,
                     ),
                     const SizedBox(height: NSpace.sm),
                   ],
@@ -158,11 +183,12 @@ class _AppointmentsPageState extends State<AppointmentsPage> {
 }
 
 class _AppointmentCard extends StatelessWidget {
-  const _AppointmentCard({required this.a, this.onCancel, this.onConfirm, this.muted = false});
+  const _AppointmentCard({required this.a, this.onCancel, this.onConfirm, this.onJoin, this.muted = false});
 
   final Appointment a;
   final VoidCallback? onCancel;
   final VoidCallback? onConfirm;
+  final VoidCallback? onJoin;
   final bool muted;
 
   @override
@@ -213,6 +239,21 @@ class _AppointmentCard extends StatelessWidget {
               SpecialistAvatar(type: a.providerType, size: 44),
             ],
           ),
+          if (onJoin != null) ...<Widget>[
+            const SizedBox(height: NSpace.sm),
+            FilledButton.icon(
+              key: ValueKey<String>('join-${a.id}'),
+              onPressed: onJoin,
+              style: FilledButton.styleFrom(
+                backgroundColor: NColors.statusSuccess,
+                foregroundColor: NColors.inkOnBrand,
+                minimumSize: const Size.fromHeight(NLayout.minTapTarget + 4),
+                shape: const StadiumBorder(),
+              ),
+              icon: const Icon(Icons.videocam_rounded),
+              label: const Text('Join the consult'),
+            ),
+          ],
           if (onConfirm != null || onCancel != null) ...<Widget>[
             const SizedBox(height: NSpace.sm),
             Divider(height: 1, color: NColors.lineDefault),

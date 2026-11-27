@@ -8,6 +8,7 @@ import '../../../design_system/widgets/error_view.dart';
 import '../../../design_system/widgets/loading_view.dart';
 import '../../../design_system/widgets/n_button.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../shared/constants/route_constants.dart';
 import '../domain/doctor.dart';
 import 'doctor_shell.dart';
 import 'wellness_advice_pages.dart';
@@ -116,7 +117,13 @@ class _DoctorDashboardPageState extends State<DoctorDashboardPage> {
                                     isNext: today[i].id == next?.id,
                                     nextLabel: s.drNextUp,
                                     joinLabel: s.pvDashJoin,
-                                    joinNote: today[i].joinable ? s.pvDashJoinOnWeb : s.pvDashJoinSoon,
+                                    joinNote: s.pvDashJoinSoon,
+                                    onJoin: today[i].joinable
+                                        ? () async {
+                                            await context.push('${RouteConstants.room}/${Uri.encodeComponent(today[i].id)}?side=clinician');
+                                            if (mounted) setState(() => _dash = _repo.getDashboard());
+                                          }
+                                        : null,
                                     adviceLabel: !today[i].startsAt.isAfter(now) ? s.drWriteAdvice : null,
                                     onAdvice: () async {
                                       await startAdvice(context, today[i].id);
@@ -158,7 +165,7 @@ class _DoctorDashboardPageState extends State<DoctorDashboardPage> {
 }
 
 class _ConsultRow extends StatelessWidget {
-  const _ConsultRow({required this.a, required this.time, required this.isNext, required this.nextLabel, required this.joinLabel, required this.joinNote, required this.onAdvice, this.adviceLabel});
+  const _ConsultRow({required this.a, required this.time, required this.isNext, required this.nextLabel, required this.joinLabel, required this.joinNote, required this.onAdvice, this.adviceLabel, this.onJoin});
 
   final TodayAppointment a;
   final String time;
@@ -168,6 +175,9 @@ class _ConsultRow extends StatelessWidget {
   final String joinNote;
   final String? adviceLabel;
   final VoidCallback onAdvice;
+
+  /// Opens the video room; null until the join window opens.
+  final VoidCallback? onJoin;
 
   @override
   Widget build(BuildContext context) => Container(
@@ -205,7 +215,22 @@ class _ConsultRow extends StatelessWidget {
                 ],
               ),
             ),
-            Tooltip(message: joinNote, child: a.joinable ? CPill(joinLabel, tone: CTone.sage) : Icon(Icons.videocam_off_outlined, size: 20, color: NColors.inkMuted)),
+            if (onJoin != null)
+              FilledButton.icon(
+                key: ValueKey<String>('dr-join-${a.id}'),
+                onPressed: onJoin,
+                style: FilledButton.styleFrom(
+                  backgroundColor: NColors.statusSuccess,
+                  foregroundColor: NColors.inkOnBrand,
+                  minimumSize: const Size(0, NLayout.minTapTarget),
+                  padding: const EdgeInsets.symmetric(horizontal: NSpace.md),
+                  shape: const StadiumBorder(),
+                ),
+                icon: const Icon(Icons.videocam_rounded, size: 18),
+                label: Text(joinLabel),
+              )
+            else
+              Tooltip(message: joinNote, child: Icon(Icons.videocam_off_outlined, size: 20, color: NColors.inkMuted, semanticLabel: joinNote)),
           ],
         ),
       );
