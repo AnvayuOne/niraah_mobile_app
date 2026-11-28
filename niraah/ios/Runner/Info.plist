@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSHealthShareUsageDescription</key>
+	<string>Niraah reads only the readings you choose from Apple Health, such as steps, sleep and heart rate, to show them to you and, if you agree, to your care team. Niraah writes nothing to Apple Health.</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>Niraah does not write to Apple Health.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Niraah uses your camera only during a video consult or live class, so your clinician or instructor can see you. You can turn it off at any time.</string>
 	<key>NSMicrophoneUsageDescription</key>

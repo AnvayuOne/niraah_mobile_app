@@ -18,6 +18,7 @@ import '../../../shared/constants/route_constants.dart';
 import '../../care/domain/care.dart';
 import '../../cycle/domain/cycle.dart';
 import '../../cycle/presentation/cycle_summary_view.dart';
+import '../../devices/domain/device_auto_sync.dart';
 import '../domain/home.dart';
 import 'home_cubit.dart';
 import 'home_labels.dart';
@@ -37,7 +38,14 @@ class HomePage extends StatelessWidget {
     final HomeCubit? given = cubit;
     return given != null
         ? BlocProvider<HomeCubit>.value(value: given, child: const _HomeView())
-        : BlocProvider<HomeCubit>(create: (_) => HomeCubit(getIt<HomeRepository>())..load(), child: const _HomeView());
+        : BlocProvider<HomeCubit>(
+            create: (_) {
+              // Her connected device syncs when the app opens (spec 016 §2.1); quietly, and once per run.
+              DeviceAutoSync.once();
+              return HomeCubit(getIt<HomeRepository>())..load();
+            },
+            child: const _HomeView(),
+          );
   }
 }
 

@@ -26,6 +26,7 @@ import '../features/consults/presentation/consult_room_page.dart';
 import '../features/consults/presentation/device_check_page.dart';
 import '../features/consults/presentation/specialists_page.dart';
 import '../features/cycle/presentation/cycle_page.dart';
+import '../features/devices/presentation/devices_page.dart';
 import '../features/dietitian/dietitian_pages.dart';
 import '../features/dietitian/meal_plan_pages.dart';
 import '../features/dietitian/review_recipe_pages.dart';
@@ -49,6 +50,7 @@ import '../features/me/presentation/privacy_page.dart';
 import '../features/me/presentation/profile_page.dart';
 import '../features/meals/presentation/meal_scan_page.dart';
 import '../features/meals/presentation/meals_page.dart';
+import '../features/meals/presentation/today_plan_page.dart';
 import '../features/messaging/messaging.dart';
 import '../features/onboarding/presentation/pages/intro_page.dart';
 import '../features/onboarding/presentation/pages/splash_page.dart';
@@ -108,6 +110,7 @@ class AppRouter {
           GoRoute(path: RouteConstants.cycle, builder: (_, _) => const CyclePage()),
           GoRoute(path: RouteConstants.meals, builder: (_, _) => const MealsPage()),
           GoRoute(path: RouteConstants.mealScan, builder: (_, _) => const MealScanPage()),
+          GoRoute(path: RouteConstants.mealPlanToday, builder: (_, GoRouterState st) => TodayPlanPage(focusSlot: st.uri.queryParameters['slot'])),
           GoRoute(path: RouteConstants.chat, builder: (_, _) => const ChatHomePage()),
           GoRoute(
             path: '${RouteConstants.chat}/:id',
@@ -126,6 +129,7 @@ class AppRouter {
           GoRoute(path: RouteConstants.profile, builder: (_, _) => const ProfilePage()),
           GoRoute(path: RouteConstants.privacy, builder: (_, _) => const PrivacyPage()),
           GoRoute(path: RouteConstants.notificationSettings, builder: (_, _) => const NotificationSettingsPage()),
+          GoRoute(path: RouteConstants.devices, builder: (_, _) => const DevicesPage()),
           GoRoute(path: RouteConstants.programs, builder: (_, _) => const ProgramsPage()),
           GoRoute(path: RouteConstants.carePlan, builder: (_, _) => const CarePlanPage()),
           GoRoute(path: RouteConstants.checkIns, builder: (_, _) => const CheckInsPage()),

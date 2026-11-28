@@ -12,7 +12,7 @@ class UnavailableMealsRepository implements MealsRepository {
   Future<List<FoodOption>> searchFoods(String query) async => throw const HomeNotConnected();
 
   @override
-  Future<Meal> save({required DateTime eatenAt, required MealSlot slot, required bool fromScan, required List<MealItemInput> items}) async =>
+  Future<Meal> save({required DateTime eatenAt, required MealSlot slot, required bool fromScan, required List<MealItemInput> items, PlanMealRef? planMeal}) async =>
       throw const HomeNotConnected();
 
   @override
@@ -23,4 +23,13 @@ class UnavailableMealsRepository implements MealsRepository {
 
   @override
   Future<MealPlan?> mealPlan() async => throw const HomeNotConnected();
+
+  @override
+  Future<MealTimes> mealTimes() async => throw const HomeNotConnected();
+
+  @override
+  Future<MealTimes> setMealTime(String slot, {String? time, bool? enabled}) async => throw const HomeNotConnected();
+
+  @override
+  Future<PlanMealToday> planMealToday(String slot) async => throw const HomeNotConnected();
 }

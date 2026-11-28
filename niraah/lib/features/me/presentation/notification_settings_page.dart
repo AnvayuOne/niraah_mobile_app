@@ -5,14 +5,17 @@ import '../../../design_system/tokens/tokens.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../shared/area/area_access.dart';
 import '../../../shared/area/area_widgets.dart';
+import '../../meals/domain/meals.dart';
+import '../../meals/presentation/meal_times_card.dart';
 import '../domain/me.dart';
 
 /// Notification settings (spec 010 §13; spec 015): each category with a switch per channel. Notices the service
 /// must send are shown as always on, with the reason, and cannot be switched off.
 class NotificationSettingsPage extends StatefulWidget {
-  const NotificationSettingsPage({super.key, this.repository});
+  const NotificationSettingsPage({super.key, this.repository, this.meals});
 
   final MeRepository? repository;
+  final MealsRepository? meals;
 
   @override
   State<NotificationSettingsPage> createState() => _NotificationSettingsPageState();
@@ -71,6 +74,10 @@ class _NotificationSettingsPageState extends State<NotificationSettingsPage> {
                   ],
                 ),
               ),
+              if (c.key == 'meal_times') ...<Widget>[
+                const SizedBox(height: NSpace.xs),
+                MealTimesCard(repository: widget.meals),
+              ],
               const SizedBox(height: NSpace.sm),
             ],
             if (n.discreetNote.isNotEmpty) Text(n.discreetNote, style: NType.caption.copyWith(color: NColors.inkMuted)),

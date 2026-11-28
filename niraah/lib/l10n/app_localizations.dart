@@ -9554,6 +9554,312 @@ abstract class S {
   /// In en, this message translates to:
   /// **'The {who}\'s voice could not be transcribed.'**
   String csTranscriptMissing(String who);
+
+  /// No description provided for @todayPlanTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s plan'**
+  String get todayPlanTitle;
+
+  /// No description provided for @todayPlanFromDietitian.
+  ///
+  /// In en, this message translates to:
+  /// **'From your dietitian\'s meal plan'**
+  String get todayPlanFromDietitian;
+
+  /// No description provided for @todayPlanFromAi.
+  ///
+  /// In en, this message translates to:
+  /// **'From your AI diet plan'**
+  String get todayPlanFromAi;
+
+  /// No description provided for @todayPlanAteThis.
+  ///
+  /// In en, this message translates to:
+  /// **'I ate this'**
+  String get todayPlanAteThis;
+
+  /// No description provided for @todayPlanScan.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan my meal'**
+  String get todayPlanScan;
+
+  /// No description provided for @todayPlanLogged.
+  ///
+  /// In en, this message translates to:
+  /// **'Logged. Nicely done.'**
+  String get todayPlanLogged;
+
+  /// No description provided for @todayPlanNone.
+  ///
+  /// In en, this message translates to:
+  /// **'When you have a diet plan, today\'s meals appear here.'**
+  String get todayPlanNone;
+
+  /// No description provided for @todayPlanNoMeals.
+  ///
+  /// In en, this message translates to:
+  /// **'Your plan has no meals for today.'**
+  String get todayPlanNoMeals;
+
+  /// No description provided for @todayPlanRecipeNote.
+  ///
+  /// In en, this message translates to:
+  /// **'This meal has a recipe in it. Log it with a scan, or by hand from your meal log.'**
+  String get todayPlanRecipeNote;
+
+  /// No description provided for @todayPlanConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Log {meal} as planned?'**
+  String todayPlanConfirmTitle(String meal);
+
+  /// No description provided for @mealTimesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your meal times'**
+  String get mealTimesTitle;
+
+  /// No description provided for @mealTimesNote.
+  ///
+  /// In en, this message translates to:
+  /// **'We remind you what your plan has for each meal, at its time. Turn any meal off.'**
+  String get mealTimesNote;
+
+  /// No description provided for @mealTimesNoPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'These reminders start when you have a diet plan.'**
+  String get mealTimesNoPlan;
+
+  /// No description provided for @mealTimesChange.
+  ///
+  /// In en, this message translates to:
+  /// **'{meal} reminder at {time}. Change time'**
+  String mealTimesChange(String meal, String time);
+
+  /// No description provided for @devTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Connected devices'**
+  String get devTitle;
+
+  /// No description provided for @devMeRowSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Health Connect or Apple Health'**
+  String get devMeRowSub;
+
+  /// No description provided for @devIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Steps, sleep, heart rate and more from your watch, ring, band or scale.'**
+  String get devIntro;
+
+  /// No description provided for @devConnectWith.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect {platform}'**
+  String devConnectWith(String platform);
+
+  /// No description provided for @devChoose.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose what to share'**
+  String get devChoose;
+
+  /// No description provided for @devChooseNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Only what you choose is read, and you can stop at any time.'**
+  String get devChooseNote;
+
+  /// No description provided for @devConsent.
+  ///
+  /// In en, this message translates to:
+  /// **'Niraah will store the readings you choose from your device. Niraah does not check them, they are not a medical measurement, and AI features do not use them.'**
+  String get devConsent;
+
+  /// No description provided for @devConnect.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect'**
+  String get devConnect;
+
+  /// No description provided for @devKindSteps.
+  ///
+  /// In en, this message translates to:
+  /// **'Steps'**
+  String get devKindSteps;
+
+  /// No description provided for @devKindActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active minutes'**
+  String get devKindActive;
+
+  /// No description provided for @devKindSleep.
+  ///
+  /// In en, this message translates to:
+  /// **'Sleep'**
+  String get devKindSleep;
+
+  /// No description provided for @devKindRestingHr.
+  ///
+  /// In en, this message translates to:
+  /// **'Resting heart rate'**
+  String get devKindRestingHr;
+
+  /// No description provided for @devKindHrv.
+  ///
+  /// In en, this message translates to:
+  /// **'Heart rate variability'**
+  String get devKindHrv;
+
+  /// No description provided for @devKindWeight.
+  ///
+  /// In en, this message translates to:
+  /// **'Weight'**
+  String get devKindWeight;
+
+  /// No description provided for @devKindTemp.
+  ///
+  /// In en, this message translates to:
+  /// **'Basal body temperature'**
+  String get devKindTemp;
+
+  /// No description provided for @devKindPeriods.
+  ///
+  /// In en, this message translates to:
+  /// **'Periods, added to your cycle log'**
+  String get devKindPeriods;
+
+  /// No description provided for @devNeedsInstall.
+  ///
+  /// In en, this message translates to:
+  /// **'Health Connect needs to be installed or updated first.'**
+  String get devNeedsInstall;
+
+  /// No description provided for @devInstall.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Health Connect'**
+  String get devInstall;
+
+  /// No description provided for @devUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Health Connect isn\'t available on this phone.'**
+  String get devUnavailable;
+
+  /// No description provided for @devDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Niraah wasn\'t given access. You can allow it in {platform}.'**
+  String devDenied(String platform);
+
+  /// No description provided for @devSyncNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync now'**
+  String get devSyncNow;
+
+  /// No description provided for @devSynced.
+  ///
+  /// In en, this message translates to:
+  /// **'Synced. {count} readings saved.'**
+  String devSynced(String count);
+
+  /// No description provided for @devLastSynced.
+  ///
+  /// In en, this message translates to:
+  /// **'Last synced {when}'**
+  String devLastSynced(String when);
+
+  /// No description provided for @devNeverSynced.
+  ///
+  /// In en, this message translates to:
+  /// **'Not synced yet'**
+  String get devNeverSynced;
+
+  /// No description provided for @devDisconnected.
+  ///
+  /// In en, this message translates to:
+  /// **'Disconnected'**
+  String get devDisconnected;
+
+  /// No description provided for @devDisconnect.
+  ///
+  /// In en, this message translates to:
+  /// **'Disconnect'**
+  String get devDisconnect;
+
+  /// No description provided for @devDisconnectTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Disconnect this device?'**
+  String get devDisconnectTitle;
+
+  /// No description provided for @devDisconnectBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Niraah stops receiving readings from it. Keep the readings already sent, or delete them? You can also remove Niraah\'s access in {platform}.'**
+  String devDisconnectBody(String platform);
+
+  /// No description provided for @devKeep.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep the readings'**
+  String get devKeep;
+
+  /// No description provided for @devDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete the readings'**
+  String get devDelete;
+
+  /// No description provided for @devEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing is connected yet. When you connect, the readings you choose appear here.'**
+  String get devEmpty;
+
+  /// No description provided for @devReadings.
+  ///
+  /// In en, this message translates to:
+  /// **'Your readings'**
+  String get devReadings;
+
+  /// No description provided for @devNoReadings.
+  ///
+  /// In en, this message translates to:
+  /// **'No readings yet. Pull down to sync.'**
+  String get devNoReadings;
+
+  /// No description provided for @devLatest.
+  ///
+  /// In en, this message translates to:
+  /// **'Latest: {value} on {day}'**
+  String devLatest(String value, String day);
+
+  /// No description provided for @devAverage.
+  ///
+  /// In en, this message translates to:
+  /// **'7-day average: {value}'**
+  String devAverage(String value);
+
+  /// No description provided for @devSharing.
+  ///
+  /// In en, this message translates to:
+  /// **'Sharing: {list}'**
+  String devSharing(String list);
+
+  /// No description provided for @devFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'That didn\'t go through. Your readings are safe. Try again.'**
+  String get devFailed;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

@@ -6,7 +6,8 @@ plugins {
 
 android {
     namespace = "com.example.niraah"
-    compileSdk = flutter.compileSdkVersion
+    // The `health` package (Health Connect, spec 016) compiles against API 37; targetSdk is unchanged.
+    compileSdk = maxOf(flutter.compileSdkVersion, 37)
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
@@ -19,7 +20,8 @@ android {
         applicationId = "com.example.niraah"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
+        // Health Connect needs Android 8.0 (API 26) or later (spec 016).
+        minSdk = maxOf(flutter.minSdkVersion, 26)
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName

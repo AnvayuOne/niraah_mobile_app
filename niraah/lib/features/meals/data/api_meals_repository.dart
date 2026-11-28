@@ -44,12 +44,13 @@ class ApiMealsRepository implements MealsRepository {
   }
 
   @override
-  Future<Meal> save({required DateTime eatenAt, required MealSlot slot, required bool fromScan, required List<MealItemInput> items}) async {
+  Future<Meal> save({required DateTime eatenAt, required MealSlot slot, required bool fromScan, required List<MealItemInput> items, PlanMealRef? planMeal}) async {
     final Map<String, dynamic> r = (await _api.post('/me/meals', <String, dynamic>{
       'eatenAt': _isoWithOffset(eatenAt),
       'slot': slot.name,
       'source': fromScan ? 'scan' : 'manual',
       'items': <Map<String, dynamic>>[for (final MealItemInput i in items) <String, dynamic>{'foodId': i.foodId, 'count': i.count, 'unit': i.unit}],
+      if (planMeal != null) 'planMeal': <String, dynamic>{'slot': planMeal.slot, 'fromPlan': planMeal.fromPlan},
     }))
         .orThrow();
     return _meal(r);
@@ -116,6 +117,40 @@ class ApiMealsRepository implements MealsRepository {
       ],
     );
   }
+
+  @override
+  Future<MealTimes> mealTimes() async => _mealTimes((await _api.get('/me/meal-times')).orArea());
+
+  @override
+  Future<MealTimes> setMealTime(String slot, {String? time, bool? enabled}) async => _mealTimes(
+        (await _api.put('/me/meal-times/${Uri.encodeComponent(slot)}', <String, dynamic>{'time': ?time, 'enabled': ?enabled})).orThrow(),
+      );
+
+  @override
+  Future<PlanMealToday> planMealToday(String slot) async {
+    final Map<String, dynamic> r = (await _api.get('/me/meal-times/${Uri.encodeComponent(slot)}/today')).orArea();
+    return PlanMealToday(
+      date: '${r['date']}',
+      slot: '${r['slot']}',
+      name: '${r['name']}',
+      planSource: r['planSource'] as String?,
+      caution: r['caution'] as String?,
+      logSlot: MealSlot.values.firstWhere((MealSlot s) => s.name == r['logSlot'], orElse: () => MealSlot.snack),
+      dishes: <PlanDish>[
+        for (final dynamic d in (r['dishes'] as List<dynamic>?) ?? const <dynamic>[])
+          PlanDish(name: '${(d as Map<String, dynamic>)['name']}', count: (d['count'] as num).toDouble(), unit: '${d['unit']}', foodId: d['foodId'] as String?),
+      ],
+    );
+  }
+
+  static MealTimes _mealTimes(Map<String, dynamic> r) => MealTimes(
+        hasPlan: r['hasPlan'] as bool? ?? false,
+        planSource: r['planSource'] as String?,
+        slots: <MealTime>[
+          for (final dynamic t in (r['slots'] as List<dynamic>?) ?? const <dynamic>[])
+            MealTime(slot: '${(t as Map<String, dynamic>)['slot']}', name: '${t['name']}', time: '${t['time']}', enabled: t['enabled'] as bool? ?? false),
+        ],
+      );
 
   /// Plan nutrients: energy is left out when calorie content is suppressed for her (spec 012 AC16).
   static Nutrients _planNutrients(Object? raw) {

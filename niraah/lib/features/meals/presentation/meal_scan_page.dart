@@ -16,10 +16,14 @@ import 'meal_widgets.dart';
 /// The meal scanner (spec 010 §6 rules 1, 2, 4; spec 009 "Meal scan"): photo → the AI names the dishes and
 /// portions → she checks and corrects them → saved. Nutrients come from the food table on the server.
 class MealScanPage extends StatefulWidget {
-  const MealScanPage({super.key, this.repository, this.picker});
+  const MealScanPage({super.key, this.repository, this.picker, this.planMeal, this.initialSlot});
 
   final MealsRepository? repository;
   final ImagePicker? picker;
+
+  /// Set when opened from a plan meal (a meal-time reminder): the log is recorded against it (spec 010 §6b rule 4).
+  final PlanMealRef? planMeal;
+  final MealSlot? initialSlot;
 
   @override
   State<MealScanPage> createState() => _MealScanPageState();
@@ -48,7 +52,7 @@ class _MealScanPageState extends State<MealScanPage> {
   Uint8List? _photo;
   List<_Line> _lines = <_Line>[];
   List<String> _tags = <String>[];
-  MealSlot _slot = slotForNow(DateTime.now());
+  late MealSlot _slot = widget.initialSlot ?? slotForNow(DateTime.now());
   String? _message;
   Meal? _saved;
 
@@ -125,6 +129,7 @@ class _MealScanPageState extends State<MealScanPage> {
         slot: _slot,
         fromScan: true,
         items: <MealItemInput>[for (final _Line l in _lines) MealItemInput(foodId: l.food!.id, count: l.count, unit: l.unit)],
+        planMeal: widget.planMeal,
       );
       if (!mounted) return;
       setState(() {

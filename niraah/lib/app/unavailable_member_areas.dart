@@ -3,6 +3,7 @@ import '../features/billing/domain/billing.dart';
 import '../features/care/domain/care.dart';
 import '../features/community/domain/community.dart';
 import '../features/consults/domain/consults.dart';
+import '../features/devices/domain/devices.dart';
 import '../features/dietitian/dietitian_repository.dart';
 import '../features/doctor/domain/doctor_work.dart';
 import '../features/home/data/unavailable_home_repository.dart';
@@ -25,6 +26,8 @@ mixin _NotConnected {
 class UnavailablePracticeRepository with _NotConnected implements PracticeRepository {}
 
 class UnavailableMeRepository with _NotConnected implements MeRepository {}
+
+class UnavailableDevicesRepository with _NotConnected implements DevicesRepository {}
 
 class UnavailableCareRepository with _NotConnected implements CareRepository {}
 

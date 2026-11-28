@@ -5474,4 +5474,187 @@ class SEn extends S {
   String csTranscriptMissing(String who) {
     return 'The $who\'s voice could not be transcribed.';
   }
+
+  @override
+  String get todayPlanTitle => 'Today\'s plan';
+
+  @override
+  String get todayPlanFromDietitian => 'From your dietitian\'s meal plan';
+
+  @override
+  String get todayPlanFromAi => 'From your AI diet plan';
+
+  @override
+  String get todayPlanAteThis => 'I ate this';
+
+  @override
+  String get todayPlanScan => 'Scan my meal';
+
+  @override
+  String get todayPlanLogged => 'Logged. Nicely done.';
+
+  @override
+  String get todayPlanNone =>
+      'When you have a diet plan, today\'s meals appear here.';
+
+  @override
+  String get todayPlanNoMeals => 'Your plan has no meals for today.';
+
+  @override
+  String get todayPlanRecipeNote =>
+      'This meal has a recipe in it. Log it with a scan, or by hand from your meal log.';
+
+  @override
+  String todayPlanConfirmTitle(String meal) {
+    return 'Log $meal as planned?';
+  }
+
+  @override
+  String get mealTimesTitle => 'Your meal times';
+
+  @override
+  String get mealTimesNote =>
+      'We remind you what your plan has for each meal, at its time. Turn any meal off.';
+
+  @override
+  String get mealTimesNoPlan =>
+      'These reminders start when you have a diet plan.';
+
+  @override
+  String mealTimesChange(String meal, String time) {
+    return '$meal reminder at $time. Change time';
+  }
+
+  @override
+  String get devTitle => 'Connected devices';
+
+  @override
+  String get devMeRowSub => 'Health Connect or Apple Health';
+
+  @override
+  String get devIntro =>
+      'Steps, sleep, heart rate and more from your watch, ring, band or scale.';
+
+  @override
+  String devConnectWith(String platform) {
+    return 'Connect $platform';
+  }
+
+  @override
+  String get devChoose => 'Choose what to share';
+
+  @override
+  String get devChooseNote =>
+      'Only what you choose is read, and you can stop at any time.';
+
+  @override
+  String get devConsent =>
+      'Niraah will store the readings you choose from your device. Niraah does not check them, they are not a medical measurement, and AI features do not use them.';
+
+  @override
+  String get devConnect => 'Connect';
+
+  @override
+  String get devKindSteps => 'Steps';
+
+  @override
+  String get devKindActive => 'Active minutes';
+
+  @override
+  String get devKindSleep => 'Sleep';
+
+  @override
+  String get devKindRestingHr => 'Resting heart rate';
+
+  @override
+  String get devKindHrv => 'Heart rate variability';
+
+  @override
+  String get devKindWeight => 'Weight';
+
+  @override
+  String get devKindTemp => 'Basal body temperature';
+
+  @override
+  String get devKindPeriods => 'Periods, added to your cycle log';
+
+  @override
+  String get devNeedsInstall =>
+      'Health Connect needs to be installed or updated first.';
+
+  @override
+  String get devInstall => 'Get Health Connect';
+
+  @override
+  String get devUnavailable => 'Health Connect isn\'t available on this phone.';
+
+  @override
+  String devDenied(String platform) {
+    return 'Niraah wasn\'t given access. You can allow it in $platform.';
+  }
+
+  @override
+  String get devSyncNow => 'Sync now';
+
+  @override
+  String devSynced(String count) {
+    return 'Synced. $count readings saved.';
+  }
+
+  @override
+  String devLastSynced(String when) {
+    return 'Last synced $when';
+  }
+
+  @override
+  String get devNeverSynced => 'Not synced yet';
+
+  @override
+  String get devDisconnected => 'Disconnected';
+
+  @override
+  String get devDisconnect => 'Disconnect';
+
+  @override
+  String get devDisconnectTitle => 'Disconnect this device?';
+
+  @override
+  String devDisconnectBody(String platform) {
+    return 'Niraah stops receiving readings from it. Keep the readings already sent, or delete them? You can also remove Niraah\'s access in $platform.';
+  }
+
+  @override
+  String get devKeep => 'Keep the readings';
+
+  @override
+  String get devDelete => 'Delete the readings';
+
+  @override
+  String get devEmpty =>
+      'Nothing is connected yet. When you connect, the readings you choose appear here.';
+
+  @override
+  String get devReadings => 'Your readings';
+
+  @override
+  String get devNoReadings => 'No readings yet. Pull down to sync.';
+
+  @override
+  String devLatest(String value, String day) {
+    return 'Latest: $value on $day';
+  }
+
+  @override
+  String devAverage(String value) {
+    return '7-day average: $value';
+  }
+
+  @override
+  String devSharing(String list) {
+    return 'Sharing: $list';
+  }
+
+  @override
+  String get devFailed =>
+      'That didn\'t go through. Your readings are safe. Try again.';
 }

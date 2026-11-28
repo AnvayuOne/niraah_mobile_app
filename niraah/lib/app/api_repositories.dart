@@ -21,6 +21,8 @@ import '../features/consults/data/api_consults_repository.dart';
 import '../features/consults/domain/consults.dart';
 import '../features/cycle/data/api_cycle_repository.dart';
 import '../features/cycle/domain/cycle.dart';
+import '../features/devices/data/api_devices_repository.dart';
+import '../features/devices/domain/devices.dart';
 import '../features/dietitian/dietitian_repository.dart';
 import '../features/doctor/data/api_doctor_repository.dart';
 import '../features/doctor/data/api_doctor_work_repository.dart';
@@ -72,6 +74,8 @@ void registerApiRepositories(GetIt getIt) {
     // The rest of the member workspace (spec 010 §7, §9, §10-§13).
     ..registerLazySingleton<PracticeRepository>(() => ApiPracticeRepository(getIt<NiraahApi>()))
     ..registerLazySingleton<MeRepository>(() => ApiMeRepository(getIt<NiraahApi>()))
+    // Connected devices (spec 016).
+    ..registerLazySingleton<DevicesRepository>(() => ApiDevicesRepository(getIt<NiraahApi>()))
     ..registerLazySingleton<CareRepository>(() => ApiCareRepository(getIt<NiraahApi>()))
     ..registerLazySingleton<LabsRepository>(() => ApiLabsRepository(getIt<NiraahApi>()))
     ..registerLazySingleton<CommunityRepository>(() => ApiCommunityRepository(getIt<NiraahApi>()))

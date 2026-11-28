@@ -30,6 +30,9 @@ class RouteConstants {
   static const String meals = '/meals';
   static const String mealScan = '/meals/scan';
 
+  /// Today's plan meals, opened by a meal-time reminder (spec 015 template `meal_time.reminder` link).
+  static const String mealPlanToday = '/meal-plan/today';
+
   /// `/area/<name>`: an area with no screen yet.
   static const String area = '/area';
 
@@ -47,6 +50,8 @@ class RouteConstants {
   static const String profile = '/me/profile';
   static const String privacy = '/me/privacy';
   static const String notificationSettings = '/me/notifications';
+  // Connected devices (spec 016).
+  static const String devices = '/me/devices';
   static const String programs = '/programs';
   static const String carePlan = '/care-plan';
   static const String checkIns = '/check-ins';

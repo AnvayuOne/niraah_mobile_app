@@ -138,6 +138,9 @@ class _MePageState extends State<MePage> {
                   const SizedBox(height: NSpace.xs),
                   _Row(icon: Icons.notifications_none_rounded, text: s.notifTitle, onTap: () => context.push(RouteConstants.notificationSettings)),
                   const SizedBox(height: NSpace.xs),
+                  // Connected devices: Health Connect or Apple Health (spec 016).
+                  _Row(icon: Icons.watch_outlined, text: s.devTitle, onTap: () => context.push(RouteConstants.devices)),
+                  const SizedBox(height: NSpace.xs),
                   // Signed-in devices (spec 003 "Sessions" 7, 8; spec 010 §13 "Privacy" 7).
                   _Row(icon: Icons.devices_rounded, text: s.acctDevicesTitle, onTap: () => context.push(RouteConstants.signedInDevices)),
                   const SizedBox(height: NSpace.lg),

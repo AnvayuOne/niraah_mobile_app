@@ -1,5 +1,6 @@
 package com.example.niraah
 
-import io.flutter.embedding.android.FlutterActivity
+import io.flutter.embedding.android.FlutterFragmentActivity
 
-class MainActivity : FlutterActivity()
+// A fragment activity: Health Connect's permission dialog needs one (spec 016, `health` package).
+class MainActivity : FlutterFragmentActivity()

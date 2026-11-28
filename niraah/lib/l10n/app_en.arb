@@ -3278,5 +3278,132 @@
         "type": "String"
       }
     }
-  }
+  },
+  "todayPlanTitle": "Today's plan",
+  "todayPlanFromDietitian": "From your dietitian's meal plan",
+  "todayPlanFromAi": "From your AI diet plan",
+  "todayPlanAteThis": "I ate this",
+  "todayPlanScan": "Scan my meal",
+  "todayPlanLogged": "Logged. Nicely done.",
+  "todayPlanNone": "When you have a diet plan, today's meals appear here.",
+  "todayPlanNoMeals": "Your plan has no meals for today.",
+  "todayPlanRecipeNote": "This meal has a recipe in it. Log it with a scan, or by hand from your meal log.",
+  "todayPlanConfirmTitle": "Log {meal} as planned?",
+  "@todayPlanConfirmTitle": {
+    "placeholders": {
+      "meal": {
+        "type": "String"
+      }
+    }
+  },
+  "mealTimesTitle": "Your meal times",
+  "mealTimesNote": "We remind you what your plan has for each meal, at its time. Turn any meal off.",
+  "mealTimesNoPlan": "These reminders start when you have a diet plan.",
+  "mealTimesChange": "{meal} reminder at {time}. Change time",
+  "@mealTimesChange": {
+    "placeholders": {
+      "meal": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "devTitle": "Connected devices",
+  "devMeRowSub": "Health Connect or Apple Health",
+  "devIntro": "Steps, sleep, heart rate and more from your watch, ring, band or scale.",
+  "devConnectWith": "Connect {platform}",
+  "@devConnectWith": {
+    "placeholders": {
+      "platform": {
+        "type": "String"
+      }
+    }
+  },
+  "devChoose": "Choose what to share",
+  "devChooseNote": "Only what you choose is read, and you can stop at any time.",
+  "devConsent": "Niraah will store the readings you choose from your device. Niraah does not check them, they are not a medical measurement, and AI features do not use them.",
+  "devConnect": "Connect",
+  "devKindSteps": "Steps",
+  "devKindActive": "Active minutes",
+  "devKindSleep": "Sleep",
+  "devKindRestingHr": "Resting heart rate",
+  "devKindHrv": "Heart rate variability",
+  "devKindWeight": "Weight",
+  "devKindTemp": "Basal body temperature",
+  "devKindPeriods": "Periods, added to your cycle log",
+  "devNeedsInstall": "Health Connect needs to be installed or updated first.",
+  "devInstall": "Get Health Connect",
+  "devUnavailable": "Health Connect isn't available on this phone.",
+  "devDenied": "Niraah wasn't given access. You can allow it in {platform}.",
+  "@devDenied": {
+    "placeholders": {
+      "platform": {
+        "type": "String"
+      }
+    }
+  },
+  "devSyncNow": "Sync now",
+  "devSynced": "Synced. {count} readings saved.",
+  "@devSynced": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "devLastSynced": "Last synced {when}",
+  "@devLastSynced": {
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "devNeverSynced": "Not synced yet",
+  "devDisconnected": "Disconnected",
+  "devDisconnect": "Disconnect",
+  "devDisconnectTitle": "Disconnect this device?",
+  "devDisconnectBody": "Niraah stops receiving readings from it. Keep the readings already sent, or delete them? You can also remove Niraah's access in {platform}.",
+  "@devDisconnectBody": {
+    "placeholders": {
+      "platform": {
+        "type": "String"
+      }
+    }
+  },
+  "devKeep": "Keep the readings",
+  "devDelete": "Delete the readings",
+  "devEmpty": "Nothing is connected yet. When you connect, the readings you choose appear here.",
+  "devReadings": "Your readings",
+  "devNoReadings": "No readings yet. Pull down to sync.",
+  "devLatest": "Latest: {value} on {day}",
+  "@devLatest": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      },
+      "day": {
+        "type": "String"
+      }
+    }
+  },
+  "devAverage": "7-day average: {value}",
+  "@devAverage": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "devSharing": "Sharing: {list}",
+  "@devSharing": {
+    "placeholders": {
+      "list": {
+        "type": "String"
+      }
+    }
+  },
+  "devFailed": "That didn't go through. Your readings are safe. Try again."
 }

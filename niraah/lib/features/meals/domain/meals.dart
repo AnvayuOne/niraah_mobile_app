@@ -159,8 +159,9 @@ abstract class MealsRepository {
 
   Future<List<FoodOption>> searchFoods(String query);
 
-  /// Saves a meal she confirmed; nutrients are computed on the server from the food table.
-  Future<Meal> save({required DateTime eatenAt, required MealSlot slot, required bool fromScan, required List<MealItemInput> items});
+  /// Saves a meal she confirmed; nutrients are computed on the server from the food table. [planMeal] records which
+  /// meal of her diet plan it was (spec 010 §6b rule 4, AC73).
+  Future<Meal> save({required DateTime eatenAt, required MealSlot slot, required bool fromScan, required List<MealItemInput> items, PlanMealRef? planMeal});
 
   Future<MealDay> today();
 
@@ -169,6 +170,93 @@ abstract class MealsRepository {
 
   /// Her active meal plan from her dietitian, or null when she has none.
   Future<MealPlan?> mealPlan();
+
+  /// Her meal-time reminder settings (spec 010 §6b rule 2): `GET /me/meal-times`.
+  Future<MealTimes> mealTimes();
+
+  /// Changes one meal's reminder time (`HH:MM`) or switch (spec 010 AC69): `PUT /me/meal-times/{slot}`.
+  Future<MealTimes> setMealTime(String slot, {String? time, bool? enabled});
+
+  /// Today's meal of her plan for one slot, what a meal-time reminder opens (spec 010 §6b rule 4).
+  Future<PlanMealToday> planMealToday(String slot);
+}
+
+/// The diet plan's meal slots, in the order of the day (spec 010 §6b, spec 012 §4).
+const List<String> planMealSlots = <String>['early_morning', 'breakfast', 'mid_morning', 'lunch', 'evening_snack', 'dinner', 'bedtime'];
+
+/// The plan meal a log was eaten for; [fromPlan] when she logged it with "I ate this" (spec 010 §6b rule 4).
+class PlanMealRef extends Equatable {
+  const PlanMealRef({required this.slot, this.fromPlan = false});
+
+  final String slot;
+  final bool fromPlan;
+
+  @override
+  List<Object?> get props => <Object?>[slot, fromPlan];
+}
+
+/// One meal slot's reminder: its time in her time zone and its switch (spec 010 §6b rule 2).
+class MealTime extends Equatable {
+  const MealTime({required this.slot, required this.name, required this.time, required this.enabled});
+
+  final String slot;
+  final String name;
+
+  /// `HH:MM`.
+  final String time;
+  final bool enabled;
+
+  @override
+  List<Object?> get props => <Object?>[slot, name, time, enabled];
+}
+
+class MealTimes extends Equatable {
+  const MealTimes({required this.hasPlan, required this.planSource, required this.slots});
+
+  final bool hasPlan;
+
+  /// `dietitian` or `ai`: the plan reminders follow (spec 010 §6b rule 1).
+  final String? planSource;
+  final List<MealTime> slots;
+
+  @override
+  List<Object?> get props => <Object?>[hasPlan, planSource, slots];
+}
+
+/// A dish of today's plan meal. [foodId] is null for a dietitian's recipe, which she logs by scan or by hand.
+class PlanDish extends Equatable {
+  const PlanDish({required this.name, required this.count, required this.unit, this.foodId});
+
+  final String name;
+  final double count;
+  final String unit;
+  final String? foodId;
+
+  @override
+  List<Object?> get props => <Object?>[name, count, unit, foodId];
+}
+
+/// Today's meal of her plan for one slot (`GET /me/meal-times/{slot}/today`).
+class PlanMealToday extends Equatable {
+  const PlanMealToday({required this.date, required this.slot, required this.name, required this.planSource, required this.logSlot, required this.dishes, this.caution});
+
+  final String date;
+  final String slot;
+  final String name;
+  final String? planSource;
+
+  /// The meal-log slot this plan meal falls under.
+  final MealSlot logSlot;
+  final List<PlanDish> dishes;
+
+  /// The short AI caution when the plan is AI-made, shown and never dismissable (spec 010 §6a rule 3).
+  final String? caution;
+
+  /// "I ate this" logs the dishes as they are only when each one is a food from the table.
+  bool get canLogAsPlanned => dishes.isNotEmpty && dishes.every((PlanDish d) => d.foodId != null);
+
+  @override
+  List<Object?> get props => <Object?>[date, slot, name, planSource, logSlot, dishes, caution];
 }
 
 /// A day with meals logged, from `GET /me/meals/history` (spec 010 §6 rule 5: "a history").

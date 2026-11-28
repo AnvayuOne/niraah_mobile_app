@@ -12,6 +12,7 @@ import '../../../shared/constants/route_constants.dart';
 import '../domain/meals.dart';
 import 'meal_plan_pages.dart';
 import 'meal_widgets.dart';
+import 'today_plan_page.dart';
 
 /// Today's meal log (spec 010 §6 rule 5): each meal with its dishes and the day's totals, all from the food table.
 class MealsPage extends StatefulWidget {
@@ -41,6 +42,12 @@ class _MealsPageState extends State<MealsPage> {
         title: Text(s.mealsTitle),
         backgroundColor: NColors.surfacePage,
         actions: <Widget>[
+          // Today's plan meals with "I ate this" (spec 010 §6b rule 4).
+          IconButton(
+            tooltip: s.todayPlanTitle,
+            icon: const Icon(Icons.today_rounded),
+            onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => TodayPlanPage(repository: _repo))),
+          ),
           // Her dietitian's plan and her history (spec 010 §6 rule 5; spec 012 §4).
           IconButton(
             tooltip: s.mealPlanTitle,
