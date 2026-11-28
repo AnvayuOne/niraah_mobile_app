@@ -1,6 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 
 import '../../../core/di/service_locator.dart';
+import '../../../core/errors/api_exception.dart';
 import '../../../design_system/tokens/tokens.dart';
 import '../../../design_system/widgets/error_view.dart';
 import '../../../design_system/widgets/loading_view.dart';
@@ -53,6 +54,10 @@ class _TranscriptPageState extends State<TranscriptPage> {
       body: FutureBuilder<ConsultTranscript>(
         future: _load,
         builder: (BuildContext context, AsyncSnapshot<ConsultTranscript> snap) {
+          // Not on this server yet (404): "Coming soon" rather than a load error.
+          if (snap.error case ApiException(statusCode: 404)) {
+            return ListView(padding: const EdgeInsets.all(NSpace.lg), children: <Widget>[EmptyNote(text: '${s.comingSoonTitle}. ${s.comingSoonBody}')]);
+          }
           if (snap.hasError) {
             return ErrorView(message: s.commonLoadError, retryLabel: s.tryAgain, onRetry: () => setState(() => _load = _repo.transcript(widget.appointmentId)));
           }

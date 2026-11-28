@@ -37,6 +37,10 @@ const List<String> memberRoutes = <String>[
   '/assessment/result', '/account/paused', '/plans', '/home', '/symptoms', '/cycle', '/meals', '/meals/scan', '/chat',
   '/practice', '/practice/library', '/practice/history', '/me', '/me/profile', '/me/privacy', '/me/notifications',
   '/programs', '/care-plan', '/check-ins', '/labs', '/community', '/messages', '/provider/status',
+  // Added with the team's work (2026-11-28): consults, billing, account, devices, meal plans, advice.
+  '/specialists', '/appointments', '/consults/book', '/device-check', '/wellness-advice', '/me/plan', '/me/invoices',
+  '/me/devices', '/me/signed-in-devices', '/me/number', '/me/recovery-email', '/meals/diet-plan', '/meal-plan/today',
+  '/sign-in/code', '/sign-in/password',
 ];
 
 const Map<String, List<String>> providerRoutes = <String, List<String>>{

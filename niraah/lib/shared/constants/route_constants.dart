@@ -77,7 +77,7 @@ class RouteConstants {
   static const String invoices = '/me/invoices';
 
   // Sign-in settings (spec 003 "Sessions", "Changing a mobile number", "Recovery").
-  static const String signedInDevices = '/me/devices';
+  static const String signedInDevices = '/me/signed-in-devices';
   static const String changeNumber = '/me/number';
   static const String recoveryEmail = '/me/recovery-email';
 }
