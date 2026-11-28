@@ -287,73 +287,244 @@ class _LiveClassesViewState extends State<_LiveClassesView> {
     final S s = S.of(context);
     final String locale = Localizations.localeOf(context).toString();
     final DateTime now = DateTime.now();
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
-        FutureBuilder<List<ClassBooking>>(
-          future: _bookings,
-          builder: (BuildContext context, AsyncSnapshot<List<ClassBooking>> snap) {
-            final List<ClassBooking> mine = <ClassBooking>[...?snap.data?.where((ClassBooking b) => b.booked && b.endsAt.isAfter(now))]
-              ..sort((ClassBooking a, ClassBooking b) => a.startsAt.compareTo(b.startsAt));
-            if (mine.isEmpty) return const SizedBox.shrink();
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Text(s.clYourClasses, style: NType.body.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w600)),
-                const SizedBox(height: NSpace.xs),
-                for (final ClassBooking b in mine) ...<Widget>[
-                  NCard(
-                    color: NColors.brandSageLight,
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(b.title, style: NType.body.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w600)),
-                              Text(DateFormat('EEE d MMM, h:mm a', locale).format(b.startsAt), style: NType.caption.copyWith(color: NColors.inkSecondary)),
-                            ],
-                          ),
+    return FutureBuilder<List<ClassBooking>>(
+      future: _bookings,
+      builder: (BuildContext context, AsyncSnapshot<List<ClassBooking>> snap) {
+        final List<ClassBooking> mine = <ClassBooking>[...?snap.data?.where((ClassBooking b) => b.booked && b.endsAt.isAfter(now))]
+          ..sort((ClassBooking a, ClassBooking b) => a.startsAt.compareTo(b.startsAt));
+        final Set<String> booked = <String>{for (final ClassBooking b in mine) b.classId};
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            if (mine.isNotEmpty) ...<Widget>[
+              Semantics(header: true, child: Text(s.clYourClasses, style: NType.h4.copyWith(color: NColors.inkPrimary))),
+              const SizedBox(height: NSpace.xs),
+              for (final ClassBooking b in mine) ...<Widget>[
+                _ClassShell(
+                  booked: true,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      _ClassDateTile(date: b.startsAt, locale: locale),
+                      const SizedBox(width: NSpace.sm),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(b.title, style: NType.h4.copyWith(color: NColors.inkPrimary)),
+                            Text('${_hm(b.startsAt, locale)} – ${_hm(b.endsAt, locale)}', style: NType.bodySm.copyWith(color: NColors.inkSecondary)),
+                            const SizedBox(height: NSpace.xs),
+                            FilledButton.icon(
+                              onPressed: () => context.push('${RouteConstants.classes}/${Uri.encodeComponent(b.classId)}/room'),
+                              style: FilledButton.styleFrom(
+                                backgroundColor: NColors.statusSuccess,
+                                foregroundColor: NColors.inkOnBrand,
+                                minimumSize: const Size(0, NLayout.minTapTarget),
+                                padding: const EdgeInsets.symmetric(horizontal: NSpace.md),
+                                shape: const StadiumBorder(),
+                              ),
+                              icon: const Icon(Icons.videocam_rounded, size: 18),
+                              label: Text(s.clJoin),
+                            ),
+                          ],
                         ),
-                        OutlinedButton(onPressed: () => context.push('${RouteConstants.classes}/${Uri.encodeComponent(b.classId)}/room'), child: Text(s.clJoin)),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: NSpace.sm),
-                ],
-              ],
-            );
-          },
-        ),
-        if (classes.access == ClassAccess.afterTrial)
-          Padding(
-            padding: const EdgeInsets.only(bottom: NSpace.sm),
-            child: Text(classes.startsOn == null ? s.practiceClassesAfterTrial : s.areaStartsOn(classes.startsOn!), style: NType.bodySm.copyWith(color: NColors.inkSecondary)),
-          ),
-        if (classes.classes.isEmpty) EmptyNote(text: s.practiceClassesEmpty),
-        for (final LiveClass c in classes.classes) ...<Widget>[
-          NCard(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(c.title, style: NType.body.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w600)),
-                const SizedBox(height: NSpace.xxs),
-                Text(
-                  <String>[DateFormat('EEE d MMM, h:mm a', locale).format(c.startsAt), if (c.instructor != null) c.instructor!, if (c.level != null) c.level!].join(' · '),
-                  style: NType.caption.copyWith(color: NColors.inkSecondary),
                 ),
-                const SizedBox(height: NSpace.xxs),
-                Text(c.placesLeft > 0 ? s.practicePlacesLeft(c.placesLeft) : s.practiceClassFull, style: NType.caption.copyWith(color: NColors.inkSecondary)),
-                if (c.placesLeft > 0) ...<Widget>[
-                  const SizedBox(height: NSpace.xs),
-                  Align(alignment: Alignment.centerLeft, child: OutlinedButton(onPressed: _busy ? null : () => _book(context, c), child: Text(s.practiceBook))),
-                ],
+                const SizedBox(height: NSpace.sm),
               ],
-            ),
+              const SizedBox(height: NSpace.xs),
+            ],
+            if (classes.access == ClassAccess.afterTrial)
+              Container(
+                margin: const EdgeInsets.only(bottom: NSpace.sm),
+                padding: const EdgeInsets.all(NSpace.sm),
+                decoration: BoxDecoration(color: NColors.brandApricotLight, borderRadius: BorderRadius.circular(NRadius.md)),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Icon(Icons.info_outline_rounded, size: 18, color: NColors.inkMuted),
+                    const SizedBox(width: NSpace.xs),
+                    Expanded(
+                      child: Text(classes.startsOn == null ? s.practiceClassesAfterTrial : s.areaStartsOn(classes.startsOn!), style: NType.bodySm.copyWith(color: NColors.inkSecondary)),
+                    ),
+                  ],
+                ),
+              ),
+            if (classes.classes.isEmpty) EmptyNote(text: s.practiceClassesEmpty, picture: EmptyArt.classes),
+            for (final LiveClass c in classes.classes) ...<Widget>[
+              _LiveClassCard(
+                c: c,
+                locale: locale,
+                booked: booked.contains(c.id),
+                placesText: c.placesLeft > 0 ? s.practicePlacesLeft(c.placesLeft) : s.practiceClassFull,
+                bookLabel: s.practiceBook,
+                bookedLabel: s.csStatusConfirmed,
+                onBook: c.placesLeft > 0 && !_busy ? () => _book(context, c) : null,
+              ),
+              const SizedBox(height: NSpace.sm),
+            ],
+          ],
+        );
+      },
+    );
+  }
+}
+
+String _hm(DateTime t, String locale) => DateFormat('h:mm a', locale).format(t.toLocal()).toLowerCase();
+
+/// The white class card; a booked class gets a sage border.
+class _ClassShell extends StatelessWidget {
+  const _ClassShell({required this.child, this.booked = false});
+
+  final Widget child;
+  final bool booked;
+
+  @override
+  Widget build(BuildContext context) => Container(
+        padding: const EdgeInsets.all(NSpace.md),
+        decoration: BoxDecoration(
+          color: NColors.surfaceCard,
+          borderRadius: BorderRadius.circular(NRadius.lg),
+          boxShadow: NShadow.sm,
+          border: Border.all(color: booked ? NColors.brandSage : NColors.lineDefault.withValues(alpha: 0.6), width: booked ? 1.5 : 1),
+        ),
+        child: child,
+      );
+}
+
+/// Month, day and weekday on a sage tile.
+class _ClassDateTile extends StatelessWidget {
+  const _ClassDateTile({required this.date, required this.locale});
+
+  final DateTime date;
+  final String locale;
+
+  @override
+  Widget build(BuildContext context) {
+    final DateTime d = date.toLocal();
+    return ExcludeSemantics(
+      child: Container(
+        width: 58,
+        padding: const EdgeInsets.symmetric(vertical: NSpace.xs),
+        decoration: BoxDecoration(color: NColors.brandSageLight, borderRadius: BorderRadius.circular(NRadius.md)),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Text(DateFormat('MMM', locale).format(d).toUpperCase(), style: NType.caption.copyWith(color: NColors.statusSuccess, letterSpacing: 1)),
+            Text('${d.day}', style: NType.h3.copyWith(fontFamily: NType.sansFamily, fontWeight: FontWeight.w700, fontSize: 24, color: NColors.inkPrimary, height: 1.15)),
+            Text(DateFormat('EEE', locale).format(d), style: NType.label.copyWith(color: NColors.inkMuted)),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// One live class: a sage date tile, title, time range, teacher and level, how full it is, and "Book a place" or a
+/// green "Booked" badge.
+class _LiveClassCard extends StatelessWidget {
+  const _LiveClassCard({
+    required this.c,
+    required this.locale,
+    required this.booked,
+    required this.placesText,
+    required this.bookLabel,
+    required this.bookedLabel,
+    required this.onBook,
+  });
+
+  final LiveClass c;
+  final String locale;
+  final bool booked;
+  final String placesText;
+  final String bookLabel;
+  final String bookedLabel;
+  final VoidCallback? onBook;
+
+  @override
+  Widget build(BuildContext context) {
+    final bool full = c.placesLeft <= 0;
+    return _ClassShell(
+      booked: booked,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              _ClassDateTile(date: c.startsAt, locale: locale),
+              const SizedBox(width: NSpace.sm),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(c.title, style: NType.h4.copyWith(color: NColors.inkPrimary)),
+                    const SizedBox(height: 2),
+                    Text('${_hm(c.startsAt, locale)} – ${_hm(c.endsAt, locale)}', style: NType.bodySm.copyWith(color: NColors.inkSecondary)),
+                    if (c.instructor != null)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 2),
+                        child: Row(
+                          children: <Widget>[
+                            Icon(Icons.self_improvement_rounded, size: 15, color: NColors.inkMuted),
+                            const SizedBox(width: 4),
+                            Flexible(child: Text(c.instructor!, overflow: TextOverflow.ellipsis, style: NType.label.copyWith(color: NColors.inkMuted))),
+                          ],
+                        ),
+                      ),
+                    if (c.level != null) ...<Widget>[
+                      const SizedBox(height: NSpace.xxs),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: NSpace.xs, vertical: 3),
+                        decoration: BoxDecoration(color: NColors.brandLavenderLight, borderRadius: BorderRadius.circular(NRadius.pill)),
+                        child: Text(c.level!, style: NType.label.copyWith(color: NColors.brandPlum, fontWeight: FontWeight.w600)),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: NSpace.sm),
+          Divider(height: 1, color: NColors.lineDefault),
+          const SizedBox(height: NSpace.sm),
+          Row(
+            children: <Widget>[
+              Icon(full ? Icons.event_busy_rounded : Icons.people_outline_rounded, size: 16, color: full ? NColors.inkMuted : NColors.statusSuccess),
+              const SizedBox(width: 6),
+              Expanded(
+                child: Text(placesText, style: NType.label.copyWith(color: full ? NColors.inkMuted : NColors.inkSecondary, fontWeight: FontWeight.w600)),
+              ),
+              const SizedBox(width: NSpace.xs),
+              if (booked)
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: NSpace.sm, vertical: 8),
+                  decoration: BoxDecoration(color: NColors.statusSuccessLight, borderRadius: BorderRadius.circular(NRadius.pill)),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Icon(Icons.check_circle_rounded, size: 16, color: NColors.statusSuccess),
+                      const SizedBox(width: 4),
+                      Text(bookedLabel, style: NType.label.copyWith(color: NColors.statusSuccess, fontWeight: FontWeight.w700)),
+                    ],
+                  ),
+                )
+              else if (!full)
+                FilledButton(
+                  onPressed: onBook,
+                  style: FilledButton.styleFrom(
+                    minimumSize: const Size(0, NLayout.minTapTarget),
+                    padding: const EdgeInsets.symmetric(horizontal: NSpace.md),
+                    shape: const StadiumBorder(),
+                  ),
+                  child: Text(bookLabel),
+                ),
+            ],
+          ),
         ],
-      ],
+      ),
     );
   }
 }

@@ -16,6 +16,7 @@ import '../domain/consults.dart';
 import 'booking_pages.dart';
 import 'consult_cubits.dart';
 import 'consult_widgets.dart';
+import 'consults_ui.dart';
 import 'transcript_page.dart';
 
 String _appointmentPath(String id) => '${RouteConstants.appointments}/${Uri.encodeComponent(id)}';
@@ -51,7 +52,11 @@ class _AppointmentsView extends StatelessWidget {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _open(context, RouteConstants.bookDoctor),
         icon: const Icon(Icons.add_rounded),
-        label: Text(s.csBookAction),
+        label: Text(s.csBookAction, style: NType.button.copyWith(color: NColors.inkOnBrand)),
+        backgroundColor: NColors.brandPlum,
+        foregroundColor: NColors.inkOnBrand,
+        elevation: 2,
+        shape: const StadiumBorder(),
       ),
       body: BlocBuilder<AppointmentsCubit, AppointmentsState>(
         builder: (BuildContext context, AppointmentsState st) {
@@ -68,28 +73,41 @@ class _AppointmentsView extends StatelessWidget {
                 child: ListView(
                   padding: const EdgeInsets.fromLTRB(NSpace.lg, NSpace.md, NSpace.lg, 96),
                   children: <Widget>[
+                    BlushHeader(
+                      title: s.csAppointmentsTitle,
+                      art: ConsultArt.verified,
+                    ),
                     const ConsultWellnessNote(),
-                    NCard(
-                      onTap: () => context.push(RouteConstants.wellnessAdvice),
-                      semanticsLabel: s.waTitle,
-                      child: Row(
-                        children: <Widget>[
-                          Icon(Icons.description_outlined, color: NColors.inkSecondary),
-                          const SizedBox(width: NSpace.sm),
-                          Expanded(child: Text(s.waTitle, style: NType.body.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w600))),
-                          Icon(Icons.chevron_right_rounded, color: NColors.inkMuted),
-                        ],
+                    Semantics(
+                      button: true,
+                      label: s.waTitle,
+                      child: SoftCard(
+                        onTap: () => context.push(RouteConstants.wellnessAdvice),
+                        child: Row(
+                          children: <Widget>[
+                            Container(
+                              width: 40,
+                              height: 40,
+                              decoration: BoxDecoration(color: NColors.brandLavenderLight, shape: BoxShape.circle),
+                              child: Icon(Icons.description_outlined, color: NColors.brandPlum, size: 20),
+                            ),
+                            const SizedBox(width: NSpace.sm),
+                            Expanded(child: Text(s.waTitle, style: NType.body.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w600))),
+                            Icon(Icons.chevron_right_rounded, color: NColors.inkMuted),
+                          ],
+                        ),
                       ),
                     ),
-                    NSectionTitle(s.csUpcoming),
-                    if (st.upcoming.isEmpty) EmptyNote(text: s.csNoUpcoming, actionLabel: s.csBookAction, onAction: () => _open(context, RouteConstants.bookDoctor)),
+                    SoftSectionTitle(s.csUpcoming),
+                    if (st.upcoming.isEmpty)
+                      EmptyNote(text: s.csNoUpcoming, picture: ConsultArt.empty, actionLabel: s.csBookAction, onAction: () => _open(context, RouteConstants.bookDoctor)),
                     for (final Appointment a in st.upcoming) ...<Widget>[
                       AppointmentCard(appointment: a, onTap: () => _open(context, _appointmentPath(a.id))),
-                      const SizedBox(height: NSpace.xs),
+                      const SizedBox(height: NSpace.sm),
                     ],
-                    if (st.past.isNotEmpty) NSectionTitle(s.csPast),
+                    if (st.past.isNotEmpty) SoftSectionTitle(s.csPast),
                     for (final Appointment a in st.past) ...<Widget>[
-                      AppointmentCard(appointment: a, onTap: () => _open(context, _appointmentPath(a.id))),
+                      AppointmentCard(appointment: a, muted: true, onTap: () => _open(context, _appointmentPath(a.id))),
                       const SizedBox(height: NSpace.xs),
                     ],
                   ],
@@ -103,35 +121,72 @@ class _AppointmentsView extends StatelessWidget {
 }
 
 class AppointmentCard extends StatelessWidget {
-  const AppointmentCard({required this.appointment, required this.onTap, super.key});
+  const AppointmentCard({required this.appointment, required this.onTap, super.key, this.muted = false});
 
   final Appointment appointment;
   final VoidCallback onTap;
+
+  /// Past consults sit quieter: a warm date tile and no actions.
+  final bool muted;
 
   @override
   Widget build(BuildContext context) {
     final S s = S.of(context);
     final Appointment a = appointment;
     final String who = a.clinicianName ?? typeName(s, a.providerType);
-    return NCard(
-      onTap: onTap,
-      semanticsLabel: '${whenText(context, a.startsAt)}, $who, ${statusText(s, a.status)}',
-      child: Row(
-        children: <Widget>[
-          Icon(Icons.event_rounded, color: NColors.inkSecondary),
-          const SizedBox(width: NSpace.sm),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+    final (Color bg, Color fg) = statusColors(a.status);
+    return Semantics(
+      button: true,
+      label: '${whenText(context, a.startsAt)}, $who, ${statusText(s, a.status)}',
+      excludeSemantics: true,
+      child: SoftCard(
+        onTap: onTap,
+        color: muted ? NColors.surfacePage : null,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Row(
               children: <Widget>[
-                Text(whenText(context, a.startsAt), style: NType.body.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w600)),
-                Text('$who · ${typeName(s, a.providerType)}', style: NType.bodySm.copyWith(color: NColors.inkSecondary)),
-                Text(statusText(s, a.status), style: NType.caption.copyWith(color: NColors.inkMuted)),
+                DateTile(date: a.startsAt, muted: muted),
+                const SizedBox(width: NSpace.sm),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      SoftPill(text: statusText(s, a.status), background: bg, foreground: fg),
+                      const SizedBox(height: NSpace.xxs),
+                      Text(who, maxLines: 1, overflow: TextOverflow.ellipsis, style: NType.h4.copyWith(color: muted ? NColors.inkSecondary : NColors.inkPrimary)),
+                      Text(
+                        '${timeText(context, a.startsAt)} – ${timeText(context, a.endsAt)} · ${typeName(s, a.providerType)}',
+                        style: NType.bodySm.copyWith(color: NColors.inkSecondary),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: NSpace.xs),
+                IllustratedAvatar(type: a.providerType, size: 44),
               ],
             ),
-          ),
-          Icon(Icons.chevron_right_rounded, color: NColors.inkMuted),
-        ],
+            if (!muted) ...<Widget>[
+              const SizedBox(height: NSpace.sm),
+              Divider(height: 1, color: NColors.lineDefault),
+              const SizedBox(height: NSpace.xs),
+              Row(
+                children: <Widget>[
+                  Icon(a.held ? Icons.hourglass_bottom_rounded : Icons.videocam_outlined, size: 16, color: a.held ? NColors.statusWarningText : NColors.inkMuted),
+                  const SizedBox(width: 6),
+                  Expanded(
+                    child: Text(
+                      a.held ? s.csFinishBooking : ConsultLabels.videoConsult,
+                      style: NType.label.copyWith(color: a.held ? NColors.statusWarningText : NColors.inkMuted, fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                  Icon(Icons.chevron_right_rounded, color: NColors.brandRosewood),
+                ],
+              ),
+            ],
+          ],
+        ),
       ),
     );
   }
@@ -295,21 +350,76 @@ class _AppointmentView extends StatelessWidget {
           final bool offerOpen = a.status == 'no_show' || (st.failure?.memberChoice ?? false);
           final String who = a.clinicianName ?? s.csYourClinician;
           return ListView(
-            padding: const EdgeInsets.all(NSpace.lg),
+            padding: const EdgeInsets.fromLTRB(NSpace.lg, NSpace.md, NSpace.lg, NSpace.xl),
             children: <Widget>[
-              NCard(
-                color: NColors.brandLavenderLight,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(statusText(s, a.status), style: NType.caption.copyWith(color: NColors.inkSecondary, fontWeight: FontWeight.w700)),
-                    Semantics(header: true, child: Text(whenText(context, a.startsAt), style: NType.h3.copyWith(color: NColors.inkPrimary))),
-                    Text('$who · ${typeName(s, a.providerType)}', style: NType.body.copyWith(color: NColors.inkSecondary)),
-                    const SizedBox(height: NSpace.xs),
-                    Text(a.included ? s.csPaidIncluded : s.csPaidFee(rupees(a.feePaise)), style: NType.bodySm.copyWith(color: NColors.inkSecondary)),
-                    if (a.recording) Text(s.csRecordingOn, style: NType.bodySm.copyWith(color: NColors.inkPrimary)),
-                  ],
-                ),
+              Builder(
+                builder: (BuildContext context) {
+                  final (Color bg, Color fg) = statusColors(a.status);
+                  return Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(NRadius.xl),
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: <Color>[NColors.brandBlushLight, NColors.surfaceCard, NColors.brandLavenderLight],
+                      ),
+                      boxShadow: NShadow.sm,
+                      border: Border.all(color: NColors.lineDefault.withValues(alpha: 0.6)),
+                    ),
+                    padding: const EdgeInsets.all(NSpace.md),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            DateTile(date: a.startsAt, background: NColors.surfaceCard),
+                            const SizedBox(width: NSpace.sm),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  SoftPill(text: statusText(s, a.status), background: bg, foreground: fg, strong: true),
+                                  const SizedBox(height: NSpace.xxs),
+                                  Semantics(header: true, child: Text(whenText(context, a.startsAt), style: NType.h4.copyWith(color: NColors.inkPrimary))),
+                                  Text('$who · ${typeName(s, a.providerType)}', style: NType.bodySm.copyWith(color: NColors.inkSecondary)),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(width: NSpace.xs),
+                            IllustratedAvatar(type: a.providerType, size: 52),
+                          ],
+                        ),
+                        const SizedBox(height: NSpace.sm),
+                        Wrap(
+                          spacing: 6,
+                          runSpacing: 6,
+                          children: <Widget>[
+                            SoftPill(text: '${timeText(context, a.startsAt)} – ${timeText(context, a.endsAt)}', icon: Icons.schedule_rounded, background: NColors.surfaceCard),
+                            SoftPill(text: ConsultLabels.videoConsult, icon: Icons.videocam_outlined, background: NColors.surfaceCard),
+                            SoftPill(
+                              text: a.included ? s.csPaidIncluded : s.csPaidFee(rupees(a.feePaise)),
+                              icon: a.included ? Icons.check_circle_outline_rounded : Icons.currency_rupee_rounded,
+                              background: NColors.surfaceCard,
+                              foreground: NColors.brandRosewood,
+                              strong: true,
+                            ),
+                          ],
+                        ),
+                        if (a.recording) ...<Widget>[
+                          const SizedBox(height: NSpace.xs),
+                          Row(
+                            children: <Widget>[
+                              Icon(Icons.fiber_manual_record_rounded, size: 12, color: NColors.statusClinicalRedFlag),
+                              const SizedBox(width: 6),
+                              Expanded(child: Text(s.csRecordingOn, style: NType.bodySm.copyWith(color: NColors.inkPrimary))),
+                            ],
+                          ),
+                        ],
+                      ],
+                    ),
+                  );
+                },
               ),
               const SizedBox(height: NSpace.md),
               if (a.held) ...<Widget>[
@@ -332,8 +442,9 @@ class _AppointmentView extends StatelessWidget {
                 TextButton(onPressed: st.busy ? null : () => _accept(context), child: Text(s.csProposalLink)),
               ],
               if (offerOpen) ...<Widget>[
-                NCard(
-                  color: NColors.surfaceWarm,
+                SoftCard(
+                  color: NColors.statusWarningLight,
+                  border: NColors.statusWarningLight,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
@@ -353,8 +464,7 @@ class _AppointmentView extends StatelessWidget {
               ],
               // Her consult transcript (spec 014 §5 "Reading a transcript" 1, 8): opened on its own page, only when asked.
               if (a.transcript != null) ...<Widget>[
-                NCard(
-                  color: NColors.surfaceCard,
+                SoftCard(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[

@@ -3,11 +3,9 @@ import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../../../core/di/service_locator.dart';
-import '../../../design_system/generated/niraah_assets.dart';
 import '../../../design_system/tokens/tokens.dart';
 import '../../../design_system/widgets/error_view.dart';
 import '../../../design_system/widgets/loading_view.dart';
-import '../../../design_system/widgets/n_illustration.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../shared/area/area_access.dart';
 import '../../../shared/area/area_widgets.dart';
@@ -16,6 +14,7 @@ import '../../../shared/helpers/money.dart';
 import '../domain/consults.dart';
 import 'consult_cubits.dart';
 import 'consult_widgets.dart';
+import 'consults_ui.dart';
 
 /// "Find a specialist" (spec 014 §2; spec 010 §9 rules 1, 2 and 4): approved, bookable clinicians, soonest first,
 /// her dedicated clinician first and labelled; filters by type, speciality, language and day; her included consults
@@ -58,7 +57,21 @@ class _SpecialistsView extends StatelessWidget {
             child: ListView(
               padding: const EdgeInsets.fromLTRB(NSpace.lg, NSpace.md, NSpace.lg, NSpace.xl),
               children: <Widget>[
-                const Center(child: NIllustration(asset: NImages.i03FemaleGynecologistClipboard, height: NSpace.xl3 * 2, entrance: NEntrance.float)),
+                // Our blush header with the verified-doctor picture and the way to her appointments.
+                BlushHeader(
+                  title: s.csFindTitle,
+                  art: ConsultArt.verified,
+                  trailing: GestureDetector(
+                    onTap: () => context.push(RouteConstants.appointments),
+                    child: SoftPill(
+                      text: s.csAppointmentsTitle,
+                      icon: Icons.event_note_rounded,
+                      background: NColors.surfaceCard,
+                      foreground: NColors.brandRosewood,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: NSpace.md),
                 const ConsultWellnessNote(),
                 _GuideCard(onTap: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => SpecialistGuidePage(repository: context.read<ConsultsRepository>())))),
                 for (final IncludedConsults i in st.included) ...<Widget>[const SizedBox(height: NSpace.sm), _IncludedCard(included: i)],
@@ -94,25 +107,35 @@ class _GuideCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final S s = S.of(context);
-    return NCard(
-      color: NColors.brandLavenderLight,
-      onTap: onTap,
-      semanticsLabel: s.csGuideTitle,
-      child: Row(
-        children: <Widget>[
-          Icon(Icons.explore_outlined, color: NColors.inkSecondary),
-          const SizedBox(width: NSpace.sm),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(s.csGuideTitle, style: NType.body.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w700)),
-                Text(s.csGuideBody, style: NType.bodySm.copyWith(color: NColors.inkSecondary)),
-              ],
+    return Semantics(
+      button: true,
+      label: s.csGuideTitle,
+      child: SoftCard(
+        color: NColors.brandLavenderLight,
+        border: NColors.brandLavenderLight,
+        onTap: onTap,
+        child: Row(
+          children: <Widget>[
+            Container(
+              width: 44,
+              height: 44,
+              decoration: BoxDecoration(color: NColors.surfaceCard, shape: BoxShape.circle),
+              child: Icon(Icons.explore_outlined, color: NColors.brandPlum),
             ),
-          ),
-          Icon(Icons.chevron_right_rounded, color: NColors.inkMuted),
-        ],
+            const SizedBox(width: NSpace.sm),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(s.csGuideTitle, style: NType.body.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w700)),
+                  const SizedBox(height: 2),
+                  Text(s.csGuideBody, style: NType.bodySm.copyWith(color: NColors.inkSecondary)),
+                ],
+              ),
+            ),
+            Icon(Icons.chevron_right_rounded, color: NColors.inkMuted),
+          ],
+        ),
       ),
     );
   }
@@ -129,14 +152,23 @@ class _IncludedCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final S s = S.of(context);
     final String type = typeName(s, included.type);
-    return NCard(
+    return SoftCard(
       color: NColors.brandSageLight,
+      border: NColors.brandSageLight,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(
-            included.remaining == null ? s.csIncludedUnlimited(type) : s.csIncludedLeft(type, included.remaining!),
-            style: NType.body.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w700),
+          Row(
+            children: <Widget>[
+              Icon(Icons.check_circle_outline_rounded, size: 20, color: NColors.statusSuccess),
+              const SizedBox(width: NSpace.xs),
+              Expanded(
+                child: Text(
+                  included.remaining == null ? s.csIncludedUnlimited(type) : s.csIncludedLeft(type, included.remaining!),
+                  style: NType.body.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w700),
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: NSpace.xxs),
           if (included.usable) ...<Widget>[
@@ -267,45 +299,98 @@ class SpecialistCard extends StatelessWidget {
     final S s = S.of(context);
     final Specialist x = specialist;
     final String name = x.name ?? typeName(s, x.type);
-    final List<String> facts = <String>[
-      x.title,
-      ...x.specialities,
-      if (x.yearsExperience != null) s.csYears(x.yearsExperience!),
-    ];
-    return NCard(
-      onTap: onTap,
-      semanticsLabel: name,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          SpecialistAvatar(name: x.name),
-          const SizedBox(width: NSpace.sm),
-          Expanded(
-            child: Column(
+    final List<String> facts = <String>[x.title, if (x.yearsExperience != null) s.csYears(x.yearsExperience!)];
+    return Semantics(
+      button: true,
+      label: name,
+      child: SoftCard(
+        onTap: onTap,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                if (x.label != null)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: NSpace.xxs),
-                    child: Text(x.label!, style: NType.caption.copyWith(color: NColors.actionLink, fontWeight: FontWeight.w700)),
+                IllustratedAvatar(type: x.type, size: 64),
+                const SizedBox(width: NSpace.sm),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      if (x.label != null)
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: NSpace.xxs),
+                          child: SoftPill(text: x.label!, icon: Icons.favorite_rounded, background: NColors.brandBlushLight, foreground: NColors.brandRosewood),
+                        ),
+                      Text(name, style: NType.h4.copyWith(color: NColors.inkPrimary)),
+                      Text(facts.join(' · '), style: NType.bodySm.copyWith(color: NColors.inkSecondary)),
+                      if (x.languages.isNotEmpty)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 2),
+                          child: Row(
+                            children: <Widget>[
+                              Icon(Icons.translate_rounded, size: 14, color: NColors.inkMuted),
+                              const SizedBox(width: 4),
+                              Expanded(child: Text(s.csSpeaks(x.languages.join(', ')), style: NType.label.copyWith(color: NColors.inkMuted))),
+                            ],
+                          ),
+                        ),
+                    ],
                   ),
-                Text(name, style: NType.body.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w700)),
-                Text(facts.join(' · '), style: NType.bodySm.copyWith(color: NColors.inkSecondary)),
-                if (x.languages.isNotEmpty) Text(s.csSpeaks(x.languages.join(', ')), style: NType.bodySm.copyWith(color: NColors.inkSecondary)),
-                const SizedBox(height: NSpace.xxs),
-                if (x.nextSlot != null) Text(s.csNextFree(whenText(context, x.nextSlot!)), style: NType.bodySm.copyWith(color: NColors.inkPrimary)),
-                Wrap(
-                  spacing: NSpace.sm,
-                  children: <Widget>[
-                    if (x.feePaise != null) Text(s.csFee(rupees(x.feePaise!)), style: NType.bodySm.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w600)),
-                    if (x.ratingCount > 0 && x.ratingAverage != null) Text(s.csRating(x.ratingAverage!.toStringAsFixed(1), x.ratingCount), style: NType.bodySm.copyWith(color: NColors.inkSecondary)),
-                  ],
                 ),
               ],
             ),
-          ),
-          Icon(Icons.chevron_right_rounded, color: NColors.inkMuted),
-        ],
+            if (x.specialities.isNotEmpty) ...<Widget>[
+              const SizedBox(height: NSpace.sm),
+              Wrap(
+                spacing: 6,
+                runSpacing: 6,
+                children: <Widget>[for (final String sp in x.specialities) SoftPill(text: sp, background: NColors.brandLavenderLight, foreground: NColors.brandPlum)],
+              ),
+            ],
+            const SizedBox(height: NSpace.sm),
+            Wrap(
+              spacing: 6,
+              runSpacing: 6,
+              children: <Widget>[
+                if (x.feePaise != null)
+                  SoftPill(text: s.csFee(rupees(x.feePaise!)), icon: Icons.currency_rupee_rounded, background: NColors.brandBlushLight, foreground: NColors.brandRosewood, strong: true),
+                if (x.ratingCount > 0 && x.ratingAverage != null)
+                  SoftPill(text: s.csRating(x.ratingAverage!.toStringAsFixed(1), x.ratingCount), icon: Icons.star_rounded, background: NColors.brandApricotLight, foreground: NColors.inkSecondary),
+              ],
+            ),
+            const SizedBox(height: NSpace.sm),
+            Divider(height: 1, color: NColors.lineDefault),
+            const SizedBox(height: NSpace.sm),
+            Row(
+              children: <Widget>[
+                Icon(x.nextSlot != null ? Icons.event_available_rounded : Icons.event_note_rounded, size: 18, color: x.nextSlot != null ? NColors.statusSuccess : NColors.inkMuted),
+                const SizedBox(width: 6),
+                Expanded(
+                  child: Text(
+                    x.nextSlot != null ? s.csNextFree(whenText(context, x.nextSlot!)) : s.csChooseATime,
+                    style: NType.bodySm.copyWith(color: x.nextSlot != null ? NColors.inkPrimary : NColors.inkMuted, fontWeight: FontWeight.w600),
+                  ),
+                ),
+                const SizedBox(width: NSpace.xs),
+                ExcludeSemantics(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: NSpace.md, vertical: NSpace.xs),
+                    decoration: BoxDecoration(color: NColors.actionPrimary, borderRadius: BorderRadius.circular(NRadius.pill), boxShadow: NShadow.brandGlow),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Text(ConsultLabels.book, style: NType.label.copyWith(color: NColors.actionOnPrimary, fontWeight: FontWeight.w700)),
+                        const SizedBox(width: 4),
+                        Icon(Icons.arrow_forward_rounded, size: 16, color: NColors.actionOnPrimary),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
