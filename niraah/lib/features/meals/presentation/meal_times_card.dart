@@ -1,6 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 
 import '../../../core/di/service_locator.dart';
+import '../../../core/errors/api_exception.dart';
 import '../../../design_system/tokens/tokens.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../shared/area/area_access.dart';
@@ -51,6 +52,8 @@ class _MealTimesCardState extends State<MealTimesCard> {
     return FutureBuilder<MealTimes>(
       future: _times,
       builder: (BuildContext context, AsyncSnapshot<MealTimes> snap) {
+        // Not on this server yet (404): leave the card out rather than show an error on Meals.
+        if (snap.error case ApiException(statusCode: 404)) return const SizedBox.shrink();
         if (snap.hasError) return Text(s.commonLoadError, style: NType.bodySm.copyWith(color: NColors.inkSecondary));
         if (snap.connectionState != ConnectionState.done) return const LinearProgressIndicator();
         final MealTimes t = snap.data!;

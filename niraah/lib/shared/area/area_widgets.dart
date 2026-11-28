@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart';
 
+import '../../core/errors/api_exception.dart';
 import '../../design_system/generated/niraah_assets.dart';
 import '../../design_system/tokens/tokens.dart';
 import '../../design_system/widgets/error_view.dart';
@@ -169,6 +170,10 @@ class AsyncBody<T> extends StatelessWidget {
         if (snap.hasError) {
           final Object e = snap.error!;
           if (e is AreaLocked) return AreaLockedView(refusal: e);
+          // The server this build talks to does not have this area yet (404): say so calmly, not "couldn't load".
+          if (e is ApiException && e.statusCode == 404) {
+            return ListView(padding: const EdgeInsets.all(NSpace.lg), children: <Widget>[EmptyNote(text: '${s.comingSoonTitle}. ${s.comingSoonBody}')]);
+          }
           return ErrorView(message: s.commonLoadError, retryLabel: s.tryAgain, onRetry: onRetry);
         }
         if (snap.connectionState != ConnectionState.done) return NPagePlaceholder(label: s.loading);
