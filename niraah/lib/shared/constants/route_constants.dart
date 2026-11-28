@@ -2,6 +2,7 @@ class RouteConstants {
   const RouteConstants._();
 
   static const String splash = '/';
+  static const String landing = '/landing';
   static const String intro = '/intro';
   static const String welcome = '/welcome';
   static const String signIn = '/sign-in';
@@ -23,12 +24,16 @@ class RouteConstants {
   static const String plans = '/plans';
   static const String home = '/home';
   static const String bookDoctor = '/specialists';
+
+  /// The consult video room: `/room/<appointment id>?side=member|clinician`.
+  static const String room = '/room';
   static const String support = '/support';
   static const String symptoms = '/symptoms';
   static const String cycle = '/cycle';
   static const String chat = '/chat';
   static const String meals = '/meals';
   static const String mealScan = '/meals/scan';
+  static const String dietPlan = '/meals/diet-plan';
 
   /// Today's plan meals, opened by a meal-time reminder (spec 015 template `meal_time.reminder` link).
   static const String mealPlanToday = '/meal-plan/today';

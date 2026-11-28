@@ -21,9 +21,9 @@ String scalarText(Object? v) => switch (v) {
   null => '—',
   true => 'Yes',
   false => 'No',
-  final String s => _iso(s),
+  String s => _iso(s),
   final num n => n == n.roundToDouble() ? n.toInt().toString() : n.toString(),
-  final List<dynamic> l when l.every((Object? x) => x is! Map) => l.isEmpty ? '—' : l.map(scalarText).join(', '),
+  List<dynamic> l when l.every((Object? x) => x is! Map) => l.isEmpty ? '—' : l.map(scalarText).join(', '),
   _ => '$v',
 };
 
@@ -38,7 +38,7 @@ class JsonView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Widget> out = <Widget>[];
-    for (final MapEntry<String, dynamic> e in data.entries) {
+    for (MapEntry<String, dynamic> e in data.entries) {
       if (skip.contains(e.key)) continue;
       final Object? v = e.value;
       if (v is Map) {
@@ -68,7 +68,7 @@ class JsonView extends StatelessWidget {
             ),
           ),
         );
-        for (final Object? x in v) {
+        for (Object? x in v) {
           if (x is! Map) continue;
           out.add(
             Container(

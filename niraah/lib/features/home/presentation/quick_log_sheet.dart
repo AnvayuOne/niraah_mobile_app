@@ -54,7 +54,7 @@ class QuickLogSheet<T extends Enum> extends StatelessWidget {
               spacing: NSpace.xs,
               runSpacing: NSpace.xs,
               children: <Widget>[
-                for (final T o in options)
+                for (T o in options)
                   Semantics(
                     container: true,
                     checked: o == selected,
@@ -72,7 +72,7 @@ class QuickLogSheet<T extends Enum> extends StatelessWidget {
                         ),
                         selectedColor: NColors.actionPrimary,
                         backgroundColor: NColors.surfaceCard,
-                        side: const BorderSide(color: NColors.lineDefault),
+                        side: BorderSide(color: NColors.lineDefault),
                         shape: const StadiumBorder(),
                         padding: const EdgeInsets.symmetric(horizontal: NSpace.md, vertical: NSpace.sm),
                         onSelected: (_) => _pick(context, o),

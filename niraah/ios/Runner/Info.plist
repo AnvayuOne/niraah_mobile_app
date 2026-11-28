@@ -12,6 +12,12 @@
 	<string>Niraah uses your microphone only during a video consult, so your clinician can hear you. You can mute it at any time.</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Niraah uses the camera to photograph your meal, and for video consults with your doctor or dietitian.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Niraah uses the microphone so you can talk during video consults.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Niraah opens your photos so you can choose a meal picture or a lab report to add.</string>
 	<key>CFBundleDisplayName</key>
 	<string>Niraah</string>
 	<key>CFBundleExecutable</key>
@@ -21,7 +27,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>niraah</string>
+	<string>Niraah</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -49,6 +55,17 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<!-- https everywhere; plain http only to a dev server on the local network (Mac's .local name). -->
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+	</dict>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>Niraah connects to a test server on your local network during development.</string>
+	<!-- The app uses only standard HTTPS, which is exempt: skips the export-compliance question on each TestFlight upload. -->
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>

@@ -226,7 +226,7 @@ class _Bars extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 1),
                   child: FractionallySizedBox(
                     heightFactor: (d.value / max).clamp(0.05, 1.0),
-                    child: const DecoratedBox(decoration: BoxDecoration(color: NColors.brandLavender, borderRadius: BorderRadius.vertical(top: Radius.circular(2)))),
+                    child: DecoratedBox(decoration: BoxDecoration(color: NColors.brandLavender, borderRadius: BorderRadius.vertical(top: Radius.circular(2)))),
                   ),
                 ),
               ),

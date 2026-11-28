@@ -28,7 +28,7 @@ class Workspace {
   final List<AreaState> areas;
 
   AreaState? area(String key) {
-    for (final AreaState a in areas) {
+    for (AreaState a in areas) {
       if (a.key == key) return a;
     }
     return null;

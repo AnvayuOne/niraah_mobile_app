@@ -102,7 +102,7 @@ void main() {
     });
 
     test('frequent is the top four by count; history is newest first with the phase that day', () async {
-      for (final String k in <String>['cramps', 'cramps', 'cramps', 'bloating', 'bloating', 'acne', 'headache', 'nausea']) {
+      for (String k in <String>['cramps', 'cramps', 'cramps', 'bloating', 'bloating', 'acne', 'headache', 'nausea']) {
         await symptoms.logSymptom(date: today, symptom: k, severity: 4);
       }
       final SymptomsDocument doc = await symptoms.getSymptoms();

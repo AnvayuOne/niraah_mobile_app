@@ -3,6 +3,7 @@ import 'package:material_ui/material_ui.dart';
 
 import '../../core/di/service_locator.dart';
 import '../../design_system/tokens/tokens.dart';
+import '../../design_system/widgets/clinician_ui.dart';
 import '../../design_system/widgets/n_button.dart';
 import '../../l10n/app_localizations.dart';
 import '../../shared/area/area_access.dart';
@@ -47,41 +48,75 @@ class _FoodLogQueuePageState extends State<FoodLogQueuePage> {
       body: AsyncBody<List<Json>>(
         future: _queue,
         onRetry: () => setState(() => _queue = _repo.foodLogQueue()),
-        builder: (BuildContext context, List<Json> rows) => rows.isEmpty
-            ? Padding(
-                padding: const EdgeInsets.all(NSpace.lg),
-                child: EmptyNote(text: s.dtNoLogs),
-              )
-            : RefreshIndicator(
-                onRefresh: () async => setState(() => _queue = _repo.foodLogQueue()),
-                child: ListView(
-                  padding: const EdgeInsets.all(NSpace.lg),
-                  children: <Widget>[
-                    for (final Json g in rows) ...<Widget>[
-                      NCard(
-                        onTap: () => _open(g),
-                        semanticsLabel: g.str('member'),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(g.str('member') ?? s.drUnnamed, style: NType.body.copyWith(fontWeight: FontWeight.w700)),
-                            Text(
-                              <String>[
-                                shortDate(context, g.str('day') ?? ''),
-                                s.dtLogs(g.strs('logIds').length),
-                                s.drDue(shortDate(context, g.str('dueAt') ?? '')),
-                                if (!g.flag('dedicated')) (g.flag('claimedByMe') ? s.drClaimedByMe : s.drSharedQueue),
-                              ].join(' · '),
-                              style: NType.caption.copyWith(color: NColors.inkSecondary),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: NSpace.xs),
+        builder: (BuildContext context, List<Json> rows) {
+          final int dedicated = rows.where((Json g) => g.flag('dedicated')).length;
+          final int meals = rows.fold<int>(0, (int a, Json g) => a + g.strs('logIds').length);
+          return RefreshIndicator(
+            onRefresh: () async => setState(() => _queue = _repo.foodLogQueue()),
+            child: ListView(
+              padding: dtPagePadding,
+              children: <Widget>[
+                CHero(
+                  eyebrow: s.dtReview,
+                  title: s.dtQueueCount(rows.length),
+                  subtitle: s.dtQueueSubtitle,
+                  child: CStatGrid(
+                    children: <Widget>[
+                      CHeroStat(label: s.dtMealsLabel, value: '$meals', icon: Icons.restaurant_menu_rounded),
+                      CHeroStat(label: s.drRelDedicated, value: '$dedicated', icon: Icons.favorite_border_rounded),
+                      CHeroStat(label: s.drSharedQueue, value: '${rows.length - dedicated}', icon: Icons.groups_outlined),
                     ],
+                  ),
+                ),
+                const SizedBox(height: NSpace.md),
+                if (rows.isEmpty) CEmpty(icon: Icons.task_alt_rounded, title: s.dtNoLogs),
+                for (int i = 0; i < rows.length; i++)
+                  CEntrance(
+                    delayMs: 40 * i.clamp(0, 8),
+                    child: Padding(padding: const EdgeInsets.only(bottom: NSpace.xs), child: _row(s, rows[i])),
+                  ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _row(S s, Json g) {
+    final String name = g.str('member') ?? s.drUnnamed;
+    return DtCard(
+      onTap: () => _open(g),
+      semanticsLabel: g.str('member'),
+      child: Row(
+        children: <Widget>[
+          CAvatar(name: name, size: 44),
+          const SizedBox(width: NSpace.sm),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(name, maxLines: 1, overflow: TextOverflow.ellipsis, style: NType.body.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w700)),
+                Text(
+                  '${shortDate(context, g.str('day') ?? '')} · ${s.drDue(shortDate(context, g.str('dueAt') ?? ''))}',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: NType.bodySm.copyWith(color: NColors.inkMuted),
+                ),
+                const SizedBox(height: NSpace.xxs),
+                Wrap(
+                  spacing: NSpace.xxs,
+                  runSpacing: NSpace.xxs,
+                  children: <Widget>[
+                    CPill(s.dtLogs(g.strs('logIds').length), tone: CTone.plum),
+                    if (!g.flag('dedicated')) CPill(g.flag('claimedByMe') ? s.drClaimedByMe : s.drSharedQueue, tone: g.flag('claimedByMe') ? CTone.sage : CTone.lavender),
                   ],
                 ),
-              ),
+              ],
+            ),
+          ),
+          Icon(Icons.chevron_right_rounded, color: NColors.inkMuted),
+        ],
       ),
     );
   }
@@ -152,7 +187,7 @@ class _FoodLogDayPageState extends State<FoodLogDayPage> {
                 child: DropdownButton<String>(
                   value: unit,
                   isExpanded: true,
-                  items: <DropdownMenuItem<String>>[for (final String x in planUnits) DropdownMenuItem<String>(value: x, child: Text(x))],
+                  items: <DropdownMenuItem<String>>[for (String x in planUnits) DropdownMenuItem<String>(value: x, child: Text(x))],
                   onChanged: (String? v) => set(() => unit = v ?? unit),
                 ),
               ),
@@ -189,13 +224,25 @@ class _FoodLogDayPageState extends State<FoodLogDayPage> {
         onRetry: () => setState(() => _day = widget.repository.foodLogDay(widget.memberId, widget.day)),
         builder: (BuildContext context, Json d) {
           final bool canWork = d.flag('dedicated') || d.flag('claimedByMe');
+          final List<Json> logs = d.objs('logs');
           return ListView(
-            padding: const EdgeInsets.all(NSpace.lg),
+            padding: dtPagePadding,
             children: <Widget>[
-              Text('${d.str('member') ?? ''} · ${shortDate(context, d.str('day') ?? '')}', style: NType.h4),
-              if (d.obj('targets').isNotEmpty) Text(s.dtHasTargets, style: NType.caption.copyWith(color: NColors.inkSecondary)),
+              CHero(
+                eyebrow: s.dtReview,
+                title: d.str('member') ?? '',
+                subtitle: shortDate(context, d.str('day') ?? ''),
+                trailing: Wrap(
+                  spacing: NSpace.xxs,
+                  runSpacing: NSpace.xxs,
+                  children: <Widget>[
+                    CPill(s.dtLogs(logs.length), tone: CTone.plum),
+                    if (d.obj('targets').isNotEmpty) CPill(s.dtHasTargets, tone: CTone.sage),
+                  ],
+                ),
+              ),
               if (!canWork) ...<Widget>[
-                const SizedBox(height: NSpace.sm),
+                const SizedBox(height: NSpace.md),
                 NPrimaryButton(
                   label: s.dtTakeDay,
                   loading: _busy,
@@ -209,49 +256,9 @@ class _FoodLogDayPageState extends State<FoodLogDayPage> {
                   },
                 ),
               ],
-              for (final Json l in d.objs('logs')) ...<Widget>[
+              for (int i = 0; i < logs.length; i++) ...<Widget>[
                 const SizedBox(height: NSpace.sm),
-                NCard(
-                  color: _done.contains(l.str('id')) ? NColors.brandSageLight : NColors.surfaceCard,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        '${slotLabelLog(s, l.str('slot'))} · ${DateFormat.jm(locale).format(DateTime.parse(l.str('at')!).toLocal())}${l.flag('hasPhoto') ? ' · ${s.dtPhoto}' : ''}',
-                        style: NType.body.copyWith(fontWeight: FontWeight.w700),
-                      ),
-                      for (final Json it in l.objs('items'))
-                        Row(
-                          children: <Widget>[
-                            Expanded(
-                              child: Text(
-                                '${it.str('name')} · ${it.str('portion') ?? '${it.number('grams')?.toStringAsFixed(0)} g'}${it.flag('corrected') ? ' · ${s.dtCorrectedMark}' : ''}',
-                                style: NType.bodySm,
-                              ),
-                            ),
-                            if (canWork) IconButton(tooltip: s.dtCorrect, icon: const Icon(Icons.edit_outlined, size: 18), onPressed: () => _correct(it)),
-                          ],
-                        ),
-                      Text(nutrientLine(s, l.obj('totals')), style: NType.caption.copyWith(color: NColors.inkSecondary)),
-                      if (l.strs('tags').isNotEmpty) Text(l.strs('tags').join(', '), style: NType.caption.copyWith(color: NColors.inkMuted)),
-                      if (canWork && !_done.contains(l.str('id')))
-                        Wrap(
-                          spacing: NSpace.xs,
-                          children: <Widget>[
-                            OutlinedButton(
-                              onPressed: _busy
-                                  ? null
-                                  : () async {
-                                      if (await _run(() => widget.repository.review(l.str('id')!, approve: true), s.dtApproved)) setState(() => _done.add(l.str('id')!));
-                                    },
-                              child: Text(s.dtApprove),
-                            ),
-                            TextButton(onPressed: _busy ? null : () => _comment(l.str('id')!), child: Text(s.dtComment)),
-                          ],
-                        ),
-                    ],
-                  ),
-                ),
+                CEntrance(delayMs: 40 * i.clamp(0, 6), child: _log(s, locale, logs[i], canWork)),
               ],
               const SizedBox(height: NSpace.lg),
               if (canWork)
@@ -268,6 +275,89 @@ class _FoodLogDayPageState extends State<FoodLogDayPage> {
       ),
     );
   }
+
+  Widget _log(S s, String locale, Json l, bool canWork) {
+    final bool done = _done.contains(l.str('id'));
+    return DtCard(
+      tint: done ? NColors.brandSageLight.withValues(alpha: 0.6) : null,
+      border: done ? NColors.brandSage : null,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              DtIconChip(icon: _slotIcon(l.str('slot')), size: 34),
+              const SizedBox(width: NSpace.sm),
+              Expanded(
+                child: Text(
+                  '${slotLabelLog(s, l.str('slot'))} · ${DateFormat.jm(locale).format(DateTime.parse(l.str('at')!).toLocal())}${l.flag('hasPhoto') ? ' · ${s.dtPhoto}' : ''}',
+                  style: NType.body.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w700),
+                ),
+              ),
+              if (done) Icon(Icons.check_circle_rounded, color: NColors.statusSuccess),
+            ],
+          ),
+          const SizedBox(height: NSpace.xs),
+          for (Json it in l.objs('items'))
+            Container(
+              margin: const EdgeInsets.only(bottom: NSpace.xxs),
+              padding: const EdgeInsets.only(left: NSpace.sm),
+              decoration: BoxDecoration(color: NColors.surfacePage, borderRadius: BorderRadius.circular(NRadius.md)),
+              constraints: const BoxConstraints(minHeight: 40),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Text(
+                      '${it.str('name')} · ${it.str('portion') ?? '${it.number('grams')?.toStringAsFixed(0)} g'}${it.flag('corrected') ? ' · ${s.dtCorrectedMark}' : ''}',
+                      style: NType.bodySm.copyWith(color: NColors.inkPrimary),
+                    ),
+                  ),
+                  if (canWork) IconButton(tooltip: s.dtCorrect, icon: Icon(Icons.edit_outlined, size: 18, color: NColors.inkSecondary), onPressed: () => _correct(it)),
+                ],
+              ),
+            ),
+          const SizedBox(height: NSpace.xs),
+          MacroSplit(nutrients: l.obj('totals'), compact: true),
+          if (l.strs('tags').isNotEmpty) ...<Widget>[
+            const SizedBox(height: NSpace.xs),
+            Semantics(
+              label: l.strs('tags').join(', '),
+              excludeSemantics: true,
+              child: Wrap(spacing: NSpace.xxs, runSpacing: NSpace.xxs, children: <Widget>[for (String t in l.strs('tags')) CPill(t, tone: CTone.rose)]),
+            ),
+          ],
+          if (canWork && !done)
+            Padding(
+              padding: const EdgeInsets.only(top: NSpace.sm),
+              child: Row(
+                children: <Widget>[
+                  FilledButton.tonalIcon(
+                    style: FilledButton.styleFrom(backgroundColor: NColors.brandSageLight, foregroundColor: NColors.statusSuccess),
+                    onPressed: _busy
+                        ? null
+                        : () async {
+                            if (await _run(() => widget.repository.review(l.str('id')!, approve: true), s.dtApproved)) setState(() => _done.add(l.str('id')!));
+                          },
+                    icon: const Icon(Icons.check_rounded, size: 18),
+                    label: Text(s.dtApprove),
+                  ),
+                  const SizedBox(width: NSpace.xs),
+                  TextButton.icon(onPressed: _busy ? null : () => _comment(l.str('id')!), icon: const Icon(Icons.chat_bubble_outline_rounded, size: 18), label: Text(s.dtComment)),
+                ],
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  IconData _slotIcon(String? k) => switch (k) {
+    'breakfast' => Icons.free_breakfast_outlined,
+    'lunch' => Icons.lunch_dining_outlined,
+    'dinner' => Icons.dinner_dining_outlined,
+    'snack' => Icons.cookie_outlined,
+    _ => Icons.restaurant_outlined,
+  };
 }
 
 String slotLabelLog(S s, String? k) => switch (k) {
@@ -316,23 +406,25 @@ class _RecipesPageState extends State<RecipesPage> {
     final S s = S.of(context);
     return AreaScaffold(
       title: s.dtRecipes,
-      floatingActionButton: FloatingActionButton.extended(onPressed: () => _edit(null), icon: const Icon(Icons.add_rounded), label: Text(s.dtNewRecipe)),
+      floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: CRole.of(context).accent,
+        foregroundColor: NColors.inkPrimary,
+        onPressed: () => _edit(null),
+        icon: const Icon(Icons.add_rounded),
+        label: Text(s.dtNewRecipe),
+      ),
       body: Column(
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.fromLTRB(NSpace.lg, NSpace.sm, NSpace.lg, 0),
-            child: TextField(
-              controller: _q,
-              onSubmitted: (_) => _reload(),
-              decoration: InputDecoration(labelText: s.dtSearchRecipes, prefixIcon: const Icon(Icons.search_rounded)),
-            ),
+            padding: const EdgeInsets.fromLTRB(NSpace.md, NSpace.xs, NSpace.md, 0),
+            child: DtSearchField(controller: _q, label: s.dtSearchRecipes, onSubmitted: (_) => _reload()),
           ),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: NSpace.lg),
-              child: FilterChip(
-                label: Text(s.dtMine),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(NSpace.md, NSpace.xs, NSpace.md, 0),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: DtChip(
+                label: s.dtMine,
                 selected: _mine,
                 onSelected: (bool v) => setState(() {
                   _mine = v;
@@ -345,27 +437,47 @@ class _RecipesPageState extends State<RecipesPage> {
             child: AsyncBody<List<Json>>(
               future: _list,
               onRetry: _reload,
-              builder: (BuildContext context, List<Json> rows) => rows.isEmpty
-                  ? Padding(
-                      padding: const EdgeInsets.all(NSpace.lg),
-                      child: EmptyNote(text: s.dtNoRecipes),
-                    )
-                  : ListView(
-                      padding: const EdgeInsets.fromLTRB(NSpace.lg, NSpace.sm, NSpace.lg, 96),
-                      children: <Widget>[
-                        for (final Json r in rows)
-                          ListTile(
-                            contentPadding: EdgeInsets.zero,
-                            title: Text(r.str('title') ?? ''),
-                            subtitle: Text(
-                              <String>[r.str('status') == 'draft' ? s.dtPlanDraft : s.dtPublishedLabel, if (r.obj('perServing').isNotEmpty) nutrientLine(s, r.obj('perServing'))].join(' · '),
-                            ),
-                            onTap: () => _edit(r.str('id')),
-                          ),
-                      ],
+              builder: (BuildContext context, List<Json> rows) => ListView(
+                padding: const EdgeInsets.fromLTRB(NSpace.md, NSpace.sm, NSpace.md, 96),
+                children: <Widget>[
+                  if (rows.isEmpty) CEmpty(icon: Icons.menu_book_outlined, title: s.dtNoRecipes),
+                  for (int i = 0; i < rows.length; i++)
+                    CEntrance(
+                      delayMs: 40 * i.clamp(0, 8),
+                      child: Padding(padding: const EdgeInsets.only(bottom: NSpace.xs), child: _card(s, rows[i])),
                     ),
+                ],
+              ),
             ),
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget _card(S s, Json r) {
+    final bool draft = r.str('status') == 'draft';
+    return DtCard(
+      onTap: () => _edit(r.str('id')),
+      semanticsLabel: <String>[r.str('title') ?? '', draft ? s.dtPlanDraft : s.dtPublishedLabel, if (r.obj('perServing').isNotEmpty) nutrientLine(s, r.obj('perServing'))].join(' · '),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              const DtIconChip(icon: Icons.ramen_dining_outlined, size: 40),
+              const SizedBox(width: NSpace.sm),
+              Expanded(
+                child: Text(r.str('title') ?? '', maxLines: 2, overflow: TextOverflow.ellipsis, style: NType.body.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w700)),
+              ),
+              const SizedBox(width: NSpace.xs),
+              CPill(draft ? s.dtPlanDraft : s.dtPublishedLabel, tone: draft ? CTone.apricot : CTone.sage),
+            ],
+          ),
+          if (r.obj('perServing').isNotEmpty) ...<Widget>[
+            const SizedBox(height: NSpace.sm),
+            MacroSplit(nutrients: r.obj('perServing'), compact: true),
+          ],
         ],
       ),
     );
@@ -420,7 +532,7 @@ class _RecipeEditorPageState extends State<RecipeEditorPage> {
 
   @override
   void dispose() {
-    for (final TextEditingController c in <TextEditingController>[_title, _steps, _servings, _time]) {
+    for (TextEditingController c in <TextEditingController>[_title, _steps, _servings, _time]) {
       c.dispose();
     }
     super.dispose();
@@ -501,7 +613,7 @@ class _RecipeEditorPageState extends State<RecipeEditorPage> {
       Json r = await widget.repository.saveRecipe(_id, <String, dynamic>{
         'title': _title.text.trim(),
         'ingredients': <Json>[
-          for (final Json i in _ingredients)
+          for (Json i in _ingredients)
             if (i.str('foodId') != null)
               <String, dynamic>{'foodId': i.str('foodId'), 'grams': i.number('grams')}
             else
@@ -533,71 +645,113 @@ class _RecipeEditorPageState extends State<RecipeEditorPage> {
       body: _loading
           ? Center(child: Text(s.loading))
           : ListView(
-              padding: const EdgeInsets.all(NSpace.lg),
+              padding: dtPagePadding,
               children: <Widget>[
-                if (r != null)
-                  Text('${r.str('status') == 'draft' ? s.dtPlanDraft : s.dtPublishedLabel} · ${s.dtVersion(r.integer('version'))}', style: NType.caption.copyWith(color: NColors.inkSecondary)),
-                if (r != null && r.str('status') == 'published' && editable) Text(s.dtVersionNote, style: NType.caption.copyWith(color: NColors.inkMuted)),
-                TextField(
-                  controller: _title,
-                  enabled: editable,
-                  maxLength: 120,
-                  decoration: InputDecoration(labelText: s.dtRecipeTitle),
-                ),
-                NSectionTitle(s.dtIngredients),
-                for (final Json i in _ingredients)
-                  ListTile(
-                    contentPadding: EdgeInsets.zero,
-                    title: Text('${i.str('name') ?? ''} · ${i.number('grams')?.toStringAsFixed(0)} g'),
-                    subtitle: i.flag('requested') ? Text(s.dtRequestedFood) : null,
-                    trailing: editable ? IconButton(tooltip: s.drRemoveLine, icon: const Icon(Icons.close_rounded), onPressed: () => setState(() => _ingredients.remove(i))) : null,
+                if (r != null) ...<Widget>[
+                  Wrap(
+                    spacing: NSpace.xxs,
+                    runSpacing: NSpace.xxs,
+                    children: <Widget>[
+                      CPill(r.str('status') == 'draft' ? s.dtPlanDraft : s.dtPublishedLabel, tone: r.str('status') == 'draft' ? CTone.apricot : CTone.sage),
+                      CPill(s.dtVersion(r.integer('version'))),
+                    ],
                   ),
-                if (editable) TextButton.icon(onPressed: _addIngredient, icon: const Icon(Icons.add_rounded), label: Text(s.dtAddIngredient)),
-                if (r != null && r.obj('perServing').isNotEmpty) Text('${s.dtPerServing}: ${nutrientLine(s, r.obj('perServing'))}', style: NType.bodySm.copyWith(color: NColors.inkSecondary)),
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: TextField(
-                        controller: _servings,
-                        enabled: editable,
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(labelText: s.dtServings),
-                      ),
-                    ),
-                    const SizedBox(width: NSpace.sm),
-                    Expanded(
-                      child: TextField(
-                        controller: _time,
-                        enabled: editable,
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(labelText: s.dtMinutes),
-                      ),
-                    ),
+                  if (r.str('status') == 'published' && editable) ...<Widget>[
+                    const SizedBox(height: NSpace.xxs),
+                    Text(s.dtVersionNote, style: NType.caption.copyWith(color: NColors.inkMuted, letterSpacing: 0)),
                   ],
+                  const SizedBox(height: NSpace.sm),
+                ],
+                CPanel(
+                  title: s.dtRecipe,
+                  icon: Icons.ramen_dining_outlined,
+                  child: Column(
+                    children: <Widget>[
+                      TextField(controller: _title, enabled: editable, maxLength: 120, decoration: InputDecoration(labelText: s.dtRecipeTitle)),
+                      Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: TextField(controller: _servings, enabled: editable, keyboardType: TextInputType.number, decoration: InputDecoration(labelText: s.dtServings)),
+                          ),
+                          const SizedBox(width: NSpace.sm),
+                          Expanded(
+                            child: TextField(controller: _time, enabled: editable, keyboardType: TextInputType.number, decoration: InputDecoration(labelText: s.dtMinutes)),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-                TextField(
-                  controller: _steps,
-                  enabled: editable,
-                  minLines: 3,
-                  maxLines: 10,
-                  decoration: InputDecoration(labelText: s.dtSteps, helperText: s.dtStepsHelp),
+                const SizedBox(height: NSpace.md),
+                CPanel(
+                  title: s.dtIngredients,
+                  icon: Icons.eco_outlined,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      for (Json i in _ingredients)
+                        Container(
+                          margin: const EdgeInsets.only(bottom: NSpace.xxs),
+                          padding: const EdgeInsets.only(left: NSpace.sm),
+                          constraints: const BoxConstraints(minHeight: 44),
+                          decoration: BoxDecoration(color: NColors.surfacePage, borderRadius: BorderRadius.circular(NRadius.md)),
+                          child: Row(
+                            children: <Widget>[
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text('${i.str('name') ?? ''} · ${i.number('grams')?.toStringAsFixed(0)} g', style: NType.bodySm.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w600)),
+                                    if (i.flag('requested')) Text(s.dtRequestedFood, style: NType.caption.copyWith(color: NColors.statusWarningText, letterSpacing: 0)),
+                                  ],
+                                ),
+                              ),
+                              if (editable)
+                                IconButton(tooltip: s.drRemoveLine, icon: Icon(Icons.close_rounded, size: 18, color: NColors.inkMuted), onPressed: () => setState(() => _ingredients.remove(i))),
+                            ],
+                          ),
+                        ),
+                      if (editable) TextButton.icon(onPressed: _addIngredient, icon: const Icon(Icons.add_rounded), label: Text(s.dtAddIngredient)),
+                      if (r != null && r.obj('perServing').isNotEmpty) ...<Widget>[
+                        const SizedBox(height: NSpace.xs),
+                        Text(s.dtPerServing, style: NType.caption.copyWith(color: NColors.inkSecondary, fontWeight: FontWeight.w700, letterSpacing: 0)),
+                        const SizedBox(height: NSpace.xs),
+                        MacroSplit(nutrients: r.obj('perServing')),
+                      ],
+                    ],
+                  ),
                 ),
-                NSectionTitle(s.dtTags),
-                Wrap(
-                  spacing: NSpace.xs,
-                  runSpacing: NSpace.xs,
-                  children: <Widget>[
-                    for (final String t in _tags)
-                      FilterChip(label: Text(t.replaceAll('_', ' ')), selected: _chosen.contains(t), onSelected: editable ? (bool v) => setState(() => v ? _chosen.add(t) : _chosen.remove(t)) : null),
-                  ],
+                const SizedBox(height: NSpace.md),
+                CPanel(
+                  title: s.dtSteps,
+                  icon: Icons.format_list_numbered_rounded,
+                  child: TextField(controller: _steps, enabled: editable, minLines: 3, maxLines: 10, decoration: InputDecoration(labelText: s.dtSteps, helperText: s.dtStepsHelp)),
                 ),
-                if (r != null && r.strs('tags').any((String t) => !_tags.contains(t)))
-                  Text(s.dtComputedTags(r.strs('tags').where((String t) => !_tags.contains(t)).join(', ')), style: NType.caption.copyWith(color: NColors.inkSecondary)),
+                const SizedBox(height: NSpace.md),
+                CPanel(
+                  title: s.dtTags,
+                  icon: Icons.sell_outlined,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Wrap(
+                        runSpacing: NSpace.xs,
+                        children: <Widget>[
+                          for (String t in _tags)
+                            DtChip(label: t.replaceAll('_', ' '), selected: _chosen.contains(t), onSelected: editable ? (bool v) => setState(() => v ? _chosen.add(t) : _chosen.remove(t)) : null),
+                        ],
+                      ),
+                      if (r != null && r.strs('tags').any((String t) => !_tags.contains(t))) ...<Widget>[
+                        const SizedBox(height: NSpace.xs),
+                        Text(s.dtComputedTags(r.strs('tags').where((String t) => !_tags.contains(t)).join(', ')), style: NType.caption.copyWith(color: NColors.inkSecondary, letterSpacing: 0)),
+                      ],
+                    ],
+                  ),
+                ),
                 const SizedBox(height: NSpace.lg),
                 if (editable) ...<Widget>[
+                  if (r == null || r.str('status') == 'draft') ...<Widget>[NPrimaryButton(label: s.dtPublishRecipe, loading: _busy, onPressed: () => _save(publish: true)), const SizedBox(height: NSpace.xs)],
                   NSecondaryButton(label: s.drSaveDraft, onPressed: _busy ? null : _save),
-                  const SizedBox(height: NSpace.xs),
-                  if (r == null || r.str('status') == 'draft') NPrimaryButton(label: s.dtPublishRecipe, loading: _busy, onPressed: () => _save(publish: true)),
                 ],
               ],
             ),

@@ -14,6 +14,8 @@ import '../features/community/domain/community.dart';
 import '../features/consults/domain/consults.dart';
 import '../features/cycle/domain/cycle.dart';
 import '../features/devices/domain/devices.dart';
+import '../features/diet_plan/data/unavailable_diet_plan_repository.dart';
+import '../features/diet_plan/domain/diet_plan.dart';
 import '../features/dietitian/dietitian_repository.dart';
 import '../features/doctor/domain/doctor.dart';
 import '../features/doctor/domain/doctor_work.dart';
@@ -29,6 +31,7 @@ import '../features/practice/domain/practice.dart';
 import '../features/provider_auth/application_repository.dart';
 import '../features/provider_auth/domain/provider_auth.dart';
 import '../features/provider_work/domain/provider_work.dart';
+import '../features/room/room_repository.dart';
 import '../features/symptoms/domain/symptoms.dart';
 import '../features/wellness_advice/domain/wellness_advice.dart';
 import 'sample_backend.dart';
@@ -61,7 +64,9 @@ void registerSampleRepositories(GetIt getIt) {
     ..registerLazySingleton<ProviderAuthRepository>(SampleProviderAuthRepository.new)
     ..registerLazySingleton<DoctorRepository>(SampleDoctorRepository.new)
     ..registerLazySingleton<MealsRepository>(() => const UnavailableMealsRepository())
+    ..registerLazySingleton<DietPlanRepository>(() => const UnavailableDietPlanRepository())
     ..registerLazySingleton<PracticeRepository>(UnavailablePracticeRepository.new)
+    ..registerLazySingleton<RoomRepository>(SampleRoomRepository.new)
     ..registerLazySingleton<MeRepository>(UnavailableMeRepository.new)
     ..registerLazySingleton<DevicesRepository>(UnavailableDevicesRepository.new)
     ..registerLazySingleton<CareRepository>(UnavailableCareRepository.new)

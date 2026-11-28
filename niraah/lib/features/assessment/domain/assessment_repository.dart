@@ -2,6 +2,12 @@ import '../../../shared/helpers/result.dart';
 import 'prescore.dart';
 import 'questionnaire.dart';
 
+/// startOrResume fails with this when health-data consent has not been given yet.
+const String kConsentRequired = 'consent_required';
+
+/// The consent text version shown before an assessment exists.
+const String kConsentTextVersion = '2026-11-15';
+
 /// What happened when an answer was saved.
 enum SaveOutcome {
   saved,

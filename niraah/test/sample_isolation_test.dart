@@ -15,12 +15,12 @@ void main() {
 
   test('only lib/main_sample.dart and lib/sample/ import lib/sample/', () {
     final List<String> offenders = <String>[];
-    for (final FileSystemEntity f in Directory('lib').listSync(recursive: true)) {
+    for (FileSystemEntity f in Directory('lib').listSync(recursive: true)) {
       if (f is! File || !f.path.endsWith('.dart')) continue;
       final String p = f.path.replaceAll(r'\', '/');
       if (p == 'lib/main_sample.dart' || p.startsWith('lib/sample/')) continue;
       final String src = f.readAsStringSync();
-      for (final RegExpMatch m in import.allMatches(src)) {
+      for (RegExpMatch m in import.allMatches(src)) {
         final String target = m.group(2)!;
         if (target.contains('/sample/') || target.startsWith('sample/') || target.contains('package:niraah/sample')) offenders.add('$p -> $target');
       }

@@ -187,10 +187,10 @@ class _ManagePlanView extends StatelessWidget {
                 semanticsLabel: s.billInvoicesOpen,
                 child: Row(
                   children: <Widget>[
-                    const Icon(Icons.receipt_long_outlined, color: NColors.inkSecondary),
+                    Icon(Icons.receipt_long_outlined, color: NColors.inkSecondary),
                     const SizedBox(width: NSpace.sm),
                     Expanded(child: Text(s.billInvoicesOpen, style: NType.body.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w600))),
-                    const Icon(Icons.chevron_right_rounded, color: NColors.inkMuted),
+                    Icon(Icons.chevron_right_rounded, color: NColors.inkMuted),
                   ],
                 ),
               ),
@@ -300,7 +300,7 @@ class _InvoicesPageState extends State<InvoicesPage> {
                       ),
                     ),
                     Text(i.totalDisplay, style: NType.body.copyWith(color: NColors.inkPrimary)),
-                    const Icon(Icons.chevron_right_rounded, color: NColors.inkMuted),
+                    Icon(Icons.chevron_right_rounded, color: NColors.inkMuted),
                   ],
                 ),
               ),

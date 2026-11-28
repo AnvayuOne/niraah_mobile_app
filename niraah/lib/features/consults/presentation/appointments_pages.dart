@@ -74,10 +74,10 @@ class _AppointmentsView extends StatelessWidget {
                       semanticsLabel: s.waTitle,
                       child: Row(
                         children: <Widget>[
-                          const Icon(Icons.description_outlined, color: NColors.inkSecondary),
+                          Icon(Icons.description_outlined, color: NColors.inkSecondary),
                           const SizedBox(width: NSpace.sm),
                           Expanded(child: Text(s.waTitle, style: NType.body.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w600))),
-                          const Icon(Icons.chevron_right_rounded, color: NColors.inkMuted),
+                          Icon(Icons.chevron_right_rounded, color: NColors.inkMuted),
                         ],
                       ),
                     ),
@@ -118,7 +118,7 @@ class AppointmentCard extends StatelessWidget {
       semanticsLabel: '${whenText(context, a.startsAt)}, $who, ${statusText(s, a.status)}',
       child: Row(
         children: <Widget>[
-          const Icon(Icons.event_rounded, color: NColors.inkSecondary),
+          Icon(Icons.event_rounded, color: NColors.inkSecondary),
           const SizedBox(width: NSpace.sm),
           Expanded(
             child: Column(
@@ -130,7 +130,7 @@ class AppointmentCard extends StatelessWidget {
               ],
             ),
           ),
-          const Icon(Icons.chevron_right_rounded, color: NColors.inkMuted),
+          Icon(Icons.chevron_right_rounded, color: NColors.inkMuted),
         ],
       ),
     );

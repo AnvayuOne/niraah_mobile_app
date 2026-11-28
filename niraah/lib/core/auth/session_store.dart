@@ -29,31 +29,71 @@ class SecureSessionStore implements SessionStore {
   static const String _refresh = 'niraah.session.refresh';
   static const String _device = 'niraah.device.id';
 
+  /// The session of this run. Secure storage can keep stale or unreadable values (for example after the
+  /// app is reinstalled over an older copy); the newest tokens are always used from memory first.
+  SessionTokens? _current;
+  bool _cleared = false;
+
   @override
   Future<SessionTokens?> read() async {
-    final String? a = await _storage.read(key: _access);
-    final String? r = await _storage.read(key: _refresh);
-    return a == null || r == null ? null : SessionTokens(accessToken: a, refreshToken: r);
+    if (_current != null) return _current;
+    if (_cleared) return null;
+    try {
+      final String? a = await _storage.read(key: _access);
+      final String? r = await _storage.read(key: _refresh);
+      return _current = (a == null || r == null ? null : SessionTokens(accessToken: a, refreshToken: r));
+    } catch (_) {
+      // Unreadable (keys changed under the app): start clean so she is asked to sign in.
+      await _wipe();
+      return null;
+    }
   }
 
   @override
   Future<void> write(SessionTokens tokens) async {
-    await _storage.write(key: _access, value: tokens.accessToken);
-    await _storage.write(key: _refresh, value: tokens.refreshToken);
+    _current = tokens;
+    _cleared = false;
+    try {
+      await _storage.delete(key: _access);
+      await _storage.delete(key: _refresh);
+      await _storage.write(key: _access, value: tokens.accessToken);
+      await _storage.write(key: _refresh, value: tokens.refreshToken);
+    } catch (_) {
+      // The session still works for this run from memory; she signs in again next launch.
+    }
   }
 
   @override
   Future<void> clear() async {
-    await _storage.delete(key: _access);
-    await _storage.delete(key: _refresh);
+    _current = null;
+    _cleared = true;
+    await _wipe();
   }
+
+  Future<void> _wipe() async {
+    try {
+      await _storage.delete(key: _access);
+      await _storage.delete(key: _refresh);
+    } catch (_) {
+      try {
+        await _storage.deleteAll();
+      } catch (_) {}
+    }
+  }
+
+  String? _deviceId;
 
   @override
   Future<String> deviceId() async {
-    final String? existing = await _storage.read(key: _device);
-    if (existing != null) return existing;
-    final String id = randomDeviceId();
-    await _storage.write(key: _device, value: id);
+    if (_deviceId != null) return _deviceId!;
+    try {
+      final String? existing = await _storage.read(key: _device);
+      if (existing != null) return _deviceId = existing;
+    } catch (_) {}
+    final String id = _deviceId = randomDeviceId();
+    try {
+      await _storage.write(key: _device, value: id);
+    } catch (_) {}
     return id;
   }
 }

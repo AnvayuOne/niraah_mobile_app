@@ -16,7 +16,7 @@ abstract final class CycleParser {
       }).toList(growable: false),
       markers: ((json['markers'] as List<dynamic>?) ?? const <dynamic>[]).map((dynamic m) => cycleMarkerFrom('$m')).whereType<CycleMarker>().toList(growable: false),
       logs: <IsoDate, DailyLog>{
-        for (final MapEntry<dynamic, dynamic> e in logs.entries) '${e.key}': dailyLog(e.value as Map<dynamic, dynamic>),
+        for (MapEntry<dynamic, dynamic> e in logs.entries) '${e.key}': dailyLog(e.value as Map<dynamic, dynamic>),
       },
       history: ((json['history'] as List<dynamic>?) ?? const <dynamic>[]).map((dynamic h) {
         final Map<dynamic, dynamic> m = h as Map<dynamic, dynamic>;
@@ -35,7 +35,7 @@ abstract final class CycleParser {
   static CycleSummary summary(Map<dynamic, dynamic> s) {
     switch (s['state']) {
       case 'off':
-        final CycleMarker? reason = cycleMarkerFrom('${s['reason']}');
+        CycleMarker? reason = cycleMarkerFrom('${s['reason']}');
         return reason == null ? const CycleNoData() : CycleOff(reason);
       case 'estimate':
         return CycleEstimate(

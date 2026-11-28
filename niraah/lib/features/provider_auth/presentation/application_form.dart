@@ -37,7 +37,7 @@ class _ApplicationFormState extends State<ApplicationForm> {
   bool _terms = false;
 
   final Map<String, TextEditingController> _f = <String, TextEditingController>{
-    for (final String k in <String>['name', 'contactPhone', 'bio', 'specialities', 'languages', 'years', 'regNumber', 'regCouncil']) k: TextEditingController(),
+    for (String k in <String>['name', 'contactPhone', 'bio', 'specialities', 'languages', 'years', 'regNumber', 'regCouncil']) k: TextEditingController(),
   };
   final List<List<TextEditingController>> _refs = <List<TextEditingController>>[];
 
@@ -49,11 +49,11 @@ class _ApplicationFormState extends State<ApplicationForm> {
 
   @override
   void dispose() {
-    for (final TextEditingController c in _f.values) {
+    for (TextEditingController c in _f.values) {
       c.dispose();
     }
-    for (final List<TextEditingController> r in _refs) {
-      for (final TextEditingController c in r) {
+    for (List<TextEditingController> r in _refs) {
+      for (TextEditingController c in r) {
         c.dispose();
       }
     }
@@ -117,7 +117,7 @@ class _ApplicationFormState extends State<ApplicationForm> {
           'registrationNumber': _f['regNumber']!.text.trim().isEmpty ? null : _f['regNumber']!.text,
           'registrationCouncil': _f['regCouncil']!.text.trim().isEmpty ? null : _f['regCouncil']!.text,
           'referees': <Json>[
-            for (final List<TextEditingController> r in _refs)
+            for (List<TextEditingController> r in _refs)
               if (r[0].text.trim().isNotEmpty || r[2].text.trim().isNotEmpty) <String, dynamic>{'name': r[0].text, 'role': r[1].text, 'contact': r[2].text},
           ],
         }));
@@ -145,7 +145,7 @@ class _ApplicationFormState extends State<ApplicationForm> {
     final S s = S.of(context);
     if (_error != null) return EmptyNote(text: failureText(_error!, s.commonLoadError));
     final Json? app = _app;
-    if (app == null) return LoadingView(label: s.loading);
+    if (app == null) return LoadingView(label: s.loadCare, kind: NLoaderKind.care);
 
     final bool editable = app.flag('editable');
     final String status = app.str('status') ?? '';
@@ -222,7 +222,7 @@ class _ApplicationFormState extends State<ApplicationForm> {
           const SizedBox(height: NSpace.sm),
           NSectionTitle(s.paReferences),
           Text(s.paReferencesHint, style: NType.bodySm.copyWith(color: NColors.inkMuted)),
-          for (final List<TextEditingController> r in _refs)
+          for (List<TextEditingController> r in _refs)
             Padding(
               padding: const EdgeInsets.only(top: NSpace.sm),
               child: Column(
@@ -249,7 +249,7 @@ class _ApplicationFormState extends State<ApplicationForm> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(label, style: NType.label.copyWith(color: NColors.inkPrimary)),
-                  for (final Json d in documents.where((Json d) => d.str('kind') == kind))
+                  for (Json d in documents.where((Json d) => d.str('kind') == kind))
                     Row(
                       children: <Widget>[
                         Expanded(child: Text(d.str('name') ?? '', style: NType.bodySm.copyWith(color: NColors.inkSecondary))),

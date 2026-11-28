@@ -46,7 +46,7 @@ class _SymptomsView extends StatelessWidget {
         final Widget body = st.status == SymptomsStatus.failure
             ? ErrorView(message: s.commonLoadError, retryLabel: s.tryAgain, onRetry: context.read<SymptomsCubit>().load)
             : doc == null
-                ? LoadingView(label: s.loading)
+                ? LoadingView(label: s.loadSymptoms, kind: NLoaderKind.symptoms)
                 : _content(context, s, doc);
         return Scaffold(backgroundColor: NColors.surfacePage, body: SafeArea(child: body));
       },
@@ -59,12 +59,12 @@ class _SymptomsView extends StatelessWidget {
           spacing: NSpace.xs,
           runSpacing: NSpace.xs,
           children: <Widget>[
-            for (final SymptomRef r in list)
+            for (SymptomRef r in list)
               ActionChip(
                 label: Text(r.name),
                 labelStyle: NType.bodySm.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w500),
                 backgroundColor: NColors.surfaceCard,
-                side: const BorderSide(color: NColors.lineDefault),
+                side: BorderSide(color: NColors.lineDefault),
                 shape: const StadiumBorder(),
                 padding: const EdgeInsets.symmetric(horizontal: NSpace.sm, vertical: NSpace.xs),
                 onPressed: () => showSymptomSheet(context, context.read<SymptomsCubit>(), r, doc),
@@ -83,7 +83,7 @@ class _SymptomsView extends StatelessWidget {
           alignment: Alignment.centerLeft,
           child: TextButton.icon(
             onPressed: () => context.canPop() ? context.pop() : context.go(RouteConstants.cycle),
-            icon: const Icon(Icons.arrow_back_rounded, color: NColors.inkMuted),
+            icon: Icon(Icons.arrow_back_rounded, color: NColors.inkMuted),
             label: Text(s.symptomsBack, style: NType.bodySm.copyWith(color: NColors.inkMuted)),
           ),
         ),
@@ -92,12 +92,12 @@ class _SymptomsView extends StatelessWidget {
         Text(s.symptomsPick, style: NType.bodySm.copyWith(color: NColors.inkMuted)),
         const SizedBox(height: NSpace.lg),
         if (doc.frequent.isNotEmpty) ...<Widget>[heading(s.symptomsFrequent), chips(doc.frequent), const SizedBox(height: NSpace.lg)],
-        for (final SymptomCategory c in doc.categories) ...<Widget>[heading(c.name), chips(c.symptoms), const SizedBox(height: NSpace.lg)],
+        for (SymptomCategory c in doc.categories) ...<Widget>[heading(c.name), chips(c.symptoms), const SizedBox(height: NSpace.lg)],
         heading(s.symptomsHistoryTitle),
         if (doc.history.isEmpty)
           Text(s.symptomsHistoryEmpty, style: NType.bodySm.copyWith(color: NColors.inkMuted))
         else
-          for (final SymptomHistoryEntry h in doc.history)
+          for (SymptomHistoryEntry h in doc.history)
             Container(
               margin: const EdgeInsets.only(bottom: NSpace.xs),
               padding: const EdgeInsets.symmetric(horizontal: NSpace.md, vertical: NSpace.sm),

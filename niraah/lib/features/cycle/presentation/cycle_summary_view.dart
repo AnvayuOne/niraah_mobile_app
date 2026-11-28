@@ -26,7 +26,7 @@ class CycleSummaryView extends StatelessWidget {
     switch (summary) {
       case CycleNoData():
         break;
-      case CycleOff(:final CycleMarker reason):
+      case CycleOff(:CycleMarker reason):
         spoken.add(s.offReason(reason));
         lines.add(_line(s.offReason(reason)));
       case final CycleEstimate e:

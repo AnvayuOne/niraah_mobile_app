@@ -98,8 +98,8 @@ class _ProgramsPageState extends State<ProgramsPage> {
                 const SizedBox(height: NSpace.sm),
               ],
               NSectionTitle(s.programsAll),
-              if (d.programs.isEmpty) EmptyNote(text: s.programsEmpty),
-              for (final Program p in d.programs) ...<Widget>[
+              if (d.programs.isEmpty) EmptyNote(text: s.programsEmpty, picture: EmptyArt.carePlans),
+              for (Program p in d.programs) ...<Widget>[
                 NCard(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -190,10 +190,10 @@ class _CarePlanPageState extends State<CarePlanPage> {
             padding: const EdgeInsets.all(NSpace.lg),
             children: <Widget>[
               if (p == null)
-                EmptyNote(text: doc.waiting ?? s.careNone)
+                EmptyNote(text: doc.waiting ?? s.careNone, picture: EmptyArt.carePlans)
               else ...<Widget>[
                 Text(s.careSignedBy(p.doctor ?? s.careYourDoctor, shortDate(context, p.signedOn)), style: NType.bodySm.copyWith(color: NColors.inkSecondary)),
-                for (final CarePlanSection sec in p.sections) ...<Widget>[
+                for (CarePlanSection sec in p.sections) ...<Widget>[
                   NSectionTitle(_kind(s, sec.kind)),
                   NCard(child: Text(sec.text, style: NType.body.copyWith(color: NColors.inkPrimary))),
                 ],
@@ -201,7 +201,7 @@ class _CarePlanPageState extends State<CarePlanPage> {
               if (tasks?.today case final List<CareTask> today) ...<Widget>[
                 NSectionTitle(s.careTodayTasks),
                 if (today.isEmpty) EmptyNote(text: s.careNoTasks),
-                for (final CareTask t in today)
+                for (CareTask t in today)
                   CheckboxListTile(
                     contentPadding: EdgeInsets.zero,
                     value: t.done,
@@ -312,7 +312,7 @@ class _CheckInsPageState extends State<CheckInsPage> {
             padding: const EdgeInsets.all(NSpace.lg),
             children: <Widget>[
               if (due == null)
-                EmptyNote(text: s.checkInsNoneDue)
+                EmptyNote(text: s.checkInsNoneDue, picture: EmptyArt.carePlans)
               else ...<Widget>[
                 Text(s.checkInsThisWeek(shortDate(context, due.weekStart)), style: NType.h4.copyWith(color: NColors.inkPrimary)),
                 const SizedBox(height: NSpace.sm),
@@ -329,7 +329,7 @@ class _CheckInsPageState extends State<CheckInsPage> {
               ],
               NSectionTitle(s.checkInsTrend),
               if (d.trend.isEmpty) EmptyNote(text: s.checkInsTrendEmpty),
-              for (final TrendPoint t in d.trend)
+              for (TrendPoint t in d.trend)
                 Padding(
                   padding: const EdgeInsets.only(bottom: NSpace.xs),
                   child: Text(

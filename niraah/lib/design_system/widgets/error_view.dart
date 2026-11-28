@@ -18,7 +18,7 @@ class ErrorView extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            const Icon(Icons.cloud_off_rounded, size: NSpace.xl, color: NColors.inkMuted),
+            Icon(Icons.cloud_off_rounded, size: NSpace.xl, color: NColors.inkMuted),
             const SizedBox(height: NSpace.sm),
             Text(message, textAlign: TextAlign.center, style: NType.body.copyWith(color: NColors.inkSecondary)),
             if (onRetry != null && retryLabel != null) ...<Widget>[

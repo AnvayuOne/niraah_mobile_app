@@ -4,12 +4,15 @@ import '../tokens/tokens.dart';
 
 /// The Niraah theme, built only from generated tokens.
 ///
-/// There is no dark theme yet: the token set defines light values only.
+/// Light and dark: [NColors] switches palette, and this reads whichever is active.
 class AppTheme {
   const AppTheme._();
 
-  static ThemeData get lightTheme {
-    const ColorScheme scheme = ColorScheme.light(
+  /// Kept for older call sites; same as [current].
+  static ThemeData get lightTheme => current;
+
+  static ThemeData get current {
+    final ColorScheme scheme = (NColors.dark ? ColorScheme.dark : ColorScheme.light)(
       primary: NColors.actionPrimary,
       onPrimary: NColors.actionOnPrimary,
       primaryContainer: NColors.brandBlushLight,
@@ -55,13 +58,14 @@ class AppTheme {
 
     return ThemeData(
       useMaterial3: true,
+      brightness: NColors.dark ? Brightness.dark : Brightness.light,
       fontFamily: NType.sansFamily,
       colorScheme: scheme,
       textTheme: text,
       scaffoldBackgroundColor: NColors.surfacePage,
       materialTapTargetSize: MaterialTapTargetSize.padded,
       visualDensity: VisualDensity.standard,
-      appBarTheme: const AppBarTheme(
+      appBarTheme: AppBarTheme(
         backgroundColor: NColors.surfacePage,
         foregroundColor: NColors.inkPrimary,
         elevation: 0,
@@ -87,7 +91,7 @@ class AppTheme {
           minimumSize: minButton,
           padding: const EdgeInsets.symmetric(horizontal: NSpace.lg, vertical: NSpace.md),
           textStyle: NType.button,
-          side: const BorderSide(color: NColors.lineDefault),
+          side: BorderSide(color: NColors.lineDefault),
           shape: pill,
         ),
       ),
@@ -114,9 +118,9 @@ class AppTheme {
         fillColor: WidgetStateProperty.resolveWith(
           (Set<WidgetState> s) => s.contains(WidgetState.selected) ? NColors.actionPrimary : null,
         ),
-        side: const BorderSide(color: NColors.lineStrong, width: 2),
+        side: BorderSide(color: NColors.lineStrong, width: 2),
       ),
-      dividerTheme: const DividerThemeData(color: NColors.lineDefault, space: NSpace.lg),
+      dividerTheme: DividerThemeData(color: NColors.lineDefault, space: NSpace.lg),
       snackBarTheme: SnackBarThemeData(
         backgroundColor: NColors.inkPrimary,
         contentTextStyle: NType.bodySm.copyWith(color: NColors.inkOnBrand),

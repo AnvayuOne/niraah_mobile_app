@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../core/di/service_locator.dart';
+import '../core/network/niraah_api.dart';
 import '../features/account/presentation/account_pages.dart';
 import '../features/assessment/presentation/pages/assessment_start_page.dart';
 import '../features/assessment/presentation/pages/minimum_age_page.dart';
@@ -27,6 +28,7 @@ import '../features/consults/presentation/device_check_page.dart';
 import '../features/consults/presentation/specialists_page.dart';
 import '../features/cycle/presentation/cycle_page.dart';
 import '../features/devices/presentation/devices_page.dart';
+import '../features/diet_plan/presentation/diet_plan_page.dart';
 import '../features/dietitian/dietitian_pages.dart';
 import '../features/dietitian/meal_plan_pages.dart';
 import '../features/dietitian/review_recipe_pages.dart';
@@ -44,6 +46,7 @@ import '../features/home/presentation/home_page.dart';
 import '../features/instructor/class_console_page.dart';
 import '../features/instructor/instructor_pages.dart';
 import '../features/labs/presentation/labs_pages.dart';
+import '../features/landing/landing_page.dart';
 import '../features/me/presentation/me_page.dart';
 import '../features/me/presentation/notification_settings_page.dart';
 import '../features/me/presentation/privacy_page.dart';
@@ -65,6 +68,8 @@ import '../features/provider_auth/presentation/provider_pages.dart';
 import '../features/provider_auth/presentation/reenrol_page.dart';
 import '../features/provider_auth/presentation/setup_page.dart';
 import '../features/provider_work/presentation/provider_work_pages.dart';
+import '../features/room/room_page.dart';
+import '../features/room/room_repository.dart';
 import '../features/symptoms/presentation/symptoms_page.dart';
 import '../features/wellness_advice/presentation/wellness_advice_pages.dart';
 import '../shared/constants/route_constants.dart';
@@ -73,10 +78,25 @@ import '../shared/widgets/coming_soon_page.dart';
 class AppRouter {
   const AppRouter._();
 
+  /// Screens she can see without a session; anywhere else a lost session sends her to sign in.
+  static bool _public(String loc) =>
+      loc == RouteConstants.splash || <String>[RouteConstants.landing, RouteConstants.intro, RouteConstants.welcome, RouteConstants.signIn].any(loc.startsWith);
+
   static GoRouter create({String initialLocation = RouteConstants.splash}) => GoRouter(
         initialLocation: initialLocation,
+        refreshListenable: NiraahApi.sessionLost,
+        redirect: (_, GoRouterState st) => NiraahApi.sessionLost.value && !_public(st.matchedLocation) ? RouteConstants.signIn : null,
         routes: <RouteBase>[
           GoRoute(path: RouteConstants.splash, builder: (_, _) => const SplashPage()),
+          // The consult video room (spec 014 §5), full screen for the member and for the doctor or dietitian.
+          GoRoute(
+            path: '${RouteConstants.room}/:id',
+            builder: (_, GoRouterState st) => RoomPage(
+              appointmentId: st.pathParameters['id']!,
+              side: st.uri.queryParameters['side'] == 'clinician' ? RoomSide.clinician : RoomSide.member,
+            ),
+          ),
+          GoRoute(path: RouteConstants.landing, builder: (_, _) => const LandingPage()),
           GoRoute(path: RouteConstants.intro, builder: (_, _) => const IntroPage()),
           GoRoute(path: RouteConstants.welcome, builder: (_, _) => const WelcomePage()),
           GoRoute(path: RouteConstants.signIn, builder: (_, _) => const SignInPage()),
@@ -109,6 +129,7 @@ class AppRouter {
           GoRoute(path: RouteConstants.symptoms, builder: (_, _) => const SymptomsPage()),
           GoRoute(path: RouteConstants.cycle, builder: (_, _) => const CyclePage()),
           GoRoute(path: RouteConstants.meals, builder: (_, _) => const MealsPage()),
+          GoRoute(path: RouteConstants.dietPlan, builder: (_, _) => const DietPlanPage()),
           GoRoute(path: RouteConstants.mealScan, builder: (_, _) => const MealScanPage()),
           GoRoute(path: RouteConstants.mealPlanToday, builder: (_, GoRouterState st) => TodayPlanPage(focusSlot: st.uri.queryParameters['slot'])),
           GoRoute(path: RouteConstants.chat, builder: (_, _) => const ChatHomePage()),

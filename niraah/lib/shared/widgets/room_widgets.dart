@@ -195,7 +195,7 @@ class RecordingMark extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Row(children: <Widget>[
-                const Icon(Icons.fiber_manual_record_rounded, color: NColors.inkSecondary, size: 18),
+                Icon(Icons.fiber_manual_record_rounded, color: NColors.inkSecondary, size: 18),
                 const SizedBox(width: NSpace.xs),
                 Text(label, style: NType.body.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w700)),
               ]),

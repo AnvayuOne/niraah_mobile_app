@@ -25,7 +25,7 @@ abstract final class DisplayConditions {
   /// Answers with every answer to a now-hidden question removed.
   static Answers withoutHidden(QuestionnaireDocument doc, Answers answers) {
     final Answers kept = <String, Answer>{};
-    for (final Question q in doc.questions) {
+    for (Question q in doc.questions) {
       final Answer? a = answers[q.key];
       if (a != null && isVisible(q, kept)) kept[q.key] = a;
     }

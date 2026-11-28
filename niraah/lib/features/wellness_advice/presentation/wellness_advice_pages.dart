@@ -85,7 +85,7 @@ class WellnessAdviceListPage extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            const Icon(Icons.chevron_right_rounded, color: NColors.inkMuted),
+                            Icon(Icons.chevron_right_rounded, color: NColors.inkMuted),
                           ],
                         ),
                       ),

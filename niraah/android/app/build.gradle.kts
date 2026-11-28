@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.niraah"
+    namespace = "com.anvayuone.niraah"
     // The `health` package (Health Connect, spec 016) compiles against API 37; targetSdk is unchanged.
     compileSdk = maxOf(flutter.compileSdkVersion, 37)
     ndkVersion = flutter.ndkVersion
@@ -17,7 +17,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.example.niraah"
+        applicationId = "com.anvayuone.niraah"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         // Health Connect needs Android 8.0 (API 26) or later (spec 016).
@@ -25,6 +25,10 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        // Plain http:// is refused by Android in release builds. For a release APK that talks to a
+        // local development server, build with: flutter build apk -P niraahLocalHttp=true
+        // Production always uses https and leaves this off.
+        manifestPlaceholders["usesCleartextTraffic"] = (project.findProperty("niraahLocalHttp") as String?) ?: "false"
     }
 
     buildTypes {

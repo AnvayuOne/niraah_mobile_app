@@ -66,7 +66,7 @@ class _ReenrolPageState extends State<ReenrolPage> {
   Widget build(BuildContext context) {
     final S s = S.of(context);
     final AuthenticatorSetup? setup = _setup;
-    if (setup == null) return Scaffold(body: LoadingView(label: s.setupKeyLoading));
+    if (setup == null) return Scaffold(body: LoadingView(label: s.setupKeyLoading, kind: NLoaderKind.secure));
     return NPage(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

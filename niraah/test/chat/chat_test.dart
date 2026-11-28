@@ -23,7 +23,7 @@ class FailingChatRepository implements ChatRepository {
 
   @override
   Stream<ChatEvent> send(String conversationId, String text) async* {
-    await for (final ChatEvent e in inner.send(conversationId, text)) {
+    await for (ChatEvent e in inner.send(conversationId, text)) {
       if (e is ChatSentenceEvent) throw Exception('connection lost');
       yield e;
     }

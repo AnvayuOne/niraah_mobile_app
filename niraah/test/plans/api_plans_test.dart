@@ -65,6 +65,9 @@ void main() {
       (200, <String, dynamic>{...checkout, 'skippedPayment': true}),
       (200, checkout),
       (409, <String, dynamic>{'error': <String, dynamic>{'code': 'conflict', 'message': 'You already have a plan. Change plan instead.'}, 'requestId': 'r'}),
+      (200, <String, dynamic>{'kind': 'upgrade', 'checkout': <String, dynamic>{...checkout, 'skippedPayment': true}}),
+      (409, <String, dynamic>{'error': <String, dynamic>{'code': 'conflict', 'message': 'You already have a plan. Change plan instead.'}, 'requestId': 'r'}),
+      (200, <String, dynamic>{'kind': 'downgrade', 'effectiveAt': '2026-12-19T00:00:00Z'}),
     ]);
     expect((await repo.choose('price-1') as Success<PlanChoice>).data, isA<PlanActive>());
     final PlanChoice open = (await repo.choose('price-1') as Success<PlanChoice>).data;

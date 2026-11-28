@@ -154,7 +154,7 @@ class _MePageState extends State<MePage> {
         ),
       ),
       bottomNavigationBar: NBottomNav(
-        labels: <String>[for (final Area a in Area.values) s.areaName(a)],
+        labels: <String>[for (Area a in Area.values) s.areaName(a)],
         index: 4,
         onSelected: (int i) {
           if (i != 4) goToArea(context, Area.values[i]);
@@ -213,7 +213,7 @@ class _PlanCard extends StatelessWidget {
               ],
             ),
           ),
-          const Icon(Icons.chevron_right_rounded, color: NColors.inkMuted),
+          Icon(Icons.chevron_right_rounded, color: NColors.inkMuted),
         ],
       ),
     );
@@ -238,9 +238,9 @@ class _Row extends StatelessWidget {
             Icon(icon, color: NColors.inkSecondary),
             const SizedBox(width: NSpace.sm),
             Expanded(child: Text(text, style: NType.body.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w600))),
-            if (locked) const Icon(Icons.lock_outline_rounded, size: 18, color: NColors.inkMuted),
+            if (locked) Icon(Icons.lock_outline_rounded, size: 18, color: NColors.inkMuted),
             const SizedBox(width: NSpace.xxs),
-            const Icon(Icons.chevron_right_rounded, color: NColors.inkMuted),
+            Icon(Icons.chevron_right_rounded, color: NColors.inkMuted),
           ],
         ),
       );

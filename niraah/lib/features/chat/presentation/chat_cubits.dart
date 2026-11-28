@@ -102,7 +102,7 @@ class ConversationCubit extends Cubit<ConversationState> {
     emit(state.copyWith(sending: true, failed: false, limitReached: false));
     await _refresh();
     try {
-      await for (final ChatEvent e in events) {
+      await for (ChatEvent e in events) {
         if (isClosed) return;
         switch (e) {
           case ChatLimitEvent():
@@ -148,13 +148,13 @@ class ConversationCubit extends Cubit<ConversationState> {
     final List<Passage> out = <Passage>[];
     // A source that names its cited passages (the API) is looked up directly; otherwise through the sentences.
     if (source.passageIds.isNotEmpty) {
-      for (final String id in source.passageIds) {
+      for (String id in source.passageIds) {
         final Passage? p = await _repo.getPassage(id);
         if (p != null) out.add(p);
       }
       return out;
     }
-    for (final String id in answer.sentences.map((CitedSentence s) => s.passageId).whereType<String>().toSet()) {
+    for (String id in answer.sentences.map((CitedSentence s) => s.passageId).whereType<String>().toSet()) {
       final Passage? p = await _repo.getPassage(id);
       if (p != null && p.documentId == source.id) out.add(p);
     }

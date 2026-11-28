@@ -57,7 +57,7 @@ class SpecialistAvatar extends StatelessWidget {
       child: CircleAvatar(
         radius: NSpace.lg,
         backgroundColor: NColors.brandLavenderLight,
-        child: initials.isEmpty ? const Icon(Icons.person_outline_rounded, color: NColors.inkSecondary) : Text(initials, style: NType.body.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w700)),
+        child: initials.isEmpty ? Icon(Icons.person_outline_rounded, color: NColors.inkSecondary) : Text(initials, style: NType.body.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w700)),
       ),
     );
   }

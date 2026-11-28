@@ -69,23 +69,23 @@ abstract final class NImages {
   static const q08Sleep = NImageAsset('assets/images/q08_sleep.webp', width: 280, height: 264, semanticLabel: null);
   static const q09Goal = NImageAsset('assets/images/q09_goal.webp', width: 280, height: 437, semanticLabel: null);
   static const q10Support = NImageAsset('assets/images/q10_support.webp', width: 280, height: 250, semanticLabel: null);
-  static const screen01OnboardingWoman = NImageAsset('assets/images/screen01_onboarding_woman.webp', width: 149, height: 136, semanticLabel: null);
-  static const screen02AssessmentWoman = NImageAsset('assets/images/screen02_assessment_woman.webp', width: 73, height: 98, semanticLabel: null);
-  static const screen02MoodAnxious = NImageAsset('assets/images/screen02_mood_anxious.webp', width: 41, height: 42, semanticLabel: null);
+  static const screen01OnboardingWoman = NImageAsset('assets/images/screen01_onboarding_woman.webp', width: 149, height: 149, semanticLabel: null);
+  static const screen02AssessmentWoman = NImageAsset('assets/images/screen02_assessment_woman.webp', width: 73, height: 73, semanticLabel: null);
+  static const screen02MoodAnxious = NImageAsset('assets/images/screen02_mood_anxious.webp', width: 41, height: 41, semanticLabel: null);
   static const screen02MoodEnergetic = NImageAsset('assets/images/screen02_mood_energetic.webp', width: 42, height: 42, semanticLabel: null);
   static const screen02MoodFatigue = NImageAsset('assets/images/screen02_mood_fatigue.webp', width: 41, height: 41, semanticLabel: null);
   static const screen02MoodHormonal = NImageAsset('assets/images/screen02_mood_hormonal.webp', width: 42, height: 42, semanticLabel: null);
-  static const screen03ClinicianVerifiedDoctor = NImageAsset('assets/images/screen03_clinician_verified_doctor.webp', width: 60, height: 69, semanticLabel: 'Clinician verified seal');
-  static const screen03PrescoreSilhouetteWaves = NImageAsset('assets/images/screen03_prescore_silhouette_waves.webp', width: 180, height: 80, semanticLabel: null);
-  static const screen04CycleCenterWoman = NImageAsset('assets/images/screen04_cycle_center_woman.webp', width: 80, height: 73, semanticLabel: null);
-  static const screen05CrampsTeaWoman = NImageAsset('assets/images/screen05_cramps_tea_woman.webp', width: 68, height: 79, semanticLabel: null);
-  static const screen06UnlockWellnessWoman = NImageAsset('assets/images/screen06_unlock_wellness_woman.webp', width: 100, height: 68, semanticLabel: null);
-  static const screen07NutritionistBadge = NImageAsset('assets/images/screen07_nutritionist_badge.webp', width: 50, height: 49, semanticLabel: null);
+  static const screen03ClinicianVerifiedDoctor = NImageAsset('assets/images/screen03_clinician_verified_doctor.webp', width: 60, height: 60, semanticLabel: 'Clinician verified seal');
+  static const screen03PrescoreSilhouetteWaves = NImageAsset('assets/images/screen03_prescore_silhouette_waves.webp', width: 180, height: 101, semanticLabel: null);
+  static const screen04CycleCenterWoman = NImageAsset('assets/images/screen04_cycle_center_woman.webp', width: 80, height: 80, semanticLabel: null);
+  static const screen05CrampsTeaWoman = NImageAsset('assets/images/screen05_cramps_tea_woman.webp', width: 68, height: 68, semanticLabel: null);
+  static const screen06UnlockWellnessWoman = NImageAsset('assets/images/screen06_unlock_wellness_woman.webp', width: 100, height: 100, semanticLabel: null);
+  static const screen07NutritionistBadge = NImageAsset('assets/images/screen07_nutritionist_badge.webp', width: 50, height: 50, semanticLabel: null);
   static const screen08YogaPadmasanaWoman = NImageAsset('assets/images/screen08_yoga_padmasana_woman.webp', width: 135, height: 135, semanticLabel: null);
-  static const screen09AiDoctorOrb = NImageAsset('assets/images/screen09_ai_doctor_orb.webp', width: 95, height: 98, semanticLabel: null);
-  static const screen10TriageDoctorClipboard = NImageAsset('assets/images/screen10_triage_doctor_clipboard.webp', width: 95, height: 122, semanticLabel: null);
-  static const screen11RxVerifiedDoctor = NImageAsset('assets/images/screen11_rx_verified_doctor.webp', width: 70, height: 96, semanticLabel: null);
-  static const screen12DietitianSaladBowl = NImageAsset('assets/images/screen12_dietitian_salad_bowl.webp', width: 68, height: 97, semanticLabel: null);
+  static const screen09AiDoctorOrb = NImageAsset('assets/images/screen09_ai_doctor_orb.webp', width: 95, height: 95, semanticLabel: null);
+  static const screen10TriageDoctorClipboard = NImageAsset('assets/images/screen10_triage_doctor_clipboard.webp', width: 95, height: 95, semanticLabel: null);
+  static const screen11RxVerifiedDoctor = NImageAsset('assets/images/screen11_rx_verified_doctor.webp', width: 70, height: 70, semanticLabel: null);
+  static const screen12DietitianSaladBowl = NImageAsset('assets/images/screen12_dietitian_salad_bowl.webp', width: 68, height: 68, semanticLabel: null);
 }
 
 abstract final class NSvgs {

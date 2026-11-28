@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../../../core/di/service_locator.dart';
@@ -105,7 +106,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 spacing: NSpace.xs,
                 runSpacing: NSpace.xs,
                 children: <Widget>[
-                  for (final String g in _goals) InputChip(label: Text(g), onDeleted: () => setState(() => _goals.remove(g)), deleteButtonTooltipMessage: s.profileRemoveGoal(g)),
+                  for (String g in _goals) InputChip(label: Text(g), onDeleted: () => setState(() => _goals.remove(g)), deleteButtonTooltipMessage: s.profileRemoveGoal(g)),
                 ],
               ),
               const SizedBox(height: NSpace.xs),
@@ -123,8 +124,8 @@ class _ProfilePageState extends State<ProfilePage> {
               _ChangeLink(label: s.acctChangeNumber, onTap: () => _change(RouteConstants.changeNumber)),
               _Fact(label: s.profileRecoveryEmail, value: p.recoveryEmail ?? s.profileNotSet),
               _ChangeLink(label: p.recoveryEmail == null ? s.acctEmailAdd : s.acctEmailChange, onTap: () => _change(RouteConstants.recoveryEmail, p.recoveryEmail)),
-              _Fact(label: s.profileDob, value: p.dateOfBirth == null ? s.profileNotSet : shortDate(context, p.dateOfBirth!), note: p.dateOfBirth == null ? null : s.profileDobNote),
-              _Fact(label: s.profileLanguage, value: p.language),
+              _Fact(label: s.profileDob, value: p.dateOfBirth == null ? s.profileNotSet : _fullDate(context, p.dateOfBirth!), note: p.dateOfBirth == null ? null : s.profileDobNote),
+              _Fact(label: s.profileLanguage, value: _languageName(p.language)),
               _Fact(label: s.profileTimeZone, value: p.timeZone),
             ],
           );
@@ -146,6 +147,26 @@ class _ChangeLink extends StatelessWidget {
         child: Padding(padding: const EdgeInsets.only(bottom: NSpace.xs), child: TextButton(onPressed: onTap, child: Text(label))),
       );
 }
+
+/// A date of birth needs its year, which [shortDate] leaves out.
+String _fullDate(BuildContext context, String iso) {
+  final DateTime? d = DateTime.tryParse(iso);
+  return d == null ? iso : DateFormat.yMMMMd(Localizations.localeOf(context).toString()).format(d);
+}
+
+/// The server holds a language code ("en", "hi"); show it by name.
+String _languageName(String code) => switch (code.toLowerCase().split(RegExp('[-_]')).first) {
+      'en' => 'English',
+      'hi' => 'हिन्दी (Hindi)',
+      'ta' => 'தமிழ் (Tamil)',
+      'te' => 'తెలుగు (Telugu)',
+      'kn' => 'ಕನ್ನಡ (Kannada)',
+      'ml' => 'മലയാളം (Malayalam)',
+      'mr' => 'मराठी (Marathi)',
+      'bn' => 'বাংলা (Bengali)',
+      'gu' => 'ગુજરાતી (Gujarati)',
+      _ => code,
+    };
 
 class _Fact extends StatelessWidget {
   const _Fact({required this.label, required this.value, this.note});

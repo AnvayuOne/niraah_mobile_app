@@ -78,7 +78,7 @@ class _PracticeSessionPageState extends State<PracticeSessionPage> {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      const Icon(Icons.info_outline_rounded, color: NColors.statusWarningText),
+                      Icon(Icons.info_outline_rounded, color: NColors.statusWarningText),
                       const SizedBox(width: NSpace.sm),
                       Expanded(child: Text(p.caution!, style: NType.body.copyWith(color: NColors.inkPrimary))),
                     ],
@@ -139,27 +139,17 @@ class _PracticeLibraryPageState extends State<PracticeLibraryPage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.fromLTRB(NSpace.lg, NSpace.sm, NSpace.lg, 0),
-            child: Row(
+          // Wrapped, not scrolled sideways: a sideways row clipped the last chips at the screen edge.
+          Padding(
+            padding: const EdgeInsets.fromLTRB(NSpace.lg, NSpace.sm, NSpace.lg, NSpace.sm),
+            child: Wrap(
+              spacing: NSpace.xs,
+              runSpacing: NSpace.xs,
               children: <Widget>[
-                for (final int m in const <int>[10, 20, 30]) ...<Widget>[
+                for (final int m in const <int>[10, 20, 30])
                   FilterChip(label: Text(s.practiceUpTo(m)), selected: _maxMinutes == m, onSelected: (bool on) => _set(() => _maxMinutes = on ? m : null)),
-                  const SizedBox(width: NSpace.xs),
-                ],
-              ],
-            ),
-          ),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.fromLTRB(NSpace.lg, NSpace.xs, NSpace.lg, NSpace.sm),
-            child: Row(
-              children: <Widget>[
-                for (final Phase p in Phase.values) ...<Widget>[
+                for (Phase p in Phase.values)
                   FilterChip(label: Text(s.phaseName(p)), selected: _phase == p, onSelected: (bool on) => _set(() => _phase = on ? p : null)),
-                  const SizedBox(width: NSpace.xs),
-                ],
               ],
             ),
           ),
@@ -168,7 +158,7 @@ class _PracticeLibraryPageState extends State<PracticeLibraryPage> {
               future: _items,
               onRetry: () => _set(() {}),
               builder: (BuildContext context, List<PracticeSession> items) => items.isEmpty
-                  ? Padding(padding: const EdgeInsets.all(NSpace.lg), child: EmptyNote(text: s.practiceLibraryEmpty))
+                  ? Padding(padding: const EdgeInsets.all(NSpace.lg), child: EmptyNote(text: s.practiceLibraryEmpty, picture: EmptyArt.library))
                   : ListView.separated(
                       padding: const EdgeInsets.all(NSpace.lg),
                       itemCount: items.length,
@@ -207,11 +197,11 @@ class _PracticeHistoryPageState extends State<PracticeHistoryPage> {
         onRetry: () => setState(() => _weeks = _repo.history()),
         builder: (BuildContext context, List<PracticeWeek> weeks) {
           final List<PracticeWeek> shown = weeks.where((PracticeWeek w) => w.sessions.isNotEmpty).toList();
-          if (shown.isEmpty) return Padding(padding: const EdgeInsets.all(NSpace.lg), child: EmptyNote(text: s.practiceHistoryEmpty));
+          if (shown.isEmpty) return Padding(padding: const EdgeInsets.all(NSpace.lg), child: EmptyNote(text: s.practiceHistoryEmpty, picture: EmptyArt.library));
           return ListView(
             padding: const EdgeInsets.all(NSpace.lg),
             children: <Widget>[
-              for (final PracticeWeek w in shown) ...<Widget>[
+              for (PracticeWeek w in shown) ...<Widget>[
                 NSectionTitle(s.practiceWeekOf(shortDate(context, w.weekOf))),
                 NCard(
                   child: Column(
@@ -219,7 +209,7 @@ class _PracticeHistoryPageState extends State<PracticeHistoryPage> {
                     children: <Widget>[
                       Text(s.practiceWeekSummary(w.sessions.length, w.sessions.fold<int>(0, (int a, PracticeDone d) => a + d.minutes)), style: NType.body.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w600)),
                       const SizedBox(height: NSpace.xs),
-                      for (final PracticeDone d in w.sessions)
+                      for (PracticeDone d in w.sessions)
                         Padding(
                           padding: const EdgeInsets.only(top: NSpace.xxs),
                           child: Text('${shortDate(context, d.date)} · ${d.title ?? s.practiceTitle} · ${s.practiceMinutes(d.minutes)}', style: NType.bodySm.copyWith(color: NColors.inkSecondary)),

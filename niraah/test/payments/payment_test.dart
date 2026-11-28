@@ -146,7 +146,7 @@ void main() {
       final FakeCheckout gateway = FakeCheckout(const CheckoutCancelled());
       await t.pumpApp(ConfirmBookingPage(repository: repo, held: held(), gateway: gateway));
       await t.pump();
-      await t.scrollUntilVisible(find.text('Confirm and pay ₹800'), 300);
+      await t.scrollUntilVisible(find.text('Confirm and pay ₹800'), 300, scrollable: find.byType(Scrollable).first);
       expect(find.textContaining('Your time stays held while you pay'), findsOneWidget);
       t.widget<FilledButton>(find.ancestor(of: find.text('Confirm and pay ₹800'), matching: find.byType(FilledButton))).onPressed!();
       await t.pump();
@@ -173,7 +173,7 @@ void main() {
       )));
       await t.tap(find.text('open'));
       await t.pumpAndSettle();
-      await t.scrollUntilVisible(find.text('Confirm and pay ₹800'), 300);
+      await t.scrollUntilVisible(find.text('Confirm and pay ₹800'), 300, scrollable: find.byType(Scrollable).first);
       t.widget<FilledButton>(find.ancestor(of: find.text('Confirm and pay ₹800'), matching: find.byType(FilledButton))).onPressed!();
       await t.pumpAndSettle();
       expect(popped?.status, 'confirmed');

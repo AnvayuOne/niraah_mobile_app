@@ -140,7 +140,7 @@ class _DateField extends StatelessWidget {
             ),
             child: Row(
               children: <Widget>[
-                const Icon(Icons.calendar_today_rounded, color: NColors.actionLink),
+                Icon(Icons.calendar_today_rounded, color: NColors.actionLink),
                 const SizedBox(width: NSpace.sm),
                 Expanded(
                   child: Column(
@@ -216,7 +216,7 @@ class _DaySheetState extends State<_DaySheet> {
                   spacing: NSpace.xs,
                   runSpacing: NSpace.xs,
                   children: <Widget>[
-                    for (final T o in options)
+                    for (T o in options)
                       Semantics(
                         container: true,
                         checked: o == selected,
@@ -234,7 +234,7 @@ class _DaySheetState extends State<_DaySheet> {
                             ),
                             selectedColor: NColors.actionPrimary,
                             backgroundColor: NColors.surfaceCard,
-                            side: const BorderSide(color: NColors.lineDefault),
+                            side: BorderSide(color: NColors.lineDefault),
                             shape: const StadiumBorder(),
                             onSelected: (_) => cubit.saveDailyLog(d, patch(o)),
                           ),
@@ -317,7 +317,7 @@ class _MarkersSheetState extends State<_MarkersSheet> {
         const SizedBox(height: NSpace.xs),
         Text(s.cycleSituationHint, style: NType.bodySm.copyWith(color: NColors.inkSecondary)),
         const SizedBox(height: NSpace.sm),
-        for (final CycleMarker m in CycleMarker.values)
+        for (CycleMarker m in CycleMarker.values)
           CheckboxListTile(
             value: _chosen.contains(m),
             contentPadding: EdgeInsets.zero,
@@ -326,7 +326,7 @@ class _MarkersSheetState extends State<_MarkersSheet> {
             // Each change saves at once, as on web.
             onChanged: (bool? v) {
               setState(() => v == true ? _chosen.add(m) : _chosen.remove(m));
-              context.read<CycleCubit>().setMarkers(<CycleMarker>[for (final CycleMarker x in CycleMarker.values) if (_chosen.contains(x)) x]);
+              context.read<CycleCubit>().setMarkers(<CycleMarker>[for (CycleMarker x in CycleMarker.values) if (_chosen.contains(x)) x]);
             },
           ),
         const SizedBox(height: NSpace.sm),

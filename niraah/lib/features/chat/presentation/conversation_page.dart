@@ -10,6 +10,7 @@ import '../../../design_system/tokens/tokens.dart';
 import '../../../design_system/widgets/error_view.dart';
 import '../../../design_system/widgets/loading_view.dart';
 import '../../../design_system/widgets/n_button.dart';
+import '../../../design_system/widgets/n_loaders.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../shared/constants/route_constants.dart';
 import '../../cycle/domain/cycle.dart';
@@ -100,7 +101,7 @@ class _ConversationViewState extends State<_ConversationView> {
         final Conversation? c = st.conversation;
         final ChatHome? home = st.home;
         if (st.status == ChatLoad.failure) return Scaffold(body: ErrorView(message: s.commonLoadError));
-        if (c == null || home == null) return Scaffold(body: LoadingView(label: s.loading));
+        if (c == null || home == null) return Scaffold(body: LoadingView(label: s.loadChat, kind: NLoaderKind.chat));
         final bool waiting = st.sending && (c.items.isEmpty || c.items.last is MemberMessage) && !st.failed;
         final bool failedWithoutAnswer = st.failed && c.items.isNotEmpty && c.items.last is MemberMessage;
         return Scaffold(
@@ -138,21 +139,21 @@ class _ConversationViewState extends State<_ConversationView> {
                         padding: const EdgeInsets.only(bottom: NSpace.md),
                         child: Text(home.notADoctor, textAlign: TextAlign.center, style: NType.label.copyWith(color: NColors.inkMuted)),
                       ),
-                      for (final ChatItem i in c.items)
+                      for (ChatItem i in c.items)
                         switch (i) {
                           final MemberMessage m => _MemberBubble(text: m.text),
-                          final AssistantAnswer a => _AnswerBubble(
+                          AssistantAnswer a => _AnswerBubble(
                               answer: a,
                               footer: home.footer,
                               stopped: a.incomplete || (st.failed && a.streaming),
                               onRetry: st.sending ? null : context.read<ConversationCubit>().retry,
                             ),
-                          final SafetyItem sf => _SafetyCardView(card: sf.card),
+                          SafetyItem sf => _SafetyCardView(card: sf.card),
                         },
                       if (waiting)
                         Padding(
                           padding: const EdgeInsets.only(top: NSpace.xs),
-                          child: Semantics(liveRegion: true, child: Text(s.chatThinking, style: NType.bodySm.copyWith(color: NColors.inkMuted))),
+                          child: NTypingBubble(label: s.chatThinking),
                         ),
                       if (failedWithoutAnswer) _Incomplete(onRetry: st.sending ? null : context.read<ConversationCubit>().retry),
                     ],
@@ -257,6 +258,77 @@ class _MemberBubble extends StatelessWidget {
   }
 }
 
+/// The answer's light formatting without its marks, for screen readers and copies: `**bold**` and list
+/// markers are dropped.
+String plainChatText(String t) =>
+    t.replaceAll('**', '').replaceAll('__', '').replaceAllMapped(RegExp(r'(^|\n)\s*(?:[-*•]|\d+[.)])\s+'), (Match m) => m[1]!);
+
+/// Shows an answer's sentences as paragraphs and bullet points, with `**bold**` in bold, so no stars or
+/// dashes appear on screen. Plain sentences run on in one paragraph; a sentence starting with `- `, `* `,
+/// `•` or `1.` starts its own bullet line.
+class ChatFormattedText extends StatelessWidget {
+  const ChatFormattedText({super.key, required this.lines, required this.style});
+
+  final List<String> lines;
+  final TextStyle style;
+
+  static final RegExp _bullet = RegExp(r'^\s*(?:[-*•]|\d+[.)])\s+');
+  static final RegExp _heading = RegExp(r'^\s*#{1,6}\s+');
+
+  @override
+  Widget build(BuildContext context) {
+    // Split any multi-line sentence, then group: bullets alone, plain text joined into paragraphs.
+    final List<({bool bullet, String text})> blocks = <({bool bullet, String text})>[];
+    for (String sentence in lines) {
+      for (String raw in sentence.split('\n')) {
+        final String line = raw.replaceFirst(_heading, '').trimRight();
+        if (line.trim().isEmpty) continue;
+        if (_bullet.hasMatch(line)) {
+          blocks.add((bullet: true, text: line.replaceFirst(_bullet, '').trim()));
+        } else if (blocks.isNotEmpty && !blocks.last.bullet) {
+          blocks[blocks.length - 1] = (bullet: false, text: '${blocks.last.text} ${line.trim()}');
+        } else {
+          blocks.add((bullet: false, text: line.trim()));
+        }
+      }
+    }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        for (int i = 0; i < blocks.length; i++)
+          Padding(
+            padding: EdgeInsets.only(top: i == 0 ? 0 : (blocks[i].bullet && blocks[i - 1].bullet ? NSpace.xxs : NSpace.sm)),
+            child: blocks[i].bullet
+                ? Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Padding(padding: const EdgeInsets.symmetric(horizontal: NSpace.xs), child: Text('•', style: style)),
+                      Expanded(child: Text.rich(TextSpan(children: _spans(blocks[i].text)), style: style)),
+                    ],
+                  )
+                : Text.rich(TextSpan(children: _spans(blocks[i].text)), style: style),
+          ),
+      ],
+    );
+  }
+
+  /// `**bold**` (or `__bold__`) becomes bold; any stray single stars are removed.
+  List<InlineSpan> _spans(String text) {
+    final List<InlineSpan> out = <InlineSpan>[];
+    final RegExp bold = RegExp(r'\*\*(.+?)\*\*|__(.+?)__');
+    int at = 0;
+    for (Match m in bold.allMatches(text)) {
+      if (m.start > at) out.add(TextSpan(text: _clean(text.substring(at, m.start))));
+      out.add(TextSpan(text: _clean(m[1] ?? m[2]!), style: const TextStyle(fontWeight: FontWeight.w700)));
+      at = m.end;
+    }
+    if (at < text.length) out.add(TextSpan(text: _clean(text.substring(at))));
+    return out;
+  }
+
+  static String _clean(String s) => s.replaceAll('**', '').replaceAllMapped(RegExp(r'(^|\s)\*(\S[^*]*?)\*(?=\s|$|[.,;:!?])'), (Match m) => '${m[1]}${m[2]}');
+}
+
 class _AnswerBubble extends StatelessWidget {
   const _AnswerBubble({required this.answer, required this.footer, required this.stopped, required this.onRetry});
 
@@ -271,7 +343,7 @@ class _AnswerBubble extends StatelessWidget {
     final List<CitedSentence> body = answer.sentences.where((CitedSentence x) => x.text != footer).toList();
     final bool hasFooter = answer.sentences.isNotEmpty && answer.sentences.last.text == footer;
     final bool finished = !answer.streaming && !stopped;
-    final String spoken = '${s.chatAssistant}: ${answer.sentences.map((CitedSentence x) => x.text).join(' ')}';
+    final String spoken = '${s.chatAssistant}: ${plainChatText(answer.sentences.map((CitedSentence x) => x.text).join(' '))}';
     return Align(
       alignment: Alignment.centerLeft,
       child: Container(
@@ -292,7 +364,7 @@ class _AnswerBubble extends StatelessWidget {
               liveRegion: finished,
               label: finished ? spoken : s.chatThinking,
               excludeSemantics: true,
-              child: Text(body.map((CitedSentence x) => x.text).join(' '), style: NType.body.copyWith(color: NColors.inkPrimary)),
+              child: ChatFormattedText(lines: body.map((CitedSentence x) => x.text).toList(), style: NType.body.copyWith(color: NColors.inkPrimary)),
             ),
             if (hasFooter) ...<Widget>[
               const SizedBox(height: NSpace.xs),
@@ -308,14 +380,14 @@ class _AnswerBubble extends StatelessWidget {
                 runSpacing: NSpace.xs,
                 children: <Widget>[
                   // Wraps rather than truncating, so the whole title and publisher are readable.
-                  for (final ChatSource src in answer.sources)
+                  for (ChatSource src in answer.sources)
                     Semantics(
                       button: true,
                       label: '${s.chatSources}: ${src.title} · ${src.publisher}',
                       excludeSemantics: true,
                       child: Material(
                         color: NColors.surfacePage,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(NRadius.lg), side: const BorderSide(color: NColors.lineDefault)),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(NRadius.lg), side: BorderSide(color: NColors.lineDefault)),
                         child: InkWell(
                           onTap: () => _sourceSheet(context, src),
                           borderRadius: BorderRadius.circular(NRadius.lg),
@@ -325,7 +397,7 @@ class _AnswerBubble extends StatelessWidget {
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
-                                const Icon(Icons.menu_book_rounded, size: NSpace.md, color: NColors.actionLink),
+                                Icon(Icons.menu_book_rounded, size: NSpace.md, color: NColors.actionLink),
                                 const SizedBox(width: NSpace.xs),
                                 Flexible(child: Text('${src.title} · ${src.publisher}', style: NType.label.copyWith(color: NColors.inkPrimary))),
                               ],
@@ -364,7 +436,7 @@ class _AnswerBubble extends StatelessWidget {
               Semantics(header: true, child: Text(src.title, style: NType.h3.copyWith(color: NColors.inkPrimary))),
               Text(src.publisher, style: NType.bodySm.copyWith(color: NColors.inkSecondary)),
               const SizedBox(height: NSpace.md),
-              for (final Passage p in passages)
+              for (Passage p in passages)
                 Container(
                   width: double.infinity,
                   margin: const EdgeInsets.only(bottom: NSpace.sm),
@@ -372,7 +444,7 @@ class _AnswerBubble extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: NColors.surfaceCard,
                     borderRadius: BorderRadius.circular(NRadius.lg),
-                    border: const Border(left: BorderSide(color: NColors.brandLavender, width: 4)),
+                    border: Border(left: BorderSide(color: NColors.brandLavender, width: 4)),
                   ),
                   child: Text(p.text, style: NType.body.copyWith(color: NColors.inkSecondary)),
                 ),
@@ -509,7 +581,7 @@ class _InputBar extends StatelessWidget {
     final int remaining = home.allowance.remaining;
     return Container(
       padding: const EdgeInsets.fromLTRB(NSpace.md, NSpace.sm, NSpace.md, NSpace.sm),
-      decoration: const BoxDecoration(color: NColors.surfaceCard, border: Border(top: BorderSide(color: NColors.lineDefault))),
+      decoration: BoxDecoration(color: NColors.surfaceCard, border: Border(top: BorderSide(color: NColors.lineDefault))),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,

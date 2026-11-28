@@ -100,7 +100,7 @@ class _GuideCard extends StatelessWidget {
       semanticsLabel: s.csGuideTitle,
       child: Row(
         children: <Widget>[
-          const Icon(Icons.explore_outlined, color: NColors.inkSecondary),
+          Icon(Icons.explore_outlined, color: NColors.inkSecondary),
           const SizedBox(width: NSpace.sm),
           Expanded(
             child: Column(
@@ -111,7 +111,7 @@ class _GuideCard extends StatelessWidget {
               ],
             ),
           ),
-          const Icon(Icons.chevron_right_rounded, color: NColors.inkMuted),
+          Icon(Icons.chevron_right_rounded, color: NColors.inkMuted),
         ],
       ),
     );
@@ -304,7 +304,7 @@ class SpecialistCard extends StatelessWidget {
               ],
             ),
           ),
-          const Icon(Icons.chevron_right_rounded, color: NColors.inkMuted),
+          Icon(Icons.chevron_right_rounded, color: NColors.inkMuted),
         ],
       ),
     );

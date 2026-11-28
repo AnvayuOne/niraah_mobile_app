@@ -16,6 +16,12 @@ class ApiAuthRepository implements AuthRepository, SecondCheckRepository {
         'second_check' => CodeOutcome.secondCheck,
         'paused' => CodeOutcome.paused,
         'deletion_pending' => CodeOutcome.deletionPending,
+        // Staff signing in with a code (demo staff numbers) land in their own workspace, as on the web.
+        'doctor' => CodeOutcome.doctor,
+        'dietitian' => CodeOutcome.dietitian,
+        'instructor' => CodeOutcome.instructor,
+        'admin' => CodeOutcome.admin,
+        'provider_status' => CodeOutcome.providerStatus,
         _ => CodeOutcome.suspended,
       };
 
@@ -25,7 +31,7 @@ class ApiAuthRepository implements AuthRepository, SecondCheckRepository {
     return switch (r) {
       ApiOk<Map<String, dynamic>>() => const Success<void>(null),
       // The human check is not yet available in the app; the message tells her to wait (plan 003).
-      ApiFail<Map<String, dynamic>>(:final ApiError error) => FailureResult<void>(error.message),
+      ApiFail<Map<String, dynamic>>(:ApiError error) => FailureResult<void>(error.message),
     };
   }
 
@@ -34,10 +40,10 @@ class ApiAuthRepository implements AuthRepository, SecondCheckRepository {
     final ApiResult<Map<String, dynamic>> r =
         await _api.post('/auth/code/verify', <String, dynamic>{'phone': phoneE164, 'code': code, 'device': await _api.device()});
     switch (r) {
-      case ApiOk<Map<String, dynamic>>(:final Map<String, dynamic> data):
+      case ApiOk<Map<String, dynamic>>(:Map<String, dynamic> data):
         await _api.saveTokens(data);
         return Success<CodeOutcome>(outcomeFor('${(data['user'] as Map?)?['workspace']}'));
-      case ApiFail<Map<String, dynamic>>(:final ApiError error):
+      case ApiFail<Map<String, dynamic>>(:ApiError error):
         return FailureResult<CodeOutcome>(error.message);
     }
   }
@@ -53,9 +59,20 @@ class ApiAuthRepository implements AuthRepository, SecondCheckRepository {
     required String termsVersion,
     required String privacyVersion,
     String? recoveryEmail,
-  }) async =>
-      // Create-account details are spec 010, built in a later phase.
-      const FailureResult<void>('not_connected');
+  }) async {
+    // POST /me/account (spec 010 "Create account"): the name and the accepted terms and privacy
+    // versions. A recovery email needs a fresh proof (second check), so it is added afterwards from
+    // Me > Privacy, never here; [recoveryEmail] is accepted for the interface and not sent.
+    final ApiResult<Map<String, dynamic>> r = await _api.post('/me/account', <String, dynamic>{
+      'displayName': displayName.trim(),
+      'termsVersion': termsVersion,
+      'privacyVersion': privacyVersion,
+    });
+    return switch (r) {
+      ApiOk<Map<String, dynamic>>() => const Success<void>(null),
+      ApiFail<Map<String, dynamic>>(:ApiError error) => FailureResult<void>(error.message),
+    };
+  }
 
   // --- Second check ---
 
@@ -90,7 +107,7 @@ class ApiAuthRepository implements AuthRepository, SecondCheckRepository {
     final ApiResult<Map<String, dynamic>> r = await _api.post('/auth/second-check/answer', <String, dynamic>{'method': key, 'answer': value});
     return switch (r) {
       ApiOk<Map<String, dynamic>>() => const SecondCheckPassed(),
-      ApiFail<Map<String, dynamic>>(:final ApiError error) => SecondCheckWrong(error.message, ended: error.code == 'rate_limited'),
+      ApiFail<Map<String, dynamic>>(:ApiError error) => SecondCheckWrong(error.message, ended: error.code == 'rate_limited'),
     };
   }
 

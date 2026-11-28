@@ -23,6 +23,8 @@ import '../features/cycle/data/api_cycle_repository.dart';
 import '../features/cycle/domain/cycle.dart';
 import '../features/devices/data/api_devices_repository.dart';
 import '../features/devices/domain/devices.dart';
+import '../features/diet_plan/data/api_diet_plan_repository.dart';
+import '../features/diet_plan/domain/diet_plan.dart';
 import '../features/dietitian/dietitian_repository.dart';
 import '../features/doctor/data/api_doctor_repository.dart';
 import '../features/doctor/data/api_doctor_work_repository.dart';
@@ -47,6 +49,7 @@ import '../features/provider_auth/data/api_provider_auth_repository.dart';
 import '../features/provider_auth/domain/provider_auth.dart';
 import '../features/provider_work/data/api_provider_work_repository.dart';
 import '../features/provider_work/domain/provider_work.dart';
+import '../features/room/room_repository.dart';
 import '../features/symptoms/data/api_symptoms_repository.dart';
 import '../features/symptoms/domain/symptoms.dart';
 import '../features/wellness_advice/data/api_wellness_advice_repository.dart';
@@ -70,9 +73,11 @@ void registerApiRepositories(GetIt getIt) {
     ..registerLazySingleton<SymptomsRepository>(() => ApiSymptomsRepository(getIt<NiraahApi>()))
     ..registerLazySingleton<ChatRepository>(() => ApiChatRepository(getIt<NiraahApi>()))
     ..registerLazySingleton<MealsRepository>(() => ApiMealsRepository(getIt<NiraahApi>()))
+    ..registerLazySingleton<DietPlanRepository>(() => ApiDietPlanRepository(getIt<NiraahApi>()))
     ..registerLazySingleton<DoctorRepository>(() => ApiDoctorRepository(getIt<NiraahApi>()))
     // The rest of the member workspace (spec 010 §7, §9, §10-§13).
     ..registerLazySingleton<PracticeRepository>(() => ApiPracticeRepository(getIt<NiraahApi>()))
+    ..registerLazySingleton<RoomRepository>(() => ApiRoomRepository(getIt<NiraahApi>()))
     ..registerLazySingleton<MeRepository>(() => ApiMeRepository(getIt<NiraahApi>()))
     // Connected devices (spec 016).
     ..registerLazySingleton<DevicesRepository>(() => ApiDevicesRepository(getIt<NiraahApi>()))

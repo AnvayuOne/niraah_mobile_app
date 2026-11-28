@@ -103,12 +103,24 @@ class _PlansPageState extends State<PlansPage> {
     final S s = S.of(context);
     return Scaffold(
       backgroundColor: NColors.surfacePage,
+      // Skip choosing a plan for now: she stays on the free plan and goes home.
+      appBar: AppBar(
+        backgroundColor: NColors.surfacePage,
+        elevation: 0,
+        actions: <Widget>[
+          TextButton(
+            key: const Key('plans-skip'),
+            onPressed: () => context.go(RouteConstants.home),
+            child: Text(s.skip, style: NType.body.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w600)),
+          ),
+        ],
+      ),
       body: SafeArea(
         child: FutureBuilder<Result<PlansOffer>>(
           future: _offer,
           builder: (BuildContext context, AsyncSnapshot<Result<PlansOffer>> snap) {
             final Result<PlansOffer>? r = snap.data;
-            if (r == null) return LoadingView(label: s.loading);
+            if (r == null) return LoadingView(label: s.loadPlans, kind: NLoaderKind.plans);
             if (r case FailureResult<PlansOffer>()) {
               return ErrorView(
                 message: s.notConnectedYet,
@@ -126,13 +138,21 @@ class _PlansPageState extends State<PlansPage> {
                 // Spec 008 §7.3: checkout says plainly that a started paid period is not refunded.
                 Text(s.plansNoRefund, style: NType.bodySm.copyWith(color: NColors.inkMuted)),
                 const SizedBox(height: NSpace.lg),
-                for (final Plan p in offer.plans) ...<Widget>[
+                for (Plan p in offer.plans) ...<Widget>[
                   _card(s, offer, p),
                   const SizedBox(height: NSpace.md),
                 ],
                 // The free plan's own card offers "Continue free" when it is listed.
                 if (!offer.plans.any((Plan p) => p.isFree))
                   NSecondaryButton(label: s.plansContinueFree, onPressed: () => context.go(RouteConstants.home)),
+                const SizedBox(height: NSpace.sm),
+                Center(
+                  child: TextButton(
+                    onPressed: () => context.go(RouteConstants.home),
+                    child: Text('${s.skip} for now',
+                        style: NType.body.copyWith(color: NColors.inkSecondary, decoration: TextDecoration.underline)),
+                  ),
+                ),
               ],
             );
           },
@@ -153,7 +173,7 @@ class _PlansPageState extends State<PlansPage> {
                 : s.plansFor(price.validityCount, _unit(s, price.validityUnit, price.validityCount)),
           );
     final bool trial = price != null && price.renews && offer.trialDays > 0;
-    final List<String> lines = <String>[for (final PlanFeature f in p.features) _line(s, f), ...p.extraLines];
+    final List<String> lines = <String>[for (PlanFeature f in p.features) _line(s, f), ...p.extraLines];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[

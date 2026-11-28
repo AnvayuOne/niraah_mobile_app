@@ -75,7 +75,7 @@ class ApiChatRepository implements ChatRepository {
   /// Parses server-sent event text, which may arrive split anywhere, into each event's data.
   static Stream<Map<String, dynamic>> events(Stream<String> text) async* {
     String buffer = '';
-    await for (final String chunk in text) {
+    await for (String chunk in text) {
       buffer += chunk;
       int cut;
       while ((cut = buffer.indexOf('\n\n')) >= 0) {
@@ -89,11 +89,17 @@ class ApiChatRepository implements ChatRepository {
 
   @override
   Future<ChatHome> getHome() async {
-    final ApiResult<Map<String, dynamic>> list = await _api.get('/me/chat/conversations');
+    // The three reads go out together instead of one after another.
+    final List<ApiResult<Map<String, dynamic>>> all = await Future.wait(<Future<ApiResult<Map<String, dynamic>>>>[
+      _api.get('/me/chat/conversations'),
+      _api.get('/me/entitlements'),
+      _api.get('/me/plans'),
+    ]);
+    final ApiResult<Map<String, dynamic>> list = all[0];
     if (list is ApiFail<Map<String, dynamic>>) throw StateError(list.error.message);
     final Map<String, dynamic> data = (list as ApiOk<Map<String, dynamic>>).data;
-    final ApiResult<Map<String, dynamic>> ents = await _api.get('/me/entitlements');
-    final ApiResult<Map<String, dynamic>> plans = await _api.get('/me/plans');
+    final ApiResult<Map<String, dynamic>> ents = all[1];
+    final ApiResult<Map<String, dynamic>> plans = all[2];
     final Map<dynamic, dynamic>? chat = ents is ApiOk<Map<String, dynamic>>
         ? (ents.data['features'] as List<dynamic>).cast<Map<dynamic, dynamic>>().where((Map<dynamic, dynamic> f) => f['key'] == 'ai_chat.messages').firstOrNull
         : null;
@@ -172,7 +178,7 @@ class ApiChatRepository implements ChatRepository {
         return;
       }
       String released = '';
-      await for (final Map<String, dynamic> e in events((r as ApiOk<Stream<String>>).data)) {
+      await for (Map<String, dynamic> e in events((r as ApiOk<Stream<String>>).data)) {
         switch (e['type']) {
           case 'accepted':
             _optimistic.remove(conversationId);

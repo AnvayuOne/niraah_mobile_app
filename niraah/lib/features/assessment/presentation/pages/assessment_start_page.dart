@@ -11,6 +11,7 @@ import '../../../../design_system/widgets/n_illustration.dart';
 import '../../../../design_system/widgets/n_page.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../shared/constants/route_constants.dart';
+import '../../domain/assessment_repository.dart';
 import '../assessment_cubit.dart';
 
 /// The assessment's opening screen (spec 007 §1): how long it takes, that
@@ -50,18 +51,23 @@ class _AssessmentStartPageState extends State<AssessmentStartPage> {
         if (st.status == AssessmentStatus.failure) {
           return Scaffold(body: ErrorView(message: s.notConnectedYet));
         }
-        if (st.session == null) return Scaffold(body: LoadingView(label: s.loading));
+        if (st.session == null && st.status != AssessmentStatus.needsConsent) {
+          return Scaffold(body: LoadingView(label: s.loadAssessment, kind: NLoaderKind.assessment));
+        }
+        // Before consent there is no assessment yet: the server's questionnaire takes about 4 minutes.
+        final int minutes = st.session?.document.estimatedMinutes ?? 4;
+        final String version = st.session?.consentTextVersion ?? kConsentTextVersion;
         return NPage(
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              const Center(child: NIllustration(asset: NImages.screen02AssessmentWoman, height: NSpace.xl3 * 2 + NSpace.xl, entrance: NEntrance.float)),
+              const Center(child: NLottie(path: NLotties.companion, size: NSpace.xl3 * 3)),
               const SizedBox(height: NSpace.lg),
               Text(s.consentTitle, style: NType.h2.copyWith(color: NColors.inkPrimary)),
               const SizedBox(height: NSpace.xs),
               Text(s.consentBody, style: NType.body.copyWith(color: NColors.inkSecondary)),
               const SizedBox(height: NSpace.md),
-              _Fact(icon: Icons.schedule_rounded, text: s.consentDuration(st.session!.document.estimatedMinutes)),
+              _Fact(icon: Icons.schedule_rounded, text: s.consentDuration(minutes)),
               _Fact(icon: Icons.bookmark_border_rounded, text: s.consentResume),
               _Fact(icon: Icons.medical_services_outlined, text: s.consentReviewByPlan),
               const SizedBox(height: NSpace.md),
@@ -69,7 +75,7 @@ class _AssessmentStartPageState extends State<AssessmentStartPage> {
               _Check(value: _review, text: s.consentDoctorReview, onChanged: (bool v) => setState(() => _review = v)),
               Padding(
                 padding: const EdgeInsets.only(left: NSpace.sm),
-                child: Text(s.consentTextVersion(st.session!.consentTextVersion), style: NType.label.copyWith(color: NColors.inkMuted, letterSpacing: 0)),
+                child: Text(s.consentTextVersion(version), style: NType.label.copyWith(color: NColors.inkMuted, letterSpacing: 0)),
               ),
             ],
           ),

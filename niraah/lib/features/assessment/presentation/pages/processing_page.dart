@@ -2,10 +2,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
-import '../../../../design_system/generated/niraah_assets.dart';
 import '../../../../design_system/tokens/tokens.dart';
 import '../../../../design_system/widgets/error_view.dart';
-import '../../../../design_system/widgets/n_illustration.dart';
+import '../../../../design_system/widgets/n_loaders.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../shared/constants/route_constants.dart';
 import '../assessment_cubit.dart';
@@ -63,11 +62,17 @@ class _ProcessingPageState extends State<ProcessingPage> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                NLottie(path: NLotties.companion, size: NSpace.xl3 * 3),
-                const SizedBox(height: NSpace.lg),
-                ExcludeSemantics(child: Text(s.processingTitle, style: NType.h3.copyWith(color: NColors.inkPrimary))),
+                ExcludeSemantics(child: Text(s.processingTitle, textAlign: TextAlign.center, style: NType.h2.copyWith(color: NColors.inkPrimary))),
                 const SizedBox(height: NSpace.xs),
-                Text(s.processingBody, style: NType.body.copyWith(color: NColors.inkMuted)),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: NSpace.xl),
+                  child: Text(s.processingBody, textAlign: TextAlign.center, style: NType.body.copyWith(color: NColors.inkMuted)),
+                ),
+                const SizedBox(height: NSpace.lg),
+                NScoringAnimation(
+                  areas: <String>[s.scoreAreaCycle, s.scoreAreaMetabolic, s.scoreAreaMind, s.scoreAreaRest],
+                  steps: <String>[s.scoreStep1, s.scoreStep2, s.scoreStep3, s.scoreStep4, s.scoreStep5],
+                ),
               ],
             ),
           ),

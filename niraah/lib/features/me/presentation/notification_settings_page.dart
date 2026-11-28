@@ -56,21 +56,44 @@ class _NotificationSettingsPageState extends State<NotificationSettingsPage> {
         builder: (BuildContext context, NotificationSettings n) => ListView(
           padding: const EdgeInsets.all(NSpace.lg),
           children: <Widget>[
-            for (final NotificationCategory c in n.categories) ...<Widget>[
+            for (NotificationCategory c in n.categories) ...<Widget>[
               NCard(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(c.name, style: NType.body.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w600)),
                     if (c.locked) Text(s.notifAlwaysOn(c.lockedReason ?? ''), style: NType.bodySm.copyWith(color: NColors.inkSecondary)),
-                    for (final ChannelSwitch ch in c.channels)
-                      SwitchListTile(
-                        contentPadding: EdgeInsets.zero,
-                        dense: true,
-                        title: Text(_channel(s, ch.channel), style: NType.bodySm.copyWith(color: NColors.inkPrimary)),
-                        value: ch.enabled,
-                        onChanged: c.locked || _busy ? null : (bool on) => _set(c.key, ch.channel, on),
-                      ),
+                    for (ChannelSwitch ch in c.channels)
+                      if (c.locked)
+                        // Always-on channels read as on, with a lock, never as a greyed switch that looks broken.
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: NSpace.xs),
+                          child: Row(
+                            children: <Widget>[
+                              Expanded(child: Text(_channel(s, ch.channel), style: NType.bodySm.copyWith(color: NColors.inkPrimary))),
+                              Container(
+                                padding: const EdgeInsets.symmetric(horizontal: NSpace.sm, vertical: 5),
+                                decoration: BoxDecoration(color: NColors.statusSuccessLight, borderRadius: BorderRadius.circular(NRadius.pill)),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    Icon(Icons.lock_outline_rounded, size: 14, color: NColors.statusSuccess),
+                                    const SizedBox(width: 4),
+                                    Text('Always on', style: NType.label.copyWith(color: NColors.statusSuccess, fontWeight: FontWeight.w600)),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      else
+                        SwitchListTile(
+                          contentPadding: EdgeInsets.zero,
+                          dense: true,
+                          title: Text(_channel(s, ch.channel), style: NType.bodySm.copyWith(color: NColors.inkPrimary)),
+                          value: ch.enabled,
+                          onChanged: _busy ? null : (bool on) => _set(c.key, ch.channel, on),
+                        ),
                   ],
                 ),
               ),

@@ -5,6 +5,7 @@ import 'package:material_ui/material_ui.dart';
 
 import '../../../app/area_navigation.dart';
 import '../../../core/di/service_locator.dart';
+import '../../../design_system/generated/niraah_assets.dart';
 import '../../../design_system/motion/motion.dart';
 import '../../../design_system/tokens/tokens.dart';
 import '../../../design_system/widgets/bottom_nav.dart';
@@ -60,16 +61,16 @@ class _HomeView extends StatelessWidget {
         final HomeDocument? doc = st.document;
         final Widget body = switch ((st.status, doc)) {
           (HomeStatus.failure, _) => ErrorView(message: s.notConnectedYet, retryLabel: s.tryAgain, onRetry: context.read<HomeCubit>().load),
-          (_, final HomeGate g) => _Gate(minutes: g.estimatedMinutes),
-          (_, final HomeContent c) => _Content(home: c),
-          _ => LoadingView(label: s.loading),
+          (_, HomeGate g) => _Gate(minutes: g.estimatedMinutes),
+          (_, HomeContent c) => _Content(home: c),
+          _ => LoadingView(label: s.loadHome),
         };
         return Scaffold(
           backgroundColor: NColors.surfacePage,
           body: SafeArea(child: body),
           bottomNavigationBar: doc is HomeContent
               ? NBottomNav(
-                  labels: <String>[for (final Area a in Area.values) s.areaName(a)],
+                  labels: <String>[for (Area a in Area.values) s.areaName(a)],
                   index: 0,
                   onSelected: (int i) {
                     if (i != 0) goToArea(context, Area.values[i]);
@@ -158,7 +159,7 @@ class _Content extends StatelessWidget {
 }
 
 class _Card extends StatelessWidget {
-  const _Card({required this.child, this.color = NColors.surfaceCard});
+  _Card({required this.child, Color? color}) : color = color ?? NColors.surfaceCard;
 
   final Widget child;
   final Color color;
@@ -211,13 +212,24 @@ class _CycleCardState extends State<_CycleCard> {
         children: <Widget>[
           Text(s.homeRingLabel, style: NType.h4.copyWith(color: NColors.inkPrimary)),
           const SizedBox(height: NSpace.md),
-          CycleSummaryView(summary: widget.cycle),
+          if (noData)
+            // Before her first log, a calm picture instead of an empty ring (design audit 2026-11-26).
+            Center(
+              child: Container(
+                padding: const EdgeInsets.all(NSpace.sm),
+                decoration: BoxDecoration(color: NColors.brandBlushLight, shape: BoxShape.circle),
+                child: ClipOval(child: Image.asset(_cycleStart.path, width: 176, height: 176, fit: BoxFit.cover, excludeFromSemantics: true)),
+              ),
+            )
+          else
+            CycleSummaryView(summary: widget.cycle),
           if (noData) ...<Widget>[
+            const SizedBox(height: NSpace.md),
             Text(s.homeInvitation, style: NType.body.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w600)),
             const SizedBox(height: NSpace.sm),
             OutlinedButton.icon(
               onPressed: _pick,
-              icon: const Icon(Icons.calendar_today_rounded, color: NColors.actionLink),
+              icon: Icon(Icons.calendar_today_rounded, color: NColors.actionLink),
               label: Text(_start == null ? s.homeInvitationLabel : DateFormat('d MMMM yyyy', Localizations.localeOf(context).toString()).format(_start!)),
             ),
             const SizedBox(height: NSpace.sm),
@@ -232,6 +244,8 @@ class _CycleCardState extends State<_CycleCard> {
     );
   }
 }
+
+const NImageAsset _cycleStart = NImageAsset('assets/images/member_cycle_start.webp', width: 280, height: 231, semanticLabel: null);
 
 class _QuickLog extends StatelessWidget {
   const _QuickLog({required this.log});
@@ -292,7 +306,7 @@ class _MealsCard extends StatelessWidget {
         children: <Widget>[
           Row(
             children: <Widget>[
-              const Icon(Icons.restaurant_rounded, color: NColors.brandTerracotta),
+              Icon(Icons.restaurant_rounded, color: NColors.brandTerracotta),
               const SizedBox(width: NSpace.xs),
               Expanded(child: Text(s.mealsHomeTitle, style: NType.h4.copyWith(color: NColors.inkPrimary))),
             ],
@@ -340,7 +354,7 @@ class _LogChip extends StatelessWidget {
                   Text(label, style: NType.label.copyWith(color: NColors.inkMuted)),
                   Row(
                     children: <Widget>[
-                      if (!logged) const Icon(Icons.add_rounded, size: NSpace.md, color: NColors.actionLink),
+                      if (!logged) Icon(Icons.add_rounded, size: NSpace.md, color: NColors.actionLink),
                       if (!logged) const SizedBox(width: NSpace.xxs),
                       Flexible(
                         child: Text(
@@ -476,7 +490,7 @@ class _TasksCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(s.careTodayTasks, style: NType.h4.copyWith(color: NColors.inkPrimary)),
-            for (final HomeTask t in tasks)
+            for (HomeTask t in tasks)
               CheckboxListTile(
                 contentPadding: EdgeInsets.zero,
                 value: t.done,
@@ -525,7 +539,7 @@ class _NextCard extends StatelessWidget {
               ],
             ),
           ),
-          if (!next.isClass) const Icon(Icons.chevron_right_rounded, color: NColors.inkMuted),
+          if (!next.isClass) Icon(Icons.chevron_right_rounded, color: NColors.inkMuted),
         ],
       ),
     );

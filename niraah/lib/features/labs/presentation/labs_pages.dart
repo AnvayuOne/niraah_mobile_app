@@ -63,7 +63,15 @@ class _LabsPageState extends State<LabsPage> {
     final S s = S.of(context);
     return AreaScaffold(
       title: s.labsTitle,
-      floatingActionButton: FloatingActionButton.extended(onPressed: _add, icon: const Icon(Icons.add_rounded), label: Text(s.labsAdd)),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: _add,
+        backgroundColor: NColors.brandPlum,
+        foregroundColor: NColors.inkOnBrand,
+        elevation: 2,
+        shape: const StadiumBorder(),
+        icon: const Icon(Icons.add_rounded),
+        label: Text(s.labsAdd, style: NType.button.copyWith(color: NColors.inkOnBrand)),
+      ),
       body: AsyncBody<_LabsData>(
         future: _data,
         onRetry: _reload,
@@ -71,14 +79,14 @@ class _LabsPageState extends State<LabsPage> {
           padding: const EdgeInsets.fromLTRB(NSpace.lg, NSpace.lg, NSpace.lg, 96),
           children: <Widget>[
             NSectionTitle(s.labsReports),
-            if (d.reports.isEmpty) EmptyNote(text: s.labsEmpty, actionLabel: s.labsAdd, onAction: _add),
-            for (final LabReport r in d.reports) ...<Widget>[
+            if (d.reports.isEmpty) EmptyNote(text: s.labsEmpty, actionLabel: s.labsAdd, onAction: _add, picture: EmptyArt.labs),
+            for (LabReport r in d.reports) ...<Widget>[
               NCard(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(r.testDate == null ? s.labsReport : s.labsTestedOn(shortDate(context, r.testDate!)), style: NType.h4.copyWith(color: NColors.inkPrimary)),
-                    for (final LabResult x in r.results)
+                    for (LabResult x in r.results)
                       Padding(
                         padding: const EdgeInsets.only(top: NSpace.xs),
                         child: MergeSemantics(
@@ -110,7 +118,7 @@ class _LabsPageState extends State<LabsPage> {
                 'included' => Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
-                      for (final LabOrder o in d.orders)
+                      for (LabOrder o in d.orders)
                         Padding(
                           padding: const EdgeInsets.only(bottom: NSpace.xs),
                           child: NCard(
@@ -144,7 +152,7 @@ class _ResultRow {
   final TextEditingController high = TextEditingController();
 
   void dispose() {
-    for (final TextEditingController c in <TextEditingController>[name, value, unit, low, high]) {
+    for (TextEditingController c in <TextEditingController>[name, value, unit, low, high]) {
       c.dispose();
     }
   }
@@ -320,7 +328,7 @@ class _LabOrderPageState extends State<LabOrderPage> {
         padding: const EdgeInsets.all(NSpace.lg),
         children: <Widget>[
           NSectionTitle(s.labsChooseTests),
-          for (final LabTest t in widget.collection.tests)
+          for (LabTest t in widget.collection.tests)
             CheckboxListTile(
               contentPadding: EdgeInsets.zero,
               value: _tests.contains(t.id),

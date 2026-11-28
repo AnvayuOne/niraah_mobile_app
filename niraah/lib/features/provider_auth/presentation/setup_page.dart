@@ -93,7 +93,7 @@ class _SetupPageState extends State<SetupPage> {
     return FutureBuilder<InviteInfo?>(
       future: _invite,
       builder: (BuildContext context, AsyncSnapshot<InviteInfo?> snap) {
-        if (snap.connectionState != ConnectionState.done) return Scaffold(body: LoadingView(label: s.loading));
+        if (snap.connectionState != ConnectionState.done) return Scaffold(body: LoadingView(label: s.loadSecure, kind: NLoaderKind.secure));
         final InviteInfo? invite = snap.data;
         if (invite == null) {
           // A neutral page: it never says why the link failed.
@@ -196,7 +196,7 @@ class _SetupPageState extends State<SetupPage> {
               spacing: NSpace.lg,
               runSpacing: NSpace.xs,
               children: <Widget>[
-                for (final String c in _codes) SelectableText(c, style: NType.body.copyWith(color: NColors.inkPrimary, fontFeatures: const <FontFeature>[FontFeature.tabularFigures()])),
+                for (String c in _codes) SelectableText(c, style: NType.body.copyWith(color: NColors.inkPrimary, fontFeatures: const <FontFeature>[FontFeature.tabularFigures()])),
               ],
             ),
           ),

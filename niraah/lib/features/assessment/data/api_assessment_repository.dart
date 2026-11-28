@@ -18,12 +18,14 @@ class ApiAssessmentRepository implements AssessmentRepository {
   @override
   Future<Result<AssessmentSession>> startOrResume() async {
     final ApiResult<Map<String, dynamic>> r = await _api.post('/assessment/start', <String, dynamic>{});
-    if (r is ApiFail<Map<String, dynamic>>) return FailureResult<AssessmentSession>(r.error.message);
+    if (r is ApiFail<Map<String, dynamic>>) {
+      return FailureResult<AssessmentSession>(r.error.field == 'consent' ? kConsentRequired : r.error.message);
+    }
     final Map<String, dynamic> data = (r as ApiOk<Map<String, dynamic>>).data;
     final QuestionnaireDocument doc = QuestionnaireParser.parse(Map<String, dynamic>.from(data['document'] as Map));
     final Map<String, dynamic> raw = Map<String, dynamic>.from((data['answers'] as Map?) ?? <String, dynamic>{});
     final Answers answers = <String, Answer>{};
-    for (final Question q in doc.questions) {
+    for (Question q in doc.questions) {
       final List<String>? v = (raw[q.key] as List<dynamic>?)?.cast<String>();
       if (v == null || v.isEmpty) continue;
       answers[q.key] = _isText(q.type) ? Answer.text(v.first) : Answer.values(v);
@@ -45,9 +47,9 @@ class ApiAssessmentRepository implements AssessmentRepository {
     final List<String> values = answer.text != null ? <String>[answer.text!] : answer.values;
     final ApiResult<Map<String, dynamic>> r = await _api.post('/assessment/$assessmentId/answers', <String, dynamic>{'questionKey': questionKey, 'values': values});
     switch (r) {
-      case ApiOk<Map<String, dynamic>>(:final Map<String, dynamic> data):
+      case ApiOk<Map<String, dynamic>>(:Map<String, dynamic> data):
         return Success<SaveOutcome>(data['stopped'] == 'minimum_age' ? SaveOutcome.minimumAgeStop : SaveOutcome.saved);
-      case ApiFail<Map<String, dynamic>>(:final ApiError error):
+      case ApiFail<Map<String, dynamic>>(:ApiError error):
         return FailureResult<SaveOutcome>(error.message);
     }
   }
@@ -56,10 +58,10 @@ class ApiAssessmentRepository implements AssessmentRepository {
   Future<Result<PreScore>> submit(String assessmentId, Answers answers) async {
     final ApiResult<Map<String, dynamic>> r = await _api.post('/assessment/$assessmentId/submit');
     switch (r) {
-      case ApiOk<Map<String, dynamic>>(:final Map<String, dynamic> data):
+      case ApiOk<Map<String, dynamic>>(:Map<String, dynamic> data):
         if (data['kind'] != 'prescore') return const FailureResult<PreScore>('no_prescore');
         return Success<PreScore>(preScoreFrom(Map<String, dynamic>.from(data['prescore'] as Map)));
-      case ApiFail<Map<String, dynamic>>(:final ApiError error):
+      case ApiFail<Map<String, dynamic>>(:ApiError error):
         // A required visible question without an answer names it (spec 007 AC14).
         return FailureResult<PreScore>(error.field != null && error.code == 'invalid_request' ? 'missing:${error.field}' : error.message);
     }

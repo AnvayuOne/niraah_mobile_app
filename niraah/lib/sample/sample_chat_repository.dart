@@ -76,22 +76,22 @@ class SampleChatRepository implements ChatRepository {
     final ChatOutcome outcome = answerMessage(text, remaining: dailyLimit - _used, personalised: _store.personalisedAi, phase: _phase);
 
     switch (outcome) {
-      case SafetyOutcome(:final SafetyCard card):
+      case SafetyOutcome(:SafetyCard card):
         _update(convId, (Conversation c) => _withItems(c, <ChatItem>[...c.items, SafetyItem(id: _store.newId(), at: _clock(), card: card)]));
         yield ChatSafetyEvent(card);
         return;
       case LimitOutcome():
         yield const ChatLimitEvent();
         return;
-      case AnswerOutcome(:final List<CitedSentence> sentences, :final List<ChatSource> sources):
-        final String answerId = _store.newId();
+      case AnswerOutcome(:List<CitedSentence> sentences, :List<ChatSource> sources):
+        String answerId = _store.newId();
         AssistantAnswer item = AssistantAnswer(id: answerId, at: _clock(), sentences: const <CitedSentence>[], sources: const <ChatSource>[], streaming: true, incomplete: false);
         void put(AssistantAnswer a) => _update(
               convId,
-              (Conversation c) => _withItems(c, <ChatItem>[for (final ChatItem i in c.items) i.id == answerId ? a : i, if (!c.items.any((ChatItem i) => i.id == answerId)) a]),
+              (Conversation c) => _withItems(c, <ChatItem>[for (ChatItem i in c.items) i.id == answerId ? a : i, if (!c.items.any((ChatItem i) => i.id == answerId)) a]),
             );
         put(item);
-        for (final CitedSentence s in sentences) {
+        for (CitedSentence s in sentences) {
           await Future<void>.delayed(sentenceDelay);
           item = item.copyWith(sentences: <CitedSentence>[...item.sentences, s]);
           put(item);
@@ -117,7 +117,7 @@ class SampleChatRepository implements ChatRepository {
       ..sort((Conversation a, Conversation b) => b.lastMessageAt.compareTo(a.lastMessageAt));
     return ChatHome(
       conversations: <ConversationSummary>[
-        for (final Conversation c in sorted) ConversationSummary(id: c.id, title: c.title, lastMessageAt: c.lastMessageAt),
+        for (Conversation c in sorted) ConversationSummary(id: c.id, title: c.title, lastMessageAt: c.lastMessageAt),
       ],
       starters: chatStarters(_phase, energy: log?.energy?.name, mood: log?.mood?.name),
       personalised: _store.personalisedAi,
@@ -169,7 +169,7 @@ class SampleChatRepository implements ChatRepository {
     _update(
       conversationId,
       (Conversation conv) => _withItems(conv, <ChatItem>[
-        for (final ChatItem i in conv.items)
+        for (ChatItem i in conv.items)
           if (!(i is AssistantAnswer && (i.incomplete || i.streaming))) i,
       ]),
     );

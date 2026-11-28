@@ -39,8 +39,8 @@ extension AreaResult on ApiResult<Map<String, dynamic>> {
 
 /// The server's words for a refused action, for a quiet message on screen.
 String failureText(Object e, String fallback) => switch (e) {
-      ApiException(:final String message) => message,
-      AreaLocked(:final String message) => message,
+      ApiException(:String message) => message,
+      AreaLocked(:String message) => message,
       _ => fallback,
     };
 

@@ -24,7 +24,7 @@ class AreaComingSoonPage extends StatelessWidget {
       body: Column(
         children: <Widget>[
           const SizedBox(height: NSpace.xl),
-          const NIllustration(asset: NImages.i08EnergeticBalancedWoman, height: NSpace.xl3 * 3, entrance: NEntrance.float),
+          const NLottie(path: NLotties.yoga, size: NSpace.xl3 * 3),
           const SizedBox(height: NSpace.lg),
           Semantics(header: true, child: Text(s.areaName(area), style: NType.h2.copyWith(color: NColors.inkPrimary))),
           const SizedBox(height: NSpace.xs),

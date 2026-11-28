@@ -134,7 +134,7 @@ class _LinkRow extends StatelessWidget {
           Icon(icon, color: NColors.inkSecondary),
           const SizedBox(width: NSpace.sm),
           Expanded(child: Text(text, style: NType.body.copyWith(color: NColors.inkPrimary, fontWeight: FontWeight.w600))),
-          const Icon(Icons.chevron_right_rounded, color: NColors.inkMuted),
+          Icon(Icons.chevron_right_rounded, color: NColors.inkMuted),
         ],
       );
 }
@@ -159,7 +159,7 @@ class SessionTile extends StatelessWidget {
       },
       child: Row(
         children: <Widget>[
-          const Icon(Icons.self_improvement_rounded, color: NColors.inkPrimary),
+          Icon(Icons.self_improvement_rounded, color: NColors.inkPrimary),
           const SizedBox(width: NSpace.sm),
           Expanded(
             child: Column(
@@ -171,7 +171,7 @@ class SessionTile extends StatelessWidget {
               ],
             ),
           ),
-          const Icon(Icons.chevron_right_rounded, color: NColors.inkMuted),
+          Icon(Icons.chevron_right_rounded, color: NColors.inkMuted),
         ],
       ),
     );

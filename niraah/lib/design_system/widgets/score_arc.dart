@@ -111,7 +111,7 @@ class _ArcPainter extends CustomPainter {
       // It starts a little before the arc so the rounded start cap stays blush.
       ..shader = SweepGradient(
         endAngle: _capAngle + math.max(_sweep * fraction, 0.01),
-        colors: const <Color>[NColors.brandBlush, NColors.brandBlush, NColors.brandRosewood],
+        colors: <Color>[NColors.brandBlush, NColors.brandBlush, NColors.brandRosewood],
         stops: const <double>[0, 0.08, 1],
         transform: const GradientRotation(_start - _capAngle),
       ).createShader(rect);

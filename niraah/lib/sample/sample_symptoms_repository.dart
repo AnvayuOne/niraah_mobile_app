@@ -54,13 +54,13 @@ class SampleSymptomsRepository implements SymptomsRepository {
   @override
   Future<SymptomsDocument> getSymptoms() async {
     final Map<String, int> counts = <String, int>{};
-    for (final SampleSymptomLog l in _store.symptomLogs) {
+    for (SampleSymptomLog l in _store.symptomLogs) {
       counts[l.symptom] = (counts[l.symptom] ?? 0) + 1;
     }
     final List<MapEntry<String, int>> ranked = counts.entries.toList()
       ..sort((MapEntry<String, int> a, MapEntry<String, int> b) => b.value != a.value ? b.value - a.value : a.key.compareTo(b.key));
     final List<SymptomRef> frequent = <SymptomRef>[
-      for (final MapEntry<String, int> e in ranked.take(4))
+      for (MapEntry<String, int> e in ranked.take(4))
         if (_byKey.containsKey(e.key)) _ref(e.key),
     ];
 
@@ -71,7 +71,7 @@ class SampleSymptomsRepository implements SymptomsRepository {
     return SymptomsDocument(
       today: _today(),
       categories: <SymptomCategory>[
-        for (final Map<String, dynamic> c in _categories)
+        for (Map<String, dynamic> c in _categories)
           SymptomCategory(
             key: c['key'] as String,
             name: c['name'] as String,
@@ -85,7 +85,7 @@ class SampleSymptomsRepository implements SymptomsRepository {
       severityLow: _low,
       severityHigh: _high,
       history: <SymptomHistoryEntry>[
-        for (final SampleSymptomLog l in recent.take(30))
+        for (SampleSymptomLog l in recent.take(30))
           SymptomHistoryEntry(
             id: l.id,
             date: l.date,

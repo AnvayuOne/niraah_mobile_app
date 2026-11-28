@@ -68,7 +68,7 @@ class _CodePageState extends State<CodePage> {
     switch (r) {
       case Success<void>():
         setState(_restartClock);
-      case FailureResult<void>(:final String message):
+      case FailureResult<void>(:String message):
         setState(() => _message = message == 'not_connected' ? S.of(context).notConnectedYet : message);
     }
   }
@@ -80,9 +80,9 @@ class _CodePageState extends State<CodePage> {
     if (!mounted) return;
     setState(() => _busy = false);
     switch (r) {
-      case Success<CodeOutcome>(:final CodeOutcome data):
+      case Success<CodeOutcome>(:CodeOutcome data):
         context.go(routeForOutcome(data));
-      case FailureResult<CodeOutcome>(:final String message):
+      case FailureResult<CodeOutcome>(:String message):
         // Server messages are written to be shown as they are (spec 003 "Not revealing accounts").
         setState(() => _message = switch (message) {
               'not_connected' => s.notConnectedYet,

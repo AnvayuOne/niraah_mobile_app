@@ -1,0 +1,72 @@
+# Builds tester copies of the app.
+#   Android: a release APK (signed with the debug key; fine for testers, not for Play Store).
+#   iOS:     an UNSIGNED build on a macOS runner. It proves the iOS build works; it cannot be installed on an
+#            iPhone. Installing needs signing on a Mac with Xcode, or TestFlight (paid Apple Developer account).
+#
+# Set once: GitHub repo > Settings > Secrets and variables > Actions > Variables > New repository variable
+#   API_BASE_URL = https://<your-domain>/api/v1        (must be https: release builds refuse plain http)
+#
+# Run: Actions > "Build tester apps" > Run workflow (download from the run's Artifacts), or push a tag such as
+# v1.0.0-test1 to also publish the APK as a GitHub Release asset that testers can download on their phone.
+name: Build tester apps
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write # to attach the APK to a GitHub Release on tag pushes
+
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check API_BASE_URL
+        run: |
+          case "${{ vars.API_BASE_URL }}" in
+            https://*/api/v1) echo "API_BASE_URL ok" ;;
+            *) echo "::error::Set the repository variable API_BASE_URL to https://<domain>/api/v1"; exit 1 ;;
+          esac
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      - name: Build APK
+        run: flutter build apk --release --dart-define=API_BASE_URL=${{ vars.API_BASE_URL }}
+      - name: Name the APK
+        run: cp build/app/outputs/flutter-apk/app-release.apk "niraah-${GITHUB_REF_NAME//\//-}.apk"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: niraah-android-apk
+          path: niraah-*.apk
+      - name: Publish GitHub Release (tags only)
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: niraah-*.apk
+          prerelease: true
+
+  ios:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      - name: Build iOS (no code signing)
+        run: flutter build ios --release --no-codesign --dart-define=API_BASE_URL=${{ vars.API_BASE_URL }}
+      - name: Zip Runner.app
+        run: cd build/ios/iphoneos && zip -qry ../../../niraah-ios-unsigned.zip Runner.app
+      - uses: actions/upload-artifact@v4
+        with:
+          name: niraah-ios-unsigned
+          path: niraah-ios-unsigned.zip

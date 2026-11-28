@@ -91,7 +91,7 @@ class SampleBackend {
     );
     _aiReadyAt = _clock().add(aiDelay);
     _aiObservations = <String>[
-      for (final ScoredDimension d in r.dimensions)
+      for (ScoredDimension d in r.dimensions)
         if (d.percent < 70) 'Your answers about ${d.name.toLowerCase()} suggest some gentle support could help.',
       ...r.flagObservations,
       r.bandFallbackObservation,
@@ -124,7 +124,7 @@ class SampleBackend {
     final PreScore? p = _preScore;
     final List<Map<String, dynamic>> plans = (_plans['plans'] as List<dynamic>).cast<Map<String, dynamic>>();
     if (p != null) {
-      for (final Map<String, dynamic> plan in plans) {
+      for (Map<String, dynamic> plan in plans) {
         final Map<String, dynamic> rules = plan['recommendedFor'] as Map<String, dynamic>;
         final bool band = (rules['bands'] as List<dynamic>).contains(p.band.label);
         final bool flag = (rules['flags'] as List<dynamic>).any((dynamic f) => p.flags.any((RaisedFlag r) => r.key == f));

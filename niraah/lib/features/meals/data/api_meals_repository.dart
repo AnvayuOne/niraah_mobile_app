@@ -23,7 +23,7 @@ class ApiMealsRepository implements MealsRepository {
       case 'no_food':
         return ScanNoFood(r['message'] as String);
       case 'limit':
-        final Map<String, dynamic> refusal = r['refusal'] as Map<String, dynamic>;
+        Map<String, dynamic> refusal = r['refusal'] as Map<String, dynamic>;
         return ScanLimit(limit: (refusal['limit'] as num?)?.toInt() ?? 0, refillsAt: refusal['refillsAt'] as String?);
       default:
         return const ScanUnavailable();
@@ -35,11 +35,7 @@ class ApiMealsRepository implements MealsRepository {
     final Map<String, dynamic> r = (await _api.get('/me/foods?q=${Uri.encodeQueryComponent(query)}')).orThrow();
     return <FoodOption>[
       for (final dynamic f in r['items'] as List<dynamic>)
-        FoodOption(
-          id: (f as Map<String, dynamic>)['id'] as String,
-          name: f['name'] as String,
-          regionalNames: ((f['regionalNames'] as List<dynamic>?) ?? const <dynamic>[]).cast<String>(),
-        ),
+        FoodOption(id: (f as Map<String, dynamic>)['id'] as String, name: f['name'] as String, regionalNames: ((f['regionalNames'] as List<dynamic>?) ?? const <dynamic>[]).cast<String>()),
     ];
   }
 
@@ -184,32 +180,32 @@ class ApiMealsRepository implements MealsRepository {
   }
 
   static Meal _meal(Map<String, dynamic> m) => Meal(
-        id: m['id'] as String,
-        eatenAt: DateTime.parse(m['eatenAt'] as String).toLocal(),
-        slot: MealSlot.values.firstWhere((MealSlot s) => s.name == m['slot'], orElse: () => MealSlot.snack),
-        source: m['source'] as String,
-        items: <LoggedItem>[
-          for (final dynamic i in m['items'] as List<dynamic>)
-            LoggedItem(
-              name: (i as Map<String, dynamic>)['name'] as String,
-              grams: (i['grams'] as num).toDouble(),
-              portion: i['portion'] as String?,
-              nutrients: _nutrients(i['nutrients'] as Map<String, dynamic>),
-            ),
-        ],
-        totals: _nutrients(m['totals'] as Map<String, dynamic>),
-        tags: (m['tags'] as List<dynamic>).cast<String>(),
-        suggestion: m['suggestion'] as String?,
-      );
+    id: m['id'] as String,
+    eatenAt: DateTime.parse(m['eatenAt'] as String).toLocal(),
+    slot: MealSlot.values.firstWhere((MealSlot s) => s.name == m['slot'], orElse: () => MealSlot.snack),
+    source: m['source'] as String,
+    items: <LoggedItem>[
+      for (final dynamic i in m['items'] as List<dynamic>)
+        LoggedItem(
+          name: (i as Map<String, dynamic>)['name'] as String,
+          grams: (i['grams'] as num).toDouble(),
+          portion: i['portion'] as String?,
+          nutrients: _nutrients(i['nutrients'] as Map<String, dynamic>),
+        ),
+    ],
+    totals: _nutrients(m['totals'] as Map<String, dynamic>),
+    tags: (m['tags'] as List<dynamic>).cast<String>(),
+    suggestion: m['suggestion'] as String?,
+  );
 
   static Nutrients _nutrients(Map<String, dynamic> n) => Nutrients(
-        energyKcal: (n['energyKcal'] as num?)?.toDouble(),
-        proteinG: (n['proteinG'] as num).toDouble(),
-        carbohydrateG: (n['carbohydrateG'] as num).toDouble(),
-        fatG: (n['fatG'] as num).toDouble(),
-        fibreG: (n['fibreG'] as num).toDouble(),
-        glycaemicIndex: (n['glycaemicIndex'] as num?)?.toInt(),
-      );
+    energyKcal: (n['energyKcal'] as num?)?.toDouble(),
+    proteinG: (n['proteinG'] as num).toDouble(),
+    carbohydrateG: (n['carbohydrateG'] as num).toDouble(),
+    fatG: (n['fatG'] as num).toDouble(),
+    fibreG: (n['fibreG'] as num).toDouble(),
+    glycaemicIndex: (n['glycaemicIndex'] as num?)?.toInt(),
+  );
 
   /// The server wants an ISO time with an offset (contracts `z.iso.datetime({ offset: true })`).
   static String _isoWithOffset(DateTime t) {
